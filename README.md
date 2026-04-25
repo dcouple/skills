@@ -31,3 +31,67 @@ Skills are the atoms. Commands compose them. Agents are who the commands hand of
 ## Using these
 
 Copy `parsa/.claude` and `parsa/.codex` into a project root and read the `SKILL.md` files. They are written to be edited. The shape of the workflow generalizes. The contents should not.
+
+## Keeping user-level skills in sync (optional)
+
+Use this if you want the skills in this repo available in every project on your machine.
+
+User-level skill folders:
+
+- Claude Code: `~/.claude/skills/`
+- Codex: `~/.codex/skills/`
+
+Create a sync script for Claude Code:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO="$HOME/path/to/this/repo"
+SRC="$REPO/parsa/.claude/skills/"
+DEST="$HOME/.claude/skills/"
+LOG="$HOME/.claude/skills-sync.log"
+
+mkdir -p "$DEST"
+{
+  echo "=== $(date -Iseconds) ==="
+  git -C "$REPO" pull --ff-only
+  rsync -a --human-readable "$SRC" "$DEST"   # no --delete: leaves your other skills alone
+  echo "synced ok"
+} >>"$LOG" 2>&1
+```
+
+`chmod +x ~/.local/bin/sync-claude-skills.sh`
+
+Create the same script for Codex, changing only the paths:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO="$HOME/path/to/this/repo"
+SRC="$REPO/parsa/.codex/skills/"
+DEST="$HOME/.codex/skills/"
+LOG="$HOME/.codex/skills-sync.log"
+
+mkdir -p "$DEST"
+{
+  echo "=== $(date -Iseconds) ==="
+  git -C "$REPO" pull --ff-only
+  rsync -a --human-readable "$SRC" "$DEST"   # no --delete: leaves your other skills alone
+  echo "synced ok"
+} >>"$LOG" 2>&1
+```
+
+`chmod +x ~/.local/bin/sync-codex-skills.sh`
+
+Then run them every 4 hours with `crontab -e`:
+
+```
+0 */4 * * * /home/you/.local/bin/sync-claude-skills.sh
+5 */4 * * * /home/you/.local/bin/sync-codex-skills.sh
+```
+
+This is lightweight: it only does `git pull --ff-only` and `rsync`. There is no `--delete`, so other local skills are left alone.
+
+Cron only runs while your computer is awake. Restart Codex after new skills sync so the active session sees them.
