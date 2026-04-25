@@ -28,16 +28,11 @@ Feedback from a principal engineer perspective, providing overall architectural 
 1. Investigate the codebase first
 2. Present the plan to the user
 3. **Only when the user approves** will I proceed
-4. After approval, prefer one primary `implementer` sub-agent to execute the whole plan rather than fragmenting it by default
-5. Keep the user's stated why, constraints, and non-goals explicit during implementation rather than letting the task list silently replace them
-6. After implementation, run the Claude `implementation-reviewer` and Codex review in parallel when the plugin is available, and wait for both before declaring completion
-7. If the Codex plugin is unavailable, run the Claude `implementation-reviewer` alone before declaring completion
+4. After approval, spawn an `implementer` sub-agent to execute the plan, passing the entire plan directly
 
 ## Notes
 
 - Instructions must be very clear with code snippets and file paths
-- If implementation proceeds, keep one primary implementation authority unless the write scopes are clearly disjoint
-- The final review must check both task completion and whether the implementation still satisfies the user's original intent
 - I will not implement anything until the user approves
 
 User Query: $ARGUMENTS
