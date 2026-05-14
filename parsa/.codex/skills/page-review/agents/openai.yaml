@@ -1,0 +1,4 @@
+interface:
+  display_name: "Page Review"
+  short_description: "Review pages for usefulness and trust"
+  default_prompt: "Use $page-review to review this page for usefulness, voice, E-E-A-T, intent fit, and promotion risk."

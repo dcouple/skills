@@ -1,0 +1,4 @@
+interface:
+  display_name: "Page Strategy"
+  short_description: "Plan pages around intent and value"
+  default_prompt: "Use $page-strategy to plan a page brief with intent, structure, proof burden, and product role."

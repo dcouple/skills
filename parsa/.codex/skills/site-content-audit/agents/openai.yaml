@@ -1,0 +1,4 @@
+interface:
+  display_name: "Site Content Audit"
+  short_description: "Audit content portfolios and SEO loss"
+  default_prompt: "Use $site-content-audit to analyze this sitemap, content portfolio, or traffic decline and recommend action buckets."
