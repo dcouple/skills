@@ -1,6 +1,6 @@
 ---
 name: page-review
-description: Review and improve a draft or live content page. Use when the user wants cleanup for usefulness, voice, E-E-A-T, intent match, answer quality, promotional risk, self-promotion fairness, comparison/listicle integrity, proof gaps, CTA placement, or a ship/revise/do-not-ship publishing judgment.
+description: "Review and improve a draft or live content page. Use when the user wants cleanup for usefulness, voice, E-E-A-T, intent match, answer quality, promotional risk, self-promotion fairness, comparison/listicle integrity, proof gaps, CTA placement, or a ship/revise/do-not-ship publishing judgment."
 ---
 
 # Page Review

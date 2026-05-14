@@ -1,6 +1,6 @@
 ---
 name: site-content-audit
-description: Audit a site, sitemap, content section, competitor, or URL portfolio for SEO/content quality patterns. Use for ClickUp-style traffic-loss forensics, sitemap XML analysis, Ahrefs/Semrush/GSC export analysis, SERP replacement analysis, template-footprint risk, competitor teardown, pruning, merging, rewriting, refreshing, redirecting, or recovery sequencing.
+description: "Audit a site, sitemap, content section, competitor, or URL portfolio for SEO/content quality patterns. Use for ClickUp-style traffic-loss forensics, sitemap XML analysis, Ahrefs/Semrush/GSC export analysis, SERP replacement analysis, template-footprint risk, competitor teardown, pruning, merging, rewriting, refreshing, redirecting, or recovery sequencing."
 ---
 
 # Site Content Audit

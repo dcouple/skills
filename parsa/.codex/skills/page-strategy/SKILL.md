@@ -1,6 +1,6 @@
 ---
 name: page-strategy
-description: Plan an SEO/content page before writing. Use when the user wants to discuss or define a page idea, target keyword, search intent, audience job-to-be-done, page type, structure, product role, proof/E-E-A-T requirements, CTA boundaries, differentiation, or success criteria before creating content.
+description: "Plan an SEO/content page before writing. Use when the user wants to discuss or define a page idea, target keyword, search intent, audience job-to-be-done, page type, structure, product role, proof/E-E-A-T requirements, CTA boundaries, differentiation, or success criteria before creating content."
 ---
 
 # Page Strategy
