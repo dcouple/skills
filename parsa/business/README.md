@@ -91,9 +91,9 @@ This is the business equivalent of `/implement` plus implementation review.
 
 Use this only when sending, publishing, presenting, or handing off. It runs a fresh-context adversarial pass — the analog of cloud PR review, with cold eyes independent of the artifact-stage review — then packages the final artifact, verifies review patches, and writes the release checklist.
 
-## Support skills
+## Support stages (Claude agents · Codex skills)
 
-These are normally invoked by the primary skills, not manually by the user.
+These run with isolated, fresh context and are invoked by the primary stages, not by the user. In Claude they are sub-agents in `.claude/agents/` — true context isolation, which is what makes the adversarial review and context-gathering honest. Codex has no separate agents primitive, so there they are skills in `.codex/skills/` (the same way Codex represents `plan-reviewer`, `researcher`, etc.).
 
 ### `business-context`
 

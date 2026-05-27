@@ -35,7 +35,7 @@ Primary skills (human-facing):
 - `business-artifact`: business `/implement` + review; drafts the artifact, builds the claim/evidence ledger, runs artifact review.
 - `business-prepare-release`: business PR review + ship; runs a fresh adversarial pass, then packages the final output and release checklist. Only when sending, publishing, presenting, or handing off.
 
-Support skills (invoked by the primary stages, not run by hand):
+Support stages (fresh-context; in Claude these are sub-agents in `.claude/agents/` for true context isolation, in Codex they are skills; invoked by the primary stages, not run by hand):
 - `business-context`            -> builds `.business/context/*`
 - `business-research-adversary` -> writes `.business/context/research-adversary.md`
 - `business-spec-reviewer`      -> writes `.business/reviews/spec-review.md`
