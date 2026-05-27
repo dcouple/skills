@@ -1,19 +1,36 @@
 ---
 name: business-deliverable-factory
-description: Convert nontrivial business work from conversation into a context pack, spec, reviewed artifact, and final release gate. Use for decks, memos, proposals, calculators, customer-facing docs, compliance answers, and other stakeholder-facing deliverables.
+description: Convert nontrivial business work from conversation into a filesystem context base, spec, reviewed artifact, and final release gate. Use for decks, memos, proposals, calculators, customer-facing docs, compliance answers, and other stakeholder-facing deliverables.
 ---
 
 # Business Deliverable Factory
 
-Use this skill for nontrivial business work where a conversation, sprint kickoff, standup, customer call, or rough task needs to become a high-quality business deliverable. This is the business equivalent of the engineering factory: conversation → ticket/context → discussion → spec → spec review → artifact → artifact review → human gate.
+Use this skill for nontrivial business work where a conversation, sprint kickoff, standup, customer call, or rough task needs to become a high-quality business deliverable. This is the business equivalent of the engineering factory: conversation → business context base → discussion → spec → spec review → artifact → artifact review → human gate.
 
-This skill is not only a polish checklist. The anti-sycophancy review is the final PR-review stage. The full workflow starts much earlier by turning ambiguous business intent into a reviewable business work ticket, context pack, and deliverable spec before drafting.
+This skill is not only a polish checklist. The anti-sycophancy review is the final PR-review stage. The full workflow starts much earlier by turning ambiguous business intent into a reviewable business work ticket, filesystem context base, and deliverable spec before drafting.
+
+## Simple explanation
+
+Software agents work when they have a repo. Business agents work when they have a context base.
+
+For software, the repo contains the truth: files, dependencies, tests, issues, docs, conventions, and history. For business, the truth is scattered across apps: meetings, docs, tickets, todos, emails, chat, CRM, spreadsheets, prior deliverables, customer calls, files, and the public internet.
+
+The business equivalent of a monorepo is a normalized filesystem context base: markdown files generated from app connections, MCP/tool calls, documents, meetings, todos, messages, prior deliverables, and external research. Any agent harness can use this workflow if it can pull relevant context from apps and write normalized markdown files into a filesystem.
+
+The artifact is not the goal. The goal is to change what a specific stakeholder believes, understands, approves, buys, signs, funds, or does next.
 
 ## Core philosophy
 
-Software work has a repo, tests, typecheck, lint, implementation reviewers, and PR reviewers. Business work is less deterministic, so we manufacture determinism through structured context, explicit acceptance criteria, claim/evidence audits, adversarial reviewers, and human review gates.
+Business work is less deterministic than software, so manufacture determinism through:
 
-The artifact is not the goal. The goal is to change what a specific stakeholder believes, understands, approves, buys, signs, funds, or does next.
+- a filesystem context base the agent can inspect like a repo
+- explicit known facts, assumptions, constraints, and unknowns
+- required research-adversary context before spec
+- acceptance criteria before artifact creation
+- claim/evidence audits
+- role-based adversarial reviewers
+- anti-sycophancy review as the final PR-style gate
+- human review gates when stakes require it
 
 Never jump straight from vague request to polished draft unless the task is trivial. For meaningful deliverables, run the gates.
 
@@ -25,7 +42,7 @@ Skip the full workflow only for exact copy/paste work, trivial wording edits, or
 
 ## Workflow overview
 
-1. **Business investigate** - assemble the business context pack.
+1. **Build the business context base** - create the filesystem “business repo” from internal app context plus external research-adversary context.
 2. **Business discussion** - probe the human and clarify the actual business goal.
 3. **Business spec** - create the deliverable brief and acceptance criteria.
 4. **Business spec review** - attack the spec before drafting.
@@ -38,27 +55,67 @@ If any gate fails, go back to the prior stage. Do not line-edit a fundamentally 
 
 ---
 
-# Stage 1 - Business investigate
+# Stage 1 - Build the Business Context Base
 
-Equivalent to engineering investigate plus repo orientation.
+Equivalent to opening a software repo and inspecting the codebase before planning.
 
-Business work does not have a default repo. Build one as a **business context pack**.
+Business work does not have a default repo. Build one by pulling relevant context from connected apps, MCP servers, tool calls, files, and external research, then writing the normalized output into markdown files the agent can inspect.
 
-Gather and organize:
+## 1A. Internal context pass
+
+Pull internal business truth from available systems into markdown files.
+
+Sources may include:
 
 - originating conversation, transcript, capture, ticket, or standup notes
-- artifact requested and suspected real goal
-- audience and stakeholders
-- intended decision, belief change, purchase, approval, signature, funding, or next step
-- source docs, customer calls, pricing data, contracts, compliance docs, prior deliverables, examples, screenshots, metrics, and relevant captures
-- known facts with evidence
-- assumptions and unknowns
-- constraints: legal, compliance, product, technical, brand, pricing, timeline, relationship, operational
-- likely objections or blockers
-- quality bar and deadline
-- human reviewers likely needed
+- docs/files and prior deliverables
+- todos/tickets/issues
+- email and chat threads
+- CRM/customer records
+- spreadsheets and analytics
+- product docs, contracts, security/compliance docs
+- customer calls and meeting notes
+- relevant memory or prior decisions
 
-Output a **Business Context Pack**:
+Suggested filesystem structure:
+
+```md
+/business-context/
+  00-task.md
+  01-internal-context.md
+  02-external-research-adversary.md
+  03-known-facts.md
+  04-assumptions-and-unknowns.md
+  05-stakeholders-and-objections.md
+  06-constraints.md
+  07-examples-and-prior-art.md
+  08-context-summary.md
+```
+
+The exact file names can vary. The requirement is that the context is normalized into inspectable markdown files rather than trapped in scattered apps or chat history.
+
+## 1B. Research-adversary context pass
+
+This is required for serious business work, not an optional polish step.
+
+Research-adversary is the business equivalent of inspecting dependencies, docs, prior art, open issues, and edge cases in software. It captures external stakeholder reality before spec, especially strong opinions that would not appear in internal context.
+
+Look for:
+
+- what stakeholders, buyers, users, competitors, communities, and skeptics actually say
+- niche objections and buyer anxieties
+- category language and phrases real people use
+- competitor praise, complaints, positioning, and pricing reactions
+- recent market discourse and timing-sensitive context
+- expert disagreement and contrarian takes
+- what would make the artifact sound naive to someone deep in the space
+- what a smart skeptic would say in one sentence
+
+Use recent-discourse research for fast-moving markets. Use authoritative-source research for legal, compliance, payroll, tax, insurance, HR, security, or regulated work.
+
+## Business Context Pack output
+
+After internal context and research-adversary, produce:
 
 ```md
 # Business Context Pack
@@ -79,7 +136,7 @@ What they likely believe or understand now.
 What they should believe, understand, trust, approve, buy, or do after seeing the artifact.
 
 ## Source Material
-Links, docs, captures, transcripts, metrics, examples.
+Links, docs, captures, transcripts, metrics, examples, app-exported markdown files.
 
 ## Known Facts
 Grounded facts only, with source references where available.
@@ -93,8 +150,11 @@ Missing info that may block or weaken the deliverable.
 ## Constraints
 Legal, compliance, product, technical, timeline, relationship, pricing, brand.
 
-## Likely Objections
-What a smart reader would push back on.
+## Stakeholder Objections
+Internal objections plus external research-adversary objections.
+
+## Niche / External Insights
+Specific recent or subcultural insights that a generic reviewer would miss.
 
 ## Stakes
 What happens if this is wrong, sloppy, overclaimed, or late.
@@ -103,8 +163,9 @@ What happens if this is wrong, sloppy, overclaimed, or late.
 Rules:
 
 - Do not invent context.
-- If the context pack is too thin, say what is missing.
+- If the context base is too thin, say what is missing.
 - If the requested artifact seems wrong for the actual goal, call that out.
+- Keep internal truth and external research-adversary findings distinguishable.
 
 ---
 
@@ -112,7 +173,7 @@ Rules:
 
 Equivalent to engineering discussion. No artifact drafting yet.
 
-Use the context pack to have an implementation-focused business discussion. Probe the human until the deliverable can be specified.
+Use the business context base to have an implementation-focused business discussion. Probe the human until the deliverable can be specified.
 
 Ask only high-leverage questions. Prefer making a best-effort inference and asking the human to confirm over dumping a long questionnaire.
 
@@ -142,7 +203,7 @@ Output:
 ## Open Questions
 ## Risks / Watchouts
 ## Recommended Next Stage
-Proceed to spec / investigate more / get human input / change artifact type.
+Proceed to spec / build more context / get human input / change artifact type.
 ```
 
 ---
@@ -190,6 +251,9 @@ Tempting but unsupported or risky claims.
 ## Objection Handling
 Likely objections and where/how the artifact handles them.
 
+## Research-Adversary Inputs
+The external opinions, objections, language, and niche insights that must shape the artifact.
+
 ## Non-Goals
 What the artifact should not try to do.
 
@@ -219,6 +283,7 @@ Review the spec before drafting. Attack:
 - are acceptance criteria testable?
 - are required sections justified?
 - are required claims supported by available evidence?
+- did the spec use research-adversary insights or ignore them?
 - does the narrative arc fit the decision?
 - are risks and objections addressed?
 - is human review required before continuing?
@@ -229,16 +294,17 @@ Output:
 # Business Spec Review
 
 ## Verdict
-Approved / revise spec / investigate more.
+Approved / revise spec / build more context.
 
 ## Highest-Risk Issue
 ## Required Spec Changes
 ## Missing Evidence
+## Missing Research-Adversary Context
 ## Reviewer Panel Changes
 ## Human Input Needed
 ```
 
-Do not draft from a weak spec. Send it back to business discussion or investigate.
+Do not draft from a weak spec. Send it back to business discussion or context-building.
 
 ---
 
@@ -250,10 +316,11 @@ Create the artifact from the approved spec, not from vibes or conversation momen
 
 Rules:
 
-- Use only grounded facts from the context pack and spec.
+- Use only grounded facts from the context base and spec.
 - Maintain a claim/evidence ledger while drafting.
 - Preserve the reader transformation and narrative arc.
 - Make every section do a job.
+- Use research-adversary findings to handle real objections and use real stakeholder language.
 - Prefer concise, decision-moving content over comprehensive content.
 - If the artifact type is a deck, optimize for skim-readability and spoken presentation.
 - If it is a memo, optimize for executive clarity and decision logic.
@@ -288,6 +355,7 @@ Check whether the artifact satisfies the spec:
 - narrative arc
 - required sections
 - required evidence
+- research-adversary inputs
 - non-goals
 - acceptance criteria
 
@@ -321,7 +389,7 @@ Unsupported or risky claims must be sourced, softened, removed, or escalated to 
 
 ## 6.4 Role-based adversarial reviewer panel
 
-Select 2-4 reviewers based on artifact type.
+Select 2-4 reviewers based on artifact type and inform them with the research-adversary context.
 
 Default mapping:
 
@@ -413,6 +481,7 @@ Before final delivery, verify:
 - opening makes the stakes clear
 - no unsupported claims remain
 - numbers, names, dates, pricing, and commitments are consistent
+- research-adversary objections were either addressed or intentionally excluded
 - all links, screenshots, tables, labels, and formatting work
 - artifact is appropriately concise
 - risks are named instead of hidden
@@ -425,8 +494,11 @@ If any item fails, do not call it done.
 
 # Quick commands / modes
 
-## business-investigate
-Build the context pack only. Do not draft.
+## build-business-context-base
+Pull relevant internal app context and external research-adversary context into markdown files. Do not draft.
+
+## research-adversary-context-pass
+Capture external stakeholder opinions, niche objections, category language, competitor praise/complaints, recent discourse, and expert disagreement. Feed this into the context base.
 
 ## business-discussion
 Probe the human and clarify the actual business goal. Do not draft.
@@ -444,7 +516,7 @@ Create the artifact from the approved spec.
 Run the PR-style review, including adversarial reviewers and anti-sycophancy.
 
 ## business-fast-pass
-For smaller deliverables only: context → mini-spec → artifact → artifact-review in one pass. Still include claim/evidence audit and anti-sycophancy if external-facing.
+For smaller deliverables only: context base → mini-spec → artifact → artifact-review in one pass. Still include research-adversary, claim/evidence audit, and anti-sycophancy if external-facing.
 
 ---
 
