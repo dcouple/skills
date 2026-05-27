@@ -6,18 +6,18 @@ description: Create a business deliverable spec from the discussion brief and ex
 Role: This is the business equivalent of `/plan`. After the human-heavy `business-discussion` stage, this skill should do as much of the remaining spec work automatically as possible.
 
 Rules:
-- Do not draft the artifact.
-- Create a spec clear enough that a fresh agent can produce the artifact without reading the whole conversation.
-- Ground claims in context files.
-- Include research-adversary inputs explicitly.
-- Define acceptance criteria and reviewer panel.
+- MUST NOT draft the artifact.
+- MUST create a spec clear enough that a fresh agent can produce the artifact without reading the whole conversation.
+- MUST ground every claim in context files.
+- MUST include research-adversary inputs explicitly.
+- MUST define acceptance criteria and reviewer panel.
 - Stop for human input only when context/spec gaps block progress or high-stakes judgment is required.
 
 Coordinate support skills:
-- Context and research-adversary are context steps that already ran before discussion. They are not spec responsibilities.
-- If context or research-adversary is missing or stale, send the workflow back to context-building (`business-context` / `business-research-adversary`) instead of producing them here.
-- After drafting the spec, run or request `business-spec-reviewer`.
-- If review returns revise/build-more-context, patch the spec or send the workflow back to the right support stage.
+- Context and research-adversary are context steps that already ran before discussion. business-spec MUST NOT produce them.
+- If context or research-adversary is missing or stale, you MUST send the workflow back to context-building (`business-context` / `business-research-adversary`). NEVER produce them here.
+- After drafting the spec, you MUST run or request `business-spec-reviewer`.
+- If review returns revise/build-more-context, you MUST patch the spec or send the workflow back to the right support stage.
 
 Read:
 - `.business/context/*.md`

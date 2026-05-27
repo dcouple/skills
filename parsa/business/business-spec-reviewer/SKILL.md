@@ -4,10 +4,10 @@ description: Review a business deliverable spec for goal fidelity, evidence qual
 ---
 
 Rules:
-- Do not draft the artifact.
-- Review the spec against context files.
-- Be adversarial.
-- If the spec is weak, send it back to context/discussion/spec.
+- MUST NOT draft the artifact.
+- MUST review the spec against the context files.
+- MUST be adversarial.
+- If the spec is weak, you MUST send it back to context/discussion/spec. NEVER approve to be polite.
 
 Read:
 - `.business/specs/ready/spec.md`

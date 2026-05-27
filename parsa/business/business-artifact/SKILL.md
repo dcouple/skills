@@ -6,14 +6,14 @@ description: Create the business artifact from an approved spec, then coordinate
 Role: This is the business equivalent of `/implement` plus implementation review. After the spec is ready, this skill should do as much as possible automatically.
 
 Rules:
-- Read the approved spec first.
-- Use only grounded facts from context/spec.
-- Do not invent claims, numbers, dates, pricing, commitments, or legal/compliance statements.
-- Maintain a claim/evidence ledger.
-- Optimize for the artifact type.
-- After creating the draft and claim ledger, run or request `business-artifact-reviewer`.
-- Apply required patches when review identifies concrete fixes.
-- Stop for human input only when review requires human gate or the artifact cannot be safely completed from available context.
+- MUST read the approved spec first.
+- MUST use only grounded facts from context/spec.
+- MUST NOT invent claims, numbers, dates, pricing, commitments, or legal/compliance statements.
+- MUST maintain a claim/evidence ledger.
+- MUST optimize for the artifact type.
+- After the draft and claim ledger, you MUST run or request `business-artifact-reviewer`.
+- MUST apply required patches when review identifies concrete fixes.
+- Stop for human input only when review requires a human gate or the artifact cannot be safely completed from available context.
 
 Read:
 - `.business/specs/ready/spec.md`

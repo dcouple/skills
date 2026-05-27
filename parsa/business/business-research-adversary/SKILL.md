@@ -4,12 +4,12 @@ description: Research external stakeholder reality — niche objections, categor
 ---
 
 Rules:
-- No drafting.
-- No generic web summary.
-- Find adversarial, specific, recent, and stakeholder-relevant context.
-- Prefer strong opinions, objections, buyer anxieties, competitor praise/complaints, expert disagreement, and language real people use.
-- Distinguish internal facts from external discourse.
-- Use authoritative sources instead of recent discourse for legal, compliance, payroll, tax, HR, insurance, security, or regulated work.
+- MUST NOT draft.
+- MUST NOT produce a generic web summary.
+- MUST find adversarial, specific, recent, stakeholder-relevant context.
+- MUST prefer strong opinions, objections, buyer anxieties, competitor praise/complaints, expert disagreement, and the language real people use.
+- MUST distinguish internal facts from external discourse.
+- For legal, compliance, payroll, tax, HR, insurance, security, or regulated work, you MUST use authoritative sources, NOT recent discourse.
 
 Read:
 - `.business/context/context.md`

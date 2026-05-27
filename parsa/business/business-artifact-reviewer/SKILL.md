@@ -4,11 +4,11 @@ description: Review a completed business artifact against the spec, evidence, st
 ---
 
 Rules:
-- Assume the artifact is not done.
-- Review from fresh context.
-- Do not praise unless it survives attack.
-- Produce concrete patches, not vibes.
-- Human review is required for legal, compliance, pricing, security, ROI, contract, or enterprise-stakes claims.
+- MUST assume the artifact is not done.
+- MUST review from fresh context.
+- MUST NOT praise unless it survives attack.
+- MUST produce concrete patches, not vibes.
+- Human review is REQUIRED for legal, compliance, pricing, security, ROI, contract, or enterprise-stakes claims.
 
 Read:
 - `.business/artifacts/draft.md`

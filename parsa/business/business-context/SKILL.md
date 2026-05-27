@@ -4,12 +4,11 @@ description: Build the filesystem business context base for a stakeholder-facing
 ---
 
 Rules:
-- No drafting.
-- No spec creation.
-- Pull relevant context from connected apps, MCP/tools, local files, prior deliverables, and user-provided material.
-- Normalize context into markdown files under `.business/context/`.
-- Separate facts, assumptions, unknowns, constraints, and sources.
-- If context is missing, say what is missing instead of guessing.
+- MUST NOT draft or create a spec.
+- MUST pull relevant context from connected apps, MCP/tools, local files, prior deliverables, and user-provided material.
+- MUST normalize context into markdown files under `.business/context/`.
+- MUST separate facts, assumptions, unknowns, constraints, and sources — never blend them.
+- If context is missing, you MUST say what is missing. NEVER fill the gap by guessing.
 
 Read:
 - user request / ticket / transcript / task description

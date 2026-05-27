@@ -3,7 +3,7 @@ name: business-agent-skills
 description: Orchestrate business work from a captured task through context, discussion, spec, artifact, review, and release — each stage in fresh context via filesystem handoff.
 ---
 
-Rules: Do not do all the work in one context. Each stage runs fresh and hands the next stage a file under `.business/`.
+Rules: You MUST NOT do all the work in one context. Each stage MUST run fresh and hand the next stage a file under `.business/`.
 
 Principle: software agents need a repo. Business agents need a filesystem context base built from connected apps, MCP/tools, files, and research. If it is not in the context base, it does not exist to the agent.
 
@@ -12,10 +12,10 @@ Human attention model:
 - After discussion, spec -> artifact -> release should run with as much automation as possible.
 - Return to the human only at the gate, and only when review says the work is high-stakes, underspecified, or risky.
 
-Context comes before discussion:
-- `business-context` and `business-research-adversary` build the context base. They run BEFORE `business-discussion`, not inside `business-spec`.
-- Never discuss or spec on an empty context base. A discussion with no assembled context is the agent guessing.
-- `business-research-adversary` is a context step (external stakeholder reality), not a spec step. It writes into `.business/context/` and feeds both discussion and spec.
+Context comes before discussion (REQUIRED):
+- `business-context` and `business-research-adversary` build the context base. They MUST run BEFORE `business-discussion`, and MUST NOT be run inside `business-spec`.
+- NEVER discuss or spec on an empty context base. A discussion with no assembled context is the agent guessing.
+- `business-research-adversary` is a context step (external stakeholder reality), NOT a spec step. It writes into `.business/context/` and feeds both discussion and spec.
 
 What the human runs:
 - Aspiration: a conversation, then `business-discussion`, then one look at the gate. The stack runs context -> spec -> artifact -> release for you.
@@ -67,4 +67,4 @@ Standard artifact handoff structure:
     release-checklist.md
 ```
 
-Do not skip context/discussion/spec/review for high-stakes external work. Use a fast path only for trivial edits or exact copy/paste work.
+You MUST NOT skip context/discussion/spec/review for high-stakes external work. Use a fast path only for trivial edits or exact copy/paste work.
