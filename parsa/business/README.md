@@ -10,21 +10,105 @@ If it is not in the business context base, it does not exist to the agent.
 
 For the longer explanation, read: [Effectively Tackling Business Work With Agents](https://runpane.com/blog/business-deliverable-factory)
 
-## The workflow
+## The normal flow
+
+The business workflow should feel like the engineering workflow.
+
+For engineering, the high-attention human work happens in the initial conversation and `/discussion`. Then `/plan`, `/implement`, and PR review run with as much automation as possible.
+
+For business, use the same shape:
 
 ```txt
-conversation / task
-  -> business-context
-  -> business-research-adversary
+captured conversation / task
   -> business-discussion
   -> business-spec
-  -> business-spec-reviewer
   -> business-artifact
-  -> business-artifact-reviewer
-  -> business-prepare-release
+  -> business-prepare-release, only when shipping/finalizing
 ```
 
-Each skill gets fresh context. Each skill reads prior artifacts from disk and writes the next artifact to disk. Do not put the whole process into one giant prompt.
+The user should not manually run every support skill. Support skills exist so the primary skills can pass work through fresh-context filesystem artifacts.
+
+## Human attention model
+
+Human attention should be concentrated in:
+
+1. the initial captured conversation / todo / ticket
+2. `business-discussion`, where the agent probes for goal, audience, decision, constraints, and risk
+3. human gate only when review says the artifact is high-stakes, underspecified, or risky
+
+Everything after discussion should run as automatically as possible through the skill stack.
+
+## Primary skills to call
+
+### `business-deliverable-factory`
+
+Use this when you need the map or orchestration. It tells you which primary stage to run next and enforces the file-handoff structure.
+
+### `business-discussion`
+
+Use this as the main human-in-the-loop step. Start here for most serious business work after a conversation/todo has been captured.
+
+It should clarify:
+
+- real business goal
+- audience / stakeholders
+- desired reader transformation
+- constraints
+- objections
+- artifact type
+- what not to do
+
+It writes `.business/discussion/brief.md`.
+
+### `business-spec`
+
+Use this after discussion. It should coordinate the heavy lifting automatically:
+
+- run or refresh `business-context` if context is missing/stale
+- run `business-research-adversary` for serious business work
+- create `.business/specs/ready/spec.md`
+- run or request `business-spec-reviewer`
+- stop and ask for human input only if context/spec gaps block progress
+
+This is the business equivalent of `/plan`.
+
+### `business-artifact`
+
+Use this after the spec is ready. It should coordinate:
+
+- artifact creation from the approved spec
+- claim/evidence ledger creation
+- `business-artifact-reviewer`
+- anti-sycophancy review
+- human gate if required
+
+This is the business equivalent of `/implement` plus implementation review.
+
+### `business-prepare-release`
+
+Use this only when sending, publishing, presenting, or handing off. It packages the final artifact, verifies review patches, and writes the release checklist.
+
+## Support skills
+
+These are normally invoked by the primary skills, not manually by the user.
+
+### `business-context`
+
+Builds `.business/context/*` from internal/app/file context.
+
+### `business-research-adversary`
+
+Captures external stakeholder reality: niche objections, buyer anxieties, competitor praise/complaints, category language, recent discourse, expert disagreement, and naive-sounding claims to avoid.
+
+For regulated work, use authoritative-source research instead of recent discourse.
+
+### `business-spec-reviewer`
+
+Attacks the spec before artifact creation.
+
+### `business-artifact-reviewer`
+
+Reviews the artifact when it seems done. This is where anti-sycophancy belongs. The default stance is: assume the artifact is not done.
 
 ## Standard `.business/` handoff structure
 
@@ -52,56 +136,6 @@ Each skill gets fresh context. Each skill reads prior artifacts from disk and wr
     release-checklist.md
 ```
 
-## Which skill to call
-
-### `business-deliverable-factory`
-
-Use this when you need the map or orchestration. It should tell you which stage to run next, not do all the work itself.
-
-### `business-context`
-
-Use this first for almost any nontrivial business task. It pulls internal context from connected apps, MCP/tools, local files, prior deliverables, and user-provided material into `.business/context/`.
-
-Do not draft yet. Do not spec yet. Build the business repo first.
-
-### `business-research-adversary`
-
-Use this before serious spec work. It captures external stakeholder reality: niche objections, buyer anxieties, competitor praise/complaints, category language, recent discourse, expert disagreement, and naive-sounding claims to avoid.
-
-For regulated work, use authoritative-source research instead of recent discourse.
-
-### `business-discussion`
-
-Use this after context exists but before spec. It probes the human to clarify the goal, audience, reader transformation, constraints, objections, and artifact type.
-
-### `business-spec`
-
-Use this before drafting. It creates `.business/specs/ready/spec.md` from context and discussion artifacts.
-
-The spec should be clear enough that a fresh agent can produce the artifact without reading the original conversation.
-
-### `business-spec-reviewer`
-
-Use this before artifact creation. It attacks the spec for goal fidelity, evidence quality, stakeholder realism, acceptance criteria, and human-review needs.
-
-If the spec is weak, do not draft.
-
-### `business-artifact`
-
-Use this only after the spec is ready. It creates the draft artifact and claim/evidence ledger.
-
-The claim/evidence ledger is the business equivalent of typecheck: every important claim needs evidence, status, risk, and a fix.
-
-### `business-artifact-reviewer`
-
-Use this when the artifact seems done. This is the business equivalent of implementation review plus PR review.
-
-This is where anti-sycophancy belongs. The default stance is: assume the artifact is not done.
-
-### `business-prepare-release`
-
-Use this after review passes. It applies required patches, verifies release readiness, and writes the final artifact plus release checklist.
-
 ## Fast paths
 
 ### Tiny edit
@@ -113,39 +147,33 @@ business-artifact-reviewer
 ### Medium internal memo
 
 ```txt
-business-context
 business-discussion
 business-spec
 business-artifact
-business-artifact-reviewer
 ```
 
 ### External customer proposal
 
 ```txt
-business-context
-business-research-adversary
 business-discussion
 business-spec
-business-spec-reviewer
 business-artifact
-business-artifact-reviewer
 business-prepare-release
 ```
+
+`business-spec` should coordinate context, research-adversary, and spec review internally.
 
 ### Compliance, legal, security, pricing, or regulated artifact
 
 ```txt
-business-context
-business-research-adversary using authoritative sources
 business-discussion
 business-spec
-business-spec-reviewer
 business-artifact
-business-artifact-reviewer
-human review gate
+human gate
 business-prepare-release
 ```
+
+Use authoritative-source research inside the spec stage.
 
 ## Mental model
 
