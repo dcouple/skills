@@ -1,6 +1,6 @@
 ---
 name: business-research-adversary
-description: Research external stakeholder reality, niche objections, category language, competitor claims, and recent discourse before business spec work.
+description: Research external stakeholder reality — niche objections, category language, competitor claims, recent discourse — as a context step, before discussion and spec.
 ---
 
 Rules:
@@ -32,4 +32,4 @@ Output sections:
 - naive-sounding claims to avoid
 - implications for the business spec
 
-This is required before serious spec work. It is not optional polish.
+This is a context step. It runs before discussion and spec, not as end polish. Required for serious work.

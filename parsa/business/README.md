@@ -8,7 +8,7 @@ For business work, the equivalent is a task-local filesystem context base: a `.b
 
 If it is not in the business context base, it does not exist to the agent.
 
-For the longer explanation, read: [Effectively Tackling Business Work With Agents](https://runpane.com/blog/business-deliverable-factory)
+For the longer explanation, read: [What's the Business Equivalent of a Codebase?](https://runpane.com/blog/software-factory-for-business)
 
 ## The normal flow
 
@@ -16,17 +16,18 @@ The business workflow should feel like the engineering workflow.
 
 For engineering, the high-attention human work happens in the initial conversation and `/discussion`. Then `/plan`, `/implement`, and PR review run with as much automation as possible.
 
-For business, use the same shape:
+Business uses the same shape, with one addition: the context base has to be built first, because business context is not already sitting in a repo.
 
 ```txt
 captured conversation / task
-  -> business-discussion
+  -> business-context + business-research-adversary   (build the context base)
+  -> business-discussion                              (human; ensures the above ran)
   -> business-spec
   -> business-artifact
   -> business-prepare-release, only when shipping/finalizing
 ```
 
-The user should not manually run every support skill. Support skills exist so the primary skills can pass work through fresh-context filesystem artifacts.
+You normally start at `business-discussion`; it builds the context base first if it is missing. Context and research-adversary are context steps that run **before** discussion — not work that `business-spec` does. The user should not manually run every support skill; they exist so the primary skills can pass work through fresh-context filesystem artifacts.
 
 ## Human attention model
 
@@ -34,19 +35,21 @@ Human attention should be concentrated in:
 
 1. the initial captured conversation / todo / ticket
 2. `business-discussion`, where the agent probes for goal, audience, decision, constraints, and risk
-3. human gate only when review says the artifact is high-stakes, underspecified, or risky
+3. the human gate only when review says the artifact is high-stakes, underspecified, or risky
 
 Everything after discussion should run as automatically as possible through the skill stack.
 
 ## Primary skills to call
 
-### `business-deliverable-factory`
+### `business-agent-skills`
 
 Use this when you need the map or orchestration. It tells you which primary stage to run next and enforces the file-handoff structure.
 
 ### `business-discussion`
 
 Use this as the main human-in-the-loop step. Start here for most serious business work after a conversation/todo has been captured.
+
+Before discussing, it ensures the context base exists — if `.business/context/` is missing, it runs `business-context` (and `business-research-adversary` for serious work) first. Never discuss on empty context.
 
 It should clarify:
 
@@ -62,12 +65,12 @@ It writes `.business/discussion/brief.md`.
 
 ### `business-spec`
 
-Use this after discussion. It should coordinate the heavy lifting automatically:
+Use this after discussion. It should do the spec work automatically:
 
-- run or refresh `business-context` if context is missing/stale
-- run `business-research-adversary` for serious business work
+- consume the context base and discussion brief (context + research-adversary already exist from before discussion)
 - create `.business/specs/ready/spec.md`
 - run or request `business-spec-reviewer`
+- if context or research-adversary is missing/stale, send the workflow back to context-building rather than producing it here
 - stop and ask for human input only if context/spec gaps block progress
 
 This is the business equivalent of `/plan`.
@@ -86,7 +89,7 @@ This is the business equivalent of `/implement` plus implementation review.
 
 ### `business-prepare-release`
 
-Use this only when sending, publishing, presenting, or handing off. It packages the final artifact, verifies review patches, and writes the release checklist.
+Use this only when sending, publishing, presenting, or handing off. It runs a fresh-context adversarial pass — the analog of cloud PR review, with cold eyes independent of the artifact-stage review — then packages the final artifact, verifies review patches, and writes the release checklist.
 
 ## Support skills
 
@@ -94,11 +97,11 @@ These are normally invoked by the primary skills, not manually by the user.
 
 ### `business-context`
 
-Builds `.business/context/*` from internal/app/file context.
+Builds `.business/context/*` from internal/app/file context. Runs before discussion.
 
 ### `business-research-adversary`
 
-Captures external stakeholder reality: niche objections, buyer anxieties, competitor praise/complaints, category language, recent discourse, expert disagreement, and naive-sounding claims to avoid.
+A context step, run before discussion. Captures external stakeholder reality: niche objections, buyer anxieties, competitor praise/complaints, category language, recent discourse, expert disagreement, and naive-sounding claims to avoid. Writes into `.business/context/`, feeding both discussion and spec.
 
 For regulated work, use authoritative-source research instead of recent discourse.
 
@@ -161,7 +164,7 @@ business-artifact
 business-prepare-release
 ```
 
-`business-spec` should coordinate context, research-adversary, and spec review internally.
+`business-discussion` builds context and research-adversary first; `business-spec` then consumes them and coordinates spec review.
 
 ### Compliance, legal, security, pricing, or regulated artifact
 
@@ -173,7 +176,7 @@ human gate
 business-prepare-release
 ```
 
-Use authoritative-source research inside the spec stage.
+Use authoritative-source research during context-building, before the spec stage.
 
 ## Mental model
 

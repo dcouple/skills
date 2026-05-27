@@ -1,6 +1,6 @@
 ---
 name: business-spec
-description: Create a business deliverable spec from the discussion brief and context base, coordinating context, research-adversary, and spec review as needed.
+description: Create a business deliverable spec from the discussion brief and existing context base, then run spec review.
 ---
 
 Role: This is the business equivalent of `/plan`. After the human-heavy `business-discussion` stage, this skill should do as much of the remaining spec work automatically as possible.
@@ -14,8 +14,8 @@ Rules:
 - Stop for human input only when context/spec gaps block progress or high-stakes judgment is required.
 
 Coordinate support skills:
-- If `.business/context/context.md` or related context files are missing/stale, run or request `business-context`.
-- For serious business work, run or request `business-research-adversary` before finalizing the spec.
+- Context and research-adversary are context steps that already ran before discussion. They are not spec responsibilities.
+- If context or research-adversary is missing or stale, send the workflow back to context-building (`business-context` / `business-research-adversary`) instead of producing them here.
 - After drafting the spec, run or request `business-spec-reviewer`.
 - If review returns revise/build-more-context, patch the spec or send the workflow back to the right support stage.
 
