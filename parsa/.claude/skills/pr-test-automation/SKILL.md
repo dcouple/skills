@@ -1,6 +1,6 @@
 ---
 name: pr-test-automation
-description: Run first-pass automated manual testing for PRs that are reviewed or nearly ready to merge. Use when the user asks Codex to test a PR/branch/worktree, validate product flows, exercise browser or CLI workflows, verify analytics/webhooks/payments/email/SMS behavior through connected tools, or produce manual QA notes before human testing.
+description: Run first-pass automated manual testing for PRs that are reviewed or nearly ready to merge. Use when the user asks Claude to test a PR/branch/worktree, validate product flows, exercise browser or CLI workflows, verify analytics/webhooks/payments/email/SMS behavior through connected tools, or produce manual QA notes before human testing.
 ---
 
 # PR Test Automation
@@ -30,7 +30,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
 4. Build the automated test path:
    - Use Playwright when browser behavior matters. If the repo lacks Playwright, install it in a temporary directory rather than polluting the repo.
    - Use stable, user-visible selectors first: labels, placeholders, button text, URLs, and route state.
-   - Generate unique short test identities and attribution markers such as `codex-e2e-<timestamp>`.
+   - Generate unique short test identities and attribution markers such as `agent-e2e-<timestamp>`.
    - Parse local email/SMS verification links or codes from container logs when the local environment emits them.
    - Add small human-paced waits around analytics or step-transition tests so effects and batched events have time to fire in the same order a user would experience.
 
