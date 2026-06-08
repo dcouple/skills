@@ -48,16 +48,50 @@ Validate as much of a PR as possible with local services, browser automation, CL
 
 ## PostHog And Browser Analytics
 
-PostHog JavaScript drops capture events from likely bots. Headless Playwright can still fetch PostHog config and run `identify`, while `capture` events are silently dropped because `navigator.webdriver` is `true` or the user agent looks automated.
+PostHog JavaScript drops capture events from likely bots. Headless Playwright can still fetch PostHog config and run `identify`, while `capture` events are silently dropped because `navigator.webdriver` is `true`, the user agent looks automated, or `navigator.userAgentData.brands` includes `HeadlessChrome`.
 
 When the explicit goal is to validate product analytics in local automation:
 
 - Use a normal browser user agent.
-- Mask only the automation bot signal for the test context:
+- Mask only the automation bot signals for the test context. Setting `userAgent` is not enough if `navigator.userAgentData` still exposes headless Chrome:
 
 ```js
+const context = await browser.newContext({
+  userAgent:
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
+    '(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+})
+
 await context.addInitScript(() => {
+  const brands = [
+    { brand: 'Chromium', version: '125' },
+    { brand: 'Google Chrome', version: '125' },
+    { brand: 'Not.A/Brand', version: '24' },
+  ]
+  const fullVersionList = brands.map((brand) => ({
+    ...brand,
+    version: `${brand.version}.0.0.0`,
+  }))
+
   Object.defineProperty(navigator, 'webdriver', { get: () => undefined })
+  Object.defineProperty(navigator, 'userAgentData', {
+    get: () => ({
+      brands,
+      mobile: false,
+      platform: 'Windows',
+      getHighEntropyValues: async () => ({
+        brands,
+        mobile: false,
+        platform: 'Windows',
+        architecture: 'x86',
+        bitness: '64',
+        model: '',
+        uaFullVersion: '125.0.0.0',
+        fullVersionList,
+      }),
+      toJSON: () => ({ brands, mobile: false, platform: 'Windows' }),
+    }),
+  })
 })
 ```
 
