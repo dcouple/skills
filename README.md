@@ -1,90 +1,50 @@
 # skills
 
-Personal Claude Code and Codex configurations for the Pane team. Each contributor has their own folder. Start in `parsa/` for one take.
+This repo keeps the LLM workflows we actually use on the Pane team.
 
-## Why this repo exists
+The goal is simple: make good work easier to delegate, review, test, and learn
+from. These skills help with the moments that repeat: fuzzy ideas, ticket
+capture, planning, implementation, review, PR testing, and learning from the
+work.
 
-I wrote about our workflow [here](https://runpane.com/blog/a-turing-award-winner-just-described-our-exact-workflow). That post is the pitch. This repo is the implementation, and it has drifted from the post in ways worth naming.
-
-## What changed
-
-The blog frames it as one loop: spec, read, verify. In practice each phase wanted its own tools, its own prompts, and often its own model. The repo grew accordingly.
-
-Spec became three tiers. A typo fix and a migration are not the same kind of thinking, and one prompt cannot serve both without making the small thing slow or the big thing reckless.
-
-Verify stopped meaning tests. Tests only check what you remembered to check. The interesting verification is a fresh agent reading the diff against the docs with no memory of how it got written.
-
-Review became adversarial by default. Same agent reviewing its own output is theater. The reviewers in this repo run with no shared context, and the strongest version runs them across both Claude and Codex. Disagreements between the two are usually exactly where the bugs live.
-
-The fix loop closed. Bugs that get fixed once should not get rewritten next session, so fixes turn into notes, notes turn into skills, and the repo is partly the residue of that.
-
-## Layout
-
-```
-parsa/
-  .claude/   skills, commands, agents, hooks, settings
-  .codex/    skills, config
-```
-
-Skills are the atoms. Commands compose them. Agents are who the commands hand off to. Hooks keep any of them from doing something irreversible.
-
-## Using these
-
-Copy `parsa/.claude` and `parsa/.codex` into a project root and read the `SKILL.md` files. They are written to be edited. The shape of the workflow generalizes. The contents should not.
+Start in `parsa/` for the current version of the workflow.
 
 ## How we work with LLMs
 
-The basic idea is simple: don't ask an LLM to carry the whole project in its
-head.
+Don't ask an LLM to carry the whole project in its head.
 
-Use the LLM for one phase at a time:
-
-- talk through uncertainty
-- capture intent
-- plan the work
-- implement the plan
-- review from a fresh context
-- test the PR before human QA
-- teach back what happened
-
-The handoff between phases is the important part. For code, that handoff is
-usually a GitHub ticket, plan, PR, review, test note, or learning note. For
-business work, it's the `.business/` folder.
+Each phase should leave something behind for the next one: a ticket, a plan, a
+PR, a review, a test note, or a learning note. For business work, that handoff
+lives in `.business/`.
 
 Most of the time, you're only answering one question:
 
 > Is this clear enough to delegate?
 
-If no, discuss it. If yes, capture it. If it's captured and clear, execute. If
-work exists, review it. If review finds a gap, fix it and review again.
+If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
+**execute**. If work exists, **review** it. If review finds a gap, **fix** it
+and **review** again.
 
-That also keeps model choice pretty simple. In dcouple/Pane, we use GPT models
-through the Codex harness and Claude models through the Claude Code harness.
-Most well-scoped implementation work doesn't need the biggest model. Right now,
-`GPT-5.5 medium fast` is the everyday implementation default: it is strong
-enough for most clear tickets, fast enough to feel like you're flying, and cheap
-enough that you can work in long windows without feeling throttled by weekly
-limits.
+Here is what I am going to walk you through:
 
-Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
-lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
-expensive to unwind. That should be the exception, not the default.
-
-Review is where we should be more aggressive. The reviewer isn't trying to be
-fast; it's trying to catch the thing the implementer missed. It should read the
-issue, the plan, and the diff with fresh eyes and ask: did we actually do what
-we meant? For non-trivial work, keep Claude and Codex review passes in the loop
-until what's left is either an intentional tradeoff, a very unlikely edge case,
-or no issue at all.
-
-For that review/audit loop, it is worth spending the expensive models
-sparingly: `GPT-5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
-implementation, so save them for the places where sharper judgment changes the
-outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
-ambiguous and you want to reason through the shape of the work. If the extra
-usage cost is not worth it, `Claude 4.6 Opus` is an acceptable fallback. I
-would avoid `Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel
-too constrained for open-ended discussion and judgment calls.
+```mermaid
+flowchart LR
+  F[Fuzzy idea] --> D[discussion]
+  B[Broken but unclear] --> Inv[investigate]
+  Inv --> T
+  D --> T[create-ticket]
+  V[Vague ticket] --> D
+  T --> P{Clear enough?}
+  P -->|needs decisions| D
+  P -->|yes| Plan[plan]
+  Plan --> I[implement]
+  I --> R[review]
+  R -->|fixes needed| I
+  R -->|clean| QA[pr-test-automation]
+  QA --> H[human manual test]
+  H --> TB[teach-back]
+  TB --> Done[done]
+```
 
 ### A few common software scenarios
 
@@ -134,32 +94,61 @@ the messy parts were, and what lesson transfers to the next project.
 If the problem is broken but not understood yet, start with `investigate`
 before creating the ticket or plan.
 
-Here's the same software loop as a map:
+### Model choice
+
+Here is how I choose model effort:
 
 ```mermaid
 flowchart LR
-  F[Fuzzy idea] --> D[discussion]
-  B[Broken but unclear] --> Inv[investigate]
-  Inv --> T
-  D --> T[create-ticket]
-  V[Vague ticket] --> D
-  T --> P{Clear enough?}
-  P -->|needs decisions| D
-  P -->|yes| Plan[plan]
-  Plan --> I[implement]
-  I --> R[review]
-  R -->|fixes needed| I
-  R -->|clean| QA[pr-test-automation]
-  QA --> H[human manual test]
-  H --> TB[teach-back]
-  TB --> Done[done]
+  Task[What kind of work is this?] --> Impl[Implementation]
+  Task --> Disc[Discussion]
+  Task --> Rev[Review or audit]
+
+  Impl --> Clear{Clear ticket and easy repo context?}
+  Clear -->|yes| Med[GPT-5.5 medium fast]
+  Clear -->|no, unusually ambitious| XHigh[GPT-5.5 xhigh fast]
+
+  Disc --> ClearDisc{Is it clear?}
+  ClearDisc -->|yes| Med
+  ClearDisc -->|ambiguous| Fable[Claude 5 Fable]
+  ClearDisc -->|fallback| Opus[Claude 4.6 Opus]
+
+  Rev --> Strong[GPT-5.5 xhigh fast + Claude 5 Fable]
+  Strong --> Loop[Loop until only tradeoffs, rare edge cases, or no issues]
 ```
 
-### Business work is the same shape
+This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
+through the Codex harness and Claude models through the Claude Code harness.
+Most well-scoped implementation work doesn't need the biggest model. Right now,
+`GPT-5.5 medium fast` is the everyday implementation default: it is strong
+enough for most clear tickets, fast enough to feel like you're flying, and cheap
+enough that you can work in long windows without feeling throttled by weekly
+limits.
 
-For stakeholder-facing work, don't jump straight from conversation to artifact.
-The agent needs a context base first, the same way a software agent needs a
-repo.
+Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
+lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
+expensive to unwind. That should be the exception, not the default.
+
+Review is where we should be more aggressive. The reviewer isn't trying to be
+fast; it's trying to catch the thing the implementer missed. It should read the
+issue, the plan, and the diff with fresh eyes and ask: did we actually do what
+we meant? For non-trivial work, keep Claude and Codex review passes in the loop
+until what's left is either an intentional tradeoff, a very unlikely edge case,
+or no issue at all.
+
+For that review/audit loop, it is worth spending the expensive models
+sparingly: `GPT-5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
+implementation, so save them for the places where sharper judgment changes the
+outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
+ambiguous and you want to reason through the shape of the work. If the extra
+usage cost is not worth it, `Claude 4.6 Opus` is an acceptable fallback. I
+would avoid `Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel
+too constrained for open-ended discussion and judgment calls.
+
+### Business work
+
+For stakeholder-facing work, build context before drafting. The `.business/`
+folder is the handoff.
 
 In practice, that means:
 
@@ -167,9 +156,9 @@ In practice, that means:
 context -> discussion -> spec -> artifact -> review -> release
 ```
 
-The human attention points are still few: the initial captured conversation or
-ticket, `business-discussion`, and the final gate when the work is high-stakes
-or ready to leave the building.
+The human attention points are still few: the initial conversation or ticket,
+`business-discussion`, and the final gate when the work is high-stakes or ready
+to leave the building.
 
 Here's the business workflow as a map:
 
@@ -187,66 +176,42 @@ flowchart LR
   REL --> Gate[human gate / release]
 ```
 
-## Keeping user-level skills in sync (optional)
+## What is in this repo
 
-Use this if you want the skills in this repo available in every project on your machine.
+Each contributor has their own folder. Start with `parsa/`.
 
-User-level skill folders:
+```text
+parsa/
+  .claude/   Claude Code skills, commands, agents, hooks, settings
+  .codex/    Codex skills and config
+```
+
+The skills are meant to be edited. The workflow shape should generalize, but the
+exact contents should change as your work changes.
+
+## Keeping skills in sync
+
+Use this repo directly in a project, or copy the skills into your user-level
+folders:
 
 - Claude Code: `~/.claude/skills/`
 - Codex: `~/.codex/skills/`
 
-Create a sync script for Claude Code:
+The simple sync shape is:
 
 ```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-REPO="$HOME/path/to/this/repo"
-SRC="$REPO/parsa/.claude/skills/"
-DEST="$HOME/.claude/skills/"
-LOG="$HOME/.claude/skills-sync.log"
-
-mkdir -p "$DEST"
-{
-  echo "=== $(date -Iseconds) ==="
-  git -C "$REPO" pull --ff-only
-  rsync -a --human-readable "$SRC" "$DEST"   # no --delete: leaves your other skills alone
-  echo "synced ok"
-} >>"$LOG" 2>&1
+git -C "$REPO" pull --ff-only
+rsync -a "$REPO/parsa/.claude/skills/" "$HOME/.claude/skills/"
+rsync -a "$REPO/parsa/.codex/skills/" "$HOME/.codex/skills/"
 ```
 
-`chmod +x ~/.local/bin/sync-claude-skills.sh`
+Do not use `--delete` unless you want this repo to remove other local skills.
+Restart Codex after new skills sync so the active session can see them.
 
-Create the same script for Codex, changing only the paths:
+## Background
 
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-REPO="$HOME/path/to/this/repo"
-SRC="$REPO/parsa/.codex/skills/"
-DEST="$HOME/.codex/skills/"
-LOG="$HOME/.codex/skills-sync.log"
-
-mkdir -p "$DEST"
-{
-  echo "=== $(date -Iseconds) ==="
-  git -C "$REPO" pull --ff-only
-  rsync -a --human-readable "$SRC" "$DEST"   # no --delete: leaves your other skills alone
-  echo "synced ok"
-} >>"$LOG" 2>&1
-```
-
-`chmod +x ~/.local/bin/sync-codex-skills.sh`
-
-Then run them every 4 hours with `crontab -e`:
-
-```
-0 */4 * * * /home/you/.local/bin/sync-claude-skills.sh
-5 */4 * * * /home/you/.local/bin/sync-codex-skills.sh
-```
-
-This is lightweight: it only does `git pull --ff-only` and `rsync`. There is no `--delete`, so other local skills are left alone.
-
-Cron only runs while your computer is awake. Restart Codex after new skills sync so the active session sees them.
+This grew out of the workflow described
+[here](https://runpane.com/blog/a-turing-award-winner-just-described-our-exact-workflow).
+The original frame was spec, read, verify. In practice, we split that into
+smaller steps because each moment needs different behavior: discussion, ticket
+capture, planning, implementation, review, PR testing, and teach-back.
