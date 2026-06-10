@@ -15,6 +15,12 @@ Here is the whole workflow as a map:
 
 _Source: [docs/readme-workflow-map.excalidraw](docs/readme-workflow-map.excalidraw)_
 
+And here is the skill legend:
+
+![Skill legend](docs/readme-skill-legend.png)
+
+_Source: [docs/readme-skill-legend.excalidraw](docs/readme-skill-legend.excalidraw)_
+
 ## How we work with LLMs
 
 Don't ask an LLM to carry the whole project in its head.
