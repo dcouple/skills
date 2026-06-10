@@ -57,14 +57,14 @@ If no, discuss it. If yes, capture it. If it's captured and clear, execute. If
 work exists, review it. If review finds a gap, fix it and review again.
 
 That also keeps model choice pretty simple. Most well-scoped implementation
-work doesn't need the biggest model. If the ticket is clear and the repo context
-is easy to find, a strong everyday implementation model is usually the right
-tool.
+work doesn't need the biggest model. Right now, `5.5 medium fast` is the
+everyday implementation default: it is strong enough for most clear tickets,
+fast enough to feel like you're flying, and cheap enough that you can work in
+long windows without feeling throttled by weekly limits.
 
-Reach for the highest-effort implementation model when the work is unusually
-ambitious: lots of moving parts, fuzzy architecture boundaries, or a mistake
-that would be expensive to unwind. That should be the exception, not the
-default.
+Reach for `5.5 xhigh fast` when the implementation is unusually ambitious: lots
+of moving parts, fuzzy architecture boundaries, or a mistake that would be
+expensive to unwind. That should be the exception, not the default.
 
 Review is where we should be more aggressive. The reviewer isn't trying to be
 fast; it's trying to catch the thing the implementer missed. It should read the
@@ -72,6 +72,15 @@ issue, the plan, and the diff with fresh eyes and ask: did we actually do what
 we meant? For non-trivial work, keep Claude and Codex review passes in the loop
 until what's left is either an intentional tradeoff, a very unlikely edge case,
 or no issue at all.
+
+For that review/audit loop, it is worth spending the expensive models
+sparingly: `5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
+implementation, so save them for the places where sharper judgment changes the
+outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
+ambiguous and you want to reason through the shape of the work. If the extra
+usage cost is not worth it, `Claude 4.6 Opus` is an acceptable fallback. I
+would avoid `Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel
+too constrained for open-ended discussion and judgment calls.
 
 ### A few common software scenarios
 
