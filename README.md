@@ -101,15 +101,17 @@ Here is how I choose model effort:
 ```mermaid
 flowchart LR
   Task[What kind of work is this?] --> Impl[Implementation]
-  Task --> Disc[Ambiguous discussion]
+  Task --> Disc[Discussion]
   Task --> Rev[Review or audit]
 
   Impl --> Clear{Clear ticket and easy repo context?}
   Clear -->|yes| Med[GPT-5.5 medium fast]
   Clear -->|no, unusually ambitious| XHigh[GPT-5.5 xhigh fast]
 
-  Disc --> Fable[Claude 5 Fable]
-  Disc --> Opus[Claude 4.6 Opus fallback]
+  Disc --> ClearDisc{Is it clear?}
+  ClearDisc -->|yes| Med
+  ClearDisc -->|ambiguous| Fable[Claude 5 Fable]
+  ClearDisc -->|fallback| Opus[Claude 4.6 Opus]
 
   Rev --> Strong[GPT-5.5 xhigh fast + Claude 5 Fable]
   Strong --> Loop[Loop until only tradeoffs, rare edge cases, or no issues]
