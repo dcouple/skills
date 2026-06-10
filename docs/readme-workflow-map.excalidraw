@@ -780,7 +780,7 @@
     {
       "id": "human",
       "type": "rectangle",
-      "x": 1235,
+      "x": 1035,
       "y": 380,
       "width": 150,
       "height": 68,
@@ -809,8 +809,8 @@
     {
       "id": "human_text",
       "type": "text",
-      "x": 1252,
-      "y": 397,
+      "x": 1050,
+      "y": 396,
       "width": 116,
       "height": 40,
       "angle": 0,
@@ -844,7 +844,7 @@
     {
       "id": "teach",
       "type": "rectangle",
-      "x": 1035,
+      "x": 835,
       "y": 380,
       "width": 150,
       "height": 68,
@@ -873,8 +873,8 @@
     {
       "id": "teach_text",
       "type": "text",
-      "x": 1057,
-      "y": 398,
+      "x": 850,
+      "y": 396,
       "width": 106,
       "height": 38,
       "angle": 0,
@@ -1030,13 +1030,13 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Clear discussion + most builds\nGPT-5.5 medium fast",
+      "text": "Clear engineering work\nGPT-5.5 medium fast",
       "fontSize": 15,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": null,
-      "originalText": "Clear discussion + most builds\nGPT-5.5 medium fast",
+      "originalText": "Clear engineering work\nGPT-5.5 medium fast",
       "lineHeight": 1.25
     },
     {
@@ -1257,13 +1257,13 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Business work uses a context base",
+      "text": "Business work stays in Claude",
       "fontSize": 24,
       "fontFamily": 3,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Business work uses a context base",
+      "originalText": "Business work stays in Claude",
       "lineHeight": 1.25
     },
     {
@@ -1711,7 +1711,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [55, -2]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          55,
+          -2
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1746,7 +1755,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [55, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          55,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1781,7 +1799,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [88, 15]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          88,
+          15
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1816,7 +1843,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [88, -38]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          88,
+          -38
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1851,7 +1887,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [58, 40]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          58,
+          40
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1886,7 +1931,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [50, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1921,7 +1975,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [50, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1956,7 +2019,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [50, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -1991,7 +2063,20 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-100, -92], [-200, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -100,
+          -92
+        ],
+        [
+          -200,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2061,7 +2146,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, 70]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          70
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2096,7 +2190,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-50, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -50,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2106,7 +2209,7 @@
     {
       "id": "a_human_teach",
       "type": "arrow",
-      "x": 1235,
+      "x": 1035,
       "y": 414,
       "width": -50,
       "height": 0,
@@ -2131,7 +2234,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-50, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -50,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2166,7 +2278,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [70, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2201,7 +2322,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [70, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2236,7 +2366,20 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [-125, 70], [-250, 70]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -125,
+          70
+        ],
+        [
+          -250,
+          70
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2271,7 +2414,16 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [70, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
@@ -2306,10 +2458,186 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [58, 0]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          58,
+          0
+        ]
+      ],
       "lastCommittedPoint": null,
       "startBinding": null,
       "endBinding": null,
+      "startArrowhead": null,
+      "endArrowhead": "arrow"
+    },
+    {
+      "id": "model_copy_card",
+      "type": "rectangle",
+      "x": 80,
+      "y": 920,
+      "width": 615,
+      "height": 86,
+      "angle": 0,
+      "strokeColor": "#b45309",
+      "backgroundColor": "#fef3c7",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 12001,
+      "version": 1,
+      "versionNonce": 12002,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "model_copy_text",
+      "type": "text",
+      "x": 104,
+      "y": 938,
+      "width": 565,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#b45309",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 12003,
+      "version": 1,
+      "versionNonce": 12004,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "fontSize": 18,
+      "fontFamily": 3,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Public copy, titles, metadata, tense\nClaude 5 Fable or Claude 4.6 Opus",
+      "text": "Public copy, titles, metadata, tense\nClaude 5 Fable or Claude 4.6 Opus",
+      "lineHeight": 1.25
+    },
+    {
+      "id": "pr_review",
+      "type": "rectangle",
+      "x": 1235,
+      "y": 380,
+      "width": 150,
+      "height": 68,
+      "angle": 0,
+      "strokeColor": "#047857",
+      "backgroundColor": "#a7f3d0",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 14001,
+      "version": 1,
+      "versionNonce": 14002,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "pr_review_text",
+      "type": "text",
+      "x": 1250,
+      "y": 396,
+      "width": 120,
+      "height": 40,
+      "angle": 0,
+      "strokeColor": "#374151",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 14003,
+      "version": 1,
+      "versionNonce": 14004,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "fontSize": 16,
+      "fontFamily": 3,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": null,
+      "originalText": "human PR\nreview",
+      "text": "human PR\nreview",
+      "lineHeight": 1.25
+    },
+    {
+      "id": "a_pr_review_human",
+      "type": "arrow",
+      "x": 1235,
+      "y": 414,
+      "width": -50,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#047857",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 14005,
+      "version": 1,
+      "versionNonce": 14006,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -50,
+          0
+        ]
+      ],
       "startArrowhead": null,
       "endArrowhead": "arrow"
     }
