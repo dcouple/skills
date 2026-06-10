@@ -61,7 +61,7 @@ create-ticket -> discussion -> create-ticket
 Go straight into execution.
 
 ```text
-create-ticket -> plan -> implement -> review -> pr-test-automation -> manual test -> teach-back
+create-ticket -> plan -> implement -> review -> pr-test-automation -> human PR review -> manual test -> teach-back
 ```
 
 `plan`, `implement`, and `review` have their own internal checks. You don't
@@ -72,11 +72,13 @@ one implements, the other reviews, then rerun until the ticket intent, plan,
 diff, and runtime behavior agree.
 
 Once the review loop is clean, run `pr-test-automation` before asking the human
-to manually test. This is the first-pass QA sweep: local services, browser
-automation, product flows, logs, analytics, webhooks, email/SMS, and whatever
-else can be checked from tools. The goal is not to replace human testing; it's
-to make the human's test pass start from evidence instead of hope. After that,
-the human manually tests whatever the automation couldn't confidently prove.
+to spend attention in GitHub. This is the first-pass QA sweep: local services,
+browser automation, product flows, logs, analytics, webhooks, email/SMS, and
+whatever else can be checked from tools. The goal is not to replace human
+testing; it's to make the human's pass start from evidence instead of hope.
+After that, the human still reviews the PR file-by-file in GitHub, clicks into
+each changed file, and marks the draft ready if the diff looks right. Then the
+human manually tests whatever the automation couldn't confidently prove.
 
 After the task is really done, run `teach-back`. That writes the learning note:
 what approach worked, what roads were rejected, what tradeoffs were made, where
@@ -89,11 +91,24 @@ before creating the ticket or plan.
 
 This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
 through the Codex harness and Claude models through the Claude Code harness.
-Most well-scoped implementation work doesn't need the biggest model. Right now,
-`GPT-5.5 medium fast` is the everyday implementation default: it is strong
-enough for most clear tickets, fast enough to feel like you're flying, and cheap
-enough that you can work in long windows without feeling throttled by weekly
-limits.
+Codex is the engineering workhorse. Most well-scoped implementation work
+doesn't need the biggest model. Right now, `GPT-5.5 medium fast` is the
+everyday implementation default: it is strong enough for most clear tickets,
+fast enough to feel like you're flying, and cheap enough that you can work in
+long windows without feeling throttled by weekly limits.
+
+This is why model opinions can sound inconsistent. A developer using GPT
+through Codex for hard engineering work may have a great time; a marketer,
+support lead, or founder asking it to shape public language may hit the wrong
+tool for the job.
+
+Don't use Codex as the writer of record for public-facing copy. If the work
+touches support docs, marketing copy, metadata, page titles, pricing language,
+or any sentence a customer will read, route it through Claude. The failure mode
+isn't usually spelling or grammar. It's audience, register, tense, and promise
+framing. Codex can preserve the facts and still miss who the page is for, what
+moment the reader is in, and how the sentence should sound. That is how
+evergreen support copy quietly turns into the wrong tense.
 
 Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
 lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
@@ -118,7 +133,10 @@ too constrained for open-ended discussion and judgment calls.
 ### Business work
 
 For stakeholder-facing work, build context before drafting. The `.business/`
-folder is the handoff.
+folder is the handoff. Use Claude for this workflow. Codex is excellent raw
+engineering power, especially when speed matters on hard implementation work,
+but it is not the right default for business writing, positioning, or public
+copy.
 
 In practice, that means:
 
