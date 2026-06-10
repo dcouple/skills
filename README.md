@@ -32,37 +32,79 @@ Skills are the atoms. Commands compose them. Agents are who the commands hand of
 
 Copy `parsa/.claude` and `parsa/.codex` into a project root and read the `SKILL.md` files. They are written to be edited. The shape of the workflow generalizes. The contents should not.
 
-## Working loop
+## How we work with LLMs
 
-Most work starts by getting the shape of the problem right before asking an
-agent to change code.
+The job is not to make one agent do everything in one long context. The job is
+to keep intent, context, execution, and review as separate surfaces so each pass
+can be sharper.
 
-If the idea is still fuzzy, start with discussion, then capture the result as a
-ticket:
+The human should spend attention where judgment matters: shaping the intent,
+settling ambiguous decisions, and reading the final gate. Agents should do the
+mechanical investigation, drafting, implementation, and adversarial review, with
+handoffs written to files or tickets instead of kept only in chat memory.
 
-```
-discussion -> create-ticket
-```
+### Software workflow
 
-If the ticket already exists but the decisions are not settled, use the ticket
-as the context for discussion, then update or replace the ticket once the intent
-is clear:
+Start with discussion when the shape of the work is still fuzzy. Capture the
+result in a ticket once the intent is clear enough to delegate.
 
-```
-create-ticket -> discussion -> create-ticket
-```
-
-If the ticket is already well-scoped and does not require product or
-architecture decisions, move directly into execution:
-
-```
-create-ticket -> plan -> implement -> review
+```mermaid
+flowchart LR
+  D[discussion] --> T[create-ticket]
 ```
 
-For non-trivial implementation, review should be a loop, not a last checkbox.
-Use Codex and Claude as independent readers when possible: one implements, the
-other reviews, then swap or rerun until the ticket intent, plan, diff, and
-runtime behavior agree.
+If a ticket already exists but the decisions are not settled, use the ticket as
+the discussion input, then update or replace the ticket once the intent is
+clear.
+
+```mermaid
+flowchart LR
+  T1[create-ticket] --> D[discussion]
+  D --> T2[create-ticket]
+```
+
+If the ticket is well-scoped and does not require product or architecture
+decisions, move into execution.
+
+```mermaid
+flowchart LR
+  T[create-ticket] --> P[plan]
+  P --> I[implement]
+  I --> R[review]
+  R -->|fixes needed| I
+  R -->|ready| Done[done]
+```
+
+For non-trivial implementation, review is a loop, not a last checkbox. Use
+Codex and Claude as independent readers when possible: one implements, the other
+reviews, then swap or rerun until the ticket intent, plan, diff, and runtime
+behavior agree.
+
+### Business workflow
+
+Business work follows the same principle, but the handoff surface is a
+`.business/` context base instead of a code repo. Serious stakeholder-facing
+work should not jump straight from conversation to artifact.
+
+```mermaid
+flowchart LR
+  C[business-context] --> A[business-research-adversary]
+  A --> D[business-discussion]
+  D --> S[business-spec]
+  S --> SR[business-spec-reviewer]
+  SR -->|revise| S
+  SR -->|approved| ART[business-artifact]
+  ART --> AR[business-artifact-reviewer]
+  AR -->|fixes needed| ART
+  AR -->|approved| REL[business-prepare-release]
+  REL --> Gate[human gate / release]
+```
+
+Human attention concentrates in two places: the initial captured
+conversation/ticket and `business-discussion`. After that, `business-spec`,
+`business-artifact`, and `business-prepare-release` should run with as much
+automation as possible, returning to the human only when the review finds a
+high-stakes claim, underspecified decision, or release risk.
 
 ## Keeping user-level skills in sync (optional)
 
