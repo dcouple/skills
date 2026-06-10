@@ -34,57 +34,93 @@ Copy `parsa/.claude` and `parsa/.codex` into a project root and read the `SKILL.
 
 ## How we work with LLMs
 
-The job is not to make one agent do everything in one long context. The job is
-to keep intent, context, execution, and review as separate surfaces so each pass
-can be sharper.
+The basic idea is simple: don't ask an LLM to carry the whole project in its
+head.
 
-The human should spend attention where judgment matters: shaping the intent,
-settling ambiguous decisions, and reading the final gate. Agents should do the
-mechanical investigation, drafting, implementation, and adversarial review, with
-handoffs written to files or tickets instead of kept only in chat memory.
+Use the LLM for one phase at a time:
 
-### Software workflow
+- talk through uncertainty
+- capture intent
+- plan the work
+- implement the plan
+- review from a fresh context
 
-Start with discussion when the shape of the work is still fuzzy. Capture the
-result in a ticket once the intent is clear enough to delegate.
+The handoff between phases is the important part. For code, that handoff is
+usually a GitHub ticket, plan, PR, or review. For business work, it's the
+`.business/` folder.
 
-```mermaid
-flowchart LR
-  D[discussion] --> T[create-ticket]
+Most of the time, you're only answering one question:
+
+> Is this clear enough to delegate?
+
+If no, discuss it. If yes, capture it. If it's captured and clear, execute. If
+work exists, review it. If review finds a gap, fix it and review again.
+
+### A few common software scenarios
+
+#### I have a fuzzy idea
+
+Start with `discussion`. Once the idea has shape, run `create-ticket`.
+
+```text
+discussion -> create-ticket
 ```
 
-If a ticket already exists but the decisions are not settled, use the ticket as
-the discussion input, then update or replace the ticket once the intent is
-clear.
+#### I already have a ticket, but it's vague
 
-```mermaid
-flowchart LR
-  T1[create-ticket] --> D[discussion]
-  D --> T2[create-ticket]
+Use the ticket as the starting point for `discussion`. Then update the ticket so
+the next agent doesn't need the whole conversation.
+
+```text
+create-ticket -> discussion -> create-ticket
 ```
 
-If the ticket is well-scoped and does not require product or architecture
-decisions, move into execution.
+#### I have a crisp ticket
+
+Go straight into execution.
+
+```text
+create-ticket -> plan -> implement -> review
+```
+
+Review loops back to implementation until the work matches the ticket. For
+non-trivial changes, use Codex and Claude as independent readers when possible:
+one implements, the other reviews, then rerun until the ticket intent, plan,
+diff, and runtime behavior agree.
+
+Here's the same software loop as a map:
 
 ```mermaid
 flowchart LR
-  T[create-ticket] --> P[plan]
-  P --> I[implement]
+  F[Fuzzy idea] --> D[discussion]
+  D --> T[create-ticket]
+  V[Vague ticket] --> D
+  T --> P{Clear enough?}
+  P -->|needs decisions| D
+  P -->|yes| Plan[plan]
+  Plan --> I[implement]
   I --> R[review]
   R -->|fixes needed| I
   R -->|ready| Done[done]
 ```
 
-For non-trivial implementation, review is a loop, not a last checkbox. Use
-Codex and Claude as independent readers when possible: one implements, the other
-reviews, then swap or rerun until the ticket intent, plan, diff, and runtime
-behavior agree.
+### Business work is the same shape
 
-### Business workflow
+For stakeholder-facing work, don't jump straight from conversation to artifact.
+The agent needs a context base first, the same way a software agent needs a
+repo.
 
-Business work follows the same principle, but the handoff surface is a
-`.business/` context base instead of a code repo. Serious stakeholder-facing
-work should not jump straight from conversation to artifact.
+In practice, that means:
+
+```text
+context -> discussion -> spec -> artifact -> review -> release
+```
+
+The human attention points are still few: the initial captured conversation or
+ticket, `business-discussion`, and the final gate when the work is high-stakes
+or ready to leave the building.
+
+Here's the business workflow as a map:
 
 ```mermaid
 flowchart LR
@@ -99,12 +135,6 @@ flowchart LR
   AR -->|approved| REL[business-prepare-release]
   REL --> Gate[human gate / release]
 ```
-
-Human attention concentrates in two places: the initial captured
-conversation/ticket and `business-discussion`. After that, `business-spec`,
-`business-artifact`, and `business-prepare-release` should run with as much
-automation as possible, returning to the human only when the review finds a
-high-stakes claim, underspecified decision, or release risk.
 
 ## Keeping user-level skills in sync (optional)
 
