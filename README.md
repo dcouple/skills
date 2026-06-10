@@ -9,6 +9,12 @@ work.
 
 Start in `parsa/` for the current version of the workflow.
 
+Here is the whole workflow as a map:
+
+![LLM workflow overview](docs/readme-workflow-map.png)
+
+_Source: [docs/readme-workflow-map.excalidraw](docs/readme-workflow-map.excalidraw)_
+
 ## How we work with LLMs
 
 Don't ask an LLM to carry the whole project in its head.
@@ -24,27 +30,6 @@ Most of the time, you're only answering one question:
 If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
 **execute**. If work exists, **review** it. If review finds a gap, **fix** it
 and **review** again.
-
-Here is what I am going to walk you through:
-
-```mermaid
-flowchart LR
-  F[Fuzzy idea] --> D[discussion]
-  B[Broken but unclear] --> Inv[investigate]
-  Inv --> T
-  D --> T[create-ticket]
-  V[Vague ticket] --> D
-  T --> P{Clear enough?}
-  P -->|needs decisions| D
-  P -->|yes| Plan[plan]
-  Plan --> I[implement]
-  I --> R[review]
-  R -->|fixes needed| I
-  R -->|clean| QA[pr-test-automation]
-  QA --> H[human manual test]
-  H --> TB[teach-back]
-  TB --> Done[done]
-```
 
 ### A few common software scenarios
 
@@ -96,27 +81,6 @@ before creating the ticket or plan.
 
 ### Model choice
 
-Here is how I choose model effort:
-
-```mermaid
-flowchart LR
-  Task[What kind of work is this?] --> Impl[Implementation]
-  Task --> Disc[Discussion]
-  Task --> Rev[Review or audit]
-
-  Impl --> Clear{Clear ticket and easy repo context?}
-  Clear -->|yes| Med[GPT-5.5 medium fast]
-  Clear -->|no, unusually ambitious| XHigh[GPT-5.5 xhigh fast]
-
-  Disc --> ClearDisc{Is it clear?}
-  ClearDisc -->|yes| Med
-  ClearDisc -->|ambiguous| Fable[Claude 5 Fable]
-  ClearDisc -->|fallback| Opus[Claude 4.6 Opus]
-
-  Rev --> Strong[GPT-5.5 xhigh fast + Claude 5 Fable]
-  Strong --> Loop[Loop until only tradeoffs, rare edge cases, or no issues]
-```
-
 This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
 through the Codex harness and Claude models through the Claude Code harness.
 Most well-scoped implementation work doesn't need the biggest model. Right now,
@@ -159,22 +123,6 @@ context -> discussion -> spec -> artifact -> review -> release
 The human attention points are still few: the initial conversation or ticket,
 `business-discussion`, and the final gate when the work is high-stakes or ready
 to leave the building.
-
-Here's the business workflow as a map:
-
-```mermaid
-flowchart LR
-  C[business-context] --> A[business-research-adversary]
-  A --> D[business-discussion]
-  D --> S[business-spec]
-  S --> SR[business-spec-reviewer]
-  SR -->|revise| S
-  SR -->|approved| ART[business-artifact]
-  ART --> AR[business-artifact-reviewer]
-  AR -->|fixes needed| ART
-  AR -->|approved| REL[business-prepare-release]
-  REL --> Gate[human gate / release]
-```
 
 ## What is in this repo
 
