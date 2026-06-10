@@ -14,10 +14,6 @@ Start in `parsa/` for the current version of the workflow.
 
 Don't ask an LLM to carry the whole project in its head.
 
-Use it for one clear phase at a time. Talk through uncertainty. Capture intent.
-Plan the work. Implement the plan. Review from a fresh context. Test the PR
-before human QA. Save the lesson when the work is done.
-
 The handoff between phases is the important part. For code, that handoff is
 usually a GitHub ticket, plan, PR, review, test note, or learning note. For
 business work, it's the `.business/` folder.
