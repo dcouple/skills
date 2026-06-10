@@ -26,8 +26,9 @@ Most of the time, you're only answering one question:
 
 > Is this clear enough to delegate?
 
-If no, discuss it. If yes, capture it. If it's captured and clear, execute. If
-work exists, review it. If review finds a gap, fix it and review again.
+If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
+**execute**. If work exists, **review** it. If review finds a gap, **fix** it
+and **review** again.
 
 That also keeps model choice pretty simple. In dcouple/Pane, we use GPT models
 through the Codex harness and Claude models through the Claude Code harness.
