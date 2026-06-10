@@ -56,6 +56,23 @@ Most of the time, you're only answering one question:
 If no, discuss it. If yes, capture it. If it's captured and clear, execute. If
 work exists, review it. If review finds a gap, fix it and review again.
 
+That also keeps model choice pretty simple. Most well-scoped implementation
+work doesn't need the biggest model. If the ticket is clear and the repo context
+is easy to find, a strong everyday implementation model is usually the right
+tool.
+
+Reach for the highest-effort implementation model when the work is unusually
+ambitious: lots of moving parts, fuzzy architecture boundaries, or a mistake
+that would be expensive to unwind. That should be the exception, not the
+default.
+
+Review is where we should be more aggressive. The reviewer isn't trying to be
+fast; it's trying to catch the thing the implementer missed. It should read the
+issue, the plan, and the diff with fresh eyes and ask: did we actually do what
+we meant? For non-trivial work, keep Claude and Codex review passes in the loop
+until what's left is either an intentional tradeoff, a very unlikely edge case,
+or no issue at all.
+
 ### A few common software scenarios
 
 #### I have a fuzzy idea
