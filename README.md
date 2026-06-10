@@ -44,10 +44,11 @@ Use the LLM for one phase at a time:
 - plan the work
 - implement the plan
 - review from a fresh context
+- test the PR before human QA
 
 The handoff between phases is the important part. For code, that handoff is
-usually a GitHub ticket, plan, PR, or review. For business work, it's the
-`.business/` folder.
+usually a GitHub ticket, plan, PR, review, or test note. For business work,
+it's the `.business/` folder.
 
 Most of the time, you're only answering one question:
 
@@ -108,7 +109,7 @@ create-ticket -> discussion -> create-ticket
 Go straight into execution.
 
 ```text
-create-ticket -> plan -> implement -> review
+create-ticket -> plan -> implement -> review -> pr-test-automation
 ```
 
 Review loops back to implementation until the work matches the ticket. For
@@ -116,11 +117,24 @@ non-trivial changes, use Codex and Claude as independent readers when possible:
 one implements, the other reviews, then rerun until the ticket intent, plan,
 diff, and runtime behavior agree.
 
+Once the review loop is clean, run `pr-test-automation` before asking the human
+to manually test. This is the first-pass QA sweep: local services, browser
+automation, product flows, logs, analytics, webhooks, email/SMS, and whatever
+else can be checked from tools. The goal is not to replace human testing; it's
+to make the human's test pass start from evidence instead of hope. After that,
+the human manually tests whatever the automation couldn't confidently prove.
+
+If the problem is broken but not understood yet, start with `investigate`
+before creating the ticket or plan. If the branch is done but needs to be
+packaged for review, use `prepare-pr`.
+
 Here's the same software loop as a map:
 
 ```mermaid
 flowchart LR
   F[Fuzzy idea] --> D[discussion]
+  B[Broken but unclear] --> Inv[investigate]
+  Inv --> T
   D --> T[create-ticket]
   V[Vague ticket] --> D
   T --> P{Clear enough?}
@@ -129,7 +143,9 @@ flowchart LR
   Plan --> I[implement]
   I --> R[review]
   R -->|fixes needed| I
-  R -->|ready| Done[done]
+  R -->|clean| QA[pr-test-automation]
+  QA --> H[human manual test]
+  H --> Done[done]
 ```
 
 ### Business work is the same shape
