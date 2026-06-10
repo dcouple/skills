@@ -32,6 +32,38 @@ Skills are the atoms. Commands compose them. Agents are who the commands hand of
 
 Copy `parsa/.claude` and `parsa/.codex` into a project root and read the `SKILL.md` files. They are written to be edited. The shape of the workflow generalizes. The contents should not.
 
+## Working loop
+
+Most work starts by getting the shape of the problem right before asking an
+agent to change code.
+
+If the idea is still fuzzy, start with discussion, then capture the result as a
+ticket:
+
+```
+discussion -> create-ticket
+```
+
+If the ticket already exists but the decisions are not settled, use the ticket
+as the context for discussion, then update or replace the ticket once the intent
+is clear:
+
+```
+create-ticket -> discussion -> create-ticket
+```
+
+If the ticket is already well-scoped and does not require product or
+architecture decisions, move directly into execution:
+
+```
+create-ticket -> plan -> implement -> review
+```
+
+For non-trivial implementation, review should be a loop, not a last checkbox.
+Use Codex and Claude as independent readers when possible: one implements, the
+other reviews, then swap or rerun until the ticket intent, plan, diff, and
+runtime behavior agree.
+
 ## Keeping user-level skills in sync (optional)
 
 Use this if you want the skills in this repo available in every project on your machine.
