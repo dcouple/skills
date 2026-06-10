@@ -25,7 +25,7 @@ If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
 **execute**. If work exists, **review** it. If review finds a gap, **fix** it
 and **review** again.
 
-Here is the shape of the software loop before the details:
+Here is what I am going to walk you through:
 
 ```mermaid
 flowchart LR
