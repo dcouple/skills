@@ -1,6 +1,6 @@
 ---
 name: teach-back
-description: Write a plain-language teaching note after a completed task or project so the user learns from the work. Use at the end of a unit of work, after PR testing/manual testing, before merge, or whenever the user asks for a learning writeup, after-action explanation, personal teacher note, FOR-agent markdown file, or breakdown of what happened and why.
+description: Write a plain-language teaching note after a completed task or project so the user learns from the work. Use at the end of a unit of work, after PR testing/manual testing, before merge, or whenever the user asks for a learning writeup, after-action explanation, personal teacher note, or breakdown of what happened and why.
 ---
 
 # Teach Back
@@ -15,19 +15,13 @@ Write like a sharp friend explaining it over coffee. Do not write like a textboo
 
 ## Output File
 
-Create or update a durable topic-based markdown note. Default filename:
+Create or update a durable topic-based markdown note in my personal learning repo. Default filename:
 
 ```text
 YYYY-MM-DD-<task-slug>.md
 ```
 
-If I explicitly ask for `FOR<agent>.md`, honor that exact naming:
-
-- Codex: `FORcodex.md`
-- Claude: `FORclaude.md`
-- Other agents: `FOR<agent-name>.md`
-
-Prefer saving inside the relevant repo when I point to one. If no destination is specified, save to my personal learning repo:
+Prefer saving inside the relevant repo when I point to one. If no destination is specified, save to:
 
 ```text
 ~/allGitHubRepos/<github-username>/llm-learnings/
