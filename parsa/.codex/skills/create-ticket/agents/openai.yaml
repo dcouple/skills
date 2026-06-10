@@ -1,4 +1,4 @@
 interface:
   display_name: "Create Ticket"
   short_description: "Capture conversation intent into one or more GitHub tickets."
-  default_prompt: "Create GitHub ticket(s) from the current conversation context."
+  default_prompt: "Use $create-ticket to create GitHub ticket(s) from the current conversation context."
