@@ -56,14 +56,16 @@ Most of the time, you're only answering one question:
 If no, discuss it. If yes, capture it. If it's captured and clear, execute. If
 work exists, review it. If review finds a gap, fix it and review again.
 
-That also keeps model choice pretty simple. Most well-scoped implementation
-work doesn't need the biggest model. Right now, `5.5 medium fast` is the
-everyday implementation default: it is strong enough for most clear tickets,
-fast enough to feel like you're flying, and cheap enough that you can work in
-long windows without feeling throttled by weekly limits.
+That also keeps model choice pretty simple. In dcouple/Pane, we use GPT models
+through the Codex harness and Claude models through the Claude Code harness.
+Most well-scoped implementation work doesn't need the biggest model. Right now,
+`GPT-5.5 medium fast` is the everyday implementation default: it is strong
+enough for most clear tickets, fast enough to feel like you're flying, and cheap
+enough that you can work in long windows without feeling throttled by weekly
+limits.
 
-Reach for `5.5 xhigh fast` when the implementation is unusually ambitious: lots
-of moving parts, fuzzy architecture boundaries, or a mistake that would be
+Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
+lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
 expensive to unwind. That should be the exception, not the default.
 
 Review is where we should be more aggressive. The reviewer isn't trying to be
@@ -74,7 +76,7 @@ until what's left is either an intentional tradeoff, a very unlikely edge case,
 or no issue at all.
 
 For that review/audit loop, it is worth spending the expensive models
-sparingly: `5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
+sparingly: `GPT-5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
 implementation, so save them for the places where sharper judgment changes the
 outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
 ambiguous and you want to reason through the shape of the work. If the extra
