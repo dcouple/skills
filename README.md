@@ -25,35 +25,26 @@ If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
 **execute**. If work exists, **review** it. If review finds a gap, **fix** it
 and **review** again.
 
-### Model choice
+Here is the shape of the software loop before the details:
 
-This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
-through the Codex harness and Claude models through the Claude Code harness.
-Most well-scoped implementation work doesn't need the biggest model. Right now,
-`GPT-5.5 medium fast` is the everyday implementation default: it is strong
-enough for most clear tickets, fast enough to feel like you're flying, and cheap
-enough that you can work in long windows without feeling throttled by weekly
-limits.
-
-Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
-lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
-expensive to unwind. That should be the exception, not the default.
-
-Review is where we should be more aggressive. The reviewer isn't trying to be
-fast; it's trying to catch the thing the implementer missed. It should read the
-issue, the plan, and the diff with fresh eyes and ask: did we actually do what
-we meant? For non-trivial work, keep Claude and Codex review passes in the loop
-until what's left is either an intentional tradeoff, a very unlikely edge case,
-or no issue at all.
-
-For that review/audit loop, it is worth spending the expensive models
-sparingly: `GPT-5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
-implementation, so save them for the places where sharper judgment changes the
-outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
-ambiguous and you want to reason through the shape of the work. If the extra
-usage cost is not worth it, `Claude 4.6 Opus` is an acceptable fallback. I
-would avoid `Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel
-too constrained for open-ended discussion and judgment calls.
+```mermaid
+flowchart LR
+  F[Fuzzy idea] --> D[discussion]
+  B[Broken but unclear] --> Inv[investigate]
+  Inv --> T
+  D --> T[create-ticket]
+  V[Vague ticket] --> D
+  T --> P{Clear enough?}
+  P -->|needs decisions| D
+  P -->|yes| Plan[plan]
+  Plan --> I[implement]
+  I --> R[review]
+  R -->|fixes needed| I
+  R -->|clean| QA[pr-test-automation]
+  QA --> H[human manual test]
+  H --> TB[teach-back]
+  TB --> Done[done]
+```
 
 ### A few common software scenarios
 
@@ -102,6 +93,36 @@ the messy parts were, and what lesson transfers to the next project.
 
 If the problem is broken but not understood yet, start with `investigate`
 before creating the ticket or plan.
+
+### Model choice
+
+This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
+through the Codex harness and Claude models through the Claude Code harness.
+Most well-scoped implementation work doesn't need the biggest model. Right now,
+`GPT-5.5 medium fast` is the everyday implementation default: it is strong
+enough for most clear tickets, fast enough to feel like you're flying, and cheap
+enough that you can work in long windows without feeling throttled by weekly
+limits.
+
+Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
+lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
+expensive to unwind. That should be the exception, not the default.
+
+Review is where we should be more aggressive. The reviewer isn't trying to be
+fast; it's trying to catch the thing the implementer missed. It should read the
+issue, the plan, and the diff with fresh eyes and ask: did we actually do what
+we meant? For non-trivial work, keep Claude and Codex review passes in the loop
+until what's left is either an intentional tradeoff, a very unlikely edge case,
+or no issue at all.
+
+For that review/audit loop, it is worth spending the expensive models
+sparingly: `GPT-5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
+implementation, so save them for the places where sharper judgment changes the
+outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
+ambiguous and you want to reason through the shape of the work. If the extra
+usage cost is not worth it, `Claude 4.6 Opus` is an acceptable fallback. I
+would avoid `Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel
+too constrained for open-ended discussion and judgment calls.
 
 ### Business work
 
