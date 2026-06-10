@@ -103,32 +103,10 @@ the messy parts were, and what lesson transfers to the next project.
 If the problem is broken but not understood yet, start with `investigate`
 before creating the ticket or plan.
 
-Here's the same software loop as a map:
+### Business work
 
-```mermaid
-flowchart LR
-  F[Fuzzy idea] --> D[discussion]
-  B[Broken but unclear] --> Inv[investigate]
-  Inv --> T
-  D --> T[create-ticket]
-  V[Vague ticket] --> D
-  T --> P{Clear enough?}
-  P -->|needs decisions| D
-  P -->|yes| Plan[plan]
-  Plan --> I[implement]
-  I --> R[review]
-  R -->|fixes needed| I
-  R -->|clean| QA[pr-test-automation]
-  QA --> H[human manual test]
-  H --> TB[teach-back]
-  TB --> Done[done]
-```
-
-### Business work is the same shape
-
-For stakeholder-facing work, don't jump straight from conversation to artifact.
-The agent needs a context base first, the same way a software agent needs a
-repo.
+For stakeholder-facing work, build context before drafting. The `.business/`
+folder is the handoff.
 
 In practice, that means:
 
@@ -136,9 +114,9 @@ In practice, that means:
 context -> discussion -> spec -> artifact -> review -> release
 ```
 
-The human attention points are still few: the initial captured conversation or
-ticket, `business-discussion`, and the final gate when the work is high-stakes
-or ready to leave the building.
+The human attention points are still few: the initial conversation or ticket,
+`business-discussion`, and the final gate when the work is high-stakes or ready
+to leave the building.
 
 Here's the business workflow as a map:
 
