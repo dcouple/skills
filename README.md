@@ -45,10 +45,11 @@ Use the LLM for one phase at a time:
 - implement the plan
 - review from a fresh context
 - test the PR before human QA
+- teach back what happened
 
 The handoff between phases is the important part. For code, that handoff is
-usually a GitHub ticket, plan, PR, review, or test note. For business work,
-it's the `.business/` folder.
+usually a GitHub ticket, plan, PR, review, test note, or learning note. For
+business work, it's the `.business/` folder.
 
 Most of the time, you're only answering one question:
 
@@ -109,10 +110,12 @@ create-ticket -> discussion -> create-ticket
 Go straight into execution.
 
 ```text
-create-ticket -> plan -> implement -> review -> pr-test-automation
+create-ticket -> plan -> implement -> review -> pr-test-automation -> manual test -> teach-back
 ```
 
-Review loops back to implementation until the work matches the ticket. For
+`plan`, `implement`, and `review` have their own internal checks. You don't
+need to think about every reviewer by hand every time; the important thing is
+that review loops back to implementation until the work matches the ticket. For
 non-trivial changes, use Codex and Claude as independent readers when possible:
 one implements, the other reviews, then rerun until the ticket intent, plan,
 diff, and runtime behavior agree.
@@ -124,9 +127,12 @@ else can be checked from tools. The goal is not to replace human testing; it's
 to make the human's test pass start from evidence instead of hope. After that,
 the human manually tests whatever the automation couldn't confidently prove.
 
+After the task is really done, run `teach-back`. That writes the learning note:
+what approach worked, what roads were rejected, what tradeoffs were made, where
+the messy parts were, and what lesson transfers to the next project.
+
 If the problem is broken but not understood yet, start with `investigate`
-before creating the ticket or plan. If the branch is done but needs to be
-packaged for review, use `prepare-pr`.
+before creating the ticket or plan.
 
 Here's the same software loop as a map:
 
@@ -145,7 +151,8 @@ flowchart LR
   R -->|fixes needed| I
   R -->|clean| QA[pr-test-automation]
   QA --> H[human manual test]
-  H --> Done[done]
+  H --> TB[teach-back]
+  TB --> Done[done]
 ```
 
 ### Business work is the same shape

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Teach Back"
+  short_description: "Write a learning note that explains what happened and why."
+  default_prompt: "Use $teach-back to write a learning note for this completed task."
