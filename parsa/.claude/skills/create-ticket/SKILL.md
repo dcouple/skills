@@ -9,19 +9,24 @@ allowed-tools: Read, Grep, Glob, Bash
 
 ## Ticket Request: $ARGUMENTS
 
-Create GitHub issues that preserve human intent and delegation context without turning the ticket into an implementation plan. The output should feel like the GitHub equivalent of a planning intent brief: clear enough for another agent or engineer to investigate and execute, but not overloaded with premature file-by-file instructions.
+Your job is to turn this conversation into a clean delegation ticket.
+
+The ticket should let someone else do the work without needing the whole chat.
+It should capture what we mean, why it matters, what counts as done, and what is
+still missing. Do not turn it into a detailed implementation plan unless I ask
+for that.
 
 ## Workflow
 
-1. Identify the target repository from the local checkout, the user's links, or prior conversation. If the repository is ambiguous and cannot be inferred safely, ask one concise question.
-2. Extract the user's actual intent from the conversation. Prefer the latest explicit user instruction over older context.
+1. Identify the target repository from the local checkout, my links, or prior conversation. If the repository is ambiguous and cannot be inferred safely, ask one concise question.
+2. Extract what I actually want delegated. Prefer my latest explicit instruction over older context.
 3. Decide whether to create one ticket or many:
    - Create one ticket when the work has one outcome, one owner, and one coherent acceptance surface.
    - Split into multiple tickets when the conversation contains independent outcomes, different owners, materially different release timing, or distinct product/engineering surfaces.
    - Do not split merely because several files or pages may be touched.
 4. Draft the issue title and body using the conventions below.
-5. If the user already explicitly asked to create the ticket, create it. If they asked to discuss or asked whether enough information exists, show the draft or summarize the intended ticket first.
-6. Assign, label, or milestone only when the user requested it or the conversation makes it unambiguous. Avoid guessing labels.
+5. If I already explicitly asked to create the ticket, create it. If I asked to discuss or asked whether enough information exists, show the draft or summarize the intended ticket first.
+6. Assign, label, or milestone only when I requested it or the conversation makes it unambiguous. Avoid guessing labels.
 7. After creation, return the issue URL(s) and briefly state what was captured.
 
 ## Title Format
@@ -74,7 +79,7 @@ Omit a section only when it would be empty or misleading. Keep `Intent`, `Scope`
 ## Writing Rules
 
 - Write tickets for delegation, not for self-documentation.
-- Preserve the user's language for product intent when it is clear and useful.
+- Preserve my language for product intent when it is clear and useful.
 - Mention code references only as examples or starting points unless the user asked for exact implementation direction.
 - Mark starting points as non-exhaustive whenever they come from a quick scan, memory, or partial conversation.
 - Make acceptance criteria observable and outcome-based.
