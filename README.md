@@ -3,10 +3,9 @@
 This repo keeps the LLM workflows we actually use on the Pane team.
 
 The goal is simple: make good work easier to delegate, review, test, and learn
-from. These are not magic prompts. They are small handoff patterns for common
-moments: when an idea is fuzzy, when a ticket needs to be captured, when a plan
-needs to be implemented, when a PR needs review, when a human is about to test,
-or when we want to save the lesson for next time.
+from. These skills help with the moments that repeat: fuzzy ideas, ticket
+capture, planning, implementation, review, PR testing, and learning from the
+work.
 
 Start in `parsa/` for the current version of the workflow.
 
@@ -14,9 +13,9 @@ Start in `parsa/` for the current version of the workflow.
 
 Don't ask an LLM to carry the whole project in its head.
 
-The handoff between phases is the important part. For code, that handoff is
-usually a GitHub ticket, plan, PR, review, test note, or learning note. For
-business work, it's the `.business/` folder.
+Each phase should leave something behind for the next one: a ticket, a plan, a
+PR, a review, a test note, or a learning note. For business work, that handoff
+lives in `.business/`.
 
 Most of the time, you're only answering one question:
 
@@ -26,7 +25,9 @@ If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
 **execute**. If work exists, **review** it. If review finds a gap, **fix** it
 and **review** again.
 
-That also keeps model choice pretty simple. In dcouple/Pane, we use GPT models
+### Model choice
+
+This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
 through the Codex harness and Claude models through the Claude Code harness.
 Most well-scoped implementation work doesn't need the biggest model. Right now,
 `GPT-5.5 medium fast` is the everyday implementation default: it is strong
