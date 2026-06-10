@@ -1,51 +1,22 @@
 # skills
 
-Personal Claude Code and Codex configurations for the Pane team. Each contributor has their own folder. Start in `parsa/` for one take.
+This repo keeps the LLM workflows we actually use on the Pane team.
 
-## Why this repo exists
+The goal is simple: make good work easier to delegate, review, test, and learn
+from. These are not magic prompts. They are small handoff patterns for common
+moments: when an idea is fuzzy, when a ticket needs to be captured, when a plan
+needs to be implemented, when a PR needs review, when a human is about to test,
+or when we want to save the lesson for next time.
 
-I wrote about our workflow [here](https://runpane.com/blog/a-turing-award-winner-just-described-our-exact-workflow). That post is the pitch. This repo is the implementation, and it has drifted from the post in ways worth naming.
-
-## What changed
-
-The blog frames it as one loop: spec, read, verify. In practice each phase wanted its own tools, its own prompts, and often its own model. The repo grew accordingly.
-
-Spec became three tiers. A typo fix and a migration are not the same kind of thinking, and one prompt cannot serve both without making the small thing slow or the big thing reckless.
-
-Verify stopped meaning tests. Tests only check what you remembered to check. The interesting verification is a fresh agent reading the diff against the docs with no memory of how it got written.
-
-Review became adversarial by default. Same agent reviewing its own output is theater. The reviewers in this repo run with no shared context, and the strongest version runs them across both Claude and Codex. Disagreements between the two are usually exactly where the bugs live.
-
-The fix loop closed. Bugs that get fixed once should not get rewritten next session, so fixes turn into notes, notes turn into skills, and the repo is partly the residue of that.
-
-## Layout
-
-```
-parsa/
-  .claude/   skills, commands, agents, hooks, settings
-  .codex/    skills, config
-```
-
-Skills are the atoms. Commands compose them. Agents are who the commands hand off to. Hooks keep any of them from doing something irreversible.
-
-## Using these
-
-Copy `parsa/.claude` and `parsa/.codex` into a project root and read the `SKILL.md` files. They are written to be edited. The shape of the workflow generalizes. The contents should not.
+Start in `parsa/` for the current version of the workflow.
 
 ## How we work with LLMs
 
-The basic idea is simple: don't ask an LLM to carry the whole project in its
-head.
+Don't ask an LLM to carry the whole project in its head.
 
-Use the LLM for one phase at a time:
-
-- talk through uncertainty
-- capture intent
-- plan the work
-- implement the plan
-- review from a fresh context
-- test the PR before human QA
-- teach back what happened
+Use it for one clear phase at a time. Talk through uncertainty. Capture intent.
+Plan the work. Implement the plan. Review from a fresh context. Test the PR
+before human QA. Save the lesson when the work is done.
 
 The handoff between phases is the important part. For code, that handoff is
 usually a GitHub ticket, plan, PR, review, test note, or learning note. For
@@ -187,66 +158,42 @@ flowchart LR
   REL --> Gate[human gate / release]
 ```
 
-## Keeping user-level skills in sync (optional)
+## What is in this repo
 
-Use this if you want the skills in this repo available in every project on your machine.
+Each contributor has their own folder. Start with `parsa/`.
 
-User-level skill folders:
+```text
+parsa/
+  .claude/   Claude Code skills, commands, agents, hooks, settings
+  .codex/    Codex skills and config
+```
+
+The skills are meant to be edited. The workflow shape should generalize, but the
+exact contents should change as your work changes.
+
+## Keeping skills in sync
+
+Use this repo directly in a project, or copy the skills into your user-level
+folders:
 
 - Claude Code: `~/.claude/skills/`
 - Codex: `~/.codex/skills/`
 
-Create a sync script for Claude Code:
+The simple sync shape is:
 
 ```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-REPO="$HOME/path/to/this/repo"
-SRC="$REPO/parsa/.claude/skills/"
-DEST="$HOME/.claude/skills/"
-LOG="$HOME/.claude/skills-sync.log"
-
-mkdir -p "$DEST"
-{
-  echo "=== $(date -Iseconds) ==="
-  git -C "$REPO" pull --ff-only
-  rsync -a --human-readable "$SRC" "$DEST"   # no --delete: leaves your other skills alone
-  echo "synced ok"
-} >>"$LOG" 2>&1
+git -C "$REPO" pull --ff-only
+rsync -a "$REPO/parsa/.claude/skills/" "$HOME/.claude/skills/"
+rsync -a "$REPO/parsa/.codex/skills/" "$HOME/.codex/skills/"
 ```
 
-`chmod +x ~/.local/bin/sync-claude-skills.sh`
+Do not use `--delete` unless you want this repo to remove other local skills.
+Restart Codex after new skills sync so the active session can see them.
 
-Create the same script for Codex, changing only the paths:
+## Background
 
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-REPO="$HOME/path/to/this/repo"
-SRC="$REPO/parsa/.codex/skills/"
-DEST="$HOME/.codex/skills/"
-LOG="$HOME/.codex/skills-sync.log"
-
-mkdir -p "$DEST"
-{
-  echo "=== $(date -Iseconds) ==="
-  git -C "$REPO" pull --ff-only
-  rsync -a --human-readable "$SRC" "$DEST"   # no --delete: leaves your other skills alone
-  echo "synced ok"
-} >>"$LOG" 2>&1
-```
-
-`chmod +x ~/.local/bin/sync-codex-skills.sh`
-
-Then run them every 4 hours with `crontab -e`:
-
-```
-0 */4 * * * /home/you/.local/bin/sync-claude-skills.sh
-5 */4 * * * /home/you/.local/bin/sync-codex-skills.sh
-```
-
-This is lightweight: it only does `git pull --ff-only` and `rsync`. There is no `--delete`, so other local skills are left alone.
-
-Cron only runs while your computer is awake. Restart Codex after new skills sync so the active session sees them.
+This grew out of the workflow described
+[here](https://runpane.com/blog/a-turing-award-winner-just-described-our-exact-workflow).
+The original frame was spec, read, verify. In practice, we split that into
+smaller steps because each moment needs different behavior: discussion, ticket
+capture, planning, implementation, review, PR testing, and teach-back.
