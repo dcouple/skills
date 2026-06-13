@@ -107,6 +107,19 @@ await context.addInitScript(() => {
 - Query PostHog for the unique marker. Do not treat `flags` or config requests as evidence that capture events were ingested.
 - If event order looks wrong under automation, rerun with human-paced waits before treating it as a product bug.
 
+## Multi-Surface Attribution Flows
+
+Some PRs only work when a marketing site, API route, installer, desktop app, or mobile client is tested as one product flow. When attribution or install/download analytics cross those boundaries:
+
+- Test companion PRs together in the worktree or preview environment that actually serves each surface.
+- Validate route-level behavior directly before browser testing. For install/download flows, assert fresh tokens are accepted, stale or malformed tokens are dropped, invalid files or inputs are rejected, and crawler-facing routes are excluded when needed.
+- Browser clipboard tests should compare visible UI text with clipboard text. It is common for the visible command/link to stay clean while the copied value includes a hidden `ref`, `utm`, or attribution token.
+- If client-side analytics must create a distinct id but production capture is not part of the test, use a dummy public key and intercept analytics endpoints. If production verification is requested, use a unique marker and query the analytics project afterward.
+- Use temporary app data directories for native app tests so config migrations, attribution files, cookies, and local databases do not touch the user's real profile.
+- For Electron, Tauri, React Native, or similar native-shell mocks, event subscription APIs must return cleanup functions. Promise-returning mocks for `on*` or `subscribe*` APIs can create false crashes that look like product regressions.
+- Direct captures that fire before an analytics SDK is fully initialized need explicit host, token, and distinct-id assertions. A request falling back to the SDK vendor default host before app config loads is usually a product bug, not enough evidence that the event will reach the intended project.
+- Capture both the happy path and one negative path: accepted/refreshed attribution, stale or malformed attribution, user opt-in or opt-out, and any server-side invalid-input analytics.
+
 ## External Integrations
 
 For payment, email, SMS, analytics, and other third-party integrations:
