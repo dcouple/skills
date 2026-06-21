@@ -1,14 +1,14 @@
 ---
 name: runpane-orchestrator
-description: Orchestrate RunPane issue-to-PR workstreams across discussion, plan, implementation, review, PR testing, and CLI dogfooding without stealing user focus. Use when the user asks Codex to fan out GitHub issues, manage multiple Pane workstreams, or run the Pane discussion-plan-implement-review loop.
+description: Orchestrate RunPane issue-to-PR workstreams across discussion, planning, implementation, review, PR testing, and CLI dogfooding without stealing user focus. Use when the user asks Claude Code to fan out GitHub issues, manage multiple Pane workstreams, or run the Pane discussion-plan-implement-review loop.
 ---
 
 # RunPane Orchestrator
 
 Use RunPane as the control plane for long-running engineering work. This skill
 spawns and babysits agent panes or panels, advances each issue through the
-team's discussion -> plan -> implement -> review -> PR-test -> PR workflow, and
-captures RunPane dogfood findings as issues or PRs.
+team's discussion -> create-plan -> implement -> review -> PR-test -> PR
+workflow, and captures RunPane dogfood findings as issues or PRs.
 
 ## Inputs
 
@@ -35,12 +35,13 @@ bump versions unless the user explicitly authorizes that exact action.
   ready, idle, text, or status-change waits. Keep terminal snapshots compact;
   store long outputs in files or issue comments rather than repeatedly adding
   full screen payloads to the orchestrator context.
-- For Codex composer submission, prefer `runpane panels submit-composer
-  --strategy auto` after pasting long prompts. Confirm `verifiedSubmitted:true`
-  and then wait for real output. Do not spend tokens guessing whether Enter or
+- For composer submission, prefer `runpane panels submit-composer --strategy
+  auto` after pasting long prompts. Confirm `verifiedSubmitted:true` and then
+  wait for real output. Do not spend tokens guessing whether Enter or
   Ctrl+Enter is the right submit key.
-- If a Codex update prompt blocks startup, follow the blocker payload's
-  suggested `runpane panels submit --text "2"` command, then continue.
+- If a Codex or Claude update prompt blocks startup, follow the blocker
+  payload's suggested `runpane panels submit --text "<choice>"` command, then
+  continue.
 - Keep each issue's artifacts together: issue URL, pane id, panel ids, branch,
   worktree path, discussion summary, plan path, checks, PR URL, and reviewer
   conclusions.
@@ -92,12 +93,12 @@ If startup returns a blocker, handle it with the suggested command and then
 resume:
 
 ```bash
-runpane panels submit --panel <panel-id> --text "2" --yes --json
+runpane panels submit --panel <panel-id> --text "<choice>" --yes --json
 ```
 
 Capture `paneId`, `panelId`, `worktreePath`, and the created branch name.
 
-**Success criteria**: Each issue has a ready Codex pane/panel, the JSON shows
+**Success criteria**: Each issue has a ready agent pane/panel, the JSON shows
 background creation, and any focus theft has been filed or appended to a
 RunPane issue.
 
@@ -131,15 +132,16 @@ part is that the terminal shows the prompt was pasted, the submit helper
 verifies submission, and the panel becomes idle after producing output.
 
 **Success criteria**: Each discussion output gives a concrete recommendation:
-plan, investigate, simple-plan, or implement, with enough context to hand off.
+create-plan, investigate, simple-plan, or implement, with enough context to
+hand off.
 
-### 4. Advance to Plan or Investigation
+### 4. Advance to Planning or Investigation
 
 If the discussion says the issue is not understood, run `investigate` first and
-write the root cause back to the issue. Otherwise run `plan`:
+write the root cause back to the issue. Otherwise run `create-plan`:
 
 ```text
-Use the plan skill for this GitHub issue and discussion result.
+Use the create-plan skill for this GitHub issue and discussion result.
 
 Source issue:
 <issue URL>
@@ -152,8 +154,8 @@ checks, and calls out any assumptions. Do not implement yet.
 ```
 
 Wait for idle, then inspect the plan enough to decide whether it is coherent.
-For very small changes, `simple-plan` may replace `plan`, but only when the
-blast radius is clearly narrow.
+For very small changes, `simple-plan` may replace `create-plan`, but only when
+the blast radius is clearly narrow.
 
 **Success criteria**: The workstream has either a root-cause investigation note
 or an implementation plan with concrete file targets and check commands.
