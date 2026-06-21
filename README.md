@@ -87,6 +87,21 @@ the messy parts were, and what lesson transfers to the next project.
 If the problem is broken but not understood yet, start with `investigate`
 before creating the ticket or plan.
 
+#### I want an agent to manage many issues end to end
+
+Use `runpane-orchestrator`. It is the higher-level loop for asking an agent to
+fan out GitHub issues into Pane workstreams, run discussion, planning,
+implementation, PR testing, independent Codex/Claude review, and dogfood notes.
+
+```text
+runpane-orchestrator -> discussion -> plan/create-plan -> implement -> pr-test-automation -> prepare-pr -> review loop
+```
+
+The skill exists in both Parsa variants:
+
+- Codex: `parsa/.codex/skills/runpane-orchestrator/`
+- Claude Code: `parsa/.claude/skills/runpane-orchestrator/`
+
 ### Model choice
 
 This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
