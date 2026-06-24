@@ -4,231 +4,118 @@
 
 _Source: [docs/seo-workflow-map.excalidraw](../../docs/seo-workflow-map.excalidraw)_
 
-SEO agents need connected data the same way business agents need a context base.
+## What this is
 
-For business, the context base is `.business/` markdown files built from connected apps.
-For SEO, the context base is live analytics data pulled from PostHog, Google Search Console,
-and Ahrefs. If the data isn't connected, you're guessing. Don't guess.
+These are AI agent skills for SEO. You give them to Claude or Codex, and they handle the work: pulling your analytics, figuring out what's working and what's not, rewriting copy that doesn't sound right, creating explainer pages, adding author credentials, and drafting new content.
 
-**Important**: These skills should be run with **Claude Opus 4.6**, which performs
-significantly better than 4.7 or 4.8 at copywriting and writing in specific voice styles.
+Each skill is one step in the process. They're composable: you can run one by itself, or chain them together for a full SEO cycle.
 
-## Data sources
+## How it works, simply
 
-The more data you connect, the better these skills work. At minimum, connect
-an analytics platform and a search console. The skills degrade gracefully: if
-a source isn't available, they skip that section and note the gap instead of
-failing.
+There are 7 skills. They break into three buckets:
 
-### Recommended connectors
+### 1. Know what's happening (proactive)
 
-| Source | What it provides | How to connect |
-|--------|-----------------|----------------|
-| **PostHog** | Page views, behavior, funnels | [PostHog MCP](https://github.com/PostHog/posthog-mcp) or API key |
-| **Google Search Console** | Indexing, queries, impressions, CTR, position | GSC MCP or API |
-| **Ahrefs** | Keywords, backlinks, competitors, content gaps | [Composio MCP](https://github.com/ComposioHQ/composio) with Ahrefs integration |
-| **Google Analytics** | Traffic, sessions, conversions | GA4 MCP or API (alternative to PostHog) |
-| **Semrush** | Keywords, site audit, competitor analysis | Composio MCP (alternative to Ahrefs) |
+Before you write anything, look at the data. What pages are getting traffic? What keywords are you ranking for? What's not indexed? What are competitors doing that you're not?
 
-### Finding more connectors
+- **`/seo-briefing`** pulls data from your analytics (PostHog, Google Analytics, etc.), your search console (Google Search Console), and your SEO tools (Ahrefs, Semrush, etc.). It produces a single report: here's what's working, here's what's not, here's what to do about it.
 
-The MCP ecosystem has hundreds of connectors. Check these repos for what's available:
+- **`/seo-content-strategy`** reads that report and turns it into a prioritized plan. Which pages to rewrite, which explainer pages to create, which blog posts to write, in what order.
 
-- [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) - curated list of MCP servers
-- [Composio](https://github.com/ComposioHQ/composio) - 250+ app integrations as MCP tools
-- [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) - official MCP server implementations
+You review the strategy. Once you approve it, the execution skills run.
 
-The skills are general purpose. They pull from whatever data sources are connected.
-If you use Plausible instead of PostHog, or Semrush instead of Ahrefs, the skills
-adapt. The important thing is that the data exists. Don't strategize without data.
+### 2. Do the work (execution + foundational)
 
-## Three buckets
+These skills don't need a briefing. You can run them anytime. But they're more useful when a strategy tells them what to focus on.
 
-### 1. Proactive monitoring (CEO work)
+- **`/seo-readability-pass`** audits your existing pages for readability. Are you using jargon nobody understands? Passive voice? Sentences that are too long? It rewrites everything to match your voice: short sentences, simple words, no tech speak unless it's explained immediately.
 
-Know what's happening before something breaks. Run regularly (weekly or monthly).
+- **`/seo-authority-pass`** adds E-E-A-T signals. That stands for Experience, Expertise, Authoritativeness, Trustworthiness. It's what Google looks for to decide if your content is credible. This skill creates explainer pages for hard concepts (like "what is a daemon?"), adds a glossary, builds an author page with real credentials, adds bylines with headshots and dates, and adds structured data so Google understands your pages better.
 
-```txt
-seo-briefing                     (pull all data, correlate, produce report)
-  -> seo-content-strategy        (decide what to create/update based on the data)
+- **`/seo-content-drafting`** creates new content: blog posts, landing pages, comparison pages. Each piece targets a specific keyword from the strategy, uses your voice, and includes all the SEO fundamentals (metadata, schema, OG images, author byline, internal links, external authority links).
+
+### 3. React when something breaks (reactive)
+
+Traffic dropped? Page lost rankings? Competitor launched something? Start with a briefing focused on the problem, then run whichever skill fixes it.
+
+### After everything: organize
+
+- **`/seo-data-organize`** runs at the end. It archives your data into dated folders so you can look back at any week and see what happened. It tracks experiments (what you changed, why, and whether it worked). Over time, your `.seo/` folder becomes a searchable history of every SEO decision you've made.
+
+## The full monthly cycle
+
+```
+1. /seo-briefing              ← pull all data, see what's happening
+2. /seo-content-strategy       ← decide what to do (you approve this)
+3. /seo-readability-pass       ← fix existing copy
+4. /seo-authority-pass         ← add credibility signals
+5. /seo-content-drafting       ← create new content
+6. /seo-data-organize          ← archive everything, track experiments
 ```
 
-### 2. Reactive (something changed, fix it)
+You don't have to run all of them every time. Need a quick copy fix? Just run `/seo-readability-pass`. Want to add explainer pages? Just `/seo-authority-pass`. The skills work alone or together.
 
-Traffic dropped, page lost rankings, competitor launched something. Start with a
-briefing focused on the problem, then execute.
+## What you need to connect
 
-```txt
-seo-briefing                     (pull data for the affected pages)
-  -> seo-readability-pass    (rewrite if copy is the issue)
-  -> seo-authority-pass      (add E-E-A-T if authority is the issue)
-  -> seo-content-drafting        (create new content if a gap opened)
+These skills pull real data. The more sources you connect, the better they work. If a source isn't connected, the skill skips that part and tells you what you're missing.
+
+| What | Why you need it | Options |
+|------|----------------|---------|
+| **Analytics** | Know which pages get traffic | [PostHog](https://github.com/PostHog/posthog-mcp), Google Analytics, Plausible |
+| **Search console** | Know what people search for, what's indexed | Google Search Console |
+| **SEO tool** | Know your keywords, backlinks, and competitors | Ahrefs or Semrush via [Composio](https://github.com/ComposioHQ/composio) |
+
+The copy skills (readability pass, authority pass) don't need any data. They just need your website's code and a voice guide. You can run them right now without connecting anything.
+
+For finding more connectors: [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers), [Composio](https://github.com/ComposioHQ/composio), [official MCP servers](https://github.com/modelcontextprotocol/servers).
+
+## Where your data lives
+
+All SEO data lives in a `.seo/` folder inside your website repo. The skills create and maintain it automatically.
+
 ```
-
-### 3. Foundational audits (run anytime to improve)
-
-These don't need a briefing. Run them whenever you want to raise the floor.
-
-```txt
-seo-readability-pass         (audit + rewrite for voice and comprehension)
-seo-authority-pass           (explainers, glossary, author, E-E-A-T, schema)
-```
-
-## The full flow
-
-When running the complete cycle (monthly), it's data first, strategy second, execution third:
-
-```txt
-seo-briefing                     (CEO skill: pull all data, correlate, report)
-  -> seo-content-strategy        (what to create/update based on the data)
-  -> seo-readability-pass    (audit + rewrite existing pages)
-  -> seo-authority-pass      (explainers, glossary, E-E-A-T, author)
-  -> seo-content-drafting        (new pages: blog posts, landing pages, comparisons)
-  -> seo-data-organize           (archive data, track experiments, update index)
-```
-
-## Human attention model
-
-Human attention should be concentrated in:
-
-1. `seo-briefing` review: understand what the data says
-2. `seo-content-strategy` approval: agree on what to create/update
-3. Voice sample or voice guide: the readability pass needs to know your voice
-
-Everything after strategy approval should run as automatically as possible.
-
-## Primary skills
-
-### `seo-briefing`
-
-The CEO morning briefing. Pull analytics from all connected sources, correlate,
-and produce a snapshot:
-
-- **Traffic**: page views, sessions, trends (PostHog)
-- **Search**: impressions, clicks, CTR, avg position by page and query (GSC)
-- **Indexing**: which pages are indexed, which aren't, which were submitted but not indexed (GSC)
-- **Rankings**: keyword positions, movement, new keywords appearing (Ahrefs)
-- **Content gaps**: keywords competitors rank for that you don't (Ahrefs)
-- **Backlinks**: new/lost backlinks, referring domains (Ahrefs)
-- **Action items**: pages to index, pages losing traffic, keywords to target, content to create
-
-Writes `.seo/briefing.md`.
-
-### `seo-content-strategy`
-
-Consumes the briefing and decides what to do:
-
-- Which existing pages need a readability rewrite (high traffic, low engagement)
-- Which concepts need explainer pages (high search volume, no page exists)
-- Which blog posts to write (trending keywords, content gaps, competitor analysis)
-- Which pages need indexing requests
-- Which pages are underperforming and why
-- Priority order based on effort vs impact
-
-Writes `.seo/strategy.md`.
-
-**Human checkpoint**: Strategy must be approved before execution skills run.
-
-### `seo-data-organize`
-
-Runs at the end of any SEO workflow. Archives the current `.seo/` working data
-into a dated directory (`archive/YYYY/MM/DD/`), creates experiment tracking files
-for each content action, and regenerates the `.seo/index.md` table of contents.
-Over time, `.seo/` becomes a browsable wiki of your SEO history: every briefing,
-every strategy decision, every experiment and its outcome.
-
-### `seo-readability-pass`
-
-Audit and rewrite existing copy for voice, comprehension, and readability.
-See `seo-readability-pass/SKILL.md` for full steps.
-
-### `seo-authority-pass`
-
-Add E-E-A-T signals: explainer pages, glossary, author attribution, structured data, OG images.
-See `seo-authority-pass/SKILL.md` for full steps.
-
-### `seo-content-drafting`
-
-Create new content based on the strategy:
-
-- Blog posts targeting specific keywords with proper voice
-- Landing pages for high-value search intents
-- Comparison pages (vs competitors)
-- Category pages for SEO clusters
-- Update/backdate posts to fill publishing cadence gaps
-
-Each piece of content should:
-- Target a specific keyword or intent from the strategy
-- Include proper metadata, JSON-LD schema, OG images
-- Have author byline with headshot and dates
-- Link to related docs, explainer pages, and glossary terms
-- Include external authority links for E-E-A-T
-- Follow the voice guide
-
-## Support data (auto-generated)
-
-### `.seo/` handoff structure
-
-```txt
 .seo/
-  index.md                 (auto-generated table of contents)
-  briefing.md              (current working briefing)
-  strategy.md              (current working strategy)
-  data/                    (current data snapshots from seo-data-pull)
-    manifest.md            (what sources are connected, pull timestamp)
-    analytics.md           (PostHog / GA4 / etc.)
-    search-console.md      (GSC data)
-    seo-tool.md            (Ahrefs / Semrush / etc.)
-  archive/                 (dated snapshots from seo-data-organize)
-    2026/06/24/            (one directory per run date)
+  index.md                 ← table of contents (auto-generated)
+  briefing.md              ← latest briefing
+  strategy.md              ← latest strategy
+
+  data/                    ← current data snapshots
+    manifest.md            ← what's connected, when it was pulled
+    analytics.md
+    search-console.md
+    seo-tool.md
+
+  archive/                 ← dated history (one folder per run)
+    2026/06/24/
       briefing.md
       strategy.md
       data/
-  experiments/             (tracked content experiments)
-    2026-06-24-name.md     (what was done, baseline, follow-ups)
+
+  experiments/             ← what you changed and whether it worked
+    2026-06-24-name.md
 ```
 
-## Fast paths
+## Where you spend your attention
 
-### Quick readability fix
+You don't need to micromanage every step. Focus on two things:
 
-```txt
-seo-readability-pass
-```
+1. **Read the briefing.** Understand what the data says.
+2. **Approve the strategy.** Agree on what to create or update.
 
-### Add E-E-A-T to existing site
+Everything else runs automatically. The skills handle the writing, the metadata, the structured data, the OG images, the author bylines, the internal linking, and the archiving.
 
-```txt
-seo-authority-pass
-```
+## Model choice
 
-### Full SEO cycle (monthly)
+Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or 4.8 at writing in a specific voice and producing natural, readable content. The newer models are great at code but tend to produce generic-sounding copy.
 
-```txt
-seo-briefing
-seo-content-strategy
-seo-readability-pass
-seo-authority-pass
-seo-content-drafting
-```
+## Quick reference
 
-### Reactive: traffic dropped on a page
-
-```txt
-seo-briefing              (pull current data for that page)
-seo-readability-pass   (rewrite if copy is the issue)
-seo-authority-pass     (add E-E-A-T if authority is the issue)
-```
-
-## Mental model
-
-SEO is not about tricks. It's about:
-
-1. **Data**: know what's happening (briefing)
-2. **Strategy**: decide what to do about it (strategy)
-3. **Readability**: make existing content understandable (readability pass)
-4. **Authority**: make it credible to Google (authority pass)
-5. **Creation**: fill gaps with new content (drafting)
-
-The goal is not to game search engines. The goal is to make your content
-genuinely useful to the person searching, then make sure Google knows about it.
+| Skill | Phase | What it does |
+|-------|-------|-------------|
+| `/seo-briefing` | proactive | Pull data from all sources, produce a report |
+| `/seo-content-strategy` | proactive | Turn the report into a prioritized plan |
+| `/seo-readability-pass` | foundational | Audit and rewrite copy for voice and clarity |
+| `/seo-authority-pass` | foundational | Add explainer pages, glossary, author, E-E-A-T |
+| `/seo-content-drafting` | execution | Write new blog posts, landing pages, comparisons |
+| `/seo-data-pull` | support | Shared data pulling (called by briefing) |
+| `/seo-data-organize` | support | Archive data, track experiments, build wiki |
