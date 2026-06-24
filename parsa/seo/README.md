@@ -9,18 +9,34 @@ and Ahrefs. If the data isn't connected, you're guessing. Don't guess.
 **Important**: These skills should be run with **Claude Opus 4.6**, which performs
 significantly better than 4.7 or 4.8 at copywriting and writing in specific voice styles.
 
-## Required connectors
+## Data sources
 
-Before any SEO skill is useful, these must be connected:
+The more data you connect, the better these skills work. At minimum, connect
+an analytics platform and a search console. The skills degrade gracefully: if
+a source isn't available, they skip that section and note the gap instead of
+failing.
 
-| Connector | What it provides | How to connect |
-|-----------|-----------------|----------------|
-| **PostHog** | Page views, user behavior, feature usage, funnel data | PostHog MCP server or API key |
-| **Google Search Console** | Indexing status, search queries, impressions, CTR, position | GSC MCP or API |
-| **Ahrefs** (via Composio) | Keyword rankings, backlinks, competitor data, content gaps | Composio MCP with Ahrefs integration |
+### Recommended connectors
 
-If a user hasn't connected these, the skills should tell them to set up connectors first.
-Everything in SEO should be data-driven. No guessing.
+| Source | What it provides | How to connect |
+|--------|-----------------|----------------|
+| **PostHog** | Page views, behavior, funnels | [PostHog MCP](https://github.com/PostHog/posthog-mcp) or API key |
+| **Google Search Console** | Indexing, queries, impressions, CTR, position | GSC MCP or API |
+| **Ahrefs** | Keywords, backlinks, competitors, content gaps | [Composio MCP](https://github.com/ComposioHQ/composio) with Ahrefs integration |
+| **Google Analytics** | Traffic, sessions, conversions | GA4 MCP or API (alternative to PostHog) |
+| **Semrush** | Keywords, site audit, competitor analysis | Composio MCP (alternative to Ahrefs) |
+
+### Finding more connectors
+
+The MCP ecosystem has hundreds of connectors. Check these repos for what's available:
+
+- [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) - curated list of MCP servers
+- [Composio](https://github.com/ComposioHQ/composio) - 250+ app integrations as MCP tools
+- [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) - official MCP server implementations
+
+The skills are general purpose. They pull from whatever data sources are connected.
+If you use Plausible instead of PostHog, or Semrush instead of Ahrefs, the skills
+adapt. The important thing is that the data exists. Don't strategize without data.
 
 ## Three buckets
 

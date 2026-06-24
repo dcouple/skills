@@ -25,14 +25,15 @@ single actionable briefing. This is the CEO morning report for SEO.
 
 **Important**: Run with Claude Opus 4.6.
 
-## Required connectors
+## Data sources
 
-Before running, verify these are connected. If any are missing, tell the user
-to set them up first. Don't guess at data you don't have.
+The more sources connected, the better the briefing. At minimum, you need
+analytics (PostHog, GA4, Plausible, etc.) and search data (GSC). Keyword/backlink
+data (Ahrefs, Semrush) makes the briefing significantly more actionable.
 
-- **PostHog**: page views, sessions, behavior, funnels
-- **Google Search Console**: indexing, queries, impressions, CTR, position
-- **Ahrefs** (via Composio): keywords, backlinks, competitors, content gaps
+Check what's available via MCP tools, Composio integrations, or direct API access.
+If a source isn't connected, skip that section and note the gap in the briefing
+so the user knows what they're missing.
 
 ## Goal
 
@@ -45,12 +46,18 @@ Every claim must cite the data source and specific numbers. No vibes.
 
 ## Steps
 
-### 1. Check connectors
+### 1. Discover available data sources
 
-Verify PostHog, GSC, and Ahrefs are accessible.
-If any are missing, stop and tell the user which connectors to set up.
+Check what analytics, search, and SEO tools are connected:
+- Look for PostHog, GA4, Plausible, or similar analytics MCP/API
+- Look for Google Search Console access
+- Look for Ahrefs, Semrush, or similar via Composio or direct API
+- Check for any other relevant MCP tools (WebSearch as fallback for competitor data)
 
-**Success criteria**: All three data sources are reachable.
+If no analytics source is connected at all, recommend the user set one up first.
+Otherwise, work with what's available and note gaps.
+
+**Success criteria**: Know which sources are available. At least one analytics source connected.
 
 ### 2. Pull PostHog data
 
