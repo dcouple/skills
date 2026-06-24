@@ -113,6 +113,18 @@ You don't need to micromanage every step. Focus on two things:
 
 Everything else runs automatically. The skills handle the writing, the metadata, the structured data, the OG images, the author bylines, the internal linking, and the archiving.
 
+## Writing framework
+
+All copy skills follow a writing framework (see `WRITING_FRAMEWORK.md`). The short version:
+
+1. **Research** real examples of how good companies write the same type of thing
+2. **Draft** with examples as reference, not from nothing
+3. **Reader hat**: read the draft as the person receiving it, not the person writing it
+4. **Edit**: remove LLM-isms, replace with how you'd actually say it
+5. **Read out loud**: catches 90% of awkward phrasing that reading silently misses
+
+Never draft from nothing. Never ship a first draft. The LLM is a research tool and a drafting tool. It is not the writer. You are.
+
 ## Model choice
 
 Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or 4.8 at writing in a specific voice and producing natural, readable content. The newer models are great at code but tend to produce generic-sounding copy.
