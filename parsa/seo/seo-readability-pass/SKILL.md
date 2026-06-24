@@ -25,6 +25,10 @@ wrote it and a first-time reader can understand every page.
 **Important**: Run this skill with Claude Opus 4.6. It performs significantly
 better than 4.7 or 4.8 at copywriting and writing in specific voice styles.
 
+## Prerequisites
+
+- **Voice guide**: Looks for a voice guide in `AGENTS.md`, `VOICE.md`, or `CLAUDE.md`. Creates one if missing (step 1).
+
 ## Goal
 
 Every product page, docs page, landing page, and blog post should:

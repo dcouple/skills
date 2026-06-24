@@ -23,10 +23,10 @@ explainers to create, which blog posts to write, which pages to index.
 
 **Important**: Run with Claude Opus 4.6.
 
-## Prerequisite
+## Prerequisites
 
-`.seo/briefing.md` must exist from a prior `seo-briefing` run. If it doesn't,
-tell the user to run `seo-briefing` first. Don't strategize without data.
+- **Briefing**: `.seo/briefing.md` must exist from a prior `seo-briefing` run. If it doesn't, tell the user to run `seo-briefing` first. Don't strategize without data.
+- **Data**: `.seo/data/` must exist from `seo-data-pull` (seo-briefing runs it automatically). If stale, re-run `seo-briefing`.
 
 ## Goal
 

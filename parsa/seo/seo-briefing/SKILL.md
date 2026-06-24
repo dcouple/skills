@@ -46,57 +46,15 @@ Every claim must cite the data source and specific numbers. No vibes.
 
 ## Steps
 
-### 1. Discover available data sources
+### 1. Run seo-data-pull
 
-Check what analytics, search, and SEO tools are connected:
-- Look for PostHog, GA4, Plausible, or similar analytics MCP/API
-- Look for Google Search Console access
-- Look for Ahrefs, Semrush, or similar via Composio or direct API
-- Check for any other relevant MCP tools (WebSearch as fallback for competitor data)
+Run `seo-data-pull` to discover connected sources and pull fresh data into
+`.seo/data/`. If `.seo/data/manifest.md` exists and is less than 24 hours old,
+skip the pull and use the cached data.
 
-If no analytics source is connected at all, recommend the user set one up first.
-Otherwise, work with what's available and note gaps.
+**Success criteria**: `.seo/data/` exists with analytics, search console, and/or SEO tool snapshots.
 
-**Success criteria**: Know which sources are available. At least one analytics source connected.
-
-### 2. Pull PostHog data
-
-Query PostHog for the last 30 days vs prior 30 days:
-- Total page views and unique visitors (trend)
-- Top pages by views
-- Pages with biggest gains and drops
-- Blog post performance
-- Landing page conversion (if funnels exist)
-- New vs returning visitors
-
-**Success criteria**: Traffic data with 30-day trends and page-level breakdown.
-
-### 3. Pull Google Search Console data
-
-Query GSC for:
-- Total impressions, clicks, CTR, avg position (30 day trend)
-- Top queries by impressions and clicks
-- Queries with improving/declining position
-- Pages with impressions but low CTR (title/description opportunity)
-- Indexing status: how many pages submitted, how many indexed, which are not indexed
-- New pages that were recently indexed (or not)
-- Any indexing errors or warnings
-
-**Success criteria**: Search performance data with indexing status for every important page.
-
-### 4. Pull Ahrefs data
-
-Query Ahrefs via Composio for:
-- Current keyword rankings and movement
-- New keywords the site appeared for
-- Lost keywords
-- Competitor keyword gaps (keywords they rank for, you don't)
-- Backlink profile: new/lost backlinks, referring domains
-- Domain rating trend
-
-**Success criteria**: Keyword and backlink data with competitor context.
-
-### 5. Correlate and produce briefing
+### 2. Correlate and produce briefing
 
 Cross-reference the three data sources:
 - Pages with high impressions but no clicks -> title/description problem

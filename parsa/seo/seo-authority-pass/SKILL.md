@@ -28,6 +28,11 @@ OG images, and consistent SEO metadata.
 **Important**: Run this skill with Claude Opus 4.6. It performs significantly
 better than 4.7 or 4.8 at copywriting and writing in specific voice styles.
 
+## Prerequisites
+
+- **Voice guide**: Must exist in repo (`AGENTS.md`, `VOICE.md`, or `CLAUDE.md`). If missing, run `seo-readability-pass` first (it creates one).
+- **Term list (optional)**: If `seo-readability-pass` produced a list of concepts needing explainers, use it. Otherwise, discover terms in step 1.
+
 ## Goal
 
 Every page should signal authority to both readers and Google:

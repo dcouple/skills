@@ -163,6 +163,25 @@ The human attention points are still few: the initial conversation or ticket,
 `business-discussion`, and the final gate when the work is high-stakes or ready
 to leave the building.
 
+### SEO work
+
+For website content, SEO, and E-E-A-T, use the SEO skill suite. Data first,
+strategy second, execution third. Use Claude Opus 4.6 for all copy work.
+
+![SEO workflow overview](docs/seo-workflow-map.png)
+
+_Source: [docs/seo-workflow-map.excalidraw](docs/seo-workflow-map.excalidraw)_
+
+In practice, that means:
+
+```text
+seo-briefing -> seo-content-strategy -> seo-readability-pass / seo-authority-pass / seo-content-drafting
+```
+
+The skills are in three buckets: proactive (monitoring + strategy), foundational
+(readability + authority passes, run anytime), and execution (new content
+drafting). See `parsa/seo/` for the full README.
+
 ## What is in this repo
 
 Each contributor has their own folder. Start with `parsa/`.
@@ -171,6 +190,8 @@ Each contributor has their own folder. Start with `parsa/`.
 parsa/
   .claude/   Claude Code skills, commands, agents, hooks, settings
   .codex/    Codex skills and config
+  business/  Business agent skills (context, discussion, spec, artifact, release)
+  seo/       SEO skills (briefing, strategy, readability, authority, drafting)
 ```
 
 The skills are meant to be edited. The workflow shape should generalize, but the

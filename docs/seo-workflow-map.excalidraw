@@ -73,7 +73,6 @@
       "originalText": "Three buckets: proactive monitoring, reactive fixes, foundational audits",
       "lineHeight": 1.25
     },
-
     {
       "id": "proactive_label",
       "type": "text",
@@ -126,12 +125,23 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "roundness": {"type": 3},
+      "roundness": {
+        "type": 3
+      },
       "seed": 200003,
       "version": 1,
       "versionNonce": 200004,
       "isDeleted": false,
-      "boundElements": [{"id": "briefing_text", "type": "text"}, {"id": "arrow_briefing_to_strategy", "type": "arrow"}],
+      "boundElements": [
+        {
+          "id": "briefing_text",
+          "type": "text"
+        },
+        {
+          "id": "arrow_briefing_to_strategy",
+          "type": "arrow"
+        }
+      ],
       "updated": 1,
       "link": null,
       "locked": false
@@ -176,7 +186,7 @@
       "type": "text",
       "x": 95,
       "y": 290,
-      "width": 250,
+      "width": 300,
       "height": 22,
       "angle": 0,
       "strokeColor": "#64748b",
@@ -197,16 +207,15 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "PostHog + GSC + Ahrefs + ...",
+      "text": "seo-data-pull (PostHog, GSC, Ahrefs, ...)",
       "fontSize": 13,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "PostHog + GSC + Ahrefs + ...",
+      "originalText": "seo-data-pull (PostHog, GSC, Ahrefs, ...)",
       "lineHeight": 1.25
     },
-
     {
       "id": "arrow_briefing_to_strategy",
       "type": "arrow",
@@ -233,9 +242,26 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, 58]],
-      "startBinding": {"elementId": "briefing_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "strategy_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          58
+        ]
+      ],
+      "startBinding": {
+        "elementId": "briefing_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "strategy_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
@@ -256,12 +282,35 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "roundness": {"type": 3},
+      "roundness": {
+        "type": 3
+      },
       "seed": 200011,
       "version": 1,
       "versionNonce": 200012,
       "isDeleted": false,
-      "boundElements": [{"id": "strategy_text", "type": "text"}, {"id": "arrow_briefing_to_strategy", "type": "arrow"}, {"id": "arrow_strategy_to_read", "type": "arrow"}, {"id": "arrow_strategy_to_auth", "type": "arrow"}, {"id": "arrow_strategy_to_draft", "type": "arrow"}],
+      "boundElements": [
+        {
+          "id": "strategy_text",
+          "type": "text"
+        },
+        {
+          "id": "arrow_briefing_to_strategy",
+          "type": "arrow"
+        },
+        {
+          "id": "arrow_strategy_to_read",
+          "type": "arrow"
+        },
+        {
+          "id": "arrow_strategy_to_auth",
+          "type": "arrow"
+        },
+        {
+          "id": "arrow_strategy_to_draft",
+          "type": "arrow"
+        }
+      ],
       "updated": 1,
       "link": null,
       "locked": false
@@ -336,7 +385,6 @@
       "originalText": "^ human approves strategy",
       "lineHeight": 1.25
     },
-
     {
       "id": "execution_label",
       "type": "text",
@@ -372,7 +420,6 @@
       "originalText": "2. EXECUTION",
       "lineHeight": 1.25
     },
-
     {
       "id": "arrow_strategy_to_read",
       "type": "arrow",
@@ -399,9 +446,26 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [120, -155]],
-      "startBinding": {"elementId": "strategy_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "readability_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          120,
+          -155
+        ]
+      ],
+      "startBinding": {
+        "elementId": "strategy_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "readability_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
@@ -431,9 +495,26 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [120, -50]],
-      "startBinding": {"elementId": "strategy_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "authority_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          120,
+          -50
+        ]
+      ],
+      "startBinding": {
+        "elementId": "strategy_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "authority_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
@@ -463,13 +544,29 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [120, 50]],
-      "startBinding": {"elementId": "strategy_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "drafting_rect", "focus": 0, "gap": 2},
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          120,
+          50
+        ]
+      ],
+      "startBinding": {
+        "elementId": "strategy_rect",
+        "focus": 0,
+        "gap": 2
+      },
+      "endBinding": {
+        "elementId": "drafting_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "id": "readability_rect",
       "type": "rectangle",
@@ -487,12 +584,27 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "roundness": {"type": 3},
+      "roundness": {
+        "type": 3
+      },
       "seed": 300009,
       "version": 1,
       "versionNonce": 300010,
       "isDeleted": false,
-      "boundElements": [{"id": "readability_text", "type": "text"}, {"id": "arrow_strategy_to_read", "type": "arrow"}, {"id": "arrow_exec_to_deploy", "type": "arrow"}],
+      "boundElements": [
+        {
+          "id": "readability_text",
+          "type": "text"
+        },
+        {
+          "id": "arrow_strategy_to_read",
+          "type": "arrow"
+        },
+        {
+          "id": "arrow_exec_to_deploy",
+          "type": "arrow"
+        }
+      ],
       "updated": 1,
       "link": null,
       "locked": false
@@ -523,13 +635,13 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "content-readability-pass\n(audit + rewrite)",
+      "text": "seo-readability-pass\n(audit + rewrite)",
       "fontSize": 12,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "readability_rect",
-      "originalText": "content-readability-pass\n(audit + rewrite)",
+      "originalText": "seo-readability-pass\n(audit + rewrite)",
       "lineHeight": 1.25
     },
     {
@@ -549,12 +661,27 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "roundness": {"type": 3},
+      "roundness": {
+        "type": 3
+      },
       "seed": 300013,
       "version": 1,
       "versionNonce": 300014,
       "isDeleted": false,
-      "boundElements": [{"id": "authority_text", "type": "text"}, {"id": "arrow_strategy_to_auth", "type": "arrow"}, {"id": "arrow_auth_to_deploy", "type": "arrow"}],
+      "boundElements": [
+        {
+          "id": "authority_text",
+          "type": "text"
+        },
+        {
+          "id": "arrow_strategy_to_auth",
+          "type": "arrow"
+        },
+        {
+          "id": "arrow_auth_to_deploy",
+          "type": "arrow"
+        }
+      ],
       "updated": 1,
       "link": null,
       "locked": false
@@ -585,13 +712,13 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "content-authority-pass\n(E-E-A-T + explainers)",
+      "text": "seo-authority-pass\n(E-E-A-T + explainers)",
       "fontSize": 12,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "authority_rect",
-      "originalText": "content-authority-pass\n(E-E-A-T + explainers)",
+      "originalText": "seo-authority-pass\n(E-E-A-T + explainers)",
       "lineHeight": 1.25
     },
     {
@@ -611,12 +738,27 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "roundness": {"type": 3},
+      "roundness": {
+        "type": 3
+      },
       "seed": 300017,
       "version": 1,
       "versionNonce": 300018,
       "isDeleted": false,
-      "boundElements": [{"id": "drafting_text", "type": "text"}, {"id": "arrow_strategy_to_draft", "type": "arrow"}, {"id": "arrow_draft_to_deploy", "type": "arrow"}],
+      "boundElements": [
+        {
+          "id": "drafting_text",
+          "type": "text"
+        },
+        {
+          "id": "arrow_strategy_to_draft",
+          "type": "arrow"
+        },
+        {
+          "id": "arrow_draft_to_deploy",
+          "type": "arrow"
+        }
+      ],
       "updated": 1,
       "link": null,
       "locked": false
@@ -691,7 +833,6 @@
       "originalText": "^ foundational (run anytime)",
       "lineHeight": 1.25
     },
-
     {
       "id": "arrow_exec_to_deploy",
       "type": "arrow",
@@ -718,13 +859,25 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "points": [[0, 0], [0, 310]],
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          310
+        ]
+      ],
       "startBinding": null,
-      "endBinding": {"elementId": "deploy_rect", "focus": 0, "gap": 2},
+      "endBinding": {
+        "elementId": "deploy_rect",
+        "focus": 0,
+        "gap": 2
+      },
       "startArrowhead": null,
       "endArrowhead": "arrow"
     },
-
     {
       "id": "deploy_rect",
       "type": "rectangle",
@@ -742,12 +895,23 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "roundness": {"type": 3},
+      "roundness": {
+        "type": 3
+      },
       "seed": 300025,
       "version": 1,
       "versionNonce": 300026,
       "isDeleted": false,
-      "boundElements": [{"id": "deploy_text", "type": "text"}, {"id": "arrow_exec_to_deploy", "type": "arrow"}],
+      "boundElements": [
+        {
+          "id": "deploy_text",
+          "type": "text"
+        },
+        {
+          "id": "arrow_exec_to_deploy",
+          "type": "arrow"
+        }
+      ],
       "updated": 1,
       "link": null,
       "locked": false
@@ -787,7 +951,6 @@
       "originalText": "build + deploy + index\n(PR, verify, GSC)",
       "lineHeight": 1.25
     },
-
     {
       "id": "reactive_label",
       "type": "text",
@@ -840,12 +1003,19 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "roundness": {"type": 3},
+      "roundness": {
+        "type": 3
+      },
       "seed": 400003,
       "version": 1,
       "versionNonce": 400004,
       "isDeleted": false,
-      "boundElements": [{"id": "reactive_text", "type": "text"}, {"id": "arrow_reactive_to_briefing", "type": "arrow"}, {"id": "arrow_reactive_to_exec", "type": "arrow"}],
+      "boundElements": [
+        {
+          "id": "reactive_text",
+          "type": "text"
+        }
+      ],
       "updated": 1,
       "link": null,
       "locked": false
@@ -885,141 +1055,6 @@
       "originalText": "something changed\n(traffic drop, rank loss)",
       "lineHeight": 1.25
     },
-    {
-      "id": "arrow_reactive_to_briefing",
-      "type": "arrow",
-      "x": 800,
-      "y": 220,
-      "width": -462,
-      "height": 10,
-      "angle": 0,
-      "strokeColor": "#b45309",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "dashed",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 400007,
-      "version": 1,
-      "versionNonce": 400008,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [[0, 0], [-462, 10]],
-      "startBinding": {"elementId": "reactive_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "briefing_rect", "focus": 0, "gap": 2},
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "reactive_to_briefing_label",
-      "type": "text",
-      "x": 430,
-      "y": 210,
-      "width": 200,
-      "height": 18,
-      "angle": 0,
-      "strokeColor": "#b45309",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 400009,
-      "version": 1,
-      "versionNonce": 400010,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "pull data on the problem",
-      "fontSize": 11,
-      "fontFamily": 3,
-      "textAlign": "center",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "pull data on the problem",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "arrow_reactive_to_exec",
-      "type": "arrow",
-      "x": 800,
-      "y": 240,
-      "width": -100,
-      "height": 90,
-      "angle": 0,
-      "strokeColor": "#b45309",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "dashed",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 400011,
-      "version": 1,
-      "versionNonce": 400012,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [[0, 0], [-100, 90]],
-      "startBinding": {"elementId": "reactive_rect", "focus": 0, "gap": 2},
-      "endBinding": {"elementId": "authority_rect", "focus": 0, "gap": 2},
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "reactive_to_exec_label",
-      "type": "text",
-      "x": 730,
-      "y": 290,
-      "width": 200,
-      "height": 18,
-      "angle": 0,
-      "strokeColor": "#b45309",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 400013,
-      "version": 1,
-      "versionNonce": 400014,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "or fix directly",
-      "fontSize": 11,
-      "fontFamily": 3,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "or fix directly",
-      "lineHeight": 1.25
-    },
-
     {
       "id": "truth_statement",
       "type": "text",
