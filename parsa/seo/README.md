@@ -115,7 +115,7 @@ Everything else runs automatically. The skills handle the writing, the metadata,
 
 ## Writing framework
 
-All copy skills follow a writing framework (see `WRITING_FRAMEWORK.md`). The short version:
+**`/seo-writing-framework`** is the process all copy skills follow for any customer-facing deliverable. It's also invokable standalone for one-off writing (emails, announcements, support replies).
 
 1. **Research** real examples of how good companies write the same type of thing
 2. **Draft** with examples as reference, not from nothing
@@ -123,7 +123,7 @@ All copy skills follow a writing framework (see `WRITING_FRAMEWORK.md`). The sho
 4. **Edit**: remove LLM-isms, replace with how you'd actually say it
 5. **Read out loud**: catches 90% of awkward phrasing that reading silently misses
 
-Never draft from nothing. Never ship a first draft. The LLM is a research tool and a drafting tool. It is not the writer. You are.
+Never draft from nothing. Never ship a first draft. The LLM is a research tool and a drafting tool. It is not the writer.
 
 ## Model choice
 
@@ -133,8 +133,10 @@ Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or
 
 | Skill | Phase | What it does |
 |-------|-------|-------------|
+| `/seo-foundations` | greenfield | Crawl site, find competitors, map search landscape |
 | `/seo-briefing` | proactive | Pull data from all sources, produce a report |
 | `/seo-content-strategy` | proactive | Turn the report into a prioritized plan |
+| `/seo-writing-framework` | foundational | Research, draft, reader-hat, edit, read-aloud process |
 | `/seo-readability-pass` | foundational | Audit and rewrite copy for voice and clarity |
 | `/seo-authority-pass` | foundational | Add explainer pages, glossary, author, E-E-A-T |
 | `/seo-content-drafting` | execution | Write new blog posts, landing pages, comparisons |
