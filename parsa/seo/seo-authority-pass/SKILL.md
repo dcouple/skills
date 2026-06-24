@@ -1,6 +1,6 @@
 ---
-name: content-authority-pass
-description: Add E-E-A-T signals to a website - explainer pages, glossary, author attribution, structured data, OG images, and SEO metadata.
+name: seo-authority-pass
+description: (foundational) Add E-E-A-T signals: explainer pages, glossary, author attribution, structured data, OG images, and SEO metadata.
 allowed-tools:
   - Read
   - Edit

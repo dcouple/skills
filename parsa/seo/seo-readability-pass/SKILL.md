@@ -1,6 +1,6 @@
 ---
-name: content-readability-pass
-description: Audit and rewrite website copy for voice consistency, readability, and first-timer comprehension.
+name: seo-readability-pass
+description: (foundational) Audit and rewrite website copy for voice consistency, readability, and first-timer comprehension.
 allowed-tools:
   - Read
   - Edit

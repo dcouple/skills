@@ -1,6 +1,6 @@
 ---
 name: seo-content-drafting
-description: Create new SEO content (blog posts, landing pages, comparison pages) based on the content strategy.
+description: (execution) Create new SEO content: blog posts, landing pages, comparison pages based on the content strategy.
 allowed-tools:
   - Read
   - Edit

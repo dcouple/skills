@@ -1,6 +1,6 @@
 ---
 name: seo-content-strategy
-description: Turn an SEO briefing into a prioritized content plan — what to create, update, and index.
+description: (proactive) Turn an SEO briefing into a prioritized content plan: what to create, update, and index.
 allowed-tools:
   - Read
   - Write

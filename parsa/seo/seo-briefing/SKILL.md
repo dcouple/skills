@@ -1,6 +1,6 @@
 ---
 name: seo-briefing
-description: Pull analytics from PostHog, Google Search Console, and Ahrefs. Correlate data and produce an actionable SEO briefing.
+description: (proactive) Pull analytics from PostHog, GSC, and Ahrefs. Correlate data and produce an actionable SEO briefing.
 allowed-tools:
   - Read
   - Write

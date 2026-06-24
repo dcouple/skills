@@ -1,5 +1,9 @@
 # SEO Agent Skills
 
+![SEO workflow overview](../../docs/seo-workflow-map.png)
+
+_Source: [docs/seo-workflow-map.excalidraw](../../docs/seo-workflow-map.excalidraw)_
+
 SEO agents need connected data the same way business agents need a context base.
 
 For business, the context base is `.business/` markdown files built from connected apps.
@@ -56,8 +60,8 @@ briefing focused on the problem, then execute.
 
 ```txt
 seo-briefing                     (pull data for the affected pages)
-  -> content-readability-pass    (rewrite if copy is the issue)
-  -> content-authority-pass      (add E-E-A-T if authority is the issue)
+  -> seo-readability-pass    (rewrite if copy is the issue)
+  -> seo-authority-pass      (add E-E-A-T if authority is the issue)
   -> seo-content-drafting        (create new content if a gap opened)
 ```
 
@@ -66,8 +70,8 @@ seo-briefing                     (pull data for the affected pages)
 These don't need a briefing. Run them whenever you want to raise the floor.
 
 ```txt
-content-readability-pass         (audit + rewrite for voice and comprehension)
-content-authority-pass           (explainers, glossary, author, E-E-A-T, schema)
+seo-readability-pass         (audit + rewrite for voice and comprehension)
+seo-authority-pass           (explainers, glossary, author, E-E-A-T, schema)
 ```
 
 ## The full flow
@@ -77,8 +81,8 @@ When running the complete cycle (monthly), it's data first, strategy second, exe
 ```txt
 seo-briefing                     (CEO skill: pull all data, correlate, report)
   -> seo-content-strategy        (what to create/update based on the data)
-  -> content-readability-pass    (audit + rewrite existing pages)
-  -> content-authority-pass      (explainers, glossary, E-E-A-T, author)
+  -> seo-readability-pass    (audit + rewrite existing pages)
+  -> seo-authority-pass      (explainers, glossary, E-E-A-T, author)
   -> seo-content-drafting        (new pages: blog posts, landing pages, comparisons)
 ```
 
@@ -124,15 +128,15 @@ Writes `.seo/strategy.md`.
 
 **Human checkpoint**: Strategy must be approved before execution skills run.
 
-### `content-readability-pass`
+### `seo-readability-pass`
 
 Audit and rewrite existing copy for voice, comprehension, and readability.
-See `content-readability-pass/SKILL.md` for full steps.
+See `seo-readability-pass/SKILL.md` for full steps.
 
-### `content-authority-pass`
+### `seo-authority-pass`
 
 Add E-E-A-T signals: explainer pages, glossary, author attribution, structured data, OG images.
-See `content-authority-pass/SKILL.md` for full steps.
+See `seo-authority-pass/SKILL.md` for full steps.
 
 ### `seo-content-drafting`
 
@@ -170,13 +174,13 @@ Each piece of content should:
 ### Quick readability fix
 
 ```txt
-content-readability-pass
+seo-readability-pass
 ```
 
 ### Add E-E-A-T to existing site
 
 ```txt
-content-authority-pass
+seo-authority-pass
 ```
 
 ### Full SEO cycle (monthly)
@@ -184,8 +188,8 @@ content-authority-pass
 ```txt
 seo-briefing
 seo-content-strategy
-content-readability-pass
-content-authority-pass
+seo-readability-pass
+seo-authority-pass
 seo-content-drafting
 ```
 
@@ -193,8 +197,8 @@ seo-content-drafting
 
 ```txt
 seo-briefing              (pull current data for that page)
-content-readability-pass   (rewrite if copy is the issue)
-content-authority-pass     (add E-E-A-T if authority is the issue)
+seo-readability-pass   (rewrite if copy is the issue)
+seo-authority-pass     (add E-E-A-T if authority is the issue)
 ```
 
 ## Mental model
