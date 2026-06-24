@@ -599,10 +599,6 @@
         {
           "id": "arrow_strategy_to_read",
           "type": "arrow"
-        },
-        {
-          "id": "arrow_exec_to_deploy",
-          "type": "arrow"
         }
       ],
       "updated": 1,
@@ -834,51 +830,6 @@
       "lineHeight": 1.25
     },
     {
-      "id": "arrow_exec_to_deploy",
-      "type": "arrow",
-      "x": 580,
-      "y": 242,
-      "width": 0,
-      "height": 310,
-      "angle": 0,
-      "strokeColor": "#047857",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "dashed",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 300023,
-      "version": 1,
-      "versionNonce": 300024,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          310
-        ]
-      ],
-      "startBinding": null,
-      "endBinding": {
-        "elementId": "deploy_rect",
-        "focus": 0,
-        "gap": 2
-      },
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
       "id": "deploy_rect",
       "type": "rectangle",
       "x": 460,
@@ -906,10 +857,6 @@
         {
           "id": "deploy_text",
           "type": "text"
-        },
-        {
-          "id": "arrow_exec_to_deploy",
-          "type": "arrow"
         }
       ],
       "updated": 1,
