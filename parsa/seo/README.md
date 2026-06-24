@@ -84,6 +84,7 @@ seo-briefing                     (CEO skill: pull all data, correlate, report)
   -> seo-readability-pass    (audit + rewrite existing pages)
   -> seo-authority-pass      (explainers, glossary, E-E-A-T, author)
   -> seo-content-drafting        (new pages: blog posts, landing pages, comparisons)
+  -> seo-data-organize           (archive data, track experiments, update index)
 ```
 
 ## Human attention model
@@ -128,6 +129,14 @@ Writes `.seo/strategy.md`.
 
 **Human checkpoint**: Strategy must be approved before execution skills run.
 
+### `seo-data-organize`
+
+Runs at the end of any SEO workflow. Archives the current `.seo/` working data
+into a dated directory (`archive/YYYY/MM/DD/`), creates experiment tracking files
+for each content action, and regenerates the `.seo/index.md` table of contents.
+Over time, `.seo/` becomes a browsable wiki of your SEO history: every briefing,
+every strategy decision, every experiment and its outcome.
+
 ### `seo-readability-pass`
 
 Audit and rewrite existing copy for voice, comprehension, and readability.
@@ -162,11 +171,21 @@ Each piece of content should:
 
 ```txt
 .seo/
-  briefing.md              (latest CEO briefing snapshot)
-  strategy.md              (approved content strategy)
-  index-requests.md        (URLs submitted for indexing + status)
-  keyword-targets.md       (keywords being targeted + current position)
-  content-calendar.md      (what to publish and when)
+  index.md                 (auto-generated table of contents)
+  briefing.md              (current working briefing)
+  strategy.md              (current working strategy)
+  data/                    (current data snapshots from seo-data-pull)
+    manifest.md            (what sources are connected, pull timestamp)
+    analytics.md           (PostHog / GA4 / etc.)
+    search-console.md      (GSC data)
+    seo-tool.md            (Ahrefs / Semrush / etc.)
+  archive/                 (dated snapshots from seo-data-organize)
+    2026/06/24/            (one directory per run date)
+      briefing.md
+      strategy.md
+      data/
+  experiments/             (tracked content experiments)
+    2026-06-24-name.md     (what was done, baseline, follow-ups)
 ```
 
 ## Fast paths
