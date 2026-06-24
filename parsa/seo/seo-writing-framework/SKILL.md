@@ -210,73 +210,81 @@ paragraph that restates what they just read.
 ## Scoring rubric
 
 After writing (and after each revision), score the deliverable against this
-rubric. Each criterion is 0-10. The writing isn't ready to ship until it
-scores 90% or higher overall.
+rubric. Must hit 90%+ to ship.
 
-Different deliverables weight criteria differently. A pricing email weighs
-"reader perspective" and "every word essential" heavily. A blog post weighs
-"hook" and "lens" heavily. A docs page weighs "clarity" and "reader
-perspective" heavily. Use judgment on which criteria matter most, but score
-all of them.
+Criteria are split into two tiers:
+- **Universal (2x weight)**: applies to every deliverable, always matters
+- **Craft (1x weight)**: matters for good writing but some are more relevant
+  to certain deliverables than others
 
-| # | Criterion | What 10/10 looks like | What 0/10 looks like |
-|---|-----------|----------------------|---------------------|
-| 1 | **Sounds human** | Reads like someone talking inside your head | Reads like a committee wrote it |
-| 2 | **Reader perspective** | Reader walks away knowing exactly what to do | Reader finishes confused or without the right picture |
-| 3 | **Hook** | First sentence grabs, makes you want the next | Opens with throat-clearing or generic context |
-| 4 | **Every word essential** | 30%+ cut from first draft, nothing left to remove | Filler sentences, hedging, redundant points |
-| 5 | **Sentence rhythm** | Varies: short punchy lines mixed with longer descriptive ones | Monotonous length throughout |
-| 6 | **Conflict/context flow** | "Therefore... but then..." creates forward momentum | "And then... and then..." piles on without direction |
-| 7 | **Authentic voice** | Sounds like the person who built it, not marketing | Generic corporate or AI-generated tone |
-| 8 | **No LLM-isms** | Zero filler phrases, zero hedging, zero generic enthusiasm | "It's worth noting," "we're thrilled," "in this regard" |
-| 9 | **Clarity** | A first-timer understands every sentence | Jargon without context, assumed knowledge |
-| 10 | **The ending** | Lands memorably, reader knows what's next | Trails off with a restated summary |
+### Universal criteria (0-10 each, weighted 2x)
 
-### How to use the rubric
+These are non-negotiable for any deliverable.
 
-After each draft or revision:
+| # | Criterion | Weight | What 10/10 looks like | What 0/10 looks like |
+|---|-----------|--------|----------------------|---------------------|
+| 1 | **Research-derived** | 2x | Draft built from 3-5 real examples, not from nothing | LLM drafted from zero context |
+| 2 | **Sounds human** | 2x | Reads like someone talking inside your head | Reads like a committee or AI wrote it |
+| 3 | **Reader perspective** | 2x | Reader walks away knowing exactly what to do | Reader finishes confused |
+| 4 | **No LLM-isms** | 2x | Zero filler phrases, zero hedging, zero generic enthusiasm | "It's worth noting," "we're thrilled" |
+| 5 | **Clarity** | 2x | A first-timer understands every sentence | Jargon without context |
+| 6 | **Every word essential** | 2x | 30%+ cut from first draft, nothing to remove | Filler, hedging, redundant points |
 
-1. Score each criterion 0-10
-2. Calculate the percentage: total / 100
-3. If below 90%, identify the lowest-scoring criteria
-4. Revise targeting those specific weaknesses
-5. Re-score after revision
-6. Repeat until 90%+
+### Craft criteria (0-10 each, weighted 1x)
+
+These elevate writing from correct to compelling.
+
+| # | Criterion | Weight | What 10/10 looks like | What 0/10 looks like |
+|---|-----------|--------|----------------------|---------------------|
+| 7 | **Hook** | 1x | First sentence grabs, makes you want the next | Opens with throat-clearing |
+| 8 | **Sentence rhythm** | 1x | Short punchy lines mixed with longer ones | Monotonous length |
+| 9 | **Conflict/context flow** | 1x | "Therefore... but then..." momentum | "And then... and then..." |
+| 10 | **Authentic voice** | 1x | Sounds like the person who built it | Generic corporate tone |
+| 11 | **The ending** | 1x | Lands memorably, reader knows what's next | Trails off with a summary |
+| 12 | **Diverse options presented** | 1x | 2-3 distinct options shown before picking one | Single option, take it or leave it |
+
+### How to score
 
 ```
-Example scoring:
-  Sounds human:        8/10
-  Reader perspective:  7/10  ← needs work
-  Hook:                9/10
-  Every word essential: 6/10  ← needs work
-  Sentence rhythm:     8/10
-  Conflict/context:    7/10
-  Authentic voice:     8/10
-  No LLM-isms:         9/10
-  Clarity:             8/10
-  The ending:          7/10
-  ---
-  Total: 77/100 = 77% → not ready, revise
+Universal (6 criteria x 10 pts x 2 weight = 120 max):
+  Research-derived:     9/10 x2 = 18
+  Sounds human:         8/10 x2 = 16
+  Reader perspective:   7/10 x2 = 14  ← needs work
+  No LLM-isms:          9/10 x2 = 18
+  Clarity:              8/10 x2 = 16
+  Every word essential:  6/10 x2 = 12  ← needs work
 
-  Focus: cut more words (criterion 4), sharpen reader
-  perspective (criterion 2), strengthen ending (criterion 10)
+Craft (6 criteria x 10 pts x 1 weight = 60 max):
+  Hook:                 9/10 x1 = 9
+  Sentence rhythm:      8/10 x1 = 8
+  Conflict/context:     7/10 x1 = 7
+  Authentic voice:      8/10 x1 = 8
+  The ending:           7/10 x1 = 7
+  Diverse options:      8/10 x1 = 8
+
+Total: 141 / 180 = 78% → not ready
+
+Focus: cut more words (criterion 6), sharpen reader
+perspective (criterion 3)
 ```
 
-### Deliverable-specific weights
+### The revision loop
 
-Not all criteria matter equally for every deliverable. Here's a rough guide
-for which to prioritize:
+1. Score every criterion after each draft
+2. If below 90%, identify the lowest-scoring criteria
+3. Revise targeting those weaknesses specifically
+4. Re-score
+5. Repeat until 90%+
 
-| Deliverable | Top priorities |
-|-------------|---------------|
-| Pricing/change email | Reader perspective, every word essential, clarity, sounds human |
-| Blog post | Hook, lens, conflict/context, the ending, sentence rhythm |
-| Landing page | Hook, clarity, reader perspective, authentic voice |
-| Docs page | Clarity, reader perspective, every word essential |
-| Support reply | Reader perspective, sounds human, clarity |
-| Announcement | Hook, reader perspective, every word essential, the ending |
-| Comparison page | Clarity, authentic voice, reader perspective |
+Most first revisions land 70-80%. Two to three passes get to 90%+.
 
-Prioritize doesn't mean ignore the others. It means if you're at 85% and
-need to get to 90%, focus revision effort on the criteria that matter most
-for this type of deliverable.
+### Presenting diverse options
+
+Before finalizing any deliverable, present 2-3 distinct options. Not
+variations of the same thing: genuinely different approaches, angles, or
+framings. Let the user (or the calling skill) pick the strongest one,
+or combine elements from multiple options.
+
+This applies to: headlines, opening hooks, email framings, page structures,
+blog angles, comparison approaches. If there's only one obvious way to write
+it, you haven't explored enough.
