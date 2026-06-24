@@ -132,6 +132,55 @@ If all four pass, the deliverable is ready.
 
 **Success criteria**: Deliverable passes all four checks.
 
+## Craft principles
+
+These go beyond "don't use LLM-isms." They're what separates writing that
+works from writing that's just correct.
+
+### Write the way you talk
+
+The test: read it back. Does it sound like someone talking inside your head?
+Not a press release. Not a committee. A person. If it reads like corporate
+communications, rewrite it in the voice you'd use explaining it to a friend.
+
+### Vary sentence length
+
+Don't just write short sentences. Monotonous length in either direction is
+bad. Some sentences should be longer and descriptive, painting a picture.
+Others are short. Punchy. The variation creates rhythm. Without it, the
+reader's brain turns off.
+
+### Cut 30% after writing
+
+After your draft is done, aim to remove 30% of the words. Every word must
+be essential. No redundancy, no waste. If a sentence doesn't add information
+or advance the point, delete it.
+
+### Hook and ending first
+
+Figure out how you want to end before you fill the middle. Write the first
+line and the last line. The hook should be as punchy as possible, immediately
+grabbing the reader. The ending should land. Then build the dance in between.
+
+### Conflict and context
+
+All great writing alternates between opening a question (conflict) and
+answering it (context). The pattern is: "this happens, therefore this
+happens, but then this happens." Not: "and then... and then... and then..."
+which just piles on detail and loses attention.
+
+### Your lens
+
+What's your unique perspective on this topic? The less common it is, the
+more the reader engages. "Here's how to do SEO" is boring. "Every agent
+manager is macOS only, we fixed that" is a lens.
+
+### The last dab
+
+End with something the reader remembers. A callback to the hook. A
+surprising conclusion. A clear action. Don't trail off with a summary
+paragraph that restates what they just read.
+
 ## Rules
 
 1. **Never draft from nothing.** Research first. Examples first. Context first.
@@ -141,8 +190,10 @@ If all four pass, the deliverable is ready.
 5. **Looking good is not being good.** Polish doesn't fix wrong messaging.
 6. **No em dashes.** Commas, colons, periods, or sentence breaks.
 7. **No generic enthusiasm.** "Exciting" and "thrilled" say nothing.
-8. **Short sentences.** If it has a comma and a semicolon, split it.
+8. **Vary sentence length.** Short is good. Monotonous is bad.
 9. **Name the pain.** Describe the problem the thing solves, not the thing itself.
+10. **Cut 30%.** After writing, remove a third of the words. If it still reads well, you removed the right ones.
+11. **Be authentic.** "You are getting it from the engineer who built it, not the marketing person." A little tongue in cheek is good.
 
 ## Common LLM failures to watch for
 
