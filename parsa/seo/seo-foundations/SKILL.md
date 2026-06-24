@@ -56,39 +56,59 @@ positioning before SEO work starts.
 
 ### 2. Discover competitors
 
-Competitors come from how real users discover products, not just search results.
-Check these sources in order:
+Where you look depends entirely on who the product is for. Don't default to
+GitHub and Reddit for everything. Start by asking: how does the target buyer
+actually find and evaluate products like this?
 
-**GitHub**: Search for the product category. Look at recent repos, trending
-repos, and awesome-lists. Prioritize projects with recent commits and activity.
-Discard dead projects (no commits in 3+ months, archived repos). If the user
-has GitHub connected, check their stars and the repos they follow for context.
+**First, figure out the discovery channel.** Based on the audience from step 1:
 
-**Reddit and Hacker News**: Search for the product category and common pain
-points. Recent launch posts and "what do you use for X?" threads surface real
-competitors. Product Hunt launches are also useful for newer tools.
+- **Developer tools, infra, open source**: GitHub trending, awesome-lists,
+  Reddit (r/programming, r/selfhosted, niche subs), Hacker News, Product Hunt,
+  Twitter/X dev communities. Prioritize repos with recent commits. Discard dead
+  projects (no activity in 3+ months).
 
-**Web search**: Generate 10-15 queries a buyer would actually type:
+- **B2B SaaS (generic)**: G2, Capterra, comparison blogs, "best X for Y"
+  articles, LinkedIn discussions, industry newsletters. The buyer is googling
+  "best [category] for [use case]" and reading listicles.
+
+- **Niche/vertical SaaS** (e.g., AI design for real estate): The competitors
+  might not be other software. They might be agencies, freelancers, or manual
+  workflows. Look at: industry-specific forums, trade publications, Facebook
+  groups, niche subreddits, LinkedIn groups, industry events. The discovery
+  channel is where that audience already hangs out, not where developers hang
+  out.
+
+- **Consumer products**: App stores, TikTok, Instagram, YouTube reviews,
+  "alternatives to X" searches, influencer recommendations.
+
+**Then search those channels.** Generate 10-15 queries a real buyer would type,
+appropriate to their channel:
 
 - "[product category]" (e.g., "agent manager")
 - "[problem] tool" (e.g., "run multiple AI agents")
 - "[alternative to known tool]" (e.g., "claude squad alternative")
 - "[how to do X]" (e.g., "how to run AI agents in parallel")
-- "[product type] for [platform]" (e.g., "agent manager for windows")
+- "[product type] for [audience]" (e.g., "AI staging photos for realtors")
 
-Record who shows up in results across all these sources. The products that
-keep appearing are your competitors.
+Record who shows up across the channels that matter for this audience.
+
+**Narrow the wedge.** The broader the product, the more competitors you'll
+find. The goal is to narrow: go from "AI design tool" to "AI staging photos
+for recently sold home properties." At each level of narrowing:
+- Who are the competitors at this level?
+- Is the messaging clear enough that someone in this niche gets it immediately?
+- Where does this specific audience go to find tools like this?
+- Who refers buyers? (agents, consultants, communities, directories)
 
 **The messaging test**: If your competitors show up when you search the
-keywords you think matter, good. Your product is in the right search space.
-If they don't, and the user has to manually add competitors, that's a signal:
-the product's messaging doesn't match how people actually search and discover.
-Flag this. Positioning may need work before content work starts.
+keywords you think matter, good. You're in the right space.
+If they don't, and the user has to manually name competitors, that's a signal:
+the messaging doesn't match how buyers actually search. Flag this.
+Positioning may need work before content work starts.
 
-Note: At zero-to-one, traditional SEO data (Ahrefs, Semrush) is less useful
-than discovery patterns. How do people find new tools? GitHub, Reddit, Product
-Hunt, Hacker News, Twitter. That's where you start. SEO tool data becomes
-more valuable at one-to-100 when you're optimizing existing traffic.
+Note: At zero-to-one, traditional SEO data (Ahrefs, keyword volumes) is less
+useful than discovery patterns. SEO tool data becomes more valuable at
+one-to-100 when you're optimizing existing traffic.
 
 **Success criteria**: A list of 5-10 active competitors discovered through real user discovery channels, with the sources that surfaced them.
 **Human checkpoint**: Ask the user to confirm or add competitors. If they have to add many that didn't show up organically, note the messaging gap.
