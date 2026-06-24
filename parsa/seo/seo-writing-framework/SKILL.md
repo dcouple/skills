@@ -120,17 +120,17 @@ is caught by hearing it. If a sentence sounds weird when spoken, rewrite it.
 
 **Success criteria**: No LLM-isms remain. Sounds like a person wrote it.
 
-### 5. Final check
+### 5. Score and revise loop
 
-One more pass as the reader:
-- Does it say what it needs to say? (not more, not less)
-- Does it sound like a person wrote it? (not a committee, not an AI)
-- Does it respect the reader's time? (short sentences, no filler)
-- Does the reader know what to do next? (clear next step)
+Score the deliverable against the rubric (see below). If it scores below
+90%, identify the weakest criteria, revise targeting those, and re-score.
+Repeat until 90%+.
 
-If all four pass, the deliverable is ready.
+This is the step that makes the framework a loop, not a one-shot process.
+Most first revisions land around 70-80%. Two to three revision passes
+usually get to 90%+.
 
-**Success criteria**: Deliverable passes all four checks.
+**Success criteria**: Deliverable scores 90%+ on the rubric.
 
 ## Craft principles
 
@@ -206,3 +206,77 @@ paragraph that restates what they just read.
 | Passive voice | "The update was deployed" | "We deployed the update." |
 | Vague benefits | "Improved performance" | "Pages load 2x faster." |
 | Audience mismatch | Using jargon for non-technical readers | Use the words the reader would use. |
+
+## Scoring rubric
+
+After writing (and after each revision), score the deliverable against this
+rubric. Each criterion is 0-10. The writing isn't ready to ship until it
+scores 90% or higher overall.
+
+Different deliverables weight criteria differently. A pricing email weighs
+"reader perspective" and "every word essential" heavily. A blog post weighs
+"hook" and "lens" heavily. A docs page weighs "clarity" and "reader
+perspective" heavily. Use judgment on which criteria matter most, but score
+all of them.
+
+| # | Criterion | What 10/10 looks like | What 0/10 looks like |
+|---|-----------|----------------------|---------------------|
+| 1 | **Sounds human** | Reads like someone talking inside your head | Reads like a committee wrote it |
+| 2 | **Reader perspective** | Reader walks away knowing exactly what to do | Reader finishes confused or without the right picture |
+| 3 | **Hook** | First sentence grabs, makes you want the next | Opens with throat-clearing or generic context |
+| 4 | **Every word essential** | 30%+ cut from first draft, nothing left to remove | Filler sentences, hedging, redundant points |
+| 5 | **Sentence rhythm** | Varies: short punchy lines mixed with longer descriptive ones | Monotonous length throughout |
+| 6 | **Conflict/context flow** | "Therefore... but then..." creates forward momentum | "And then... and then..." piles on without direction |
+| 7 | **Authentic voice** | Sounds like the person who built it, not marketing | Generic corporate or AI-generated tone |
+| 8 | **No LLM-isms** | Zero filler phrases, zero hedging, zero generic enthusiasm | "It's worth noting," "we're thrilled," "in this regard" |
+| 9 | **Clarity** | A first-timer understands every sentence | Jargon without context, assumed knowledge |
+| 10 | **The ending** | Lands memorably, reader knows what's next | Trails off with a restated summary |
+
+### How to use the rubric
+
+After each draft or revision:
+
+1. Score each criterion 0-10
+2. Calculate the percentage: total / 100
+3. If below 90%, identify the lowest-scoring criteria
+4. Revise targeting those specific weaknesses
+5. Re-score after revision
+6. Repeat until 90%+
+
+```
+Example scoring:
+  Sounds human:        8/10
+  Reader perspective:  7/10  ← needs work
+  Hook:                9/10
+  Every word essential: 6/10  ← needs work
+  Sentence rhythm:     8/10
+  Conflict/context:    7/10
+  Authentic voice:     8/10
+  No LLM-isms:         9/10
+  Clarity:             8/10
+  The ending:          7/10
+  ---
+  Total: 77/100 = 77% → not ready, revise
+
+  Focus: cut more words (criterion 4), sharpen reader
+  perspective (criterion 2), strengthen ending (criterion 10)
+```
+
+### Deliverable-specific weights
+
+Not all criteria matter equally for every deliverable. Here's a rough guide
+for which to prioritize:
+
+| Deliverable | Top priorities |
+|-------------|---------------|
+| Pricing/change email | Reader perspective, every word essential, clarity, sounds human |
+| Blog post | Hook, lens, conflict/context, the ending, sentence rhythm |
+| Landing page | Hook, clarity, reader perspective, authentic voice |
+| Docs page | Clarity, reader perspective, every word essential |
+| Support reply | Reader perspective, sounds human, clarity |
+| Announcement | Hook, reader perspective, every word essential, the ending |
+| Comparison page | Clarity, authentic voice, reader perspective |
+
+Prioritize doesn't mean ignore the others. It means if you're at 85% and
+need to get to 90%, focus revision effort on the criteria that matter most
+for this type of deliverable.
