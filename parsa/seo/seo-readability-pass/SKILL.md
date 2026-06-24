@@ -27,6 +27,7 @@ better than 4.7 or 4.8 at copywriting and writing in specific voice styles.
 
 ## Prerequisites
 
+- **Writing framework**: Read `WRITING_FRAMEWORK.md` in the seo skills directory before writing anything. Never draft from nothing, never ship a first draft, read it out loud.
 - **Voice guide**: Looks for a voice guide in `AGENTS.md`, `VOICE.md`, or `CLAUDE.md`. Creates one if missing (step 1).
 
 ## Goal

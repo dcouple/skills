@@ -24,11 +24,13 @@ pages, comparison pages, explainer pages, category pages.
 
 **Important**: Run with Claude Opus 4.6.
 
-## Prerequisite
+## Prerequisites
 
-`.seo/strategy.md` should exist from a prior `seo-content-strategy` run.
-A voice guide should exist in the repo (`AGENTS.md` or `VOICE.md`).
-If either is missing, tell the user to run the prerequisite skill first.
+- **Writing framework**: Read `WRITING_FRAMEWORK.md` in the seo skills directory. This is the most important prerequisite. Research real examples before drafting anything. Never ship a first draft. Read it out loud.
+- **Strategy**: `.seo/strategy.md` should exist from a prior `seo-content-strategy` run.
+- **Voice guide**: Must exist in the repo (`AGENTS.md` or `VOICE.md`).
+
+If strategy or voice guide is missing, tell the user to run the prerequisite skill first.
 
 ## Goal
 
