@@ -12,7 +12,15 @@ Each skill is one step in the process. They're composable: you can run one by it
 
 ## How it works, simply
 
-There are 7 skills. They break into three buckets:
+There are 8 skills. They start with foundations, then break into three buckets:
+
+### 0. Starting from scratch (greenfield)
+
+If you're new to SEO or onboarding a new site, start here. If you already have competitors mapped and know your search landscape, skip to step 1.
+
+- **`/seo-foundations`** crawls your website, figures out what you're selling and who it's for, then searches the web to find your competitors. It looks at what keywords a buyer would search for, who's showing up in those results, and what content your competitors have that you don't. It produces a starting point: comparison pages to create, messaging gaps to fix, and content to build.
+
+If your competitors don't show up when searching the keywords you think matter, that's a signal. Your messaging might not match how people actually search. The skill flags this so you can fix positioning before creating content.
 
 ### 1. Know what's happening (proactive)
 
@@ -45,7 +53,8 @@ Traffic dropped? Page lost rankings? Competitor launched something? Start with a
 ## The full monthly cycle
 
 ```
-1. /seo-briefing              ← pull all data, see what's happening
+0. /seo-foundations            ← first time only: understand product, find competitors
+1. /seo-briefing               ← pull all data, see what's happening
 2. /seo-content-strategy       ← decide what to do (you approve this)
 3. /seo-readability-pass       ← fix existing copy
 4. /seo-authority-pass         ← add credibility signals
@@ -117,5 +126,6 @@ Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or
 | `/seo-readability-pass` | foundational | Audit and rewrite copy for voice and clarity |
 | `/seo-authority-pass` | foundational | Add explainer pages, glossary, author, E-E-A-T |
 | `/seo-content-drafting` | execution | Write new blog posts, landing pages, comparisons |
+| `/seo-foundations` | greenfield | Crawl site, find competitors, map search landscape |
 | `/seo-data-pull` | support | Shared data pulling (called by briefing) |
 | `/seo-data-organize` | support | Archive data, track experiments, build wiki |
