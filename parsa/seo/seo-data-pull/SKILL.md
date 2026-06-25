@@ -285,3 +285,9 @@ Different analytics platforms have different API surfaces. Some have multiple
 (legacy and modern). During the discovery step, test which API surface works
 and note it in the manifest. If one endpoint returns errors, try alternatives
 before reporting the source as unavailable.
+
+## Committing .seo/
+
+Always commit the `.seo/` directory to the working branch after a data pull.
+Git history provides the historical record that future briefings use to measure
+experiment impact. Never add `.seo/` to `.gitignore`.
