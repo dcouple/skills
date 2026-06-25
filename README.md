@@ -208,9 +208,24 @@ folders:
 The simple sync shape is:
 
 ```bash
+REPO="$HOME/allGitHubRepos/skills"
 git -C "$REPO" pull --ff-only
+
+# Claude Code skills
 rsync -a "$REPO/parsa/.claude/skills/" "$HOME/.claude/skills/"
+
+# Codex skills
 rsync -a "$REPO/parsa/.codex/skills/" "$HOME/.codex/skills/"
+
+# Business skills (Claude + Codex)
+for skill in "$REPO"/parsa/business/*/; do
+  [ -f "$skill/SKILL.md" ] && cp -r "$skill" "$HOME/.claude/skills/$(basename "$skill")"
+done
+
+# SEO skills (Claude)
+for skill in "$REPO"/parsa/seo/*/; do
+  [ -f "$skill/SKILL.md" ] && cp -r "$skill" "$HOME/.claude/skills/$(basename "$skill")"
+done
 ```
 
 Do not use `--delete` unless you want this repo to remove other local skills.
