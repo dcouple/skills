@@ -84,6 +84,7 @@ For landing pages:
 - Create page.tsx in the appropriate app directory
 - Add to footer navigation if it's a primary page
 - Add to sitemap if manually maintained
+- Check deploy workflows (CI/CD, CDN invalidation, cache purge configs) for per-page entries that new URLs need. Cloud CDN and similar services often require explicit path invalidation for each new trailing-slash URL.
 
 **Success criteria**: Each piece of content is complete with metadata, schema, OG images, byline, and internal/external links.
 **Rules**:
@@ -100,6 +101,8 @@ After all content is drafted, do a linking pass:
 - New pages link to relevant existing docs, explainers, and glossary
 - Existing pages that mention concepts covered by new pages get links added
 - Footer or navigation updated if new pages are primary surfaces
+- Footer navigation MUST be updated for new pages — do not defer this to a separate authority pass. Add compliance pages to the HIPAA Compliance column, alternative pages to a relevant section, and solutions pages to the Solutions column.
+- Check if the project has CDN invalidation entries in deploy workflows (e.g., `.github/workflows/*-deploy.yml`) and add entries for every new page URL.
 - Glossary updated with any new terms introduced
 
 **Success criteria**: Every new page links to at least 2-3 existing pages. Existing pages link back where relevant.
