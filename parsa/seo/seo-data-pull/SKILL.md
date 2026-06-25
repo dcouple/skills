@@ -279,6 +279,17 @@ exists and its timestamp is within 24 hours, other skills can skip re-pulling
 and jump directly to Step 7 (visualize from existing data).
 If it's older, re-run from Step 1.
 
+## Persisting .seo/ data
+
+The `.seo/` directory MUST be committed to the repo after every pull. This is
+not optional. If `.seo/` stays local-only, future worktrees and sessions lose
+access to prior snapshots, breaking delta comparisons and experiment tracking.
+
+After writing data files, stage and commit `.seo/` as part of the normal
+workflow. If there's a PR flow, include it in the PR. If pushing directly,
+commit it alongside content changes. Never leave `.seo/` as untracked local
+files.
+
 ## Analytics API Notes
 
 Different analytics platforms have different API surfaces. Some have multiple
