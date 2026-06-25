@@ -156,11 +156,38 @@ After your draft is done, aim to remove 30% of the words. Every word must
 be essential. No redundancy, no waste. If a sentence doesn't add information
 or advance the point, delete it.
 
-### Hook and ending first
+### Headlines do 80% of the work
 
-Figure out how you want to end before you fill the middle. Write the first
-line and the last line. The hook should be as punchy as possible, immediately
-grabbing the reader. The ending should land. Then build the dance in between.
+Formula: action verb + specific outcome + timeframe or contrast.
+"Ship your startup in days, not weeks." Write at least five headlines
+before picking one. One will outpull the others by 2-10x.
+
+### Opening lines have one job
+
+Get them to read the second sentence. Lead with a direct challenge,
+a scene-setting story, a specific result, or a confession. Never open
+with "In today's fast-paced world." Never open with "Let's dive in."
+
+### The So What Chain
+
+Go three levels deep until you hit something emotional or financial.
+"Fast database" > "queries load fast" > "users don't bounce" >
+"you stop waking up stressed about churn." Write from the bottom.
+
+Most copy dies at level one. The feature, not the outcome. Always ask
+"so what?" until you can't anymore.
+
+### Pain quantification
+
+Vague problems feel unsolvable. Specific ones feel fixable. Do the math.
+"4 hrs for emails + 6 hrs for landing page = 22+ hours of headaches"
+beats "launching is hard."
+
+### Open loops
+
+Tease without revealing. "But that's not even the best part." Use 2-4
+per page, no more. Open loops keep readers moving because the brain
+wants to close them.
 
 ### Conflict and context
 
@@ -181,6 +208,12 @@ End with something the reader remembers. A callback to the hook. A
 surprising conclusion. A clear action. Don't trail off with a summary
 paragraph that restates what they just read.
 
+### Testimonials (when using them)
+
+Structure: before state + action + specific outcome + timeframe + emotion.
+"I wanna cry" beats "Great product!" A good testimonial has the
+transformation visible in one sentence.
+
 ## Rules
 
 1. **Never draft from nothing.** Research first. Examples first. Context first.
@@ -190,10 +223,13 @@ paragraph that restates what they just read.
 5. **Looking good is not being good.** Polish doesn't fix wrong messaging.
 6. **No em dashes.** Commas, colons, periods, or sentence breaks.
 7. **No generic enthusiasm.** "Exciting" and "thrilled" say nothing.
-8. **Vary sentence length.** Short is good. Monotonous is bad.
-9. **Name the pain.** Describe the problem the thing solves, not the thing itself.
-10. **Cut 30%.** After writing, remove a third of the words. If it still reads well, you removed the right ones.
-11. **Be authentic.** "You are getting it from the engineer who built it, not the marketing person." A little tongue in cheek is good.
+8. **Banned words.** "Delve," "utilize," "game-changer," "leverage" as a verb, "let's dive in." If it sounds like a textbook, rewrite it.
+9. **Vary sentence length.** Short is good. Monotonous is bad. Same-length paragraphs scream AI.
+10. **Name the pain.** Describe the problem the thing solves, not the thing itself.
+11. **Cut 30%.** After writing, remove a third of the words. If it still reads well, you removed the right ones.
+12. **Be authentic.** "You are getting it from the engineer who built it, not the marketing person." A little tongue in cheek is good.
+13. **Write 5 headlines, pick 1.** One will outpull the others by 2-10x. Never go with the first one.
+14. **Go three levels deep.** Feature > outcome > emotional/financial impact. Write from the bottom.
 
 ## Common LLM failures to watch for
 
@@ -202,9 +238,12 @@ paragraph that restates what they just read.
 | Filler phrases | "It's worth noting that" | Delete. Just say the thing. |
 | Hedging | "It might be worth considering" | Either say it or don't. |
 | Generic enthusiasm | "We're thrilled to announce" | Say what changed and why it matters. |
-| Feature listing | "Includes X, Y, and Z" | Say what problem X, Y, Z solve. |
+| Feature listing | "Includes X, Y, and Z" | Run the So What Chain. What problem do they solve? |
 | Passive voice | "The update was deployed" | "We deployed the update." |
-| Vague benefits | "Improved performance" | "Pages load 2x faster." |
+| Vague benefits | "Improved performance" | Quantify: "Pages load 2x faster." |
+| Level-one copy | "Fast database" | Go deeper: "you stop waking up stressed about churn." |
+| Textbook opening | "In today's fast-paced world" | Lead with a challenge, story, result, or confession. |
+| Same-length paragraphs | Every paragraph is 3 sentences | Vary. One sentence. Then five. Rhythm is the tell. |
 | Audience mismatch | Using jargon for non-technical readers | Use the words the reader would use. |
 
 ## Scoring rubric
