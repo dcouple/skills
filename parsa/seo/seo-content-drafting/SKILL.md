@@ -108,21 +108,45 @@ After all content is drafted, do a linking pass:
 
 Run the production build to catch errors.
 Create a PR with a summary of all content created, target keywords, and the strategy context.
-After merge, produce the list of new URLs for Google Search Console indexing.
+
+**Success criteria**: Build passes. PR merged or pushed.
+
+### 6. Submit new URLs for indexing
+
+After merge/deploy, submit every new or significantly changed URL for indexing.
+Do NOT just list the URLs and leave it to the user. Actually submit them.
+
+**IndexNow** (if configured — look for an IndexNow key file in `public/`):
+Submit a batch POST to `https://api.indexnow.org/IndexNow` with the host,
+key, keyLocation, and urlList. This covers Bing, Yandex, and feeds into
+Google's crawl signals.
+
+**Google Indexing API** (if a GCP service account is configured):
+Submit `URL_UPDATED` notifications via `https://indexing.googleapis.com/v3/urlNotifications:publish`.
+Limit: ~200/day.
+
+**Fallback** (if neither is configured):
+Use the GSC Inspect URL API (via Composio) to inspect each new URL, then
+provide the direct GSC inspect links so the user can click "Request Indexing"
+manually. Note that the GSC API cannot request indexing programmatically.
+
+**Success criteria**: All new URLs submitted via at least one indexing channel.
+Report which channel was used and the response status.
+
+### 7. Record experiments
 
 Record all changes as experiments in `.seo/experiments.md` with:
 - What was changed (title, meta description, content, canonical, etc.)
 - The baseline metrics from `.seo/data/` at time of change
 - Expected impact
-- Review date (typically 30 days for title/meta changes, 60-90 days for canonical/structural changes)
+- Review date (typically 30 days for title/meta changes, 60-90 days for
+  canonical/structural changes)
 
-This ensures future `/seo-briefing` runs can automatically measure the impact of these changes.
+Commit all `.seo/` changes alongside the content changes and push. Do NOT
+leave `.seo/` as local-only files. Never add `.seo/` to `.gitignore`. This
+ensures future `/seo-briefing` runs can automatically measure the impact of
+content changes.
 
-**Success criteria**: Build passes. PR merged. URL list for indexing provided.
-**Artifacts**: List of new URLs to request indexing for.
-
-## Committing .seo/
-
-After recording experiments in `.seo/experiments.md`, commit all `.seo/`
-changes to the working branch and push. This ensures future briefings can
-measure the impact of content changes. Never add `.seo/` to `.gitignore`.
+**Success criteria**: Every content action has an experiment entry with
+baseline, expected impact, and review date. `.seo/` is committed and pushed.
+**Artifacts**: List of new URLs submitted for indexing, with channel used.
