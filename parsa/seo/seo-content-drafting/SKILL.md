@@ -120,3 +120,9 @@ This ensures future `/seo-briefing` runs can automatically measure the impact of
 
 **Success criteria**: Build passes. PR merged. URL list for indexing provided.
 **Artifacts**: List of new URLs to request indexing for.
+
+## Committing .seo/
+
+After recording experiments in `.seo/experiments.md`, commit all `.seo/`
+changes to the working branch and push. This ensures future briefings can
+measure the impact of content changes. Never add `.seo/` to `.gitignore`.

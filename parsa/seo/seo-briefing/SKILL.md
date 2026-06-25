@@ -116,3 +116,9 @@ Experiments past their review date with measured before/after metrics.
 
 **Success criteria**: Briefing written with every claim citing a data source and number. Action items are specific and prioritized.
 **Artifacts**: `.seo/briefing.md` feeds into `seo-content-strategy`.
+
+## Committing .seo/
+
+After writing the briefing, commit all `.seo/` changes to the working branch
+and push. This ensures other worktrees and future sessions can access the data,
+experiments, and briefing. Never add `.seo/` to `.gitignore`.
