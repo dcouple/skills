@@ -110,5 +110,13 @@ Run the production build to catch errors.
 Create a PR with a summary of all content created, target keywords, and the strategy context.
 After merge, produce the list of new URLs for Google Search Console indexing.
 
+Record all changes as experiments in `.seo/experiments.md` with:
+- What was changed (title, meta description, content, canonical, etc.)
+- The baseline metrics from `.seo/data/` at time of change
+- Expected impact
+- Review date (typically 30 days for title/meta changes, 60-90 days for canonical/structural changes)
+
+This ensures future `/seo-briefing` runs can automatically measure the impact of these changes.
+
 **Success criteria**: Build passes. PR merged. URL list for indexing provided.
 **Artifacts**: List of new URLs to request indexing for.

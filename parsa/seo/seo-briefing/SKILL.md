@@ -54,7 +54,20 @@ skip the pull and use the cached data.
 
 **Success criteria**: `.seo/data/` exists with analytics, search console, and/or SEO tool snapshots.
 
-### 2. Correlate and produce briefing
+### 2. Check for active experiments
+
+Read `.seo/experiments.md` if it exists. For any experiment past its review date:
+- Pull the current metrics for the same pages/queries from the fresh data
+- Compare current vs baseline metrics recorded in the experiment
+- Report the result: improved, no change, or regressed
+- Add a "Result" section to that experiment entry with the measured outcome
+
+For experiments not yet past their review date, note them in the briefing
+under a "Running Experiments" section so the user knows what's in flight.
+
+**Success criteria**: Every past-due experiment has a measured outcome. Active experiments are listed.
+
+### 3. Correlate and produce briefing
 
 Cross-reference the three data sources:
 - Pages with high impressions but no clicks -> title/description problem
@@ -89,6 +102,12 @@ New/lost, referring domains, domain rating
 
 ## Content Gaps
 Keywords competitors rank for that we don't
+
+## Running Experiments
+Active experiments from `.seo/experiments.md` not yet past review date.
+
+## Experiment Results
+Experiments past their review date with measured before/after metrics.
 
 ## Action Items (prioritized)
 1. [specific action] — [why] — [expected impact]
