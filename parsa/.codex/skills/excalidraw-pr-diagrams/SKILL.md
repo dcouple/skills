@@ -1,6 +1,6 @@
 ---
 name: excalidraw-diagram
-description: Create Excalidraw diagram JSON files that make visual arguments. Use when the user wants to visualize workflows, architectures, or concepts.
+description: Create Excalidraw diagram JSON files and PR visual overviews that make visual arguments. Use when the user wants to visualize workflows, architectures, concepts, pull request changes, before/after behavior, or a shareable explainer image for reviewers.
 ---
 
 # Excalidraw Diagram Creator
@@ -9,17 +9,27 @@ Generate `.excalidraw` JSON files that **argue visually**, not just display info
 
 **Setup:** If the user asks you to set up this skill (renderer, dependencies, etc.), see `README.md` for instructions.
 
-## Local Codex PR Workflow
+## Local Codex or Claude PR Workflow
 
-When using this skill for pull request diagrams in Codex:
+When using this skill for pull request diagrams in Codex or Claude:
 
-- Always create and edit diagram working files under `/tmp`, preferably `/tmp/codex-pr-diagrams/<repo-or-pr>/`.
+- Always create and edit diagram working files in a temporary working directory outside the target repo, preferably `/tmp/codex-pr-diagrams/<repo-or-pr>/` or `C:\tmp\codex-pr-diagrams\<repo-or-pr>\`.
 - Do not create generated `.excalidraw`, `.png`, or temporary render files inside the repository unless the user explicitly asks for tracked diagram assets.
 - For PR descriptions, use the rendered Excalidraw image as the primary visual. Do not add Mermaid diagrams by default; they are usually redundant once the Excalidraw image includes before/after flow and reviewer explainers. Add Mermaid only if the user explicitly asks for a durable text-rendered fallback.
 - Save matching `.excalidraw` source files under `/tmp` for local iteration and future reuse.
 - PR visual overviews must include explicit `Before` and `After` diagrams so reviewers can see both the old behavior and the new behavior without inferring the diff from prose.
 - Keep each PR diagram focused on the change boundary: before, after, and why the new flow is safer.
 - After generating diagrams, update the PR description with a dedicated `## Visual Overview` section.
+- If the repo stores both `.codex/skills/excalidraw-pr-diagrams` and `.claude/skills/excalidraw-pr-diagrams`, keep the two skill copies materially equivalent unless there is an agent-specific reason to diverge.
+
+### PR Asset Publishing
+
+If the user wants the PR image committed:
+
+- Commit only the final rendered image, usually under `.github/pr-assets/<short-topic>.png`. Keep temporary source and render files outside the repo unless the user asks to track them.
+- Reference the image from the PR body with a URL that works after push. For GitHub, prefer a blob URL with `?raw=1`, for example `https://github.com/<owner>/<repo>/blob/<branch>/.github/pr-assets/<image>.png?raw=1`.
+- After pushing, open or fetch the PR image URL. A PR visual with a 404 image is a failed handoff.
+- Read back or preview the PR body after updating it. Markdown that collapses bullets, headings, or the image into one paragraph is a failed handoff.
 
 ### PR Diagram Standard
 
@@ -43,6 +53,18 @@ Every PR visual overview must include:
 - A small **term explainer** when the diagram uses protocol/framework words that a reviewer may not know. Do not assume terms like header, preflight, origin, token, cookie, CORS, WebSocket upgrade, cache key, breakpoint, or trace are self-explanatory.
 
 Do not use the same diagram structure for a series of PRs unless the code changes truly have the same shape. Split PRs usually need different visual metaphors because they fix different kinds of problems.
+
+### Shareable Explainers
+
+When the user wants a PR image that can teach the change to someone else, design it as a shareable explainer, not just reviewer decoration.
+
+- Make the title state the strategic outcome, not the implementation detail.
+- Show the old blind spot, failure mode, or uncertainty on the left.
+- Show the new loop, boundary, path, or control point on the right.
+- Include at least one concrete example input and one concrete output. Real event names, endpoint paths, page names, source URLs, or dashboard fields make the image feel authoritative.
+- If measurement is part of the value, show what gets captured and how it becomes a decision, backlog item, or next action.
+- Add enough whitespace that each box can breathe. If an arrow needs to loop back, route it around the outside of the boxes.
+- Inspect the final image at the size GitHub shows in a PR. If the viewer must open the image full size to understand it, simplify the diagram.
 
 ### Reviewer Explainers
 
@@ -549,10 +571,12 @@ You cannot judge a diagram from JSON alone. After generating or editing the Exca
 ### How to Render
 
 ```bash
-cd .claude/skills/excalidraw-diagram/references && uv run python render_excalidraw.py <path-to-file.excalidraw>
+cd .claude/skills/excalidraw-pr-diagrams/references && uv run python render_excalidraw.py <path-to-file.excalidraw>
 ```
 
-This outputs a PNG next to the `.excalidraw` file. Then use the **Read tool** on the PNG to actually view it.
+For Codex installs, use the matching `.codex/skills/excalidraw-pr-diagrams/references` directory.
+
+This outputs a PNG next to the `.excalidraw` file. Then use the available image viewer on the PNG to actually inspect it, such as the Read tool, `view_image`, or a browser screenshot.
 
 ### The Loop
 
@@ -574,6 +598,7 @@ After generating the initial JSON, run this cycle:
 - Text or shapes overlapping other elements
 - Arrows crossing through elements instead of routing around them
 - Arrows landing on the wrong element or pointing into empty space
+- Arrowheads, dashed loops, or feedback paths visually sitting on top of boxes or labels
 - Labels floating ambiguously (not clearly anchored to what they describe)
 - Uneven spacing between elements that should be evenly spaced
 - Sections with too much whitespace next to sections that are too cramped
@@ -581,6 +606,7 @@ After generating the initial JSON, run this cycle:
 - Overall composition feels lopsided or unbalanced
 - Any part of the title, subtitle, truth statement, or major region clipped by the screenshot bounds
 - A horizontally sprawling image whose important content is hard to scan in a GitHub PR
+- PR-specific defects: the committed image URL 404s, the PR body image does not render, or Markdown formatting collapses into a single paragraph.
 
 **4. Fix** — Edit the JSON to address everything you found. Common fixes:
 - Widen containers when text is clipped
@@ -609,10 +635,12 @@ The loop is done when:
 ### First-Time Setup
 If the render script hasn't been set up yet:
 ```bash
-cd .claude/skills/excalidraw-diagram/references
+cd .claude/skills/excalidraw-pr-diagrams/references
 uv sync
 uv run playwright install chromium
 ```
+
+For Codex installs, use `.codex/skills/excalidraw-pr-diagrams/references`.
 
 ---
 
