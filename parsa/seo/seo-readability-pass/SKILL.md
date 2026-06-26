@@ -77,7 +77,7 @@ Produce a severity-ranked list: NEEDS WORK > MINOR ISSUES > FINE.
 
 **Page tier system — mandatory before any rewrite:**
 
-Before rewriting, classify each flagged page using `.seo/data/` (run `seo-data-pull` first if no data exists):
+Before rewriting, classify each flagged page using `.seo/data/` (run `seo-data-pull` first if no data exists or if `.seo/data/manifest.md` is older than its freshness window (default 24 hours)):
 
 - **Tier 1 (top pages)**: Homepage, pricing, and any page with >500 monthly impressions or >100 monthly pageviews. These pages have established keyword positioning. Do NOT rewrite sentences wholesale. Fix only the specific flagged issue (swap the passive verb, remove the em dash, replace the jargon term) while preserving the surrounding sentence and its keywords. Present the before/after diff to the user for approval before committing.
 - **Tier 2 (mid pages)**: Pages with 50-500 monthly impressions. Rewrite sentences that need it, but preserve SEO query language (terms like "free plan", "HIPAA compliant", "works over SMS"). No approval gate required, but flag any keyword-bearing sentence you changed.
