@@ -25,11 +25,15 @@ Those belong in the downstream plans produced by `/create-plan` from each phase 
 
 If the approach is **genuinely unclear**, ask the user 1-3 targeted design questions. Otherwise, proceed.
 
+Spec judgment stays in the main Fable session; delegate the reading to sub-agents.
+
 ### Codebase Analysis (light)
+Spawn Task tool `subagent_type: "codebase-explorer"` agents (Sonnet) to:
 - Identify existing patterns and tech choices the spec must respect
 - Note system boundaries the spec will affect
 
 ### External Research
+Spawn Task tool `subagent_type: "researcher"` agents (Opus) for:
 - Library / approach docs only when introducing new tech
 - Skip implementation specifics — they belong in plans, not specs
 

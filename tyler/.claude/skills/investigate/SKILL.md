@@ -55,7 +55,7 @@ This prevents tunnel-vision on the first plausible explanation. You will test th
 
 ## Phase 3: Investigate the Root Cause
 
-Now trace through the code to test your hypotheses. Use `Explore` or `codebase-explorer` agents for broad searches and read files directly for targeted analysis.
+Now trace through the code to test your hypotheses. The judgment work (hypothesis ranking, root-cause reasoning) stays in the main Fable session; spawn Task tool `subagent_type: "codebase-explorer"` agents (Sonnet) for broad searches and read files directly for targeted analysis.
 
 ### Investigation Techniques
 
@@ -127,6 +127,7 @@ Once the root cause is identified, present a summary:
 - [brief explanation of the underlying cause — missed edge case, wrong assumption, incomplete refactor, etc.]
 
 **Next steps:**
+- `/create-ticket [intent]` — Clear enough to delegate? Capture the fix as a ticket
 - `/plan [description]` — Create a fix plan
 - `/simple-plan [description]` — Quick fix plan if it's straightforward
 ```

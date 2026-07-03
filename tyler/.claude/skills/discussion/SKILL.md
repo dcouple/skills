@@ -22,9 +22,12 @@ You **may** read code and research the codebase to inform the discussion, but yo
 
 ## Step 1: Research (As Needed)
 
+The discussion itself runs on Fable in the main session; delegate reading to
+cheaper researcher sub-agents so bulky exploration stays out of this thread.
+
 If the topic requires understanding the current codebase:
-- Spawn `Explore` or `codebase-explorer` agents to find relevant code
-- Spawn `researcher` agents for external library/approach questions
+- Spawn Task tool `subagent_type: "codebase-explorer"` agents (Sonnet) to find relevant code
+- Spawn Task tool `subagent_type: "researcher"` agents (Opus) for external library/approach questions
 
 Only research what's needed. Let the conversation guide what needs investigating.
 
@@ -40,6 +43,7 @@ Only research what's needed. Let the conversation guide what needs investigating
 
 ```
 Suggested next steps:
+- `/create-ticket [intent]` — Clear enough to delegate? Capture it as a ticket
 - `/plan [description]` — Create an implementation plan
 - `/discussion [follow-up]` — Continue exploring a specific aspect
 - `/research-web [topic]` — Deep-dive into external documentation

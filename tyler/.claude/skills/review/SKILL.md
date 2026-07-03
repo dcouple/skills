@@ -50,13 +50,30 @@ If either fails, include the specific errors in the review as **must-fix** items
 
 ## Step 3: Review the Diff
 
-Read the shared review criteria at `.claude/skills/review/CRITERIA.md`. This is the single source of truth for what to check.
+The main review runs on Fable in this session. If the `codex` CLI is available
+(`which codex`), also launch a Codex cross-check lane **in the background, in
+parallel** with your own review (Bash tool, `run_in_background`, timeout
+600000 ms):
+
+```bash
+codex exec -m gpt-5.5 -c model_reasoning_effort="xhigh" -s read-only \
+  -C <repo root> --skip-git-repo-check --ephemeral \
+  -o <scratchpad>/codex-pr-review-out.md \
+  "Review the diff of PR #[number] (run: gh pr diff [number]) against its linked issue and any implementation plan in it. Focus on bugs, correctness, security, missing plan tasks, runtime wiring, auth/permission gaps, transaction boundaries, and race conditions. Report findings as a list with file:line references and a severity (must-fix / should-fix / suggestion)."
+```
+
+Then do your own review: read the shared review criteria at `.claude/skills/review/CRITERIA.md`. This is the single source of truth for what to check.
 
 For each changed file, evaluate against **all 7 sections** of the criteria. Organize findings by severity:
 
 - **Sections 1-2 (Must-Fix):** Bugs, correctness, security. The PR should not merge without addressing these.
 - **Sections 3-5 (Should-Fix):** Architecture, React patterns, TypeScript. Strong recommendation to fix.
 - **Sections 6-7 (Suggestion):** Tailwind/shadcn, conventions. Nice-to-have, not blocking.
+
+When your own review is done, wait for the Codex lane (if launched), read its
+output file, deduplicate, and merge its findings into yours at the appropriate
+severity before posting. If the two lanes disagree on a finding, verify it
+yourself in the code and keep only what you confirm.
 
 ## Step 4: Check Completeness Against Issue
 

@@ -51,12 +51,19 @@ Before treating `$ARGUMENTS` as a feature description, check whether a spec driv
 
 If the approach is **genuinely unclear**, ask the user 1-3 targeted design questions. Otherwise, proceed directly.
 
+Planning judgment stays in the main Fable session; delegate the reading to
+sub-agents. If the user provided a ticket URL or intent brief, read it first —
+it is the source of truth for *why* and should be referenced at the top of the
+plan.
+
 ### Codebase Analysis
+Spawn Task tool `subagent_type: "codebase-explorer"` agents (Sonnet) to:
 - Search for similar features/patterns in the codebase
 - Identify files to reference in the plan
 - Note existing conventions to follow
 
 ### External Research
+Spawn Task tool `subagent_type: "researcher"` agents (Opus) for:
 - Library documentation (include specific URLs)
 - Implementation examples
 - Best practices and common pitfalls
