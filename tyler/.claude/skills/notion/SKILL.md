@@ -23,10 +23,14 @@ operation: `publish`, `upload`, or `pull`.
    prefix. If no Notion tools resolve and no `notion` CLI is on PATH, return
    `NOTION UNAVAILABLE: <what was tried>` — the caller proceeds
    GitHub + local only and says so.
-2. **Find the target database**: read the `Work-item tracking` section of the
-   project's `CLAUDE.md` for `notion_data_source`. If absent, search Notion
-   for the work-items database once, confirm the match with the user, and
-   suggest adding it to `CLAUDE.md`.
+2. **Find the target database** — resolution order, most specific wins:
+   1. The project `CLAUDE.md`'s `Work-item tracking` section
+      (`notion_data_source`) — per-repo override only.
+   2. `config.yaml` in this skill's directory — the global default; also
+      defines the database's property names.
+   3. Neither set → search Notion for the work-items database once, confirm
+      the match with the user, and offer to save it into this skill's
+      `config.yaml` so the search never repeats.
 
 **Success criteria**: tools loaded and a data source resolved (or an explicit
 `NOTION UNAVAILABLE`).

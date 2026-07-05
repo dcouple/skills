@@ -12,12 +12,13 @@ and boundaries. Everything there applies here — do not duplicate it.
 
 The workflow skills (`/create-feature`, `/create-epic`, `/create-issue`,
 `/do`) publish every work item as a GitHub issue and mirror its artifacts to
-a Notion work item (see the `notion` skill). They read this section for the
-project's coordinates:
+a Notion work item (see the `notion` skill).
 
 ```yaml
-github_repo: <owner>/<repo>            # where gh issue create targets
-notion_data_source: <data source ID or URL of the work-items database>
+github_repo: <owner>/<repo>   # where gh issue create targets; omit to use the current repo
+# notion_data_source: <ID or URL>   # OVERRIDE only — the default lives in the
+#                                   # notion skill's config.yaml; set this only
+#                                   # if this repo publishes to a different database
 ```
 
 Work-item artifacts (item.md, refs/, plan.md, wrapup.md) live locally under

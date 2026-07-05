@@ -83,9 +83,11 @@ prep lives in `/do`'s final step.
 
 `templates/` holds copyable per-project scaffolding: `AGENTS.md` (universal
 agent instructions both harnesses read) and `CLAUDE.md` (points to AGENTS.md,
-adds Claude-only notes, and carries the `Work-item tracking` section — the
-GitHub repo and Notion data source the workflow skills publish to). Copy both
-into a codebase root and fill in the sections.
+adds Claude-only notes, and carries the optional `Work-item tracking`
+overrides — the Notion work-items database default lives in the notion
+skill's `config.yaml`; a project sets `notion_data_source` only to publish
+somewhere different). Copy both into a codebase root and fill in the
+sections.
 
 ## Keeping in sync
 
