@@ -1,6 +1,6 @@
 # Code Review Criteria
 
-Shared review criteria used by both the PR review skill and the implementation-reviewer agent. This is the single source of truth for what "good code" looks like in Doozy.
+Review criteria used by the PR review skill. This is the single source of truth for what "good code" looks like in Doozy.
 
 ---
 

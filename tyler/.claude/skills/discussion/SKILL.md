@@ -1,52 +1,66 @@
 ---
 name: discussion
-description: Have an interactive discussion about a topic, approach, or feature. Researches the codebase as needed, talks through options, and updates ./tmp/context.md with decisions. Use when you want to think through an approach before planning.
-argument-hint: "[topic or question to discuss]"
+description: Interactive back-and-forth to clarify, understand, or figure something out — an idea, an approach, a tradeoff, or a suspected bug. Use when the user wants to think out loud or explore before committing to anything — e.g. "let's discuss X", "help me understand Y", "why is Z happening", "what should we do about W". Produces clarity, not artifacts; work items are created afterward with /create-feature, /create-epic, or /create-issue.
+argument-hint: "[idea, question, or topic]"
+allowed-tools: Read, Glob, Grep, LS, Task, AskUserQuestion
 ---
 
-# Discussion Agent
+# Discussion
 
 ## Topic: $ARGUMENTS
 
-Have an interactive, back-and-forth discussion with the user about this topic. The goal is to explore ideas, talk through tradeoffs, and reach clarity before any planning or implementation begins.
+Have an interactive, opinionated discussion. The goal is shared clarity — understanding
+the problem, weighing the options, or pinning down what's actually happening — not a
+document. When the discussion converges on something worth building or fixing, the user
+invokes the matching `/create-*` skill; this skill's job ends at clarity.
 
-## CRITICAL: No Code Changes
+## CRITICAL: No source-code changes, no work items
 
-This skill is for **conversation only**. You must **NEVER**:
-- Edit, create, or delete any source code files
-- Use the Edit, Write, or NotebookEdit tools on project files
-- Make implementation changes of any kind
-- Propose diffs or patches to apply
+This skill is conversation plus research, nothing else. **NEVER** edit, create, or
+delete source code files, or propose diffs to apply. Don't draft specs, tickets, or
+verification criteria here — that's what the `/create-*` skills are for, and doing it
+mid-discussion drags the conversation down to paperwork altitude.
 
-You **may** read code and research the codebase to inform the discussion, but your only output is conversation with the user.
+## Steps
 
-## Step 1: Research (As Needed)
+### 1. Dispatch the right specialist for each question
+Delegate legwork to sub-agents so bulky exploration stays out of this thread. Pick by
+what the user is actually asking:
 
-The discussion itself runs on Fable in the main session; delegate reading to
-cheaper researcher sub-agents so bulky exploration stays out of this thread.
+- **How does our code work? What exists today?** → `code-researcher` (returns
+  file:line findings)
+- **What do the docs / ecosystem / other people do?** → `web-researcher` (returns a
+  cited dossier)
+- **Why is this broken? Is this a bug?** → `investigator` (reproduces and root-causes,
+  returns a finding with evidence and confidence). If reproduction requires driving
+  the running app, dispatch `app-user` first to exercise the flow and capture
+  evidence, then pass its transcript to the investigator — sub-agents don't spawn
+  sub-agents, so you sequence them.
 
-If the topic requires understanding the current codebase:
-- Spawn Task tool `subagent_type: "codebase-explorer"` agents (Sonnet) to find relevant code
-- Spawn Task tool `subagent_type: "researcher"` agents (Opus) for external library/approach questions
+Only research what the discussion actually needs — let questions pull research, not
+the other way around. Dispatch mid-conversation as new questions arise; run
+independent dispatches in parallel.
 
-Only research what's needed. Let the conversation guide what needs investigating.
+**Success criteria**: every claim you make about the codebase, ecosystem, or defect
+traces to a sub-agent finding or user statement, not a guess.
 
-## Step 2: Discuss with the User
+### 2. Discuss and converge
+- Present findings and options with tradeoffs; be opinionated — recommend with
+  reasoning, defer to user judgment.
+- Name disagreements and unresolved choices instead of papering over them.
+- Keep altitude: decisions and direction, not file-by-file detail.
 
-- Present findings and initial thoughts
-- Ask targeted questions about preferences, constraints, and goals
-- Explore different approaches and their tradeoffs
-- Spawn sub-agents mid-conversation if new questions arise
-- Be opinionated — share recommendations with reasoning, but defer to user judgment
+**Success criteria**: the user says the question is answered, the direction is clear,
+or they're ready to capture a work item.
 
-## Step 3: Suggest Next Steps
+### 3. Hand off
+When the discussion lands somewhere actionable, point at the capture skill — don't
+run it yourself unless the user asks:
 
 ```
 Suggested next steps:
-- `/create-ticket [intent]` — Clear enough to delegate? Capture it as a ticket
-- `/plan [description]` — Create an implementation plan
-- `/discussion [follow-up]` — Continue exploring a specific aspect
-- `/research-web [topic]` — Deep-dive into external documentation
+- `/create-feature [title]` — capture a single-outcome change as a Feature Ticket
+- `/create-epic [title]` — capture a multi-phase workstream as an Epic Spec
+- `/create-issue [title]` — capture a defect (investigated here) as a Bug Report
+- `/discussion [follow-up]` — keep exploring a different aspect
 ```
-
-Topic to discuss: $ARGUMENTS

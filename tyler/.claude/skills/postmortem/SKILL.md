@@ -1,0 +1,89 @@
+---
+name: postmortem
+description: Runs a postmortem after /do finished and the human reviewed the PR, when the result fell short of intent. Use when the user says a /do run missed the mark, the PR needed rework, the delivered feature didn't match the ticket, or asks "why did /do get this wrong". Root-causes the gap in our system and proposes one concrete improvement.
+argument-hint: "[PR url/# or work-item id]"
+allowed-tools: Read, Grep, Glob, LS, Task, Write, Edit, Bash, AskUserQuestion
+---
+<!-- Write/Edit are for postmortem.md under ./tmp/<id>/ only; Bash for gh pr view.
+     This skill proposes system changes — it never applies them. -->
+
+# Postmortem
+
+## Target: $ARGUMENTS
+
+Compound learning: when a `/do` run fell short of intent, find the root cause in **our
+system** — the skills, agents, templates, and criteria — not just the code. The completion
+artifact is `./tmp/<id>/postmortem.md` plus one proposed (not applied) system change.
+
+This skill changes nothing: no code fixes, no skill edits. If the code itself needs
+fixing, that goes through `/create-issue` then `/do`; the proposed system change is
+presented for the human to approve, not applied.
+
+## Steps
+
+### 1. Load the record
+Resolve `<id>` from $ARGUMENTS (a work-item id directly, or match a PR to the `pr:` field
+across `./tmp/*/item.md`). Then read:
+- `./tmp/<id>/item.md` — what we asked for
+- `./tmp/<id>/plan.md` — what `/do` planned
+- `./tmp/<id>/wrapup.md` — what `/do` claims it delivered and verified
+- PR feedback — `gh pr view <pr> --comments` and the review threads, or ask the user to
+  paste it if it lives outside GitHub
+
+**Success criteria**: all four sources loaded (or their absence noted — a missing wrapup
+is itself a finding).
+
+### 2. Establish the gap [human]
+Discuss with the human what fell short: delivered vs intended, concretely. Anchor on the
+item's intent and ACs — did `/do` miss the ticket, or did the ticket miss the intent?
+
+**Success criteria**: the gap is stated in one or two concrete sentences the human agrees
+with.
+
+### 3. Root-cause it in OUR system
+Trace the gap upstream through the pipeline and name where it entered:
+- **Thin ticket** — intent or end state under-specified, so `/do` optimized the wrong thing
+- **Weak AC** — verification criteria passed while the intent failed (untestable or
+  mis-aimed criteria)
+- **Missing direction** — a decision the model shouldn't have made alone wasn't locked
+- **Review blind spot** — a reviewer should have caught it and the report shows it didn't
+- **Skill/agent gap** — a pipeline stage lacks an instruction this failure needed
+
+The code defect (if any) is a symptom here. Note it, and route the fix through
+`/create-issue` then `/do` — not this skill.
+
+**Success criteria**: one primary system-level cause identified, with evidence from the
+step-1 documents (quote the thin section, the weak AC, the review miss).
+
+### 4. Write the postmortem
+Write `./tmp/<id>/postmortem.md` following `references/postmortem.md` (frontmatter +
+body; don't emit the template's "— format" header or guidance quotes).
+
+**Success criteria**: `postmortem.md` exists and the "why the gap happened" section names
+the system cause, not just the code defect.
+
+### 5. Propose ONE system change [human checkpoint]
+Propose exactly one concrete change to one specific file — a skill, sub-agent, template,
+or criteria block (e.g. `tyler/.claude/skills/discussion/SKILL.md`,
+`tyler/.claude/skills/create-feature/references/verification-criteria.md`,
+`tyler/.claude/agents/code-reviewer.md`). Quote the file path and show the proposed edit.
+
+Do **not** apply it. Present it for the human to approve; record the proposal (and the
+verdict, if given now) in postmortem.md's "What to change so it doesn't recur" section.
+One change per postmortem — the highest-leverage one — so each fix is attributable.
+
+**Success criteria**: proposal names an exact file and shows the concrete edit; nothing
+outside `./tmp/<id>/` was modified.
+
+### 6. Learning gate [human]
+Ask the human to state back, in one or two sentences, why the gap happened and what
+system change would prevent it. One exchange, not a quiz. If their read conflicts with
+the doc, reconcile before closing.
+
+**Success criteria**: the teach-back matches postmortem.md.
+
+```
+Suggested next steps:
+- `/create-issue [defect]` then `/do ./tmp/<id>/item.md` — fix the code gap itself
+- Apply the approved system change in a normal editing session, then commit it
+```
