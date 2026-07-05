@@ -50,9 +50,9 @@ agreed with the user.
 - Reproduction steps go **in the report** — deterministic enough for the verify stage
   to re-run them. Raw traces, logs, and long transcripts go to `./tmp/<id>/refs/`
   (e.g. `refs/error-trace.txt`), linked not inlined. If the investigation produced a
-  current-state deep-dive worth keeping, save it per `references/system-analysis.md`
-  as `refs/system-analysis.md`.
-- Verification criteria per `references/verification-criteria.md` must include:
+  current-state deep-dive worth keeping, save it per
+  `~/.claude/references/system-analysis.md` as `refs/system-analysis.md`.
+- Verification criteria per `~/.claude/references/verification-criteria.md` must include:
   - **AC1**: the reproduction flipping from fail to pass — the repro steps double as
     the failing case the fix must flip.
   - **Prevention criteria**: what stops this class of bug recurring (a regression

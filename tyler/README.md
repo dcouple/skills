@@ -40,8 +40,22 @@ in parallel, Must-Fix gate = the union of both. High effort is the
 review/investigation lane; implementation runs at medium. Never route
 customer-facing copy through Codex.
 
-Build tracker and design decisions: `../tmp/plan/build-plan.md`. Document
-formats: `../tmp/templates/` (skills carry their own copies in `references/`).
+Build tracker and design decisions: `../tmp/plan/build-plan.md`.
+
+## Where formats live (single copy each — no duplicates to drift)
+
+- **`.claude/references/`** — anything referenced by more than one skill, or by
+  any agent: the shared blocks (`verification-criteria.md`,
+  `system-analysis.md`) and every agent's output format
+  (`references/agents/<agent>/…`). Agents are flat `.md` files by design
+  (Claude Code has no agent-folder format), so each agent's body carries a
+  pointer — "Read `~/.claude/references/agents/<name>/<format>.md`" — plus a
+  few non-negotiable lines as a safety net if the file is missing.
+- **`.claude/skills/<name>/references/`** — document formats produced by
+  exactly one skill (feature-ticket, epic-spec, bug-report,
+  implementation-plan, wrap-up-report, postmortem).
+- `../tmp/templates/README.md` is the index mapping every format to its live
+  home.
 
 The six skills above are the whole surface — no standalone utilities. Web
 research is the `web-researcher` agent, review is the `code-reviewer` agent,
@@ -53,6 +67,7 @@ and all commit/PR prep lives in `/do`'s final step.
 git -C "$REPO" pull --ff-only
 rsync -a "$REPO/tyler/.claude/skills/" "$HOME/.claude/skills/"
 rsync -a "$REPO/tyler/.claude/agents/" "$HOME/.claude/agents/"
+rsync -a "$REPO/tyler/.claude/references/" "$HOME/.claude/references/"
 ```
 
 `rsync` without `--delete` won't remove skills/agents that were deleted from

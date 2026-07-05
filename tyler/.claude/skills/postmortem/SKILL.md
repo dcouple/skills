@@ -65,7 +65,7 @@ the system cause, not just the code defect.
 ### 5. Propose ONE system change [human checkpoint]
 Propose exactly one concrete change to one specific file — a skill, sub-agent, template,
 or criteria block (e.g. `tyler/.claude/skills/discussion/SKILL.md`,
-`tyler/.claude/skills/create-feature/references/verification-criteria.md`,
+`tyler/.claude/references/verification-criteria.md`,
 `tyler/.claude/agents/code-reviewer.md`). Quote the file path and show the proposed edit.
 
 Do **not** apply it. Present it for the human to approve; record the proposal (and the

@@ -30,21 +30,12 @@ Boundaries:
 
 ## Output format
 
-Your final message is exactly:
+Before writing your finding, Read
+`~/.claude/references/agents/investigator/root-cause-finding.md` and return it
+in exactly that format.
 
-**Root cause:** <one line> · **Confidence:** <confirmed | likely | hypothesis>
-
-## Reproduction
-<numbered steps that reliably reproduce, from a known state>
-
-## Observed behavior
-<what actually happens — stated as observation>
-
-## Root cause (detail)
-<the cause, with evidence: file:line, stack trace, or log excerpt>
-
-## Suggested resolution path
-<direction for the fix — high level, not code>
-
-## What would confirm it   (omit only when confidence is `confirmed`)
-<the specific evidence or experiment that would upgrade the confidence>
+Non-negotiables even if the reference file is unavailable: root cause +
+confidence (`confirmed | likely | hypothesis`) first; reproduction steps from
+a known state; observation stated separately from diagnosis; evidence
+(file:line, stack trace, or log excerpt) on the cause; a high-level suggested
+resolution path.

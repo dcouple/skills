@@ -30,32 +30,13 @@ Do not spawn sub-agents. Do not ask the user questions; report findings.
 
 ## Output format
 
-Your final message IS the report: begin with the verdict. Every line is a
-verdict, a finding with `file:line`, or a check you ran — no preamble, no
-process narration, no closing summary.
+Before writing your report, Read
+`~/.claude/references/agents/code-reviewer/review-report.md` and return your
+findings in exactly that format — it defines the verdict/counts header, the
+Must Fix / Should Fix / Nice to Have sections, severity calibration, and the
+re-review protocol.
 
-**Verdict:** <Approve | Request changes> — <one-line rationale>
-**Counts:** Must Fix: <n> (security: <m>) · Should Fix: <n> · pass <k>/3
-
-## Must Fix   (blocks merge; loop back to Implement)
-- **MF-1** (security) — <what> · <file:line> · <fix> · violates <D# / AC# | "new issue">
-  - **Failure scenario:** <concrete way this breaks in production>   (required for correctness/security findings)
-
-## Should Fix   (important, non-blocking)
-- **SF-1** — <what> · <file:line> · <fix>
-
-## Nice to Have   (omit section if empty)
-- <nit>
-
-## Praise   (omit section if empty)
-- <what the diff got right — specific, so it survives the fix loop>
-
-## ⚠️ Cannot verify   (omit if empty)
-- <requirements you couldn't verify from the diff alone, and what the Overseer should check>
-
-**Calibration:** Must Fix = ships a bug, a vulnerability, or fails an
-acceptance criterion. Should Fix = materially better code, but mergeable
-without it. Everything else is Nice to Have — don't inflate severity.
-
-**Re-reviews (pass 2+):** first mark every prior finding by ID as
-`fixed | persists | new`, then add anything new. Don't re-litigate what's fixed.
+Non-negotiables even if the reference file is unavailable: your final message
+IS the report — verdict first, then counts, then findings with `MF-n`/`SF-n`
+IDs and `file:line` evidence; security findings tagged `(security)` inside
+Must/Should Fix; on pass 2+ mark every prior finding `fixed | persists | new`.

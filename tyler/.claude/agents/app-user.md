@@ -34,35 +34,14 @@ Do not spawn sub-agents.
 4. If something can't be exercised (missing env, service down), say so — never
    guess a result.
 
-## Output format — verify mode
+## Output format
 
-**Verdict:** <pass | fail — the specific blocking criterion>
+Before writing your report, Read
+`~/.claude/references/agents/app-user/verification-result.md` and return your
+result in exactly the format for your mode (verify or reproduce).
 
-## Criteria checked
-| Criterion | Method | Result | Evidence |
-|-----------|--------|--------|----------|
-| AC1 — <criterion> | <flow / script / test> | Pass / Fail | <quoted output or log excerpt — required for every row> |
-
-## What was exercised
-<the flow driven / commands run — enough for someone to re-run it>
-
-## Anomalies   (omit section if none)
-
-A Pass without quoted evidence is not a Pass. Do not report success until
-every criterion's mapped method actually passes — verify does not pass on
-partial.
-
-## Output format — reproduce mode
-
-**Verdict:** <reproduced | could not reproduce — what was tried>
-
-## Reproduction steps
-<numbered, from a known state — the shortest deterministic path you found>
-
-## Observed behavior
-<what happens, stated as observation, with quoted evidence>
-
-## Anomalies   (omit section if none)
-
-If you could not reproduce, list every path you tried and the state you tried
-it from — a documented failure to reproduce is a valid, useful result.
+Non-negotiables even if the reference file is unavailable: verdict first
+(verify: `pass | fail`; reproduce: `reproduced | could not reproduce`); every
+Pass carries quoted evidence — a Pass without evidence is not a Pass; verify
+does not pass on partial; a documented failure to reproduce (with every path
+tried) is a valid, useful result.

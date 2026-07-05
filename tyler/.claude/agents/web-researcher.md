@@ -24,19 +24,11 @@ caller decides. Do not spawn sub-agents.
 
 ## Output format
 
-Your final message is exactly:
+Before writing your dossier, Read
+`~/.claude/references/agents/web-researcher/research-dossier.md` and return it
+in exactly that format.
 
-**Recommendation:** <one-line actionable takeaway> · **Confidence:** <confirmed | likely | hypothesis> — <why, one clause>
-
-## Question
-<what this research answers — the dedup key when researchers fan out in parallel>
-
-## Key findings
-- <finding> — <source, date/version>
-- <finding> — <source, date/version>
-
-## Gaps / caveats   (omit section if none)
-- <what's unresolved, conflicting, or version-sensitive>
-
-Every factual claim carries its source AND a date/version where recency
-matters — an undated version-sensitive claim is uncheckable.
+Non-negotiables even if the reference file is unavailable: recommendation +
+confidence (`confirmed | likely | hypothesis`) first; every factual claim
+carries its source AND a date/version where recency matters; report gaps and
+what you did NOT find.

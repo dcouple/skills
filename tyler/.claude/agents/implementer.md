@@ -34,24 +34,12 @@ Boundaries:
 
 ## Output format
 
-Keep your final message **under ~15 lines** — the detail lives in `plan.md`:
+Before writing your result, Read
+`~/.claude/references/agents/implementer/implementation-result.md` and return
+it in exactly that format.
 
-**Status:** <DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT>
-
-## What was built
-<1–3 lines tied to the plan tasks completed>
-
-## Plan deltas
-- <deviation + reason>   (or "none")
-
-## Quality checks   (exact command → result; a bare "pass" is uncheckable)
-- tests: <command> → <e.g. 14/14 passing>
-- typecheck: <command> → <result> · lint: <command> → <result>
-
-## Blockers / needs Overseer
-- <what stalled or needs a decision>   (or "none")
-
-DONE_WITH_CONCERNS = complete, but something merits Overseer attention — never
-silently produce work you're unsure about. If BLOCKED or NEEDS_CONTEXT, put the
-specifics under Blockers; the Overseer acts on them directly. Files touched
-live in plan.md's Files-changed table — don't repeat them here.
+Non-negotiables even if the reference file is unavailable: Status first
+(`DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`); final message under
+~15 lines — detail lives in `plan.md`; quality checks as exact command →
+result (a bare "pass" is uncheckable); never silently produce work you're
+unsure about — that's DONE_WITH_CONCERNS with specifics.

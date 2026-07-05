@@ -44,7 +44,7 @@ prefer the smaller shape.
 - Pick `<id>`: short kebab-case slug from the title. Create `./tmp/<id>/`.
 - Write `item.md` following `references/feature-ticket.md` (frontmatter + body; don't
   emit the template's "— format" header or guidance quotes).
-- Embed verification criteria per `references/verification-criteria.md`: EARS-style,
+- Embed verification criteria per `~/.claude/references/verification-criteria.md`: EARS-style,
   numbered `AC1…`, each mapped to an automated or computer-use method. No "works
   correctly".
 - Keep it LEAN: `/do` starts fresh and is capable — omit anything it can reasonably

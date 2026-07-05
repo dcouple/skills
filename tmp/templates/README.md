@@ -1,10 +1,16 @@
-# Format Templates
+# Format Templates — index
 
-Draft formats for every artifact in the Orchestra workflow. Two kinds:
+The templates drafted here **moved to their live homes** (single copy each —
+no duplicates to drift). This file is the index.
 
-- **`skills/`** — **document formats** (persisted files written to `./tmp/<id>/`). One folder per skill, holding the doc(s) that skill produces.
-- **`agents/`** — **agent output formats** (structured returns a sub-agent hands back *in-conversation* — NOT written to disk). One folder per sub-agent.
-- **`shared/`** — blocks reused across several templates (verification criteria, system analysis).
+Two kinds of format, three live locations:
+
+- **Skill-specific document formats** (persisted files written to `./tmp/<id>/`,
+  produced by exactly one skill) → that skill's own `references/` folder.
+- **Agent output formats** (structured returns handed back *in-conversation* —
+  NOT written to disk) and **shared blocks** (referenced by more than one skill,
+  or by any agent) → `tyler/.claude/references/` (synced to
+  `~/.claude/references/`).
 
 Guiding principles (from `../plan/build-plan.md`):
 - Work items are **lean and high-signal**. Optional raw sources live in `refs/`, linked not inlined.
@@ -21,19 +27,20 @@ Guiding principles (from `../plan/build-plan.md`):
 - **IDs, cited across docs:** decisions `D1…`, acceptance criteria `AC1…`, review findings `MF-1`/`SF-1`. Re-reviews mark prior findings `fixed | persists | new`.
 - **Frontmatter:** work items carry `id:`; derived docs (plan/wrapup/postmortem) carry `item:`. Status enum is `draft | ready | done` everywhere; every work item carries `pr:` (filled when `/do` opens it).
 
-## Map
+## Map (live locations, relative to repo root)
 
-| Producer | Kind | Template(s) |
+| Producer | Kind | Live template |
 |---|---|---|
-| `/create-feature` · `/create-epic` | doc | `skills/create-feature/feature-ticket.md`, `skills/create-epic/epic-spec.md` |
-| `/create-issue` | doc | `skills/create-issue/bug-report.md` |
-| `/do` | doc | `skills/do/implementation-plan.md`, `wrap-up-report.md` |
-| `/postmortem` | doc | `skills/postmortem/postmortem.md` |
-| Plan Reviewer | output | `agents/plan-reviewer/review-report.md` |
-| Code Reviewer | output | `agents/code-reviewer/review-report.md` (security findings tagged `(security)` inside Must/Should Fix) |
-| Code Researcher | output | `agents/code-researcher/codebase-findings.md` |
-| Web Researcher | output | `agents/web-researcher/research-dossier.md` |
-| Investigator | output | `agents/investigator/root-cause-finding.md` |
-| App user | output | `agents/app-user/verification-result.md` |
-| Implementer | output | `agents/implementer/implementation-result.md` |
-| shared | block | `shared/verification-criteria.md`, `shared/system-analysis.md` |
+| `/create-feature` | doc | `tyler/.claude/skills/create-feature/references/feature-ticket.md` |
+| `/create-epic` | doc | `tyler/.claude/skills/create-epic/references/epic-spec.md` |
+| `/create-issue` | doc | `tyler/.claude/skills/create-issue/references/bug-report.md` |
+| `/do` | doc | `tyler/.claude/skills/do/references/implementation-plan.md`, `wrap-up-report.md` |
+| `/postmortem` | doc | `tyler/.claude/skills/postmortem/references/postmortem.md` |
+| Plan Reviewer | output | `tyler/.claude/references/agents/plan-reviewer/review-report.md` |
+| Code Reviewer | output | `tyler/.claude/references/agents/code-reviewer/review-report.md` (security findings tagged `(security)` inside Must/Should Fix) |
+| Code Researcher | output | `tyler/.claude/references/agents/code-researcher/codebase-findings.md` |
+| Web Researcher | output | `tyler/.claude/references/agents/web-researcher/research-dossier.md` |
+| Investigator | output | `tyler/.claude/references/agents/investigator/root-cause-finding.md` |
+| App user | output | `tyler/.claude/references/agents/app-user/verification-result.md` (verify + reproduce modes) |
+| Implementer | output | `tyler/.claude/references/agents/implementer/implementation-result.md` |
+| shared blocks | block | `tyler/.claude/references/verification-criteria.md`, `system-analysis.md` |

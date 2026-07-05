@@ -45,7 +45,7 @@ and its own verification surface; order confirmed.
 - Pick `<id>`: short kebab-case slug from the title. Create `./tmp/<id>/`.
 - Write `item.md` following `references/epic-spec.md` (frontmatter + body; don't emit
   the template's "— format" header or guidance quotes).
-- Per-phase verification criteria per `references/verification-criteria.md`:
+- Per-phase verification criteria per `~/.claude/references/verification-criteria.md`:
   EARS-style, numbered `AC1…` within each phase, each mapped to an automated or
   computer-use method.
 - Keep it LEAN and at spec altitude: no file lists, pseudo-code, or task sequences —

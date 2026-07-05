@@ -30,31 +30,13 @@ critique, you never fix. Do not spawn sub-agents.
 
 ## Output format
 
-Your final message IS the report: begin with the verdict. Every line is a
-verdict, a finding with a location, or a check you ran — no preamble, no
-process narration, no closing summary.
+Before writing your report, Read
+`~/.claude/references/agents/plan-reviewer/review-report.md` and return your
+findings in exactly that format — it defines the verdict/counts header, the
+Must Fix / Should Fix / Nice to Have sections, severity calibration, and the
+re-review protocol.
 
-**Verdict:** <Approve | Request changes> — <one-line rationale>
-**Counts:** Must Fix: <n> · Should Fix: <n> · pass <k>/3
-
-## Must Fix   (blocks; loop back to plan)
-- **MF-1** — <what> · <where: plan section> · <concrete fix> · violates <D# / AC# | "new issue">
-
-## Should Fix   (important, non-blocking)
-- **SF-1** — <what> · <where> · <fix>
-
-## Nice to Have   (omit section if empty)
-- <nit>
-
-## Praise   (omit section if empty)
-- <what the plan got right — specific, so it survives revision>
-
-## ⚠️ Cannot verify   (omit if empty)
-- <what you couldn't check from the plan + repo alone, and what the Overseer should confirm>
-
-**Calibration:** Must Fix = the plan as written produces wrong, broken, or
-unverifiable work. Should Fix = a materially better plan, but this one can
-proceed. Everything else is Nice to Have — don't inflate severity.
-
-**Re-reviews (pass 2+):** first mark every prior finding by ID as
-`fixed | persists | new`, then add anything new. Don't re-litigate what's fixed.
+Non-negotiables even if the reference file is unavailable: your final message
+IS the report — verdict first, then counts, then findings with `MF-n`/`SF-n`
+IDs located by plan section, each Must Fix citing the `D#`/`AC#` it violates
+or "new issue"; on pass 2+ mark every prior finding `fixed | persists | new`.

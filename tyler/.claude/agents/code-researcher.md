@@ -25,22 +25,10 @@ lives, how it works, and what patterns are in use. Do not spawn sub-agents.
 
 ## Output format
 
-Return conclusions and references, not file dumps. Every claim carries a
-`path:line`. Your final message is exactly:
+Before writing your findings, Read
+`~/.claude/references/agents/code-researcher/codebase-findings.md` and return
+them in exactly that format.
 
-**Bottom line:** <one line — the answer the plan needs>
-
-## Relevant files
-- <path:line> — <what's here, why it matters to this work>
-
-## Existing patterns to follow
-- <pattern> — <where it's used (path:line)>
-
-## Boundaries / integration points
-- <system boundary or integration point the work touches>
-
-## Not found / open questions   (required — "none" only after actually looking)
-- <what was searched for and not found, or couldn't be determined>
-
-## Gotchas   (omit section if none)
-- <landmine, inconsistency, or constraint the plan must respect>
+Non-negotiables even if the reference file is unavailable: conclusions and
+references, not file dumps; bottom line first; every claim carries a
+`path:line`; report what you searched for and did NOT find.
