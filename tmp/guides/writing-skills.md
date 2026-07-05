@@ -175,5 +175,5 @@ Keep `.claude` and `.codex` variants in sync in shape; the body procedure should
 
 - The workflow is a **filesystem relay**: discussion → ticket → plan → implement → review → teach-back, each leaving an artifact.
 - The governing question at every gate: **"Is this clear enough to delegate?"** If no, discuss. If yes, capture, then execute.
-- **Model routing is a first-class concern** — skills may delegate steps to specific models (Sonnet for legwork: explore / research / app-driving; GPT-5.5 **high** via `codex exec` for review & investigation; GPT-5.5 **medium** for implement; Fable for orchestration & judgment). See `writing-subagents.md` §5.
+- **Model routing is a first-class concern** — skills may delegate steps to specific models (Sonnet for web research and app-driving; GPT-5.5 **medium** via `codex exec` for implement and codebase exploration; GPT-5.5 **high** via `codex exec` for review & investigation; Fable for orchestration & judgment; same-named Claude sub-agents as Codex fallbacks). See `writing-subagents.md` §5.
 - Never route customer-facing copy through Codex; that's a Claude job.

@@ -85,9 +85,9 @@ Route by *what the job demands*, not by habit. This is our real differentiator �
 | Role | Model | Why |
 |---|---|---|
 | Orchestrate / judge (Overseer: discussion, spec, plan judgment, running `/do`) | **Fable** (main session) | Best for ambiguous, open-ended reasoning. Opus is an acceptable fallback. |
-| Legwork: explore codebase, web research, drive the running app (Code Researcher, Web Researcher, App user) | **Sonnet** | Cheap, fast; returns file:line refs / cited findings / verification evidence. |
-| Review & investigation (Plan Reviewer, Code Reviewer, Investigator) | **GPT-5.5 high via `codex exec`** | Sharper reading where it changes the outcome; independent (non-Claude) eyes on Claude-authored plans. Opus placeholder until Phase 2. |
-| Implement | **GPT-5.5 medium via `codex exec`** | The engineering workhorse — strong enough for a well-planned diff, cheap enough for long windows. High effort is the review lane, not the implement lane. Opus placeholder / Claude-side fallback. |
+| Legwork: web research, drive the running app (Web Researcher, App user) | **Sonnet** | Cheap, fast; returns file:line refs / cited findings / verification evidence. |
+| Review & investigation (Plan Reviewer, Code Reviewer, Investigator) | **GPT-5.5 high via `codex exec`** | Sharper reading where it changes the outcome; independent (non-Claude) eyes on Claude-authored plans. Claude Opus sub-agents run as parallel second reviewers and as fallbacks. |
+| Implement | **GPT-5.5 medium via `codex exec`** | The engineering workhorse — strong enough for a well-planned diff, cheap enough for long windows; codebase exploration (Code Researcher) also runs here. High effort is for review and investigation, not implementation. Claude Opus/Sonnet sub-agents are the fallbacks. |
 
 **Spend the expensive lanes sparingly** — save Fable for judgment and Codex high for the review/investigation loops where sharper reading changes the outcome. Never route customer-facing copy through Codex.
 
@@ -160,7 +160,7 @@ roadmap diagram; "placeholder" = the Claude model standing in until the Phase-2
 
 | Agent | Target model | Placeholder | Tools | Job |
 |---|---|---|---|---|
-| `code-researcher` | Sonnet | — | Read, Grep, Glob, LS | Locate files & patterns; return file:line refs |
+| `code-researcher` | GPT-5.5 **medium** | Sonnet | Read, Grep, Glob, LS | Locate files & patterns; return file:line refs |
 | `web-researcher` | Sonnet | — | web + read | Cited research dossiers for new tech |
 | `app-user` | Sonnet | — | computer-use | Drive the running app; verify against criteria |
 | `implementer` | GPT-5.5 **medium** | Opus | all tools | Write the diff per the plan; update plan.md |

@@ -210,12 +210,21 @@ Each contributor has their own folder. Start with `parsa/`.
 
 ```text
 parsa/
-  .claude/   Claude Code skills, commands, agents, hooks, settings
-  .codex/    Codex skills and config
-  pane-chat/ Shared Pane Chat workflow references
-  business/  Business agent skills (context, discussion, spec, artifact, release)
-  seo/       SEO skills (briefing, strategy, readability, authority, drafting)
+  .claude/     Claude Code skills, commands, agents, hooks, settings
+  .codex/      Codex skills and config
+  pane-chat/   Shared Pane Chat workflow references
+  business/    Business agent skills (context, discussion, spec, artifact, release)
+  seo/         SEO skills (briefing, strategy, readability, authority, drafting)
+tyler/
+  .claude/     Claude Code skills and agents (Claude orchestrates)
+  .codex/      Codex role skills, dispatched from Claude via codex exec
+  references/  Single-copy shared docs (output formats, criteria) both harnesses read
 ```
+
+Tyler's variant is a six-skill pipeline (`/discussion` → `/create-feature` /
+`/create-epic` / `/create-issue` → `/do` → `/postmortem`) where Claude
+orchestrates and Codex runs implementation, review, codebase research, and
+investigation — see `tyler/README.md`.
 
 The skills are meant to be edited. The workflow shape should generalize, but the
 exact contents should change as your work changes.
