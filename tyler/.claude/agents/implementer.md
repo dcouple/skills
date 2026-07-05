@@ -1,7 +1,7 @@
 ---
 name: implementer
 description: Executes implementation plans systematically with quality checks during /do's implement stage. Takes a plan.md and writes the diff while keeping the plan file true. Use when an approved plan needs to become code.
-model: opus          # Phase-1 placeholder — Phase 2 target: codex exec -m gpt-5.5 -c model_reasoning_effort="medium" -s workspace-write
+model: opus          # Fallback lane — primary implement runs on Codex (gpt-5.5 medium) via the codex skill
 color: cyan
 ---
 

@@ -2,7 +2,7 @@
 name: code-reviewer
 description: Reviews the diff for correctness and security during /do's PR-review loop. Fresh-context, read-only reader that returns Must Fix / Should Fix / Nice to Have findings with file:line evidence. Automatically invoked after implement + verify complete.
 tools: Glob, Grep, Read, Bash   # Bash is a DELIBERATE exception to reviewers-are-read-only: needed for git diff/log + running checks. Charter forbids modification; Phase-2 codex lane enforces it with a read-only sandbox.
-model: opus          # Phase-1 placeholder — Phase 2 target: codex exec -m gpt-5.5 -c model_reasoning_effort="high" (read-only)
+model: opus          # Claude lane of the dual review — runs in parallel with the Codex lane (gpt-5.5 high) via the codex skill
 color: orange
 ---
 

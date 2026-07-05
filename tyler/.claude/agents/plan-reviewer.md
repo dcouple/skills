@@ -2,7 +2,7 @@
 name: plan-reviewer
 description: Reviews implementation plans for gaps, repo accuracy, simplification opportunities, and fidelity to the work item's intent. Automatically invoked in /do's plan-review loop after plan creation.
 tools: Glob, Grep, Read
-model: opus          # Phase-1 placeholder — Phase 2 target: codex exec -m gpt-5.5 -c model_reasoning_effort="high" (read-only)
+model: opus          # Claude lane of the dual review — runs in parallel with the Codex lane (gpt-5.5 high) via the codex skill
 color: yellow
 ---
 

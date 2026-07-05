@@ -23,22 +23,28 @@ The flow separates *clarity*, *capture*, and *execution*:
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
-| Role | Agent | Phase-1 model | Phase-2 target |
-| --- | --- | --- | --- |
-| Overseer (conducts `/do`, all judgment) | main session | Fable | Fable |
-| Explore codebase | `code-researcher` | Sonnet | Sonnet |
-| Web research | `web-researcher` | Sonnet | Sonnet |
-| Drive the app / verify | `app-user` | Sonnet | Sonnet |
-| Write the diff | `implementer` | Opus | `codex exec` GPT-5.5, effort `medium` |
-| Review the plan | `plan-reviewer` | Opus | `codex exec` GPT-5.5, effort `high` |
-| Review the diff + security | `code-reviewer` | Opus | `codex exec` GPT-5.5, effort `high` |
-| Reproduce & root-cause | `investigator` | Opus | `codex exec` GPT-5.5, effort `high` |
+| Role | Runs on | Notes |
+| --- | --- | --- |
+| Overseer (conducts `/do`, all judgment) | main session — Fable | |
+| Explore codebase | `code-researcher` — Sonnet | |
+| Web research | `web-researcher` — Sonnet | |
+| Drive the app / verify | `app-user` — Sonnet | |
+| Write the diff | **Codex** GPT-5.5 `medium`, workspace-write | via the `codex` skill; Claude `implementer` (Opus) is the fallback |
+| Review the plan | **dual lane**: Codex GPT-5.5 `high` + `plan-reviewer` (Opus) | in parallel; Must-Fix gate = union of both |
+| Review the diff + security | **dual lane**: Codex GPT-5.5 `high` + `code-reviewer` (Opus) | in parallel; Must-Fix gate = union of both |
+| Reproduce & root-cause | `investigator` — Opus | Codex swap deferred — stays a Claude sub-agent for interactive dispatch |
 
-Review loops exit on **zero Must Fix** (cap 3 passes; cap-outs are flagged in
-the wrap-up). Phase 2 also adds **dual reviewers** — Codex high + Claude Opus
-in parallel, Must-Fix gate = the union of both. High effort is the
-review/investigation lane; implementation runs at medium. Never route
-customer-facing copy through Codex.
+Codex lanes are dispatched by the **`codex` skill**
+(`.claude/skills/codex/`), which wraps `codex exec` per role — model, effort,
+sandbox (reviewers read-only + ephemeral; implementer workspace-write with
+`resume --last` across fix loops), output capture, and verdict parsing. If
+the CLI is missing or a lane fails, `/do` degrades to single-lane Claude
+agents and flags it in the wrap-up.
+
+Review loops exit on **zero Must Fix from both lanes** (cap 3 passes;
+cap-outs are flagged in the wrap-up). High effort is the review lane;
+implementation runs at medium. Never route customer-facing copy through
+Codex.
 
 Build tracker and design decisions: `../tmp/plan/build-plan.md`.
 
@@ -68,7 +74,12 @@ git -C "$REPO" pull --ff-only
 rsync -a "$REPO/tyler/.claude/skills/" "$HOME/.claude/skills/"
 rsync -a "$REPO/tyler/.claude/agents/" "$HOME/.claude/agents/"
 rsync -a "$REPO/tyler/.claude/references/" "$HOME/.claude/references/"
+rsync -a "$REPO/tyler/.codex/skills/" "$HOME/.codex/skills/"
 ```
+
+The `.codex/skills/` role skills (implementer, plan-reviewer, code-reviewer)
+are thin pointers into `~/.claude/agents/` and `~/.claude/references/` — the
+charters and formats stay single-copy across both harnesses.
 
 `rsync` without `--delete` won't remove skills/agents that were deleted from
 this repo — prune those by hand (or pass `--delete` if nothing hand-made lives
