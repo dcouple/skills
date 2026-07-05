@@ -2,7 +2,7 @@
 name: create-issue
 description: Captures a defect as a Bug Report work item ready for /do, running the investigator first if the root cause isn't already established. Use when the user explicitly asks to create an issue, bug report, or ticket for a defect — e.g. "create an issue for this", "write this bug up", "file this" — typically after a discussion or investigation has surfaced it.
 argument-hint: "[bug title or one-line summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill, Bash(gh:*)
 ---
 
 # Create Issue
@@ -70,12 +70,27 @@ reconcile before proceeding.
 
 **Success criteria**: the user's teach-back matches the item.
 
-### 5. Mark ready and hand off
-Set `status: ready` in `item.md` (leave `draft` if the cause is still a hypothesis and
-the user wants more evidence first).
+### 5. Mark ready and publish
+1. Set `status: ready` in `item.md` (leave `draft` if the cause is still a hypothesis
+   and the user wants more evidence first — publish happens either way, so the
+   evidence trail lives with the issue).
+2. Create the GitHub issue: `gh issue create` in the project's repo (from the
+   `Work-item tracking` section of the project's `CLAUDE.md`, or the current repo) —
+   title `fix: <bug title>`, body = summary, severity, reproduction steps, root cause
+   + confidence.
+3. Invoke the `notion` skill, operation `publish`, with `./tmp/<id>/` and the issue
+   URL — it creates the Notion work item and uploads `item.md` + every `refs/` file
+   (traces, transcripts, system analysis), returning the page URL.
+4. Cross-link: add the Notion page URL to the GitHub issue body (`gh issue edit`),
+   and record both in `item.md` frontmatter as `github:` and `notion:`. On
+   `NOTION UNAVAILABLE`, proceed GitHub + local only and tell the user.
+
+**Success criteria**: issue exists, Notion work item exists with all artifacts (or
+its absence was reported), and each of issue / Notion page / item.md links to the
+others.
 
 ```
 Suggested next steps:
-- `/do ./tmp/<id>/item.md` — run the autonomous pipeline to fix and verify
+- `/do <issue # or ./tmp/<id>/item.md>` — run the autonomous pipeline to fix and verify
 - `/discussion [topic]` — if the bug exposed a design question bigger than the fix
 ```

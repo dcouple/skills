@@ -2,7 +2,7 @@
 name: create-feature
 description: Captures a discussed feature as a lean Feature Ticket work item ready for /do. Use when the user explicitly asks to create a feature, feature ticket, or turn the current discussion into a feature — e.g. "create a feature for this", "make this a ticket", "write this up as a feature". For multi-phase workstreams use /create-epic instead.
 argument-hint: "[feature title or one-line summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill, Bash(gh:*)
 ---
 
 # Create Feature
@@ -64,11 +64,26 @@ reconcile — update the doc or the understanding — before proceeding.
 
 **Success criteria**: the user's teach-back matches the item.
 
-### 5. Mark ready and hand off
-Set `status: ready` in `item.md`.
+### 5. Mark ready and publish
+1. Set `status: ready` in `item.md`.
+2. Create the GitHub issue: `gh issue create` in the project's repo (from the
+   `Work-item tracking` section of the project's `CLAUDE.md`, or the current
+   repo) — title `feat: <item title>`, body = the item's intent, desired end
+   state, and verification criteria summary.
+3. Invoke the `notion` skill, operation `publish`, with `./tmp/<id>/` and the
+   issue URL — it creates the Notion work item and uploads `item.md` + every
+   `refs/` file, returning the page URL.
+4. Cross-link: add the Notion page URL to the GitHub issue body
+   (`gh issue edit`), and record both in `item.md` frontmatter as `github:`
+   and `notion:`. On `NOTION UNAVAILABLE`, proceed GitHub + local only and
+   tell the user.
+
+**Success criteria**: issue exists, Notion work item exists with all
+artifacts (or its absence was reported), and each of issue / Notion page /
+item.md links to the others.
 
 ```
 Suggested next steps:
-- `/do ./tmp/<id>/item.md` — run the autonomous pipeline against this item
+- `/do <issue # or ./tmp/<id>/item.md>` — run the autonomous pipeline against this item
 - `/discussion [follow-up]` — if a gap surfaced that needs more thinking first
 ```

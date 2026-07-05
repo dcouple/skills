@@ -2,7 +2,7 @@
 name: create-epic
 description: Captures a discussed multi-phase workstream as an Epic Spec work item ready for /do. Use when the user explicitly asks to create an epic, epic spec, feature epic, or spec spanning several sequential phases — e.g. "create an epic for this", "turn this into a spec", "this is bigger than one feature, write it up". For a single-outcome change use /create-feature instead.
 argument-hint: "[epic title or one-line summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill, Bash(gh:*)
 ---
 
 # Create Epic
@@ -65,11 +65,26 @@ before proceeding.
 
 **Success criteria**: the user's teach-back matches the item.
 
-### 5. Mark ready and hand off
-Set `status: ready` in `item.md`.
+### 5. Mark ready and publish
+1. Set `status: ready` in `item.md`.
+2. Create the GitHub issue: `gh issue create` in the project's repo (from the
+   `Work-item tracking` section of the project's `CLAUDE.md`, or the current
+   repo) — title `feat: <epic title>`, body = the epic's problem, end state,
+   and the phases table.
+3. Invoke the `notion` skill, operation `publish`, with `./tmp/<id>/` and the
+   issue URL — it creates the Notion work item and uploads `item.md` + every
+   `refs/` file, returning the page URL.
+4. Cross-link: add the Notion page URL to the GitHub issue body
+   (`gh issue edit`), and record both in `item.md` frontmatter as `github:`
+   and `notion:`. On `NOTION UNAVAILABLE`, proceed GitHub + local only and
+   tell the user.
+
+**Success criteria**: issue exists, Notion work item exists with all
+artifacts (or its absence was reported), and each of issue / Notion page /
+item.md links to the others.
 
 ```
 Suggested next steps:
-- `/do ./tmp/<id>/item.md` — run the pipeline; phases execute sequentially, one PR
+- `/do <issue # or ./tmp/<id>/item.md>` — run the pipeline; phases execute sequentially, one PR
 - `/discussion [follow-up]` — if a phase boundary needs more thinking first
 ```

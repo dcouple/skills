@@ -26,9 +26,16 @@ Codex.
 
 ## Step 0: Load & preflight
 
-1. Read the item at $ARGUMENTS (default: most recently modified
-   `./tmp/*/item.md` with `status: ready`). Its frontmatter `type` selects the
-   mode: `feature-ticket` / `bug-report` → single channel; `epic-spec` → Step 7.
+1. Resolve the work item from $ARGUMENTS:
+   - **GitHub issue number/URL** → invoke the `notion` skill, operation
+     `pull`: it follows the issue's Notion link and writes the work item plus
+     every stored artifact (refs, any prior plan) to `./tmp/<id>/` before
+     work begins. On `NO NOTION ITEM`, treat the issue body itself as the
+     work item and write it to `./tmp/<id>/item.md`.
+   - **Local path** → read it directly (default: most recently modified
+     `./tmp/*/item.md` with `status: ready`).
+   The item's frontmatter `type` selects the mode: `feature-ticket` /
+   `bug-report` → single channel; `epic-spec` → Step 7.
 2. Refuse politely if `status` is not `ready`, or verification criteria are
    missing — send the user back to the `/create-*` skill that owns the item type.
 3. Branch check: `git branch --show-current`. You do NOT create branches — if
@@ -132,13 +139,19 @@ All PR prep lives here — there is no separate commit or prepare-pr skill.
    `type:` style; body sections: **Summary** (the item's intent and what
    "done" means — desired end state for features, expected behavior restored
    for bugs), **Verification** (evidence per AC, one line each), and
-   **Manual steps / residual risks** (omit if none).
+   **Manual steps / residual risks** (omit if none). If the item carries a
+   `github:` issue reference, include `Closes #<n>` so the merge closes it.
 5. Write `./tmp/<id>/wrapup.md` following `references/wrap-up-report.md`:
    what was built, verification evidence per AC, final review outcome
    ("Must Fix: 0 · passes used k/3" — or cap-out flags), residual risks,
    deltas vs plan. Post it as a PR comment (`gh pr comment`).
-6. If a `pr-test-automation` skill is available, run it.
-7. Report to the user: PR link + wrap-up summary + anything capped out.
+6. If the item carries a `notion:` reference, invoke the `notion` skill,
+   operation `upload`: add `plan.md` and `wrapup.md` to the Notion work item,
+   set its status to `done`, and record the PR URL — the Notion page stays
+   the durable home of every artifact this run produced. On
+   `NOTION UNAVAILABLE`, note it in the report.
+7. If a `pr-test-automation` skill is available, run it.
+8. Report to the user: PR link + wrap-up summary + anything capped out.
 
 ## Rules
 

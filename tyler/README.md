@@ -18,10 +18,15 @@ The flow separates *clarity*, *capture*, and *execution*:
    capture skills. Each turns what the conversation established into a lean
    work item at `./tmp/<id>/item.md` (Feature Ticket, Epic Spec, or Bug
    Report, raw sources in `./tmp/<id>/refs/`) with verification criteria and a
-   learning gate. `/create-issue` runs the investigator itself if the root
-   cause isn't already established.
-3. **`/do <item>`** — the autonomous pipeline: plan → plan-review loop →
-   implement → verify → clean up → PR-review loop → PR + wrap-up.
+   learning gate, then **publishes** it: a GitHub issue in the project repo
+   plus a Notion work item (via the `notion` skill) holding `item.md` and
+   every artifact, cross-linked both ways. `/create-issue` runs the
+   investigator itself if the root cause isn't already established.
+3. **`/do <issue # or item path>`** — the autonomous pipeline: pull the work
+   item's artifacts from Notion into `./tmp/<id>/` (when given a GitHub
+   issue) → plan → plan-review loop → implement → verify → clean up →
+   PR-review loop → PR + wrap-up, with `plan.md`/`wrapup.md` uploaded back to
+   the Notion work item at the end.
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
@@ -68,9 +73,19 @@ Build tracker and design decisions: `../tmp/plan/build-plan.md`.
 - `../tmp/templates/README.md` is the index mapping every format to its live
   home.
 
-The six skills above are the whole surface — no standalone utilities. Web
-research is the `web-researcher` sub-agent, review lives inside `/do`, and
-all commit/PR prep lives in `/do`'s final step.
+The six workflow skills above, plus two infrastructure skills the others
+invoke — `codex` (dispatches Codex roles) and `notion` (the GitHub ↔ Notion
+artifact bridge) — are the whole surface. Web research is the
+`web-researcher` sub-agent, review lives inside `/do`, and all commit/PR
+prep lives in `/do`'s final step.
+
+## Project templates
+
+`templates/` holds copyable per-project scaffolding: `AGENTS.md` (universal
+agent instructions both harnesses read) and `CLAUDE.md` (points to AGENTS.md,
+adds Claude-only notes, and carries the `Work-item tracking` section — the
+GitHub repo and Notion data source the workflow skills publish to). Copy both
+into a codebase root and fill in the sections.
 
 ## Keeping in sync
 
