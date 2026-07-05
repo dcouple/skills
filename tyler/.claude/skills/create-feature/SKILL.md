@@ -2,6 +2,7 @@
 name: create-feature
 description: Captures a discussed feature as a lean Feature Ticket work item ready for /do. Use when the user explicitly asks to create a feature, feature ticket, or turn the current discussion into a feature — e.g. "create a feature for this", "make this a ticket", "write this up as a feature". For multi-phase workstreams use /create-epic instead.
 argument-hint: "[feature title or one-line summary]"
+disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill, Bash(gh:*)
 ---
 

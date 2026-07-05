@@ -24,9 +24,10 @@ The flow separates *clarity*, *capture*, and *execution*:
    investigator itself if the root cause isn't already established.
 3. **`/do <issue # or item path>`** — the autonomous pipeline: pull the work
    item's artifacts from Notion into `./tmp/<id>/` (when given a GitHub
-   issue) → plan → plan-review loop → implement → verify → clean up →
-   PR-review loop → PR + wrap-up, with `plan.md`/`wrapup.md` uploaded back to
-   the Notion work item at the end.
+   issue) → plan + review loop → implement → verify → PR-review loop →
+   PR + wrap-up, with `plan.md`/`wrapup.md` uploaded back to the Notion work
+   item at the end. Deliberately high-level: the orchestrator judges how much
+   research a plan needs and when each review loop has converged.
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
@@ -50,10 +51,13 @@ its role instructions), output capture, and status-line parsing. If the CLI
 is missing or a dispatch fails, the caller falls back to the same-named
 Claude sub-agent and flags it.
 
-Review loops exit on **zero Must Fix from both reviewers** (cap 3 passes;
-cap-outs are flagged in the wrap-up). High effort is for judgment-heavy roles
-(review, investigation); implementation and exploration run at medium. Never
-route customer-facing copy through Codex.
+Review loops exit when **no Must Fix remains from either reviewer** — the
+orchestrator judges when a loop has converged and flags anything left
+unresolved in the wrap-up. High effort is for judgment-heavy roles (review,
+investigation); implementation and exploration run at medium. Never route
+customer-facing copy through Codex. `/do` and the three `/create-*` skills
+are user-invoked only (`disable-model-invocation`) — the model never fires
+them on its own.
 
 Build tracker and design decisions: `../tmp/plan/build-plan.md`.
 

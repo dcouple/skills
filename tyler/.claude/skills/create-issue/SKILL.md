@@ -2,6 +2,7 @@
 name: create-issue
 description: Captures a defect as a Bug Report work item ready for /do, running the investigator first if the root cause isn't already established. Use when the user explicitly asks to create an issue, bug report, or ticket for a defect — e.g. "create an issue for this", "write this bug up", "file this" — typically after a discussion or investigation has surfaced it.
 argument-hint: "[bug title or one-line summary]"
+disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill, Bash(gh:*)
 ---
 

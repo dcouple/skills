@@ -2,6 +2,7 @@
 name: create-epic
 description: Captures a discussed multi-phase workstream as an Epic Spec work item ready for /do. Use when the user explicitly asks to create an epic, epic spec, feature epic, or spec spanning several sequential phases — e.g. "create an epic for this", "turn this into a spec", "this is bigger than one feature, write it up". For a single-outcome change use /create-feature instead.
 argument-hint: "[epic title or one-line summary]"
+disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill, Bash(gh:*)
 ---
 
