@@ -2,7 +2,7 @@
 name: plan-reviewer
 description: Reviews implementation plans for gaps, repo accuracy, simplification opportunities, and fidelity to the work item's intent. Automatically invoked in /do's plan-review loop after plan creation.
 tools: Glob, Grep, Read
-model: opus          # Claude lane of the dual review — runs in parallel with the Codex lane (gpt-5.5 high) via the codex skill
+model: opus          # One of two parallel reviewers — the other is a Codex sub-agent (gpt-5.5 high) via the codex skill
 color: yellow
 ---
 
@@ -31,7 +31,7 @@ critique, you never fix. Do not spawn sub-agents.
 ## Output format
 
 Before writing your report, Read
-`~/.claude/references/agents/plan-reviewer/review-report.md` and return your
+`~/.references/agents/plan-reviewer/review-report.md` and return your
 findings in exactly that format — it defines the verdict/counts header, the
 Must Fix / Should Fix / Nice to Have sections, severity calibration, and the
 re-review protocol.

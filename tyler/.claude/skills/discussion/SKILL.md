@@ -2,7 +2,7 @@
 name: discussion
 description: Interactive back-and-forth to clarify, understand, or figure something out — an idea, an approach, a tradeoff, or a suspected bug. Use when the user wants to think out loud or explore before committing to anything — e.g. "let's discuss X", "help me understand Y", "why is Z happening", "what should we do about W". Produces clarity, not artifacts; work items are created afterward with /create-feature, /create-epic, or /create-issue.
 argument-hint: "[idea, question, or topic]"
-allowed-tools: Read, Glob, Grep, LS, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, LS, Task, Skill, AskUserQuestion
 ---
 
 # Discussion
@@ -27,15 +27,16 @@ mid-discussion drags the conversation down to paperwork altitude.
 Delegate legwork to sub-agents so bulky exploration stays out of this thread. Pick by
 what the user is actually asking:
 
-- **How does our code work? What exists today?** → `code-researcher` (returns
-  file:line findings)
-- **What do the docs / ecosystem / other people do?** → `web-researcher` (returns a
-  cited dossier)
-- **Why is this broken? Is this a bug?** → `investigator` (reproduces and root-causes,
-  returns a finding with evidence and confidence). If reproduction requires driving
+- **How does our code work? What exists today?** → the `codex` skill, role
+  `code-researcher` (returns file:line findings). Fallback on
+  `CODEX UNAVAILABLE`/`CODEX ROLE FAILED`: the Claude `code-researcher` sub-agent.
+- **What do the docs / ecosystem / other people do?** → the `web-researcher`
+  sub-agent (returns a cited dossier)
+- **Why is this broken? Is this a bug?** → the `codex` skill, role `investigator`
+  (reproduces and root-causes, returns a finding with evidence and confidence).
+  Fallback: the Claude `investigator` sub-agent. If reproduction requires driving
   the running app, dispatch `app-user` first to exercise the flow and capture
-  evidence, then pass its transcript to the investigator — sub-agents don't spawn
-  sub-agents, so you sequence them.
+  evidence, then pass its transcript along with the defect report.
 
 Only research what the discussion actually needs — let questions pull research, not
 the other way around. Dispatch mid-conversation as new questions arise; run

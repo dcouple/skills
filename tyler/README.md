@@ -1,16 +1,18 @@
 # tyler
 
-A Claude Code-only variant of the delegation-loop workflow. Claude Code is the
-harness; Fable conducts; sub-agents do the specialized work; implementation and
-review swap onto Codex in Phase 2.
+A dual-harness development workflow (codenamed "Orchestra" in the build plan —
+that name stays out of the runtime files so every dispatched model gets plain
+definitions). Claude Code is the orchestrating harness: Fable makes the
+judgment calls and dispatches sub-agents; Codex (GPT-5.5) runs the
+engineering-heavy roles.
 
-## The Orchestra
+## The workflow
 
 The flow separates *clarity*, *capture*, and *execution*:
 
 1. **`/discussion`** — clarify, understand, figure out. General-purpose: it
-   spawns `code-researcher` / `web-researcher` for questions and the
-   `investigator` (with `app-user` for reproduction) when the topic is a
+   dispatches the code-researcher / `web-researcher` for questions and the
+   investigator (with `app-user` for reproduction) when the topic is a
    defect. It produces clarity, never artifacts.
 2. **`/create-feature` · `/create-epic` · `/create-issue`** — manually invoked
    capture skills. Each turns what the conversation established into a lean
@@ -23,40 +25,43 @@ The flow separates *clarity*, *capture*, and *execution*:
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
-| Role | Runs on | Notes |
+| Role | Runs on | Fallback / notes |
 | --- | --- | --- |
-| Overseer (conducts `/do`, all judgment) | main session — Fable | |
-| Explore codebase | `code-researcher` — Sonnet | |
-| Web research | `web-researcher` — Sonnet | |
-| Drive the app / verify | `app-user` — Sonnet | |
-| Write the diff | **Codex** GPT-5.5 `medium`, workspace-write | via the `codex` skill; Claude `implementer` (Opus) is the fallback |
-| Review the plan | **dual lane**: Codex GPT-5.5 `high` + `plan-reviewer` (Opus) | in parallel; Must-Fix gate = union of both |
-| Review the diff + security | **dual lane**: Codex GPT-5.5 `high` + `code-reviewer` (Opus) | in parallel; Must-Fix gate = union of both |
-| Reproduce & root-cause | `investigator` — Opus | Codex swap deferred — stays a Claude sub-agent for interactive dispatch |
+| Orchestrator (conducts `/do`, all judgment) | main session — Fable | |
+| Web research | Claude `web-researcher` — Sonnet | |
+| Drive the app / verify | Claude `app-user` — Sonnet | |
+| Explore codebase | **Codex** GPT-5.5 `medium`, read-only | Claude `code-researcher` (Sonnet) |
+| Reproduce & root-cause | **Codex** GPT-5.5 `high`, workspace-write | Claude `investigator` (Opus) |
+| Write the diff | **Codex** GPT-5.5 `medium`, workspace-write | Claude `implementer` (Opus) |
+| Review the plan | **two parallel reviewers**: Codex GPT-5.5 `high` + Claude `plan-reviewer` (Opus) | Must-Fix gate = union of both |
+| Review the diff + security | **two parallel reviewers**: Codex GPT-5.5 `high` + Claude `code-reviewer` (Opus) | Must-Fix gate = union of both |
 
-Codex lanes are dispatched by the **`codex` skill**
-(`.claude/skills/codex/`), which wraps `codex exec` per role — model, effort,
-sandbox (reviewers read-only + ephemeral; implementer workspace-write with
-`resume --last` across fix loops), output capture, and verdict parsing. If
-the CLI is missing or a lane fails, `/do` degrades to single-lane Claude
-agents and flags it in the wrap-up.
+Every Codex role is dispatched by the **`codex` skill**
+(`.claude/skills/codex/`), the one place that knows the `codex exec`
+mechanics per role — model, effort, sandbox (reviewers/researchers read-only
++ ephemeral; implementer workspace-write with `resume --last` across fix
+rounds; investigator workspace-write for running tests, edits forbidden by
+its role instructions), output capture, and status-line parsing. If the CLI
+is missing or a dispatch fails, the caller falls back to the same-named
+Claude sub-agent and flags it.
 
-Review loops exit on **zero Must Fix from both lanes** (cap 3 passes;
-cap-outs are flagged in the wrap-up). High effort is the review lane;
-implementation runs at medium. Never route customer-facing copy through
-Codex.
+Review loops exit on **zero Must Fix from both reviewers** (cap 3 passes;
+cap-outs are flagged in the wrap-up). High effort is for judgment-heavy roles
+(review, investigation); implementation and exploration run at medium. Never
+route customer-facing copy through Codex.
 
 Build tracker and design decisions: `../tmp/plan/build-plan.md`.
 
 ## Where formats live (single copy each — no duplicates to drift)
 
-- **`.claude/references/`** — anything referenced by more than one skill, or by
-  any agent: the shared blocks (`verification-criteria.md`,
+- **`tyler/references/`** (synced to `~/.references/` — harness-neutral,
+  sibling of `~/.claude` and `~/.codex`) — anything referenced by more than
+  one skill, or by any agent: the shared blocks (`verification-criteria.md`,
   `system-analysis.md`) and every agent's output format
   (`references/agents/<agent>/…`). Agents are flat `.md` files by design
   (Claude Code has no agent-folder format), so each agent's body carries a
-  pointer — "Read `~/.claude/references/agents/<name>/<format>.md`" — plus a
-  few non-negotiable lines as a safety net if the file is missing.
+  pointer — "Read `~/.references/agents/<name>/<format>.md`" — plus a few
+  non-negotiable lines as a safety net if the file is missing.
 - **`.claude/skills/<name>/references/`** — document formats produced by
   exactly one skill (feature-ticket, epic-spec, bug-report,
   implementation-plan, wrap-up-report, postmortem).
@@ -64,8 +69,8 @@ Build tracker and design decisions: `../tmp/plan/build-plan.md`.
   home.
 
 The six skills above are the whole surface — no standalone utilities. Web
-research is the `web-researcher` agent, review is the `code-reviewer` agent,
-and all commit/PR prep lives in `/do`'s final step.
+research is the `web-researcher` sub-agent, review lives inside `/do`, and
+all commit/PR prep lives in `/do`'s final step.
 
 ## Keeping in sync
 
@@ -73,13 +78,14 @@ and all commit/PR prep lives in `/do`'s final step.
 git -C "$REPO" pull --ff-only
 rsync -a "$REPO/tyler/.claude/skills/" "$HOME/.claude/skills/"
 rsync -a "$REPO/tyler/.claude/agents/" "$HOME/.claude/agents/"
-rsync -a "$REPO/tyler/.claude/references/" "$HOME/.claude/references/"
+rsync -a "$REPO/tyler/references/" "$HOME/.references/"
 rsync -a "$REPO/tyler/.codex/skills/" "$HOME/.codex/skills/"
 ```
 
-The `.codex/skills/` role skills (implementer, plan-reviewer, code-reviewer)
-are thin pointers into `~/.claude/agents/` and `~/.claude/references/` — the
-charters and formats stay single-copy across both harnesses.
+The `.codex/skills/` role skills (implementer, plan-reviewer, code-reviewer,
+code-researcher, investigator) are thin pointers into `~/.claude/agents/`
+(role instructions) and `~/.references/` (output formats) — one copy of each
+document across both harnesses.
 
 `rsync` without `--delete` won't remove skills/agents that were deleted from
 this repo — prune those by hand (or pass `--delete` if nothing hand-made lives

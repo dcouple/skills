@@ -25,7 +25,7 @@ caller decides. Do not spawn sub-agents.
 ## Output format
 
 Before writing your dossier, Read
-`~/.claude/references/agents/web-researcher/research-dossier.md` and return it
+`~/.references/agents/web-researcher/research-dossier.md` and return it
 in exactly that format.
 
 Non-negotiables even if the reference file is unavailable: recommendation +

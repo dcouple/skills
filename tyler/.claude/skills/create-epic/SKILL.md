@@ -2,7 +2,7 @@
 name: create-epic
 description: Captures a discussed multi-phase workstream as an Epic Spec work item ready for /do. Use when the user explicitly asks to create an epic, epic spec, feature epic, or spec spanning several sequential phases — e.g. "create an epic for this", "turn this into a spec", "this is bigger than one feature, write it up". For a single-outcome change use /create-feature instead.
 argument-hint: "[epic title or one-line summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Task
+allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill
 ---
 
 # Create Epic
@@ -26,8 +26,9 @@ Drive toward what the spec needs, pulling from the discussion so far:
 - **Out of scope**
 
 Where the conversation left a gap, ask the user directly — one focused round. If a
-codebase or external fact is missing, dispatch `code-researcher` or `web-researcher`
-to fill exactly that gap.
+codebase fact is missing, dispatch the `codex` skill (role `code-researcher`; Claude
+`code-researcher` sub-agent as fallback); for an external fact, the `web-researcher`
+sub-agent.
 
 **Success criteria**: the user has explicitly agreed to problem, end state, each locked
 direction, and the out-of-scope list.
@@ -45,7 +46,7 @@ and its own verification surface; order confirmed.
 - Pick `<id>`: short kebab-case slug from the title. Create `./tmp/<id>/`.
 - Write `item.md` following `references/epic-spec.md` (frontmatter + body; don't emit
   the template's "— format" header or guidance quotes).
-- Per-phase verification criteria per `~/.claude/references/verification-criteria.md`:
+- Per-phase verification criteria per `~/.references/verification-criteria.md`:
   EARS-style, numbered `AC1…` within each phase, each mapped to an automated or
   computer-use method.
 - Keep it LEAN and at spec altitude: no file lists, pseudo-code, or task sequences —

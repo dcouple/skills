@@ -5,23 +5,24 @@ argument-hint: "[path to ./tmp/<id>/item.md]"
 disable-model-invocation: true
 ---
 
-# /do — the Orchestra pipeline
+# /do — the autonomous pipeline
 
 ## Work item: $ARGUMENTS
 
-You are the **Overseer** (Fable, this session). You conduct; sub-agents play.
-Run fully autonomously — **no mid-run human checkpoints**. The human returns at
-the PR.
+You are the **orchestrator** (Fable, this session): you make every judgment
+call and dispatch specialized sub-agents for the work. Run fully
+autonomously — **no mid-run human checkpoints**. The human returns at the PR.
 
-**Routing (Phase 2 — Codex live):** code-researcher / app-user = Sonnet
-sub-agents · implement = **Codex lane** via the `codex` skill (GPT-5.5
-medium, workspace-write; Claude `implementer` sub-agent is the fallback) ·
-each review loop runs **dual lanes in parallel**: a Codex lane via the
-`codex` skill (GPT-5.5 high, read-only) AND the Claude sub-agent
-(`plan-reviewer` / `code-reviewer`, Opus). If the `codex` skill returns
-`CODEX UNAVAILABLE`/`CODEX LANE FAILED`, run single-lane on the Claude
-agents (Phase-1 behavior) and note it in the wrap-up. Never route
-customer-facing copy through Codex.
+**Who runs what:** web research and app driving/verification are Claude
+sub-agents (`web-researcher`, `app-user`, Sonnet). Codebase research,
+implementation, and both kinds of review are **Codex sub-agents**, dispatched
+via the `codex` skill (roles `code-researcher`, `implementer`,
+`plan-reviewer`, `code-reviewer`). Each review additionally runs the Claude
+sub-agent of the same name **in parallel** with the Codex reviewer — two
+independent readers, different blind spots. If the `codex` skill returns
+`CODEX UNAVAILABLE`/`CODEX ROLE FAILED`, use the same-named Claude sub-agent
+alone and note it in the wrap-up. Never route customer-facing copy through
+Codex.
 
 ## Step 0: Load & preflight
 
@@ -38,24 +39,26 @@ customer-facing copy through Codex.
 
 ## Step 1: Plan
 
-1. Spawn 1–3 `code-researcher` agents (parallel, scoped: one per area the item
-   touches) for current-state facts. Spawn `web-researcher` only if an external
-   unknown blocks planning.
+1. Dispatch 1–3 code-researchers via the `codex` skill (parallel, scoped: one
+   per area the item touches) for current-state facts — Claude
+   `code-researcher` sub-agents on Codex fallback. Spawn `web-researcher`
+   only if an external unknown blocks planning.
 2. Write `./tmp/<id>/plan.md` following `references/implementation-plan.md`:
    Files-changed table first, context, key decisions restated, ordered
    file/module tasks, the item's `AC#` criteria restated **verbatim** with
    exact commands, out of scope. No placeholders — "TBD" is a plan failure.
 
-## Step 2: Plan-review loop  (≤3 passes, exit on zero Must Fix — both lanes)
+## Step 2: Plan-review loop  (≤3 passes, exit on zero Must Fix from both reviewers)
 
-1. Run **both lanes in parallel** and wait for both:
-   - Codex lane: invoke the `codex` skill — role `plan-reviewer`, with plan
-     path, item path, pass number `k`, prior findings by ID on pass 2+.
-   - Claude lane: spawn `plan-reviewer` with the same inputs.
-2. The Must-Fix gate is the **union** of both lanes' Must Fix items, deduped
-   by their `D#`/`AC#` citation (same citation + same locus = one finding).
-   Consider the reports side-by-side — never merge by re-ranking. Fix every
-   Must Fix in the plan; apply Should Fix where cheap. Re-review (both lanes).
+1. Run **both reviewers in parallel** and wait for both:
+   - Codex reviewer: invoke the `codex` skill — role `plan-reviewer`, with
+     plan path, item path, pass number `k`, prior findings by ID on pass 2+.
+   - Claude reviewer: spawn the `plan-reviewer` sub-agent with the same inputs.
+2. The Must-Fix gate is the **union** of both reviewers' Must Fix items,
+   deduped by their `D#`/`AC#` citation (same citation + same locus = one
+   finding). Consider the reports side-by-side — never merge by re-ranking.
+   Fix every Must Fix in the plan; apply Should Fix where cheap. Re-review
+   (both reviewers).
 3. Cap-out after 3 passes: proceed, and carry the unresolved items into the
    wrap-up's Residual risks.
 
@@ -63,10 +66,10 @@ customer-facing copy through Codex.
 
 Invoke the `codex` skill — role `implementer`, with plan path and item path
 (intent = source of truth for *why*). It executes the plan, keeps plan.md
-true, and returns a ≤15-line result with Status. Fix loops (from Steps 4/6)
+true, and returns a ≤15-line result with Status. Fix rounds (from Steps 4/6)
 go back through the `codex` skill as resumes, keeping the session's context.
 
-Fallback: on `CODEX UNAVAILABLE`/`CODEX LANE FAILED`, spawn the Claude
+Fallback: on `CODEX UNAVAILABLE`/`CODEX ROLE FAILED`, spawn the Claude
 `implementer` sub-agent with the same inputs.
 
 On `BLOCKED`/`NEEDS_CONTEXT`: resolve from the item/refs yourself and
@@ -90,19 +93,19 @@ what this change added, merge with existing functionality where obvious,
 confirm deprecated/dead code from this diff is removed. Nothing beyond this
 diff's blast radius. Re-run quality checks.
 
-## Step 6: PR-review loop  (≤3 passes, exit on zero Must Fix — both lanes)
+## Step 6: PR-review loop  (≤3 passes, exit on zero Must Fix from both reviewers)
 
-1. Run **both lanes in parallel** and wait for both:
-   - Codex lane: invoke the `codex` skill — role `code-reviewer`, with item
-     path, plan path, pass number.
-   - Claude lane: spawn `code-reviewer` with the same inputs.
+1. Run **both reviewers in parallel** and wait for both:
+   - Codex reviewer: invoke the `codex` skill — role `code-reviewer`, with
+     item path, plan path, pass number.
+   - Claude reviewer: spawn the `code-reviewer` sub-agent with the same inputs.
    Each reads the diff cold and returns Must/Should/Nice findings with
    `(security)` tags.
-2. The Must-Fix gate is the **union** of both lanes, deduped by `D#`/`AC#`
-   citation — the loop proceeds only when *both* report zero Must Fix. Every
-   Must Fix → implementer fixes (codex resume, or Claude fallback) →
-   re-review both lanes (mark prior IDs fixed/persists/new). Cap-out after 3:
-   proceed and flag in wrap-up.
+2. The Must-Fix gate is the **union** of both reviewers' findings, deduped by
+   `D#`/`AC#` citation — the loop proceeds only when *both* report zero Must
+   Fix. Every Must Fix → implementer fixes (codex resume, or Claude
+   fallback) → re-review with both reviewers (mark prior IDs
+   fixed/persists/new). Cap-out after 3: proceed and flag in wrap-up.
 
 ## Step 7: Epics  (type: epic-spec)
 

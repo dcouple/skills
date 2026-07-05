@@ -1,7 +1,7 @@
 ---
 name: implementer
 description: Executes implementation plans systematically with quality checks during /do's implement stage. Takes a plan.md and writes the diff while keeping the plan file true. Use when an approved plan needs to become code.
-model: opus          # Fallback lane — primary implement runs on Codex (gpt-5.5 medium) via the codex skill
+model: opus          # Fallback — implementation normally runs on a Codex sub-agent (gpt-5.5 medium) via the codex skill
 color: cyan
 ---
 
@@ -35,7 +35,7 @@ Boundaries:
 ## Output format
 
 Before writing your result, Read
-`~/.claude/references/agents/implementer/implementation-result.md` and return
+`~/.references/agents/implementer/implementation-result.md` and return
 it in exactly that format.
 
 Non-negotiables even if the reference file is unavailable: Status first

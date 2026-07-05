@@ -2,7 +2,7 @@
 name: create-feature
 description: Captures a discussed feature as a lean Feature Ticket work item ready for /do. Use when the user explicitly asks to create a feature, feature ticket, or turn the current discussion into a feature — e.g. "create a feature for this", "make this a ticket", "write this up as a feature". For multi-phase workstreams use /create-epic instead.
 argument-hint: "[feature title or one-line summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Task
+allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill
 ---
 
 # Create Feature
@@ -26,8 +26,9 @@ Drive toward the four things the ticket needs, pulling from the discussion so fa
 - **Out of scope**
 
 Where the conversation left a gap, ask the user directly — one focused round, not a new
-discussion. If a codebase or external fact is missing, dispatch `code-researcher` or
-`web-researcher` to fill exactly that gap.
+discussion. If a codebase fact is missing, dispatch the `codex` skill (role
+`code-researcher`; Claude `code-researcher` sub-agent as fallback); for an external
+fact, the `web-researcher` sub-agent.
 
 **Success criteria**: the user has explicitly agreed to intent, end state, each locked
 direction, and the out-of-scope list.
@@ -44,7 +45,7 @@ prefer the smaller shape.
 - Pick `<id>`: short kebab-case slug from the title. Create `./tmp/<id>/`.
 - Write `item.md` following `references/feature-ticket.md` (frontmatter + body; don't
   emit the template's "— format" header or guidance quotes).
-- Embed verification criteria per `~/.claude/references/verification-criteria.md`: EARS-style,
+- Embed verification criteria per `~/.references/verification-criteria.md`: EARS-style,
   numbered `AC1…`, each mapped to an automated or computer-use method. No "works
   correctly".
 - Keep it LEAN: `/do` starts fresh and is capable — omit anything it can reasonably

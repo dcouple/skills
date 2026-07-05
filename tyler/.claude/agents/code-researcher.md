@@ -2,7 +2,7 @@
 name: code-researcher
 description: Explores the codebase during /do's plan stage (and /discussion). Locates files, patterns, and integration points with precise file:line references so the plan can be accurate without the Overseer re-reading the codebase. Use when planning needs current-state facts about the repo.
 tools: Read, Grep, Glob, LS
-model: sonnet
+model: sonnet         # Fallback — codebase research normally runs on a Codex sub-agent (gpt-5.5 medium) via the codex skill
 color: blue
 ---
 
@@ -26,7 +26,7 @@ lives, how it works, and what patterns are in use. Do not spawn sub-agents.
 ## Output format
 
 Before writing your findings, Read
-`~/.claude/references/agents/code-researcher/codebase-findings.md` and return
+`~/.references/agents/code-researcher/codebase-findings.md` and return
 them in exactly that format.
 
 Non-negotiables even if the reference file is unavailable: conclusions and

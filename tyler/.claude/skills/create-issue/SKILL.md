@@ -2,7 +2,7 @@
 name: create-issue
 description: Captures a defect as a Bug Report work item ready for /do, running the investigator first if the root cause isn't already established. Use when the user explicitly asks to create an issue, bug report, or ticket for a defect — e.g. "create an issue for this", "write this bug up", "file this" — typically after a discussion or investigation has surfaced it.
 argument-hint: "[bug title or one-line summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Task
+allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill
 ---
 
 # Create Issue
@@ -22,11 +22,13 @@ confidence level. A root-cause finding from an `investigator` dispatch during
 `/discussion` is the ideal input — reuse it, don't redo it.
 
 If the root cause is **not** yet established, run the investigation now:
-- Dispatch the `investigator` sub-agent with the full report (expected vs actual,
-  environment, known repro steps, traces); it returns its standard root-cause finding.
+- Dispatch the investigator via the `codex` skill (role `investigator`) with the full
+  report (expected vs actual, environment, known repro steps, traces); it returns its
+  standard root-cause finding. Fallback on `CODEX UNAVAILABLE`/`CODEX ROLE FAILED`:
+  the Claude `investigator` sub-agent.
 - If reproduction requires driving the running app, dispatch `app-user` first to
-  exercise the flow and capture evidence, then pass its transcript to the
-  investigator — sub-agents don't spawn sub-agents, so you sequence them.
+  exercise the flow and capture evidence, then pass its transcript along with the
+  defect report.
 - If the investigator cannot reproduce: say so plainly. Do not invent a cause. Either
   gather more from the user (logs, exact environment) and re-dispatch, or proceed with
   root cause marked `Hypothesis:` and what-was-tried captured in `refs/`.
@@ -51,8 +53,8 @@ agreed with the user.
   to re-run them. Raw traces, logs, and long transcripts go to `./tmp/<id>/refs/`
   (e.g. `refs/error-trace.txt`), linked not inlined. If the investigation produced a
   current-state deep-dive worth keeping, save it per
-  `~/.claude/references/system-analysis.md` as `refs/system-analysis.md`.
-- Verification criteria per `~/.claude/references/verification-criteria.md` must include:
+  `~/.references/system-analysis.md` as `refs/system-analysis.md`.
+- Verification criteria per `~/.references/verification-criteria.md` must include:
   - **AC1**: the reproduction flipping from fail to pass — the repro steps double as
     the failing case the fix must flip.
   - **Prevention criteria**: what stops this class of bug recurring (a regression

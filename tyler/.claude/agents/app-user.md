@@ -37,7 +37,7 @@ Do not spawn sub-agents.
 ## Output format
 
 Before writing your report, Read
-`~/.claude/references/agents/app-user/verification-result.md` and return your
+`~/.references/agents/app-user/verification-result.md` and return your
 result in exactly the format for your mode (verify or reproduce).
 
 Non-negotiables even if the reference file is unavailable: verdict first

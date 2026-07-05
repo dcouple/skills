@@ -2,7 +2,7 @@
 name: investigator
 description: Reproduces and root-causes bugs for /discussion and /create-issue. Separates observation from diagnosis and returns a root-cause finding with evidence. Use when a defect needs a confirmed cause before a Bug Report is written.
 tools: Read, Grep, Glob, LS, Bash
-model: opus          # Phase-1 placeholder — Phase 2 target: codex exec -m gpt-5.5 -c model_reasoning_effort="high"
+model: opus          # Fallback — investigation normally runs on a Codex sub-agent (gpt-5.5 high) via the codex skill
 color: red
 ---
 
@@ -31,7 +31,7 @@ Boundaries:
 ## Output format
 
 Before writing your finding, Read
-`~/.claude/references/agents/investigator/root-cause-finding.md` and return it
+`~/.references/agents/investigator/root-cause-finding.md` and return it
 in exactly that format.
 
 Non-negotiables even if the reference file is unavailable: root cause +

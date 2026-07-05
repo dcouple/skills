@@ -9,8 +9,8 @@ Two kinds of format, three live locations:
   produced by exactly one skill) → that skill's own `references/` folder.
 - **Agent output formats** (structured returns handed back *in-conversation* —
   NOT written to disk) and **shared blocks** (referenced by more than one skill,
-  or by any agent) → `tyler/.claude/references/` (synced to
-  `~/.claude/references/`).
+  or by any agent) → `tyler/references/` (synced to
+  `~/.references/`).
 
 Guiding principles (from `../plan/build-plan.md`):
 - Work items are **lean and high-signal**. Optional raw sources live in `refs/`, linked not inlined.
@@ -36,11 +36,11 @@ Guiding principles (from `../plan/build-plan.md`):
 | `/create-issue` | doc | `tyler/.claude/skills/create-issue/references/bug-report.md` |
 | `/do` | doc | `tyler/.claude/skills/do/references/implementation-plan.md`, `wrap-up-report.md` |
 | `/postmortem` | doc | `tyler/.claude/skills/postmortem/references/postmortem.md` |
-| Plan Reviewer | output | `tyler/.claude/references/agents/plan-reviewer/review-report.md` |
-| Code Reviewer | output | `tyler/.claude/references/agents/code-reviewer/review-report.md` (security findings tagged `(security)` inside Must/Should Fix) |
-| Code Researcher | output | `tyler/.claude/references/agents/code-researcher/codebase-findings.md` |
-| Web Researcher | output | `tyler/.claude/references/agents/web-researcher/research-dossier.md` |
-| Investigator | output | `tyler/.claude/references/agents/investigator/root-cause-finding.md` |
-| App user | output | `tyler/.claude/references/agents/app-user/verification-result.md` (verify + reproduce modes) |
-| Implementer | output | `tyler/.claude/references/agents/implementer/implementation-result.md` |
-| shared blocks | block | `tyler/.claude/references/verification-criteria.md`, `system-analysis.md` |
+| Plan Reviewer | output | `tyler/references/agents/plan-reviewer/review-report.md` |
+| Code Reviewer | output | `tyler/references/agents/code-reviewer/review-report.md` (security findings tagged `(security)` inside Must/Should Fix) |
+| Code Researcher | output | `tyler/references/agents/code-researcher/codebase-findings.md` |
+| Web Researcher | output | `tyler/references/agents/web-researcher/research-dossier.md` |
+| Investigator | output | `tyler/references/agents/investigator/root-cause-finding.md` |
+| App user | output | `tyler/references/agents/app-user/verification-result.md` (verify + reproduce modes) |
+| Implementer | output | `tyler/references/agents/implementer/implementation-result.md` |
+| shared blocks | block | `tyler/references/verification-criteria.md`, `system-analysis.md` |
