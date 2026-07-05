@@ -89,21 +89,32 @@ Run Steps 1–6 **per phase, sequentially** — phase n+1 starts only after phas
 n's channel completes. Per-phase plans at `./tmp/<id>/plan-<n>.md`; tick the
 phase's ✓ in the spec's table on completion. One PR for the whole epic: open
 it after the LAST phase; commit each phase to the branch as it completes
-(`/commit` style messages). A phase blocked by an unresolved
+(same `type: summary` message style as Step 8). A phase blocked by an unresolved
 `[NEEDS CLARIFICATION]` stops the epic there — wrap up what's done.
 
 ## Step 8: PR + wrap-up
 
+All PR prep lives here — there is no separate commit or prepare-pr skill.
+
 1. Update item frontmatter: `status: done`, `pr:` filled.
-2. Commit remaining work; push; open the PR (`gh pr create`) — title from the
-   item title, body summarizing the item's intent and what "done" means for it
-   (desired end state for features; expected behavior restored for bugs).
-3. Write `./tmp/<id>/wrapup.md` following `references/wrap-up-report.md`:
+2. Commit: stage selectively — only files this run touched, never
+   `git add -A` — and scan the staged diff for secrets before committing.
+   Message style: `type: short imperative summary` (feat / fix / docs /
+   chore / refactor / test / perf).
+3. Sync the branch: rebase onto the origin default branch; if the rebase
+   pulled in changes, re-run the quality checks. Push (`--force-with-lease`
+   when rewriting an already-pushed branch).
+4. Open the PR (`gh pr create`) — title from the item title in the same
+   `type:` style; body sections: **Summary** (the item's intent and what
+   "done" means — desired end state for features, expected behavior restored
+   for bugs), **Verification** (evidence per AC, one line each), and
+   **Manual steps / residual risks** (omit if none).
+5. Write `./tmp/<id>/wrapup.md` following `references/wrap-up-report.md`:
    what was built, verification evidence per AC, final review outcome
    ("Must Fix: 0 · passes used k/3" — or cap-out flags), residual risks,
    deltas vs plan. Post it as a PR comment (`gh pr comment`).
-4. If a `pr-test-automation` skill is available, run it.
-5. Report to the user: PR link + wrap-up summary + anything capped out.
+6. If a `pr-test-automation` skill is available, run it.
+7. Report to the user: PR link + wrap-up summary + anything capped out.
 
 ## Rules
 

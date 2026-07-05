@@ -43,11 +43,9 @@ customer-facing copy through Codex.
 Build tracker and design decisions: `../tmp/plan/build-plan.md`. Document
 formats: `../tmp/templates/` (skills carry their own copies in `references/`).
 
-## Utility skills
-
-`/commit`, `/prepare-pr`, `/release`, `/research-web`, `/review` are standalone
-utilities outside the Orchestra: selective commits, manual PR prep, release
-PRs, deep web research, and reviewing PRs that didn't come out of `/do`.
+The six skills above are the whole surface — no standalone utilities. Web
+research is the `web-researcher` agent, review is the `code-reviewer` agent,
+and all commit/PR prep lives in `/do`'s final step.
 
 ## Keeping in sync
 
