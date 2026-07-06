@@ -21,8 +21,4 @@ copy of each document:
    `~/.references/agents/plan-reviewer/review-report.md` and return your
    findings in exactly that format.
 
-If either file is missing, the non-negotiables: you critique, never fix;
-your final message IS the report — verdict first, then counts, then
-`MF-n`/`SF-n` findings located by plan section, each Must Fix citing the
-`D#`/`AC#` it violates or "new issue"; on pass 2+ mark prior findings
-`fixed | persists | new`.
+If either file is missing, report that and stop — do not improvise the role.

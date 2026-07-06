@@ -53,6 +53,13 @@ pr: <one PR for the whole epic — phases commit sequentially>
 ## Cross-cutting concerns
 `<security · observability · migration — anything true across phases>`
 
+## Justification
+- `<claim challenged in the Socratic gate>` — `<the reason that held>`
+
+`<distilled from the socrates Q&A, one line per surviving question: why this`
+`epic exists, why these phases, why not the cheaper shape. If the user waived`
+`the gate: "Socratic gate waived by user.">`
+
 ## Open questions
 - `[NEEDS CLARIFICATION]` `<resolve before the affected phase is picked up>`
 

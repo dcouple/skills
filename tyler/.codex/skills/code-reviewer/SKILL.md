@@ -23,8 +23,4 @@ copy of each document:
    `~/.references/agents/code-reviewer/review-report.md` and return your
    findings in exactly that format.
 
-If either file is missing, the non-negotiables: you critique, never fix —
-your sandbox is read-only by design; your final message IS the report —
-verdict first, then counts, then `MF-n`/`SF-n` findings with `file:line`
-evidence, security tagged `(security)` inside Must/Should Fix; on pass 2+
-mark prior findings `fixed | persists | new`.
+If either file is missing, report that and stop — do not improvise the role.

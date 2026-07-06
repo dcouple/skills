@@ -82,14 +82,11 @@ Grant only what the job needs. **Reviewers must be read-only** (`Glob, Grep, Rea
 
 Route by *what the job demands*, not by habit. This is our real differentiator — most public libraries never pick a different model per stage.
 
-| Role | Model | Why |
-|---|---|---|
-| Orchestrate / judge (Overseer: discussion, spec, plan judgment, running `/do`) | **Fable** (main session) | Best for ambiguous, open-ended reasoning. Opus is an acceptable fallback. |
-| Legwork: web research, drive the running app (Web Researcher, App user) | **Sonnet** | Cheap, fast; returns file:line refs / cited findings / verification evidence. |
-| Review & investigation (Plan Reviewer, Code Reviewer, Investigator) | **GPT-5.5 high via `codex exec`** | Sharper reading where it changes the outcome; independent (non-Claude) eyes on Claude-authored plans. Claude Opus sub-agents run as parallel second reviewers and as fallbacks. |
-| Implement | **GPT-5.5 medium via `codex exec`** | The engineering workhorse — strong enough for a well-planned diff, cheap enough for long windows; codebase exploration (Code Researcher) also runs here. High effort is for review and investigation, not implementation. Claude Opus/Sonnet sub-agents are the fallbacks. |
+**The canonical routing table lives in `tyler/README.md` — update it there first.** The shape: Fable (main session) orchestrates and judges; Sonnet does legwork (web research, driving the app as `frontend-verifier`); GPT-5.5 high via `codex exec` handles review & investigation (with Claude Opus reviewers running in parallel); GPT-5.5 medium handles backend/ops implementation, backend verification, and codebase exploration; the Claude `frontend-implementer` (Opus) owns frontend web/mobile code and customer-facing copy — never route those through Codex. Only code-researcher and the reviewers have Claude twins; implementer, investigator, and backend-verifier are Codex-only.
 
-**Spend the expensive lanes sparingly** — save Fable for judgment and Codex high for the review/investigation loops where sharper reading changes the outcome. Never route customer-facing copy through Codex.
+**Spend the expensive lanes sparingly** — save Fable for judgment and Codex high for the review/investigation loops where sharper reading changes the outcome.
+
+**Fallback and parallel roles must be visible in the `description`.** An agent that exists as a Codex fallback says so ("backup for the Codex X — normally runs via the codex skill"); a parallel second reviewer says it always runs alongside its Codex counterpart. The description is the only routing signal an orchestrator reliably reads — frontmatter comments are not enough.
 
 ---
 
@@ -99,9 +96,10 @@ A good agent body has a repeatable shape:
 
 1. **Role line** — "You are a plan reviewer." One sentence.
 2. **Boundaries** — what it is *not* (e.g. "not the user-facing coordinator"), and whether it may spawn its own sub-agents (default: **no, unless the parent explicitly said so** — depth explosions run away with context and cost).
-3. **Methodology** — what to do, in order. Number it. For reviewers, an ordered checklist of what to inspect.
-4. **Rules** — hard musts/must-nots; the failure modes to avoid.
-5. **Output format** — the exact structure the result must take, so the caller can parse it.
+3. **Tooling** (where it earns its keep) — the *capability classes* the agent should reach for **if connected**: "browser automation (Playwright-style)", "an error tracker (Sentry-style)", "production logs via a cloud CLI (gcloud-style)". Name the class and one example, never a hard product dependency; tell the agent to check what's connected and say what it fell back to when nothing is.
+4. **Methodology** — what to do, in order. Number it. For reviewers, an ordered checklist of what to inspect.
+5. **Rules** — hard musts/must-nots; the failure modes to avoid.
+6. **Output format** — the exact structure the result must take, so the caller can parse it.
 
 ---
 
@@ -130,7 +128,7 @@ The agent's final message *is* the tool result the caller receives — the user 
 ## 9. Quality checklist
 
 - [ ] `name` matches the filename; kebab-case.
-- [ ] `description` reads as a *trigger* ("Use when…" / "Automatically invoked after…").
+- [ ] `description` reads as a *trigger* ("Use when…" / "Automatically invoked after…") — and states fallback/parallel status where it applies.
 - [ ] `tools` is least-privilege; reviewers/explorers are read-only.
 - [ ] `model` routed to the task per §5 (cheap for legwork, expensive for judgment).
 - [ ] Body has: role line · boundaries · ordered methodology · rules · **fixed output format**.
@@ -152,19 +150,21 @@ The agent's final message *is* the tool result the caller receives — the user 
 
 ---
 
-## 11. Our target roster (the Orchestra — Phase 1 builds Claude placeholders)
+## 11. Our roster (the Orchestra)
 
-Overseer = **Fable**, in the main session (not an agent file). Target model per the
-roadmap diagram; "placeholder" = the Claude model standing in until the Phase-2
-`codex exec` swap.
+Overseer = **Fable**, in the main session (not an agent file). Model routing per
+the canonical table in `tyler/README.md`.
 
-| Agent | Target model | Placeholder | Tools | Job |
-|---|---|---|---|---|
-| `code-researcher` | GPT-5.5 **medium** | Sonnet | Read, Grep, Glob, LS | Locate files & patterns; return file:line refs |
-| `web-researcher` | Sonnet | — | web + read | Cited research dossiers for new tech |
-| `app-user` | Sonnet | — | computer-use | Drive the running app; verify against criteria |
-| `implementer` | GPT-5.5 **medium** | Opus | all tools | Write the diff per the plan; update plan.md |
-| `plan-reviewer` | GPT-5.5 **high** | Opus | Glob, Grep, Read | Audit plans for gaps & brief fidelity |
-| `code-reviewer` | GPT-5.5 **high** | Opus | read-only | Diff review incl. security; Must/Should/Nice findings |
-| `investigator` | GPT-5.5 **high** | Opus | read + run | Reproduce & root-cause bugs |
-| `business-*` (Parsa) | Claude | — | varies | Business context, spec/artifact review, research adversary |
+| Agent | Runs on | Tools | Job |
+|---|---|---|---|
+| `code-researcher` | Codex GPT-5.5 **medium** (Claude Sonnet fallback) | Read, Grep, Glob, LS | Locate files & patterns; return file:line refs |
+| `web-researcher` | Sonnet | web + read | Cited research dossiers for new tech |
+| `frontend-verifier` | Sonnet | computer-use | Drive the running app; verify frontend criteria, reproduce failures |
+| `backend-verifier` | Codex GPT-5.5 **medium** (no Claude twin) | run tests/scripts | Prove backend criteria with quoted evidence |
+| `implementer` (backend/ops) | Codex GPT-5.5 **medium** (no Claude twin) | all tools | Write the backend/ops diff per the plan; update plan.md |
+| `frontend-implementer` | Claude **Opus** | all tools | Frontend web/mobile diff — UI, styling, client state, user-facing copy |
+| `socrates` | Claude **Opus** | Glob, Grep, Read | Socratic gate on `/create-*` drafts — challenge the premise, judge the user's justification |
+| `plan-reviewer` | Codex GPT-5.5 **high** ∥ Claude Opus (parallel) | Glob, Grep, Read | Audit plans for gaps & brief fidelity |
+| `code-reviewer` | Codex GPT-5.5 **high** ∥ Claude Opus (parallel) | read-only | Diff review incl. security; Must/Should/Nice findings |
+| `investigator` | Codex GPT-5.5 **high** (no Claude twin) | read + run | Reproduce & root-cause bugs |
+| `business-*` (Parsa) | Claude | varies | Business context, spec/artifact review, research adversary |

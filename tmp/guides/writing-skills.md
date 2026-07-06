@@ -23,20 +23,9 @@ Two parts: **frontmatter** (controls discovery, invocation, permissions) and **b
 ```markdown
 ---
 name: cherry-pick-release
-description: "One-line summary of what this skill does."
-when_to_use: "Use when <trigger>. Examples: '<phrase 1>', '<phrase 2>', '<phrase 3>'."
-allowed-tools:
-  - Read
-  - Edit
-  - Bash(git:*)
-  - Bash(gh:*)
-user-invocable: true
-disable-model-invocation: false
+description: "Cherry-picks a merged PR onto a release branch and opens the PR. Use when a fix needs back-porting — e.g. 'cherry-pick this to release'."
 argument-hint: "[PR number] [release branch]"
-arguments:
-  - pr_number
-  - release_branch
-context: fork          # omit for inline; set 'fork' for self-contained runs
+disable-model-invocation: false
 ---
 
 # Cherry-Pick to Release
@@ -76,29 +65,28 @@ What to do, specifically. Include the exact command.
 | Field | Required | Purpose & rules |
 |---|---|---|
 | `name` | ✅ | Kebab-case, matches the directory name. This is the `/name` invocation. |
-| `description` | ✅ | One line, third person, what it does. Kept short — it's always-in-context metadata. |
-| `when_to_use` | ✅ (critical) | **The trigger.** How the model decides to auto-invoke. Start with `"Use when…"` and include concrete trigger phrases and example user messages. A skill nobody triggers is dead weight. |
-| `allowed-tools` | ✅ | **Least privilege, as patterns.** Prefer `Bash(gh:*)` over raw `Bash`. Grant only what the steps actually use. This bounds the blast radius. |
-| `user-invocable` | optional | `true` if a human runs it as a `/command`. |
-| `disable-model-invocation` | optional | `true` on skills a human must launch deliberately (release, destructive ops, skillify) so the model never fires them itself. |
-| `argument-hint` | optional | Shown at invocation, e.g. `"[PR number]"`. Include only if the skill takes args. |
-| `arguments` | optional | List of arg names; reference as `$name` in the body. |
-| `context` | optional | `fork` = run as a self-contained sub-agent with its own context (no mid-run steering). Omit (inline) when the user should steer as it goes. **Decision rule below.** |
+| `description` | ✅ | Third person, always-in-context metadata. **For model-invoked skills this is also the trigger**: include "Use when…" plus concrete trigger phrases — a skill nobody triggers is dead weight. For user-invoked skills (`disable-model-invocation: true`) the audience is the human: a one-line summary, **no trigger phrasing** — it can't fire on its own, so trigger text is wasted context. |
+| `disable-model-invocation` | optional | `true` on skills a human must launch deliberately (release, destructive ops, the /do pipeline, the /create-* capture skills) so the model never fires them itself. |
+| `argument-hint` | optional | Shown at invocation, e.g. `"[PR number]"`. Include only if the skill takes args; reference the input as `$ARGUMENTS` in the body. |
+| `allowed-tools` | optional | Least-privilege patterns (`Bash(gh:*)`, not raw `Bash`) when a skill warrants a hard tool boundary. dcouple currently omits this field on all skills — rely on the body's stated boundaries instead; reintroduce per-skill only if a skill proves it needs the fence. |
 
-### `context: fork` vs inline — the decision
+Anything else (`when_to_use`, `arguments`, `context`, `user-invocable`) is **not** Claude Code frontmatter — don't emit it; fold triggers into `description`.
 
-- **fork** when the task is self-contained, deterministic, and needs no human input mid-run (e.g. a review sweep, a research pass, a codegen batch). Keeps the work out of the main context window.
-- **inline** when the user wants to steer, approve, or redirect partway (e.g. discussion, spec drafting, anything with judgment calls or irreversible actions).
+### Delegating heavy work
+
+A skill runs inline in the caller's context. When a step is self-contained and bulky (a review sweep, a research pass), the skill should dispatch it to a sub-agent (see `writing-subagents.md`) so the exploration stays out of the main window; keep the skill itself inline where the user steers.
 
 ---
 
 ## 4. Body rules
 
-### 4.1 Every step earns a **Success criteria** — non-negotiable
-This is the single most important dcouple convention. Each step states *how we know it's done and can move on*. It defeats **premature completion** — the model declaring victory before the real artifact exists (a merged PR with green CI, not just "code written"). Prefer artifact-based criteria over effort-based ones.
+### 4.1 Every step earns a **Success criteria**
+Each step states *how we know it's done and can move on*. It defeats **premature completion** — the model declaring victory before the real artifact exists (a merged PR with green CI, not just "code written"). Prefer artifact-based criteria over effort-based ones.
+
+**Exception — orchestrator-altitude skills.** A skill whose whole job is judgment (e.g. `/do`) states its gates in prose and trusts the orchestrating model to decide when each is met; per-step Success criteria are for procedural skills where drift is the risk.
 
 ### 4.2 Leave an artifact behind
-Each phase should write something the next phase reads — a ticket, a spec in `./tmp/specs/`, a plan, a `context.md`, a `.business/` note, a teach-back. **No model should carry the whole project in its head.** Skills are links in a filesystem relay.
+Each phase should write something the next phase reads — a ticket, a spec in `./tmp/specs/`, a plan, a `context.md`, a `.business/` note, a wrap-up report. **No model should carry the whole project in its head.** Skills are links in a filesystem relay.
 
 ### 4.3 Per-step annotations — use only where they carry information
 - **Execution**: `Direct` (default) · `Task agent` (straightforward sub-agent) · `Teammate` (true parallelism / inter-agent comms) · `[human]` (user does it).
@@ -145,11 +133,9 @@ Keep `.claude` and `.codex` variants in sync in shape; the body procedure should
 ## 7. Quality checklist (run before saving)
 
 - [ ] `name` matches the directory; kebab-case.
-- [ ] `when_to_use` starts with "Use when…" and lists real trigger phrases.
-- [ ] `allowed-tools` is minimal and uses patterns (`Bash(gh:*)`), not blanket grants.
+- [ ] `description` carries the trigger ("Use when…" + real phrases) on model-invoked skills; is a plain one-line summary on user-invoked ones.
 - [ ] `disable-model-invocation` set correctly for human-only / destructive skills.
-- [ ] `context: fork` only on self-contained, no-steering skills.
-- [ ] **Every step has a Success criteria**, and criteria are artifact-based where possible.
+- [ ] Steps have Success criteria (artifact-based where possible) — except orchestrator-altitude skills, which state gates in prose.
 - [ ] Human checkpoints exist before every irreversible action.
 - [ ] The skill leaves a durable artifact for the next phase.
 - [ ] Altitude respected — no implementation detail leaking into a high-level skill.
@@ -161,10 +147,10 @@ Keep `.claude` and `.codex` variants in sync in shape; the body procedure should
 
 ## 8. Common mistakes
 
-1. **Weak `when_to_use`** → the skill never fires. Most common failure. Fix the trigger first.
+1. **Weak trigger in `description`** → the skill never fires. Most common failure. Fix the trigger first.
 2. **Effort-based success criteria** ("wrote the code") → premature completion. Make them artifact-based ("PR open, CI green").
 3. **Over-granular bodies** → line-level pseudo-code that a capable implementer doesn't need and that rots when the codebase moves. State decisions and shape, not keystrokes.
-4. **Blanket tool grants** → `Bash` instead of `Bash(git:*)`. Widens blast radius for no reason.
+4. **Invented frontmatter** → fields Claude Code doesn't read (`when_to_use`, `context: fork`) silently do nothing.
 5. **Altitude bleed** → a spec that lists files, a plan that re-argues the why. Keep layers clean.
 6. **Bloated SKILL.md** → everything inline. Move detail to references; ship deterministic logic as scripts.
 7. **No artifact left behind** → the next phase has to reconstruct context. Always write the handoff.
@@ -173,7 +159,7 @@ Keep `.claude` and `.codex` variants in sync in shape; the body procedure should
 
 ## 9. dcouple house rules (quick reference)
 
-- The workflow is a **filesystem relay**: discussion → ticket → plan → implement → review → teach-back, each leaving an artifact.
+- The workflow is a **filesystem relay**: discussion → ticket → plan → implement → review → wrap-up, each leaving an artifact.
 - The governing question at every gate: **"Is this clear enough to delegate?"** If no, discuss. If yes, capture, then execute.
-- **Model routing is a first-class concern** — skills may delegate steps to specific models (Sonnet for web research and app-driving; GPT-5.5 **medium** via `codex exec` for implement and codebase exploration; GPT-5.5 **high** via `codex exec` for review & investigation; Fable for orchestration & judgment; same-named Claude sub-agents as Codex fallbacks). See `writing-subagents.md` §5.
-- Never route customer-facing copy through Codex; that's a Claude job.
+- **Model routing is a first-class concern** — the canonical routing table lives in `tyler/README.md`; update it there first. In short: Fable orchestrates, Sonnet does legwork, Codex handles backend/ops implementation, backend verification, review & investigation, and the Claude `frontend-implementer` (Opus) / `frontend-verifier` (Sonnet) own frontend code, customer-facing copy, and in-app verification — never route those through Codex (the rule is enforced in the `codex` skill).
+- **Don't author or edit a skill instruction without an observed failure behind it** — a postmortem finding, a failed run, or explicit user feedback. Speculative rules accumulate as permanent context tax.

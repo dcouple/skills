@@ -47,6 +47,13 @@ pr: <url or # — filled when /do opens it>
 ## Prevention criteria
 `<what stops this class of bug recurring: a regression test, a guard, an invariant>`
 
+## Justification
+- `<claim challenged in the Socratic gate>` — `<the reason that held>`
+
+`<distilled from the socrates Q&A: why this cause is the root and not a symptom,`
+`why fix now, why this resolution path. On a fast pass, socrates' one line naming`
+`what convinced it; if the user waived the gate: "Socratic gate waived by user.">`
+
 ## References (optional, in refs/)
 - `refs/error-trace.txt`
 - `refs/discussion.md`

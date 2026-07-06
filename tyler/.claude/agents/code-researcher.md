@@ -1,8 +1,8 @@
 ---
 name: code-researcher
-description: Explores the codebase during /do's plan stage (and /discussion). Locates files, patterns, and integration points with precise file:line references so the plan can be accurate without the Overseer re-reading the codebase. Use when planning needs current-state facts about the repo.
+description: Backup for the Codex code-researcher — codebase research normally runs via the codex skill. Explores the codebase and returns file:line findings. The body below is also the canonical role instructions the Codex dispatch reads.
 tools: Read, Grep, Glob, LS
-model: sonnet         # Fallback — codebase research normally runs on a Codex sub-agent (gpt-5.5 medium) via the codex skill
+model: sonnet
 color: blue
 ---
 
@@ -29,6 +29,5 @@ Before writing your findings, Read
 `~/.references/agents/code-researcher/codebase-findings.md` and return
 them in exactly that format.
 
-Non-negotiables even if the reference file is unavailable: conclusions and
-references, not file dumps; bottom line first; every claim carries a
-`path:line`; report what you searched for and did NOT find.
+Even if the reference file is unavailable: bottom line first; every claim
+carries a `path:line`.

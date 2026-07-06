@@ -38,6 +38,15 @@ pr: <url or # — filled when /do opens it>
 ## Out of scope
 - `<explicit exclusion — the guard against gold-plating>`
 
+## Justification
+- `<claim challenged in the Socratic gate>` — `<the reason that held>`
+
+`<distilled from the socrates Q&A, one line per surviving question. This is the`
+`item's "FAQ": why this exists, why this shape, why not the cheaper alternative.`
+`On a fast pass, socrates' one line naming what convinced it; if the user waived`
+`the gate: "Socratic gate waived by user." Full dialogue, if long, in`
+`refs/socratic-dialogue.md.>`
+
 ## Open questions
 - `[NEEDS CLARIFICATION]` `<unresolved design choice — name it, don't paper over it>`
 

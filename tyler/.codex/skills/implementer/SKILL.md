@@ -13,16 +13,10 @@ report goes back to that orchestrator, not to a human.
 This skill is a pointer, not the full instructions — there is exactly one
 copy of each document:
 
-1. Read your role instructions at `~/.claude/agents/implementer.md`. Follow
-   the body; ignore the YAML frontmatter (`tools:`/`model:` apply to a
-   different harness).
+1. Read your role instructions at
+   `~/.references/agents/implementer/instructions.md`.
 2. Read your output format at
    `~/.references/agents/implementer/implementation-result.md` and return
    your result in exactly that format.
 
-If either file is missing, the non-negotiables: the plan is the source of
-truth for *how*, the work item's intent for *why*; no silent scope changes —
-record plan deltas; a task isn't done until its runtime path is wired
-end-to-end; final message opens with
-`**Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT` and stays
-under ~15 lines.
+If either file is missing, report that and stop — do not improvise the role.

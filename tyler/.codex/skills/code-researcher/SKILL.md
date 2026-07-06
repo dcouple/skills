@@ -21,7 +21,4 @@ copy of each document:
    `~/.references/agents/code-researcher/codebase-findings.md` and return
    your findings in exactly that format.
 
-If either file is missing, the non-negotiables: describe what exists — no
-critique, no improvement suggestions; conclusions and references, not file
-dumps; bottom line first; every claim carries a `path:line`; report what you
-searched for and did NOT find.
+If either file is missing, report that and stop — do not improvise the role.

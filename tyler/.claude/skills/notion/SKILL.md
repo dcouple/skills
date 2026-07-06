@@ -2,7 +2,6 @@
 name: notion
 description: The Notion bridge for work items — creates a Notion work item mirroring a GitHub issue, uploads artifacts (item.md, refs/, plan.md, wrapup.md) to it, and pulls a work item's artifacts down to ./tmp/<id>/. Used by /create-feature, /create-epic, /create-issue (publish) and /do (pull before work, upload after). Use when a work item needs to be published to, updated in, or fetched from Notion.
 argument-hint: "[publish|upload|pull] [work-item id, GitHub issue #/URL, or Notion page URL]"
-allowed-tools: Read, Write, Glob, Grep, ToolSearch, Bash(gh:*)
 ---
 
 # Notion bridge

@@ -2,10 +2,7 @@
 name: postmortem
 description: Runs a postmortem after /do finished and the human reviewed the PR, when the result fell short of intent. Use when the user says a /do run missed the mark, the PR needed rework, the delivered feature didn't match the ticket, or asks "why did /do get this wrong". Root-causes the gap in our system and proposes one concrete improvement.
 argument-hint: "[PR url/# or work-item id]"
-allowed-tools: Read, Grep, Glob, LS, Task, Write, Edit, Bash, AskUserQuestion
 ---
-<!-- Write/Edit are for postmortem.md under ./tmp/<id>/ only; Bash for gh pr view.
-     This skill proposes system changes — it never applies them. -->
 
 # Postmortem
 
@@ -74,13 +71,6 @@ One change per postmortem — the highest-leverage one — so each fix is attrib
 
 **Success criteria**: proposal names an exact file and shows the concrete edit; nothing
 outside `./tmp/<id>/` was modified.
-
-### 6. Learning gate [human]
-Ask the human to state back, in one or two sentences, why the gap happened and what
-system change would prevent it. One exchange, not a quiz. If their read conflicts with
-the doc, reconcile before closing.
-
-**Success criteria**: the teach-back matches postmortem.md.
 
 ```
 Suggested next steps:

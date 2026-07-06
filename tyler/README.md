@@ -12,16 +12,23 @@ The flow separates *clarity*, *capture*, and *execution*:
 
 1. **`/discussion`** — clarify, understand, figure out. General-purpose: it
    dispatches the code-researcher / `web-researcher` for questions and the
-   investigator (with `app-user` for reproduction) when the topic is a
+   investigator (with `frontend-verifier` for reproduction) when the topic is a
    defect. It produces clarity, never artifacts.
 2. **`/create-feature` · `/create-epic` · `/create-issue`** — manually invoked
    capture skills. Each turns what the conversation established into a lean
    work item at `./tmp/<id>/item.md` (Feature Ticket, Epic Spec, or Bug
-   Report, raw sources in `./tmp/<id>/refs/`) with verification criteria and a
-   learning gate, then **publishes** it: a GitHub issue in the project repo
+   Report, raw sources in `./tmp/<id>/refs/`) with verification criteria,
+   then **publishes** it: a GitHub issue in the project repo
    plus a Notion work item (via the `notion` skill) holding `item.md` and
    every artifact, cross-linked both ways. `/create-issue` runs the
-   investigator itself if the root cause isn't already established.
+   investigator itself if the root cause isn't already established. Before
+   publish, every draft passes the **Socratic gate**: the `socrates`
+   sub-agent takes an adversarial position on the item's premise (needed at
+   all? root cause or symptom? simpler path? right shape? the whole of it?)
+   and the user's answers — distilled into the item's `## Justification`
+   section — travel with the GitHub issue. Intensity scales with the item:
+   straightforward drafts fast-pass with 0–2 questions; epics always get the
+   full challenge.
 3. **`/do <issue # or item path>`** — the autonomous pipeline: pull the work
    item's artifacts from Notion into `./tmp/<id>/` (when given a GitHub
    issue) → plan + review loop → implement → verify → PR-review loop →
@@ -31,14 +38,20 @@ The flow separates *clarity*, *capture*, and *execution*:
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
-| Role | Runs on | Fallback / notes |
+This table is the single source of truth for model routing — the guides and
+skills point here; update it first when routing changes.
+
+| Role | Runs on | Notes |
 | --- | --- | --- |
 | Orchestrator (conducts `/do`, all judgment) | main session — Fable | |
 | Web research | Claude `web-researcher` — Sonnet | |
-| Drive the app / verify | Claude `app-user` — Sonnet | |
-| Explore codebase | **Codex** GPT-5.5 `medium`, read-only | Claude `code-researcher` (Sonnet) |
-| Reproduce & root-cause | **Codex** GPT-5.5 `high`, workspace-write | Claude `investigator` (Opus) |
-| Write the diff | **Codex** GPT-5.5 `medium`, workspace-write | Claude `implementer` (Opus) |
+| Verify frontend (drive the running app) | Claude `frontend-verifier` — Sonnet | also reproduces failures for /discussion & /create-issue |
+| Verify backend (tests/scripts) | **Codex** GPT-5.5 `medium`, workspace-write | |
+| Explore codebase | **Codex** GPT-5.5 `medium`, read-only | Claude `code-researcher` (Sonnet) as backup |
+| Reproduce & root-cause | **Codex** GPT-5.5 `high`, workspace-write | |
+| Write the diff — backend/ops | **Codex** GPT-5.5 `medium`, workspace-write | |
+| Write the diff — frontend web/mobile (UI, styling, client state, user-facing copy) | Claude `frontend-implementer` — Opus | never routed through Codex |
+| Challenge the draft work item (Socratic gate) | Claude `socrates` — Opus | always invoked by all three `/create-*`; self-calibrates — fast-passes straightforward drafts, full challenge for epics/unargued items |
 | Review the plan | **two parallel reviewers**: Codex GPT-5.5 `high` + Claude `plan-reviewer` (Opus) | Must-Fix gate = union of both |
 | Review the diff + security | **two parallel reviewers**: Codex GPT-5.5 `high` + Claude `code-reviewer` (Opus) | Must-Fix gate = union of both |
 
@@ -46,16 +59,16 @@ Every Codex role is dispatched by the **`codex` skill**
 (`.claude/skills/codex/`), the one place that knows the `codex exec`
 mechanics per role — model, effort, sandbox (reviewers/researchers read-only
 + ephemeral; implementer workspace-write with `resume --last` across fix
-rounds; investigator workspace-write for running tests, edits forbidden by
-its role instructions), output capture, and status-line parsing. If the CLI
-is missing or a dispatch fails, the caller falls back to the same-named
-Claude sub-agent and flags it.
+rounds; investigator and backend-verifier workspace-write for running tests,
+edits forbidden by their role instructions), output capture, and status-line
+parsing.
 
 Review loops exit when **no Must Fix remains from either reviewer** — the
 orchestrator judges when a loop has converged and flags anything left
 unresolved in the wrap-up. High effort is for judgment-heavy roles (review,
-investigation); implementation and exploration run at medium. Never route
-customer-facing copy through Codex. `/do` and the three `/create-*` skills
+investigation); implementation and exploration run at medium. Frontend code
+and customer-facing copy never route through Codex — they're the
+`frontend-implementer`'s lane. `/do` and the three `/create-*` skills
 are user-invoked only (`disable-model-invocation`) — the model never fires
 them on its own.
 
@@ -66,7 +79,8 @@ Build tracker and design decisions: `../tmp/plan/build-plan.md`.
 - **`tyler/references/`** (synced to `~/.references/` — harness-neutral,
   sibling of `~/.claude` and `~/.codex`) — anything referenced by more than
   one skill, or by any agent: the shared blocks (`verification-criteria.md`,
-  `system-analysis.md`) and every agent's output format
+  `verification-methods.md`, `rubrics/` — per-surface verification rubrics,
+  `system-analysis.md`, `publish-work-item.md`) and every agent's output format
   (`references/agents/<agent>/…`). Agents are flat `.md` files by design
   (Claude Code has no agent-folder format), so each agent's body carries a
   pointer — "Read `~/.references/agents/<name>/<format>.md`" — plus a few
@@ -103,10 +117,13 @@ rsync -a "$REPO/tyler/references/" "$HOME/.references/"
 rsync -a "$REPO/tyler/.codex/skills/" "$HOME/.codex/skills/"
 ```
 
-The `.codex/skills/` role skills (implementer, plan-reviewer, code-reviewer,
-code-researcher, investigator) are thin pointers into `~/.claude/agents/`
-(role instructions) and `~/.references/` (output formats) — one copy of each
-document across both harnesses.
+The `.codex/skills/` role skills (implementer, backend-verifier,
+plan-reviewer, code-reviewer, code-researcher, investigator) are thin
+pointers — one copy of each document across both harnesses. Role
+instructions live in `~/.references/agents/<role>/instructions.md` for the
+Codex-only roles (implementer, investigator, backend-verifier) and in
+`~/.claude/agents/<name>.md` where a Claude twin exists (code-researcher,
+the reviewers); output formats live in `~/.references/agents/<role>/`.
 
 `rsync` without `--delete` won't remove skills/agents that were deleted from
 this repo — prune those by hand (or pass `--delete` if nothing hand-made lives

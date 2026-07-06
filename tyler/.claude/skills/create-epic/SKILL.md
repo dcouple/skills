@@ -1,9 +1,8 @@
 ---
 name: create-epic
-description: Captures a discussed multi-phase workstream as an Epic Spec work item ready for /do. Use when the user explicitly asks to create an epic, epic spec, feature epic, or spec spanning several sequential phases — e.g. "create an epic for this", "turn this into a spec", "this is bigger than one feature, write it up". For a single-outcome change use /create-feature instead.
+description: Captures a discussed multi-phase workstream as an Epic Spec work item ready for /do. For a single-outcome change use /create-feature instead.
 argument-hint: "[epic title or one-line summary]"
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Task, Skill, Bash(gh:*)
 ---
 
 # Create Epic
@@ -27,9 +26,8 @@ Drive toward what the spec needs, pulling from the discussion so far:
 - **Out of scope**
 
 Where the conversation left a gap, ask the user directly — one focused round. If a
-codebase fact is missing, dispatch the `codex` skill (role `code-researcher`; Claude
-`code-researcher` sub-agent as fallback); for an external fact, the `web-researcher`
-sub-agent.
+codebase fact is missing, dispatch the `codex` skill (role `code-researcher`); for an
+external fact, the `web-researcher` sub-agent.
 
 **Success criteria**: the user has explicitly agreed to problem, end state, each locked
 direction, and the out-of-scope list.
@@ -48,8 +46,9 @@ and its own verification surface; order confirmed.
 - Write `item.md` following `references/epic-spec.md` (frontmatter + body; don't emit
   the template's "— format" header or guidance quotes).
 - Per-phase verification criteria per `~/.references/verification-criteria.md`:
-  EARS-style, numbered `AC1…` within each phase, each mapped to an automated or
-  computer-use method.
+  EARS-style, numbered `AC1…` within each phase, each mapped to a method from
+  `~/.references/verification-methods.md` matched to that phase's change type
+  (rubrics in `~/.references/rubrics/`).
 - Keep it LEAN and at spec altitude: no file lists, pseudo-code, or task sequences —
   `/do`'s plan stage owns the *how* per phase.
 - Save transcript-worthy raw material to `./tmp/<id>/refs/` and link from the item —
@@ -59,30 +58,35 @@ and its own verification surface; order confirmed.
 **Success criteria**: `item.md` exists; phases are sequential and independently
 verifiable; every AC is numbered, observable, and mapped; spec altitude respected.
 
-### 4. Learning gate [human]
-Ask the user to state back, in one or two sentences, the phase cut and the key
-decision(s). One exchange, not a quiz. If their read conflicts with the doc, reconcile
-before proceeding.
+### 4. Socratic gate
+Always dispatch the `socrates` sub-agent with the draft's path (round 1). It
+calibrates its own intensity, but a multi-phase commitment is never
+"straightforward" — expect the full challenge. For an epic it bears down on
+shape (are the phases real?), appetite, consequences, and completeness,
+alongside necessity and assumptions.
+- Relay the questions to the user **verbatim** and wait for answers — don't
+  answer for them; the gate exists to make the user justify the item.
+- Re-dispatch socrates with the answers to judge them (round 2); press
+  `partial`/`evasive` answers once. Cap: two judged rounds, then proceed with
+  anything unresolved carried into Open questions.
+- If the dialogue changes the item — fewer phases, collapse to
+  `/create-feature`, or not worth doing — update `item.md` or stop.
+  Abandoning here is a success, not a failure.
+- Write the distilled Q&A into a `## Justification` section in `item.md`
+  (one line per question: claim challenged — reason that held). Long
+  exchanges go to `refs/socratic-dialogue.md`, linked from the item.
+- The user may waive the gate explicitly; record
+  `Socratic gate waived by user.` in the Justification section.
 
-**Success criteria**: the user's teach-back matches the item.
+**Success criteria**: socrates returned `pass` (or the cap was reached, or
+the user waived); `## Justification` written into `item.md`.
 
 ### 5. Mark ready and publish
-1. Set `status: ready` in `item.md`.
-2. Create the GitHub issue: `gh issue create` in the project's repo (from the
-   `Work-item tracking` section of the project's `CLAUDE.md`, or the current
-   repo) — title `feat: <epic title>`, body = the epic's problem, end state,
-   and the phases table.
-3. Invoke the `notion` skill, operation `publish`, with `./tmp/<id>/` and the
-   issue URL — it creates the Notion work item and uploads `item.md` + every
-   `refs/` file, returning the page URL.
-4. Cross-link: add the Notion page URL to the GitHub issue body
-   (`gh issue edit`), and record both in `item.md` frontmatter as `github:`
-   and `notion:`. On `NOTION UNAVAILABLE`, proceed GitHub + local only and
-   tell the user.
+Publish per `~/.references/publish-work-item.md` — issue title
+`feat: <epic title>`, issue body = the epic's problem, end state, the
+phases table, and the Justification section.
 
-**Success criteria**: issue exists, Notion work item exists with all
-artifacts (or its absence was reported), and each of issue / Notion page /
-item.md links to the others.
+**Success criteria**: published and cross-linked per the shared procedure.
 
 ```
 Suggested next steps:

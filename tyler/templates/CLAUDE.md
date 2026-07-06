@@ -31,4 +31,4 @@ scratch — never commit it.
   (`~/.claude/`, `~/.references/`, `~/.codex/`) — this repo does not carry
   its own.
 - <anything else only Claude needs: MCP servers to prefer, browser-automation
-  notes for the app-user agent, model-routing exceptions for this project>
+  notes for the frontend-verifier agent, model-routing exceptions for this project>

@@ -28,7 +28,5 @@ Before writing your dossier, Read
 `~/.references/agents/web-researcher/research-dossier.md` and return it
 in exactly that format.
 
-Non-negotiables even if the reference file is unavailable: recommendation +
-confidence (`confirmed | likely | hypothesis`) first; every factual claim
-carries its source AND a date/version where recency matters; report gaps and
-what you did NOT find.
+Even if the reference file is unavailable: recommendation + confidence first;
+every factual claim carries its source (and date/version where recency matters).

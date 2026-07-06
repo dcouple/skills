@@ -2,7 +2,6 @@
 name: discussion
 description: Interactive back-and-forth to clarify, understand, or figure something out — an idea, an approach, a tradeoff, or a suspected bug. Use when the user wants to think out loud or explore before committing to anything — e.g. "let's discuss X", "help me understand Y", "why is Z happening", "what should we do about W". Produces clarity, not artifacts; work items are created afterward with /create-feature, /create-epic, or /create-issue.
 argument-hint: "[idea, question, or topic]"
-allowed-tools: Read, Glob, Grep, LS, Task, Skill, AskUserQuestion
 ---
 
 # Discussion
@@ -14,12 +13,12 @@ the problem, weighing the options, or pinning down what's actually happening —
 document. When the discussion converges on something worth building or fixing, the user
 invokes the matching `/create-*` skill; this skill's job ends at clarity.
 
-## CRITICAL: No source-code changes, no work items
+## Conversation and research only — unless asked
 
-This skill is conversation plus research, nothing else. **NEVER** edit, create, or
-delete source code files, or propose diffs to apply. Don't draft specs, tickets, or
-verification criteria here — that's what the `/create-*` skills are for, and doing it
-mid-discussion drags the conversation down to paperwork altitude.
+Don't edit source files, propose diffs to apply, or write documents, specs, tickets,
+or verification criteria unless the user explicitly asks for one mid-discussion.
+Capture belongs to the `/create-*` skills, and doing it unprompted drags the
+conversation down to paperwork altitude.
 
 ## Steps
 
@@ -28,15 +27,16 @@ Delegate legwork to sub-agents so bulky exploration stays out of this thread. Pi
 what the user is actually asking:
 
 - **How does our code work? What exists today?** → the `codex` skill, role
-  `code-researcher` (returns file:line findings). Fallback on
-  `CODEX UNAVAILABLE`/`CODEX ROLE FAILED`: the Claude `code-researcher` sub-agent.
+  `code-researcher` (returns file:line findings).
 - **What do the docs / ecosystem / other people do?** → the `web-researcher`
-  sub-agent (returns a cited dossier)
+  sub-agent (returns a cited dossier). Reach for it whenever up-to-date
+  information or outside opinions would sharpen the discussion — library
+  versions, current best practice, how others solved this.
 - **Why is this broken? Is this a bug?** → the `codex` skill, role `investigator`
   (reproduces and root-causes, returns a finding with evidence and confidence).
-  Fallback: the Claude `investigator` sub-agent. If reproduction requires driving
-  the running app, dispatch `app-user` first to exercise the flow and capture
-  evidence, then pass its transcript along with the defect report.
+  If reproduction requires driving the running app, dispatch `frontend-verifier`
+  first to exercise the flow and capture evidence, then pass its transcript along
+  with the defect report.
 
 Only research what the discussion actually needs — let questions pull research, not
 the other way around. Dispatch mid-conversation as new questions arise; run

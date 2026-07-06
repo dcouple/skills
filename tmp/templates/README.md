@@ -41,6 +41,8 @@ Guiding principles (from `../plan/build-plan.md`):
 | Code Researcher | output | `tyler/references/agents/code-researcher/codebase-findings.md` |
 | Web Researcher | output | `tyler/references/agents/web-researcher/research-dossier.md` |
 | Investigator | output | `tyler/references/agents/investigator/root-cause-finding.md` |
-| App user | output | `tyler/references/agents/app-user/verification-result.md` (verify + reproduce modes) |
+| Socrates | output | `tyler/references/agents/socrates/socratic-challenge.md` (round 1 challenge + round 2 judgment) |
+| Frontend / Backend verifier | output | `tyler/references/agents/frontend-verifier/verification-result.md` (shared; verify + reproduce modes) |
 | Implementer | output | `tyler/references/agents/implementer/implementation-result.md` |
-| shared blocks | block | `tyler/references/verification-criteria.md`, `system-analysis.md` |
+| shared blocks | block | `tyler/references/verification-criteria.md`, `system-analysis.md`, `publish-work-item.md` |
+| verification methods + rubrics | block | `tyler/references/verification-methods.md`, `tyler/references/rubrics/<surface>.md` |
