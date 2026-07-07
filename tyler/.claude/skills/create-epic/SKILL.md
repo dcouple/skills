@@ -42,44 +42,26 @@ If it collapses to one phase, say so and suggest `/create-feature` instead.
 and its own verification surface; order confirmed.
 
 ### 3. Write the work item
-- Pick `<id>`: short kebab-case slug from the title. Create `./tmp/<id>/`.
-- Write `item.md` following `references/epic-spec.md` (frontmatter + body; don't emit
-  the template's "— format" header or guidance quotes).
-- Per-phase verification criteria per `~/.references/verification-criteria.md`:
-  EARS-style, numbered `AC1…` within each phase, each mapped to a method from
-  `~/.references/verification-methods.md` matched to that phase's change type
-  (rubrics in `~/.references/rubrics/`).
-- Keep it LEAN and at spec altitude: no file lists, pseudo-code, or task sequences —
+Draft `./tmp/<id>/item.md` per `~/.references/draft-work-item.md`, using this
+skill's `references/epic-spec.md` as the template. Epic specifics:
+- Verification criteria are **per phase**: `AC1…` numbered within each phase,
+  each mapped to a method matched to that phase's change type.
+- Keep spec altitude: no file lists, pseudo-code, or task sequences —
   `/do`'s plan stage owns the *how* per phase.
-- Save transcript-worthy raw material to `./tmp/<id>/refs/` and link from the item —
-  never inline.
-- Leave `status: draft` for now.
 
 **Success criteria**: `item.md` exists; phases are sequential and independently
 verifiable; every AC is numbered, observable, and mapped; spec altitude respected.
 
 ### 4. Socratic gate
-Always dispatch the `socrates` sub-agent with the draft's path (round 1). It
-calibrates its own intensity, but a multi-phase commitment is never
-"straightforward" — expect the full challenge. For an epic it bears down on
-shape (are the phases real?), appetite, consequences, and completeness,
-alongside necessity and assumptions.
-- Relay the questions to the user **verbatim** and wait for answers — don't
-  answer for them; the gate exists to make the user justify the item.
-- Re-dispatch socrates with the answers to judge them (round 2); press
-  `partial`/`evasive` answers once. Cap: two judged rounds, then proceed with
-  anything unresolved carried into Open questions.
-- If the dialogue changes the item — fewer phases, collapse to
-  `/create-feature`, or not worth doing — update `item.md` or stop.
-  Abandoning here is a success, not a failure.
-- Write the distilled Q&A into a `## Justification` section in `item.md`
-  (one line per question: claim challenged — reason that held). Long
-  exchanges go to `refs/socratic-dialogue.md`, linked from the item.
-- The user may waive the gate explicitly; record
-  `Socratic gate waived by user.` in the Justification section.
+Run the gate per `~/.references/socratic-gate.md`. A multi-phase commitment
+is never "straightforward" — expect the full challenge. For an epic it bears
+down on shape (are the phases real?), appetite, consequences, and
+completeness, alongside necessity and assumptions. If the dialogue collapses
+the epic to one phase, hand off to `/create-feature`.
 
-**Success criteria**: socrates returned `pass` (or the cap was reached, or
-the user waived); `## Justification` written into `item.md`.
+**Success criteria**: gate procedure complete — socrates returned `pass` (or
+the cap was reached, or the user waived); `## Justification` written into
+`item.md`.
 
 ### 5. Mark ready and publish
 Publish per `~/.references/publish-work-item.md` — issue title

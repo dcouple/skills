@@ -1,6 +1,6 @@
 ---
 name: postmortem
-description: Runs a postmortem after /do finished and the human reviewed the PR, when the result fell short of intent. Use when the user says a /do run missed the mark, the PR needed rework, the delivered feature didn't match the ticket, or asks "why did /do get this wrong". Root-causes the gap in our system and proposes one concrete improvement.
+description: Runs a postmortem after /do finished and the human reviewed the PR, when the result fell short of intent. Use when the user says a /do run missed the mark, the PR needed rework, the delivered feature didn't match the ticket, or asks "why did /do get this wrong" — or when any workflow skill (/discussion, /create-*) produced the wrong outcome. Root-causes the gap in our system and proposes one concrete improvement.
 argument-hint: "[PR url/# or work-item id]"
 ---
 
@@ -8,8 +8,10 @@ argument-hint: "[PR url/# or work-item id]"
 
 ## Target: $ARGUMENTS
 
-Compound learning: when a `/do` run fell short of intent, find the root cause in **our
-system** — the skills, agents, templates, and criteria — not just the code. The completion
+Compound learning: when a `/do` run fell short of intent — or another workflow
+skill produced the wrong outcome (a ticket the gate should have killed, a skill
+that fired at the wrong moment) — find the root cause in **our system** — the
+skills, agents, templates, and criteria — not just the code. The completion
 artifact is `./tmp/<id>/postmortem.md` plus one proposed (not applied) system change.
 
 This skill changes nothing: no code fixes, no skill edits. If the code itself needs
@@ -53,17 +55,20 @@ The code defect (if any) is a symptom here. Note it, and route the fix through
 step-1 documents (quote the thin section, the weak AC, the review miss).
 
 ### 4. Write the postmortem
-Write `./tmp/<id>/postmortem.md` following `references/postmortem.md` (frontmatter +
-body; don't emit the template's "— format" header or guidance quotes).
+Write `./tmp/<id>/postmortem.md` following this skill's `references/postmortem.md` —
+emit the filled-in frontmatter and body only; the template's "— format" header and
+guidance quotes are authoring notes, not output.
 
 **Success criteria**: `postmortem.md` exists and the "why the gap happened" section names
 the system cause, not just the code defect.
 
 ### 5. Propose ONE system change [human checkpoint]
 Propose exactly one concrete change to one specific file — a skill, sub-agent, template,
-or criteria block (e.g. `tyler/.claude/skills/discussion/SKILL.md`,
-`tyler/references/verification-criteria.md`,
-`tyler/.claude/agents/code-reviewer.md`). Quote the file path and show the proposed edit.
+or criteria block, named by its path in the skills repo (`dcouple/skills`, under
+`tyler/` — e.g. `tyler/.claude/skills/discussion/SKILL.md`,
+`tyler/references/verification-criteria.md`, `tyler/.claude/agents/code-reviewer.md`).
+The synced copies under `~/.claude` and `~/.references` are mirrors — the edit lands in
+the repo and re-syncs. Quote the file path and show the proposed edit.
 
 Do **not** apply it. Present it for the human to approve; record the proposal (and the
 verdict, if given now) in postmortem.md's "What to change so it doesn't recur" section.

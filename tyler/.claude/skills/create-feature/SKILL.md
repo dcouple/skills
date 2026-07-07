@@ -41,45 +41,23 @@ prefer the smaller shape.
 **Success criteria**: shape confirmed (or handed off to `/create-epic`).
 
 ### 3. Write the work item
-- Pick `<id>`: short kebab-case slug from the title. Create `./tmp/<id>/`.
-- Write `item.md` following `references/feature-ticket.md` (frontmatter + body; don't
-  emit the template's "— format" header or guidance quotes).
-- Embed verification criteria per `~/.references/verification-criteria.md`: EARS-style,
-  numbered `AC1…`, each mapped to a method from
-  `~/.references/verification-methods.md` — a lint rule, test, script (backend), or
-  natural navigation of the running app (frontend/mobile), matched to the change
-  type's rubric in `~/.references/rubrics/`. No "works correctly".
-- Keep it LEAN: `/do` starts fresh and is capable — omit anything it can reasonably
-  decide itself.
-- Save transcript-worthy raw material (key discussion excerpts, mock-ups, links,
-  research worth keeping) to `./tmp/<id>/refs/` and link from the item — never inline.
-- Leave `status: draft` for now.
+Draft `./tmp/<id>/item.md` per `~/.references/draft-work-item.md`, using this
+skill's `references/feature-ticket.md` as the template. Suitable methods for a
+feature's ACs: a lint rule, test, script (backend), or natural navigation of
+the running app (frontend/mobile).
 
 **Success criteria**: `item.md` exists; every AC is numbered, observable, and mapped;
 nothing in the item restates what refs/ or the model already covers.
 
 ### 4. Socratic gate
-Always dispatch the `socrates` sub-agent with the draft's path (round 1). It
-calibrates its own intensity: a straightforward, well-justified draft gets a
-fast pass with zero to two questions; an unargued or scope-grown one gets the
-full adversarial challenge — necessity, root cause, simpler alternatives,
-shape, assumptions, consequences, completeness (is this the whole of it?).
-- Relay the questions to the user **verbatim** and wait for answers — don't
-  answer for them; the gate exists to make the user justify the item.
-- Re-dispatch socrates with the answers to judge them (round 2); press
-  `partial`/`evasive` answers once. Cap: two judged rounds, then proceed with
-  anything unresolved carried into Open questions.
-- If the dialogue changes the item — narrower scope, different shape
-  (`/create-epic`), or not worth doing — update `item.md` or stop.
-  Abandoning here is a success, not a failure.
-- Write the distilled Q&A into a `## Justification` section in `item.md`
-  (one line per question: claim challenged — reason that held). Long
-  exchanges go to `refs/socratic-dialogue.md`, linked from the item.
-- The user may waive the gate explicitly; record
-  `Socratic gate waived by user.` in the Justification section.
+Run the gate per `~/.references/socratic-gate.md`. For a feature it bears
+down on necessity, root cause, simpler alternatives, and shape; a
+straightforward, well-justified draft fast-passes with zero to two questions.
+If the dialogue reveals a multi-phase shape, hand off to `/create-epic`.
 
-**Success criteria**: socrates returned `pass` (or the cap was reached, or
-the user waived); `## Justification` written into `item.md`.
+**Success criteria**: gate procedure complete — socrates returned `pass` (or
+the cap was reached, or the user waived); `## Justification` written into
+`item.md`.
 
 ### 5. Mark ready and publish
 Publish per `~/.references/publish-work-item.md` — issue title

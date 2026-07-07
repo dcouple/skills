@@ -9,8 +9,9 @@ disable-model-invocation: true
 
 ## Work item: $ARGUMENTS
 
-You are the orchestrator (Fable, this session). Every judgment call is
-yours — how much research the plan needs, when the plan is ready, when
+You are the **Overseer** — the orchestrating agent (Fable, this session);
+sub-agent role instructions and report formats refer to you by that name.
+Every judgment call is yours — how much research the plan needs, when the plan is ready, when
 review findings are resolved. Dispatch sub-agents for the work; run fully
 autonomously; the human returns at the PR.
 
@@ -28,13 +29,17 @@ web-researcher is a Claude sub-agent.
 Get everything about the work item into `./tmp/<id>/` before starting: for a
 GitHub issue, the `notion` skill (operation `pull`) fetches the Notion work
 item and all its artifacts — issue body as the fallback item when there's no
-Notion link. A local path is read directly (default: most recent
-`./tmp/*/item.md` with `status: ready`). Skim `refs/`; read individual refs
+Notion link. A local path is read directly. Invoked with no argument: list
+the local items with `status: ready` (`./tmp/*/item.md`) and ask the user
+which to run — never pick one silently. Skim `refs/`; read individual refs
 as the work calls for them.
 
 Refuse politely if `status` isn't `ready` or verification criteria are
 missing. Never create a branch — if on the default branch, stop and ask the
 user to set one up.
+
+**Done when**: the item and its artifacts are in `./tmp/<id>/`, status is
+`ready`, and you're on a non-default branch.
 
 ## Step 1: Plan
 
@@ -42,9 +47,11 @@ Research as much as the item actually needs — you judge. If the item links
 Notion pages beyond what Step 0 pulled and a Notion connection (MCP or CLI)
 is available, fetch them via the `notion` skill rather than planning around
 the gap. Then write
-`./tmp/<id>/plan.md` following `references/implementation-plan.md`, restating
-the item's `AC#` criteria verbatim. Run the review loop — both reviewers,
-findings fixed into the plan — until you're satisfied the plan is ready.
+`./tmp/<id>/plan.md` following this skill's `references/implementation-plan.md`,
+restating the item's `AC#` criteria verbatim. Run the review loop — both
+reviewers, findings fixed into the plan — until you're satisfied the plan is
+ready, cap 3 passes; carry anything unresolved at the cap into the plan's
+open questions.
 
 ## Step 2: Implement
 
@@ -65,11 +72,16 @@ computer-use flows in the running app, the `codex` skill role
 the ACs. Quoted evidence on every pass; nothing is assumed. Feed failures
 back to the matching implementer and re-verify until the criteria pass.
 
+**Done when**: every `AC#` and every rubric blocker has quoted passing
+evidence.
+
 ## Step 4: PR review
 
 Run both reviewers over the diff (correctness + security, `(security)`
-tags). Loop findings back to the implementer until no critical (Must Fix)
-issues remain from either reviewer.
+tags). Loop findings back to the implementer, cap 3 passes.
+
+**Done when**: no critical (Must Fix) issues remain from either reviewer —
+or the cap was reached, with the survivors flagged in the wrap-up.
 
 ## Step 5: PR + wrap-up
 
@@ -81,7 +93,8 @@ All commit/PR prep lives here:
 - Open the PR: typed title; body = **Summary** (the item's intent and what
   "done" means), **Verification** (evidence per AC), **Residual risks** (omit
   if none); `Closes #<n>` when the item has a `github:` issue.
-- Write `./tmp/<id>/wrapup.md` following `references/wrap-up-report.md`; post
+- Write `./tmp/<id>/wrapup.md` following this skill's
+  `references/wrap-up-report.md`; post
   it as a PR comment. If the item has a `notion:` reference, `notion` skill
   operation `upload`: plan.md + wrapup.md, PR URL, status `done`.
 - Report to the user: PR link + wrap-up summary + anything unresolved.
@@ -89,8 +102,9 @@ All commit/PR prep lives here:
 ## Epics (type: epic-spec)
 
 Run Steps 1–4 per phase, sequentially — per-phase `plan-<n>.md`, tick the
-phase ✓ in the spec on completion, commit each phase as it completes. One PR
-after the last phase.
+phase ✓ in the spec on completion, and commit each phase as it completes
+following Step 5's commit rules. The PR and wrap-up still happen once, after
+the last phase.
 
 ## Rules
 

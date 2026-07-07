@@ -45,16 +45,14 @@ direction or left to `/do`. Skip the ceremony when severity is obvious.
 agreed with the user.
 
 ### 3. Write the Bug Report
-- Pick `<id>`: short kebab-case slug from the bug title. Create `./tmp/<id>/`.
-- Write `item.md` following `references/bug-report.md` (frontmatter + body; don't emit
-  the template's "— format" header or guidance quotes).
+Draft `./tmp/<id>/item.md` per `~/.references/draft-work-item.md`, using this
+skill's `references/bug-report.md` as the template. Bug specifics:
 - Reproduction steps go **in the report** — deterministic enough for the verify stage
   to re-run them. Raw traces, logs, and long transcripts go to `./tmp/<id>/refs/`
   (e.g. `refs/error-trace.txt`), linked not inlined. If the investigation produced a
   current-state deep-dive worth keeping, save it per
   `~/.references/system-analysis.md` as `refs/system-analysis.md`.
-- Verification criteria per `~/.references/verification-criteria.md` (methods:
-  `~/.references/verification-methods.md`) must include:
+- Verification criteria must include:
   - **AC1**: the reproduction flipping from fail to pass — the repro steps double as
     the failing case the fix must flip.
   - **Prevention criteria**: what stops this class of bug recurring — a regression
@@ -65,29 +63,17 @@ agreed with the user.
 prevention criteria present; raw material linked from `refs/`.
 
 ### 4. Socratic gate
-Always dispatch the `socrates` sub-agent with the draft's path (round 1). It
-calibrates its own intensity — a confirmed cause with a contained fix gets a
-fast pass with zero to two questions. For a bug report it bears down on root
-cause vs symptom (does the cause survive another "why"?), evidence, whether
-the fix prevents the class or just this instance, and completeness — are
-there sibling instances of the same defect class elsewhere, or follow-up
-work this fix implies?
-- Relay the questions to the user **verbatim** and wait for answers — don't
-  answer for them; the gate exists to make the user justify the item.
-- Re-dispatch socrates with the answers to judge them (round 2); press
-  `partial`/`evasive` answers once. Cap: two judged rounds, then proceed with
-  anything unresolved carried into Open questions.
-- If the dialogue changes the item — deeper cause to chase, severity
-  re-graded, or not worth fixing now — update `item.md`, re-dispatch the
-  investigator, or stop. Abandoning here is a success, not a failure.
-- Write the distilled Q&A into a `## Justification` section in `item.md`
-  (one line per question: claim challenged — reason that held). Long
-  exchanges go to `refs/socratic-dialogue.md`, linked from the item.
-- The user may waive the gate explicitly; record
-  `Socratic gate waived by user.` in the Justification section.
+Run the gate per `~/.references/socratic-gate.md`. For a bug report it bears
+down on root cause vs symptom (does the cause survive another "why"?),
+evidence, whether the fix prevents the class or just this instance, and
+completeness — sibling instances of the same defect class elsewhere, or
+follow-up work this fix implies. A confirmed cause with a contained fix
+fast-passes with zero to two questions. If the dialogue surfaces a deeper
+cause to chase, re-dispatch the investigator before proceeding.
 
-**Success criteria**: socrates returned `pass` (or the cap was reached, or
-the user waived); `## Justification` written into `item.md`.
+**Success criteria**: gate procedure complete — socrates returned `pass` (or
+the cap was reached, or the user waived); `## Justification` written into
+`item.md`.
 
 ### 5. Mark ready and publish
 Publish per `~/.references/publish-work-item.md` — issue title

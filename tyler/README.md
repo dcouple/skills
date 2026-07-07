@@ -33,17 +33,19 @@ The flow separates *clarity*, *capture*, and *execution*:
    item's artifacts from Notion into `./tmp/<id>/` (when given a GitHub
    issue) → plan + review loop → implement → verify → PR-review loop →
    PR + wrap-up, with `plan.md`/`wrapup.md` uploaded back to the Notion work
-   item at the end. Deliberately high-level: the orchestrator judges how much
+   item at the end. Deliberately high-level: the Overseer judges how much
    research a plan needs and when each review loop has converged.
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
 This table is the single source of truth for model routing — the guides and
-skills point here; update it first when routing changes.
+skills point here; update it first when routing changes, and update `/do`'s
+**Sub-agents** paragraph in the same commit: this README is not synced to
+`~`, so the skills' restatement is what actually executes.
 
 | Role | Runs on | Notes |
 | --- | --- | --- |
-| Orchestrator (conducts `/do`, all judgment) | main session — Fable | |
+| Overseer (conducts `/do`, all judgment) | main session — Fable | |
 | Web research | Claude `web-researcher` — Sonnet | |
 | Verify frontend (drive the running app) | Claude `frontend-verifier` — Sonnet | also reproduces failures for /discussion & /create-issue |
 | Verify backend (tests/scripts) | **Codex** GPT-5.5 `medium`, workspace-write | |
@@ -64,7 +66,7 @@ edits forbidden by their role instructions), output capture, and status-line
 parsing.
 
 Review loops exit when **no Must Fix remains from either reviewer** — the
-orchestrator judges when a loop has converged and flags anything left
+Overseer judges when a loop has converged and flags anything left
 unresolved in the wrap-up. High effort is for judgment-heavy roles (review,
 investigation); implementation and exploration run at medium. Frontend code
 and customer-facing copy never route through Codex — they're the
@@ -72,7 +74,8 @@ and customer-facing copy never route through Codex — they're the
 are user-invoked only (`disable-model-invocation`) — the model never fires
 them on its own.
 
-Build tracker and design decisions: `../tmp/plan/build-plan.md`.
+Build tracker and design decisions: `../tmp/plan/build-plan.md` (local
+working notes — `tmp/` is untracked).
 
 ## Where formats live (single copy each — no duplicates to drift)
 
@@ -80,7 +83,8 @@ Build tracker and design decisions: `../tmp/plan/build-plan.md`.
   sibling of `~/.claude` and `~/.codex`) — anything referenced by more than
   one skill, or by any agent: the shared blocks (`verification-criteria.md`,
   `verification-methods.md`, `rubrics/` — per-surface verification rubrics,
-  `system-analysis.md`, `publish-work-item.md`) and every agent's output format
+  `system-analysis.md`, `publish-work-item.md`, `draft-work-item.md`,
+  `socratic-gate.md`) and every agent's output format
   (`references/agents/<agent>/…`). Agents are flat `.md` files by design
   (Claude Code has no agent-folder format), so each agent's body carries a
   pointer — "Read `~/.references/agents/<name>/<format>.md`" — plus a few
@@ -88,8 +92,8 @@ Build tracker and design decisions: `../tmp/plan/build-plan.md`.
 - **`.claude/skills/<name>/references/`** — document formats produced by
   exactly one skill (feature-ticket, epic-spec, bug-report,
   implementation-plan, wrap-up-report, postmortem).
-- `../tmp/templates/README.md` is the index mapping every format to its live
-  home.
+- `../tmp/templates/README.md` (local working notes, untracked) is the index
+  mapping every format to its live home.
 
 The six workflow skills above, plus two infrastructure skills the others
 invoke — `codex` (dispatches Codex roles) and `notion` (the GitHub ↔ Notion
@@ -115,6 +119,12 @@ rsync -a "$REPO/tyler/.claude/skills/" "$HOME/.claude/skills/"
 rsync -a "$REPO/tyler/.claude/agents/" "$HOME/.claude/agents/"
 rsync -a "$REPO/tyler/references/" "$HOME/.references/"
 rsync -a "$REPO/tyler/.codex/skills/" "$HOME/.codex/skills/"
+
+# drift check — any output means a local copy differs from the repo
+diff -rq "$REPO/tyler/.claude/skills" "$HOME/.claude/skills"
+diff -rq "$REPO/tyler/.claude/agents" "$HOME/.claude/agents"
+diff -rq "$REPO/tyler/references"     "$HOME/.references"
+diff -rq "$REPO/tyler/.codex/skills"  "$HOME/.codex/skills"
 ```
 
 The `.codex/skills/` role skills (implementer, backend-verifier,
@@ -126,5 +136,6 @@ Codex-only roles (implementer, investigator, backend-verifier) and in
 the reviewers); output formats live in `~/.references/agents/<role>/`.
 
 `rsync` without `--delete` won't remove skills/agents that were deleted from
-this repo — prune those by hand (or pass `--delete` if nothing hand-made lives
-in your local folders).
+this repo — the drift check's `Only in $HOME/...` lines are the prune list;
+remove those by hand (or pass `--delete` if nothing hand-made lives in your
+local folders).

@@ -39,8 +39,8 @@ Codex reads them itself, so there is exactly one copy of each:
 
 ```
 You are acting as the <role> in an automated software-development pipeline
-conducted by a separate orchestrating agent. Your report is consumed by that
-orchestrator, not by a human.
+conducted by the Overseer, a separate orchestrating agent. Your report is
+consumed by the Overseer, not by a human.
 
 First read these two files:
 1. Your role instructions: <instructions path per the mapping below>.
