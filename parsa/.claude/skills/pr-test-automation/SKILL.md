@@ -1,6 +1,6 @@
 ---
 name: pr-test-automation
-description: Run first-pass automated manual testing for PRs that are reviewed or nearly ready to merge. Use when the user asks Claude to test a PR/branch/worktree, validate product flows, exercise browser or CLI workflows, verify analytics/webhooks/payments/email/SMS behavior through connected tools, or produce manual QA notes before human testing.
+description: Run first-pass automated manual testing for PRs that are reviewed or nearly ready to merge. Use when the user asks Claude to test a PR/branch/worktree, validate product flows, exercise browser or CLI workflows, map changed UI journeys with screenshots, verify analytics/webhooks/payments/email/SMS behavior through connected tools, or produce manual QA notes before human testing.
 ---
 
 # PR Test Automation
@@ -32,6 +32,9 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - Use Playwright when browser behavior matters. If the repo lacks Playwright, install it in a temporary directory rather than polluting the repo.
    - Use stable, user-visible selectors first: labels, placeholders, button text, URLs, and route state.
    - Generate unique short test identities and attribution markers such as `agent-e2e-<timestamp>`.
+   - When UI changes are in scope, map each touched surface area and user journey to screenshots in a temporary, easy-to-observe folder such as `tmp/pr-<number>-qa/` or `tmp/<branch>-qa/`. Use ordered filenames that describe the journey step, such as `01-signup-account.png` and `02-dropdown-expanded.png`.
+   - Capture meaningful UI states, not only final pages: empty/default, filled/selected, expanded menus, modals, validation errors, loading/success states, and at least one narrow viewport when responsive layout is likely affected.
+   - Reuse the same screenshot artifact pattern for local/dev validation and, when the user asks for post-merge production verification, for production paths. Keep local and production artifacts separated by folder or filename.
    - Prefer the app's built-in test/simulation path for external effects: local inboxes, Mailhog-style UIs, fake SMS numbers, test OTP logs, sandbox payment modes, webhook listeners, or provider test keys.
    - Parse local email/SMS verification links or codes from container logs when the local environment emits them.
    - Add small human-paced waits around analytics or step-transition tests so effects and batched events have time to fire in the same order a user would experience.
@@ -45,6 +48,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
 
 6. Report results:
    - State what was tested, the exact test identity/marker, and the observed outcome.
+   - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
    - Include connector/query evidence with event names, identifiers, timestamps, and important properties.
    - Separate passed automated checks from remaining manual checks.
    - Call out artifacts caused by the test harness, such as intentionally prevented navigation or mocked browser properties.
