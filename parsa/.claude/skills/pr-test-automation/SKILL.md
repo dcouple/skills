@@ -49,6 +49,8 @@ Validate as much of a PR as possible with local services, browser automation, CL
 6. Report results:
    - State what was tested, the exact test identity/marker, and the observed outcome.
    - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
+   - When screenshots are safe to share, upload them to a true temporary host that returns direct image URLs, or to the app/repo's own temporary upload endpoint if one exists. Prefer retention that comfortably covers review, record the provider and expiration/retention policy, and avoid hosts that delete after the first download.
+   - For GitHub PR targets where the user asked for PR testing, post or update one durable QA comment on the PR with tested flows, evidence, screenshot links, and remaining human-review items. Use an HTML marker so reruns update the same comment instead of spamming the thread.
    - Include connector/query evidence with event names, identifiers, timestamps, and important properties.
    - Separate passed automated checks from remaining manual checks.
    - Call out artifacts caused by the test harness, such as intentionally prevented navigation or mocked browser properties.
@@ -140,6 +142,23 @@ For payment, email, SMS, analytics, and other third-party integrations:
 - Record IDs that let the user or future agent find the test again: email, phone number, org key, customer ID, subscription ID, message ID, webhook event type, dashboard URL, event marker, or screenshot path.
 - If a provider key lacks read scopes, try another non-destructive readback source such as a connected mailbox, recipient-side tool, provider dashboard export, app database row, webhook table, logs, or analytics event. Report the scope limitation rather than treating it as product failure.
 - Never expose secrets in the final answer. Public analytics tokens are not the same as private API keys, but still describe them carefully.
+
+## PR QA Comments And Screenshots
+
+When testing an open PR, preserve the result where reviewers will look first:
+
+- Create a local artifact folder such as `tmp/pr-<number>-qa/` containing raw screenshots, scripts, manifests, and notes.
+- Upload safe UI screenshots after testing. Do not upload PHI, secrets, private customer data, real inbox contents, payment details, or anything that would be inappropriate in a public/shared PR context.
+- Prefer direct image links with enough retention for the expected review window. `x0.at` is acceptable for non-sensitive QA screenshots when a longer-lived temp host is needed; it returns direct URLs and uses size-based retention between 3 and 100 days. If a repo or company has a preferred temporary upload API, use that instead.
+- Write a local upload manifest with provider, uploaded timestamp, retention/expiration expectation, original local path, URL, and a quick verification that each URL resolves as the expected content type.
+- Post or update one PR comment with marker `<!-- codex-pr-test-automation -->`. Include:
+  - summary of automated manual QA outcome;
+  - test account/org/marker identifiers;
+  - user journeys and surface areas tested;
+  - screenshots in collapsed `<details>` sections when there are many;
+  - connector/provider evidence such as PostHog, Stripe, email, SMS, logs, or database readback;
+  - what remains for human review and what was intentionally skipped.
+- If PR commenting is not authorized or a connector is unavailable, write the exact Markdown comment body into the artifact folder and report the path.
 
 ## Stop Conditions
 
