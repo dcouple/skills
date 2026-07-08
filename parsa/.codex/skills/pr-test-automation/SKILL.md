@@ -18,6 +18,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
 
 2. Check tools and authentication up front:
    - Verify required CLIs and connectors before starting long tests: `gh auth status`, `stripe --version` / active listener state, Docker status, PostHog/GitHub/Gmail connectors, cloud CLIs, or app-specific CLIs.
+   - Discover verification tools before assuming a manual check is required. If Composio is available, use `composio search` to find candidate inbox, SMS/phone, payment, CRM, support, or provider-log tools, then inspect schemas with `--get-schema` before executing.
    - Prefer connected app tools for product data verification. Do not assume credentials are current.
    - Use test-mode accounts, test keys, local containers, and staging-safe endpoints unless the user explicitly asks for production verification.
 
@@ -31,12 +32,14 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - Use Playwright when browser behavior matters. If the repo lacks Playwright, install it in a temporary directory rather than polluting the repo.
    - Use stable, user-visible selectors first: labels, placeholders, button text, URLs, and route state.
    - Generate unique short test identities and attribution markers such as `agent-e2e-<timestamp>`.
+   - Prefer the app's built-in test/simulation path for external effects: local inboxes, Mailhog-style UIs, fake SMS numbers, test OTP logs, sandbox payment modes, webhook listeners, or provider test keys.
    - Parse local email/SMS verification links or codes from container logs when the local environment emits them.
    - Add small human-paced waits around analytics or step-transition tests so effects and batched events have time to fire in the same order a user would experience.
 
 5. Verify externally, not just locally:
    - Network requests prove the browser tried to send data; connector/API queries prove the product received it.
-   - Query by the unique marker, test email, org ID, subscription ID, webhook event ID, or other stable test value.
+   - When simulation is unavailable, use connected recipient/provider readback: Gmail/Outlook/IMAP or email-service activity for email; Twilio/Dialpad/OpenPhone/Google Voice/test-number services or provider logs for SMS/voice; Stripe/provider dashboards for payments.
+   - Query by the unique marker, test email, phone number, org ID, subscription ID, webhook event ID, request ID, or other stable test value.
    - For webhooks, confirm both CLI/listener output and backend logs, then verify downstream data.
    - For analytics dashboards, query the exact project and call out the date range and filters used.
 
@@ -126,8 +129,12 @@ For payment, email, SMS, analytics, and other third-party integrations:
 
 - Confirm the account/project/mode before running tests.
 - Prefer test-mode objects and fake/test cards.
+- Prefer recipient/provider-side evidence over send-side success. A 200 response from the app or provider is useful but not enough when the PR's behavior depends on actual delivery, ingestion, webhook receipt, or downstream processing.
+- Use plus-addresses, reserved fake phone numbers, sandbox identities, metadata, notes, UTM values, or request IDs so every external artifact can be found without ambiguity.
+- Respect production stop boundaries. Do not bypass MFA, consume one-time tokens, send real calls/SMS, create paid subscriptions, charge cards, or mutate customer data unless the user explicitly approved that production action.
 - Check for duplicate listeners before starting a new webhook listener.
-- Record IDs that let the user or future agent find the test again: email, org key, customer ID, subscription ID, webhook event type, dashboard URL, or event marker.
+- Record IDs that let the user or future agent find the test again: email, phone number, org key, customer ID, subscription ID, message ID, webhook event type, dashboard URL, event marker, or screenshot path.
+- If a provider key lacks read scopes, try another non-destructive readback source such as a connected mailbox, recipient-side tool, provider dashboard export, app database row, webhook table, logs, or analytics event. Report the scope limitation rather than treating it as product failure.
 - Never expose secrets in the final answer. Public analytics tokens are not the same as private API keys, but still describe them carefully.
 
 ## Stop Conditions
