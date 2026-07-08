@@ -1,6 +1,6 @@
 ---
 name: pr-test-automation
-description: Run first-pass automated manual testing for PRs that are reviewed or nearly ready to merge. Use when the user asks Claude to test a PR/branch/worktree, validate product flows, exercise browser or CLI workflows, verify analytics/webhooks/payments/email/SMS behavior through connected tools, or produce manual QA notes before human testing.
+description: Run first-pass automated manual testing for PRs that are reviewed or nearly ready to merge. Use when the user asks Claude to test a PR/branch/worktree, validate product flows, exercise browser or CLI workflows, map changed UI journeys with screenshots, verify analytics/webhooks/payments/email/SMS behavior through connected tools, or produce manual QA notes before human testing.
 ---
 
 # PR Test Automation
@@ -18,6 +18,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
 
 2. Check tools and authentication up front:
    - Verify required CLIs and connectors before starting long tests: `gh auth status`, `stripe --version` / active listener state, Docker status, PostHog/GitHub/Gmail connectors, cloud CLIs, or app-specific CLIs.
+   - Discover verification tools before assuming a manual check is required. If Composio is available, use `composio search` to find candidate inbox, SMS/phone, payment, CRM, support, or provider-log tools, then inspect schemas with `--get-schema` before executing.
    - Prefer connected app tools for product data verification. Do not assume credentials are current.
    - Use test-mode accounts, test keys, local containers, and staging-safe endpoints unless the user explicitly asks for production verification.
 
@@ -31,17 +32,25 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - Use Playwright when browser behavior matters. If the repo lacks Playwright, install it in a temporary directory rather than polluting the repo.
    - Use stable, user-visible selectors first: labels, placeholders, button text, URLs, and route state.
    - Generate unique short test identities and attribution markers such as `agent-e2e-<timestamp>`.
+   - When UI changes are in scope, map each touched surface area and user journey to screenshots in a temporary, easy-to-observe folder such as `tmp/pr-<number>-qa/` or `tmp/<branch>-qa/`. Use ordered filenames that describe the journey step, such as `01-signup-account.png` and `02-dropdown-expanded.png`.
+   - Capture meaningful UI states, not only final pages: empty/default, filled/selected, expanded menus, modals, validation errors, loading/success states, and at least one narrow viewport when responsive layout is likely affected.
+   - Reuse the same screenshot artifact pattern for local/dev validation and, when the user asks for post-merge production verification, for production paths. Keep local and production artifacts separated by folder or filename.
+   - Prefer the app's built-in test/simulation path for external effects: local inboxes, Mailhog-style UIs, fake SMS numbers, test OTP logs, sandbox payment modes, webhook listeners, or provider test keys.
    - Parse local email/SMS verification links or codes from container logs when the local environment emits them.
    - Add small human-paced waits around analytics or step-transition tests so effects and batched events have time to fire in the same order a user would experience.
 
 5. Verify externally, not just locally:
    - Network requests prove the browser tried to send data; connector/API queries prove the product received it.
-   - Query by the unique marker, test email, org ID, subscription ID, webhook event ID, or other stable test value.
+   - When simulation is unavailable, use connected recipient/provider readback: Gmail/Outlook/IMAP or email-service activity for email; Twilio/Dialpad/OpenPhone/Google Voice/test-number services or provider logs for SMS/voice; Stripe/provider dashboards for payments.
+   - Query by the unique marker, test email, phone number, org ID, subscription ID, webhook event ID, request ID, or other stable test value.
    - For webhooks, confirm both CLI/listener output and backend logs, then verify downstream data.
    - For analytics dashboards, query the exact project and call out the date range and filters used.
 
 6. Report results:
    - State what was tested, the exact test identity/marker, and the observed outcome.
+   - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
+   - When screenshots are safe to share, upload them to a true temporary host that returns direct image URLs, or to the app/repo's own temporary upload endpoint if one exists. Prefer retention that comfortably covers review, record the provider and expiration/retention policy, and avoid hosts that delete after the first download.
+   - For GitHub PR targets where the user asked for PR testing, post or update one durable QA comment on the PR with tested flows, evidence, screenshot links, and remaining human-review items. Use an HTML marker so reruns update the same comment instead of spamming the thread.
    - Include connector/query evidence with event names, identifiers, timestamps, and important properties.
    - Separate passed automated checks from remaining manual checks.
    - Call out artifacts caused by the test harness, such as intentionally prevented navigation or mocked browser properties.
@@ -126,9 +135,30 @@ For payment, email, SMS, analytics, and other third-party integrations:
 
 - Confirm the account/project/mode before running tests.
 - Prefer test-mode objects and fake/test cards.
+- Prefer recipient/provider-side evidence over send-side success. A 200 response from the app or provider is useful but not enough when the PR's behavior depends on actual delivery, ingestion, webhook receipt, or downstream processing.
+- Use plus-addresses, reserved fake phone numbers, sandbox identities, metadata, notes, UTM values, or request IDs so every external artifact can be found without ambiguity.
+- Respect production stop boundaries. Do not bypass MFA, consume one-time tokens, send real calls/SMS, create paid subscriptions, charge cards, or mutate customer data unless the user explicitly approved that production action.
 - Check for duplicate listeners before starting a new webhook listener.
-- Record IDs that let the user or future agent find the test again: email, org key, customer ID, subscription ID, webhook event type, dashboard URL, or event marker.
+- Record IDs that let the user or future agent find the test again: email, phone number, org key, customer ID, subscription ID, message ID, webhook event type, dashboard URL, event marker, or screenshot path.
+- If a provider key lacks read scopes, try another non-destructive readback source such as a connected mailbox, recipient-side tool, provider dashboard export, app database row, webhook table, logs, or analytics event. Report the scope limitation rather than treating it as product failure.
 - Never expose secrets in the final answer. Public analytics tokens are not the same as private API keys, but still describe them carefully.
+
+## PR QA Comments And Screenshots
+
+When testing an open PR, preserve the result where reviewers will look first:
+
+- Create a local artifact folder such as `tmp/pr-<number>-qa/` containing raw screenshots, scripts, manifests, and notes.
+- Upload safe UI screenshots after testing. Do not upload PHI, secrets, private customer data, real inbox contents, payment details, or anything that would be inappropriate in a public/shared PR context.
+- Prefer direct image links with enough retention for the expected review window. `x0.at` is acceptable for non-sensitive QA screenshots when a longer-lived temp host is needed; it returns direct URLs and uses size-based retention between 3 and 100 days. If a repo or company has a preferred temporary upload API, use that instead.
+- Write a local upload manifest with provider, uploaded timestamp, retention/expiration expectation, original local path, URL, and a quick verification that each URL resolves as the expected content type.
+- Post or update one PR comment with marker `<!-- codex-pr-test-automation -->`. Include:
+  - summary of automated manual QA outcome;
+  - test account/org/marker identifiers;
+  - user journeys and surface areas tested;
+  - screenshots in collapsed `<details>` sections when there are many;
+  - connector/provider evidence such as PostHog, Stripe, email, SMS, logs, or database readback;
+  - what remains for human review and what was intentionally skipped.
+- If PR commenting is not authorized or a connector is unavailable, write the exact Markdown comment body into the artifact folder and report the path.
 
 ## Stop Conditions
 
