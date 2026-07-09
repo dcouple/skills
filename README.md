@@ -102,6 +102,19 @@ The skill exists in both Parsa variants:
 - Codex: `parsa/.codex/skills/runpane-orchestrator/`
 - Claude Code: `parsa/.claude/skills/runpane-orchestrator/`
 
+#### I want Pane Chat to remember or prioritize my work
+
+Use `pane-work-recap` when you ask what happened recently: active panes,
+archived panes, branches, PRs, and agent logs.
+
+Use `pane-work-prioritizer` when you ask what to work on next: active panes,
+recent repos, GitHub review requests, open PRs, assigned issues, checks, labels,
+and review findings.
+
+These are read-only Pane Chat workflows. The shared, agent-agnostic overview
+lives at `parsa/pane-chat/work-questions.md`; the Codex and Claude skill
+folders provide agent-specific discovery metadata and detailed instructions.
+
 ### Model choice
 
 This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
@@ -190,6 +203,7 @@ Each contributor has their own folder. Start with `parsa/`.
 parsa/
   .claude/   Claude Code skills, commands, agents, hooks, settings
   .codex/    Codex skills and config
+  pane-chat/ Shared Pane Chat workflow references
   business/  Business agent skills (context, discussion, spec, artifact, release)
   seo/       SEO skills (briefing, strategy, readability, authority, drafting)
 ```

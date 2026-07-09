@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pane Work Prioritizer"
+  short_description: "Rank what to work on next."
+  default_prompt: "Use $pane-work-prioritizer to tell me what I should work on next."

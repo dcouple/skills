@@ -22,6 +22,22 @@ independent reviewer output processed, and any RunPane CLI friction documented
 or fixed in a separate tracked workstream. Do not merge, deploy, release, or
 bump versions unless the user explicitly authorizes that exact action.
 
+## Pane Chat Work Questions
+
+When Pane Chat is asked what the user has been working on or what they should
+work on next, treat it as a read-only work question, not an issue-to-PR
+orchestration job.
+
+- Use `pane-work-recap` for "what did I do / what shipped / what is active?"
+- Use `pane-work-prioritizer` for "what should I do next / what is blocked /
+  what should I ignore?"
+- If the Pane runtime exposes the dcouple skills cache, also read the shared
+  agent-agnostic guide at `parsa/pane-chat/work-questions.md`.
+- Ground priority recommendations in this skill system: name the next workflow
+  skill, such as `investigate`, `discussion`, `plan`/`create-plan`,
+  `simple-plan`, `implementation-reviewer`/`review`, `pr-test-automation`,
+  `prepare-pr`, `page-review`, `site-content-audit`, or `teach-back`.
+
 ## Rules
 
 - Agent-created panes and panels should be background work by default. Pass
