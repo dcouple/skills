@@ -1030,13 +1030,13 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Clear engineering work\nGPT-5.5 medium fast",
+      "text": "Clear engineering work\nGPT-5.6 medium fast",
       "fontSize": 15,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": null,
-      "originalText": "Clear engineering work\nGPT-5.5 medium fast",
+      "originalText": "Clear engineering work\nGPT-5.6 medium fast",
       "lineHeight": 1.25
     },
     {
@@ -1094,13 +1094,13 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Ambitious implementation\nGPT-5.5 xhigh fast",
+      "text": "Ambitious implementation\nGPT-5.6 max fast",
       "fontSize": 15,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": null,
-      "originalText": "Ambitious implementation\nGPT-5.5 xhigh fast",
+      "originalText": "Ambitious implementation\nGPT-5.6 max fast",
       "lineHeight": 1.25
     },
     {
@@ -1222,13 +1222,13 @@
       "updated": 1,
       "link": null,
       "locked": false,
-      "text": "Review / audit loop\nGPT-5.5 xhigh fast\n+ Claude 5 Fable",
+      "text": "Review / audit loop\nGPT-5.6 ultra fast\n+ Claude 5 Fable",
       "fontSize": 14,
       "fontFamily": 3,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": null,
-      "originalText": "Review / audit loop\nGPT-5.5 xhigh fast\n+ Claude 5 Fable",
+      "originalText": "Review / audit loop\nGPT-5.6 ultra fast\n+ Claude 5 Fable",
       "lineHeight": 1.25
     },
     {
