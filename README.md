@@ -120,7 +120,7 @@ folders provide agent-specific discovery metadata and detailed instructions.
 This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
 through the Codex harness and Claude models through the Claude Code harness.
 Codex is the engineering workhorse. Most well-scoped implementation work
-doesn't need the biggest model. Right now, `GPT-5.5 medium fast` is the
+doesn't need the biggest model. Right now, `GPT-5.6 medium fast` is the
 everyday implementation default: it is strong enough for most clear tickets,
 fast enough to feel like you're flying, and cheap enough that you can work in
 long windows without feeling throttled by weekly limits.
@@ -138,25 +138,28 @@ framing. Codex can preserve the facts and still miss who the page is for, what
 moment the reader is in, and how the sentence should sound. That is how
 evergreen support copy quietly turns into the wrong tense.
 
-Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
+Reach for `GPT-5.6 max fast` when the implementation is unusually ambitious:
 lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
 expensive to unwind. That should be the exception, not the default.
+
+Ambiguous discussion and planning should stay in Claude when available: use
+`Claude 5 Fable` first, with `Claude 4.6 Opus` as a still-great fallback when
+Fable is unavailable or the extra usage cost is not worth it.
 
 Review is where we should be more aggressive. The reviewer isn't trying to be
 fast; it's trying to catch the thing the implementer missed. It should read the
 issue, the plan, and the diff with fresh eyes and ask: did we actually do what
-we meant? For non-trivial work, keep Claude and Codex review passes in the loop
-until what's left is either an intentional tradeoff, a very unlikely edge case,
-or no issue at all.
+we meant? For non-trivial planning and implementation review, run `GPT-5.6 ultra
+fast` and `Claude 5 Fable` in parallel; if Fable is unavailable or the cost is
+not worth it, use `Claude 4.6 Opus` as the Claude lane. Keep both lanes in the
+loop until neither reports bugs, factual blockers, or plan issues.
 
 For that review/audit loop, it is worth spending the expensive models
-sparingly: `GPT-5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
+sparingly: `GPT-5.6 ultra fast` and `Claude 5 Fable` are not needed for most
 implementation, so save them for the places where sharper judgment changes the
-outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
-ambiguous and you want to reason through the shape of the work. If the extra
-usage cost is not worth it, `Claude 4.6 Opus` is an acceptable fallback. I
-would avoid `Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel
-too constrained for open-ended discussion and judgment calls.
+outcome. `GPT-5.6 max fast` is the heavier implementation lane. I would avoid
+`Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel too
+constrained for open-ended discussion and judgment calls.
 
 ### Business work
 

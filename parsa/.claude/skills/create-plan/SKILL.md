@@ -265,11 +265,11 @@ Task tool:
    parallel with the Claude reviewer and **wait for both** before continuing.
    Do not treat the first result that returns as sufficient.
 
-   Prefer a fresh, high-effort rescue run so Codex audits the actual saved plan
+   Prefer a fresh, ultra-effort rescue run so Codex audits the actual saved plan
    against the current repo rather than free-associating:
 
 ```
-/codex:rescue --wait --fresh --model gpt-5.4 --effort xhigh audit the plan at [plan path] against the current repository and the supporting brief at [brief path]. Focus on ghost paths, missing runtime wiring, auth/permission gaps, transaction boundaries, async/job registration, query params or routes with no consumer, brief-to-plan intent drift, and any task definitions that are likely to let an implementation stop short of the finish line. Return numbered findings with exact file references when possible and say explicitly whether the plan seems implementation-ready.
+/codex:rescue --wait --fresh --model gpt-5.6 --effort ultra audit the plan at [plan path] against the current repository and the supporting brief at [brief path]. Focus on ghost paths, missing runtime wiring, auth/permission gaps, transaction boundaries, async/job registration, query params or routes with no consumer, brief-to-plan intent drift, and any task definitions that are likely to let an implementation stop short of the finish line. Return numbered findings with exact file references when possible and say explicitly whether the plan seems implementation-ready.
 ```
 
    If the Codex plugin is unavailable, run only the Claude review lane and
@@ -332,7 +332,7 @@ Plan finalized! To implement, run:
 Explicit Claude executor:
 /implement claude ./tmp/ready-plans/[filename]
 
-Optional Codex executor (gpt-5.4, high):
+Optional Codex executor (gpt-5.6, max):
 /implement --codex ./tmp/ready-plans/[filename]
 ```
 

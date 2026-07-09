@@ -101,7 +101,7 @@ If you choose to parallelize, keep it bounded:
 
 If the executor is **Codex** and the plugin is available:
 
-- Use **one** primary `/codex:rescue --wait --fresh --model gpt-5.4 --effort high` run for the end-to-end implementation
+- Use **one** primary `/codex:rescue --wait --fresh --model gpt-5.6 --effort max` run for the end-to-end implementation
 - Pass the same implementation contract used for the Claude implementer:
   - brief / intent artifact first, plan second
   - one primary owner for the whole stream
@@ -115,7 +115,7 @@ If the executor is **Codex** and the plugin is available:
 Suggested Codex executor prompt:
 
 ```
-/codex:rescue --wait --fresh --model gpt-5.4 --effort high implement the plan at [plan path]. Supporting brief / intent artifact: [path if available]. Treat the brief as the source of truth for why and the plan as the source of truth for how. You are the primary implementation authority for this run. Do not silently simplify or defer scope. A task is not complete until the end-to-end runtime or user-facing path is wired and still preserves the intended outcome. Run npm run typecheck and npm run lint as you work. Update the plan progress where practical and report any remaining manual steps or unresolved blockers clearly.
+/codex:rescue --wait --fresh --model gpt-5.6 --effort max implement the plan at [plan path]. Supporting brief / intent artifact: [path if available]. Treat the brief as the source of truth for why and the plan as the source of truth for how. You are the primary implementation authority for this run. Do not silently simplify or defer scope. A task is not complete until the end-to-end runtime or user-facing path is wired and still preserves the intended outcome. Run npm run typecheck and npm run lint as you work. Update the plan progress where practical and report any remaining manual steps or unresolved blockers clearly.
 ```
 
 ## Step 5: Parallel Review Gates
