@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pane Work Recap"
+  short_description: "Summarize recent Pane work."
+  default_prompt: "Use $pane-work-recap to summarize what I have been working on recently."
