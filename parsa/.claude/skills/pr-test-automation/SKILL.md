@@ -50,7 +50,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - State what was tested, the exact test identity/marker, and the observed outcome.
    - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
    - When screenshots are safe to share, upload them to a true temporary host that returns direct image URLs, or to the app/repo's own temporary upload endpoint if one exists. Prefer retention that comfortably covers review, record the provider and expiration/retention policy, and avoid hosts that delete after the first download.
-   - For GitHub PR targets where the user asked for PR testing, post or update one durable QA comment on the PR with tested flows, evidence, screenshot links, and remaining human-review items. Use an HTML marker so reruns update the same comment instead of spamming the thread.
+   - For GitHub PR targets where the user asked for PR testing, post or update one durable QA comment on the PR with tested flows, evidence, skim-friendly screenshot previews, and remaining human-review items. Use an HTML marker so reruns update the same comment instead of spamming the thread.
    - Include connector/query evidence with event names, identifiers, timestamps, and important properties.
    - Separate passed automated checks from remaining manual checks.
    - Call out artifacts caused by the test harness, such as intentionally prevented navigation or mocked browser properties.
@@ -155,9 +155,31 @@ When testing an open PR, preserve the result where reviewers will look first:
   - summary of automated manual QA outcome;
   - test account/org/marker identifiers;
   - user journeys and surface areas tested;
-  - screenshots in collapsed `<details>` sections when there are many;
+  - screenshot previews, not just screenshot links;
   - connector/provider evidence such as PostHog, Stripe, email, SMS, logs, or database readback;
   - what remains for human review and what was intentionally skipped.
+- Render safe uploaded screenshots inline so reviewers can skim the PR without opening every link. Do not leave the main PR comment as a plain list of screenshot URLs.
+- Prefer grouped preview galleries:
+  - Use one `<details open>` section per user journey or touched UI surface when there are many screenshots.
+  - Put screenshots in chronological order and label each one with the journey step and state it proves.
+  - Add a one-sentence explanation for each screenshot that answers: what surface/state is this, and what should the reviewer notice?
+  - Use a two-column Markdown/HTML table for compact skimming when there are more than four screenshots.
+  - Use direct image URLs in Markdown image syntax or HTML `<img>` tags. If using HTML, constrain width around `360`-`480` pixels so the PR remains readable.
+- Keep unsafe screenshots local only and say why. Examples: payment card entry screens, PHI, secrets, private customer data, real inbox contents, MFA codes, or production admin data. Mention their local paths without rendering or uploading them.
+- When updating an existing QA comment that already has screenshot links, convert the safe links into inline previews during the same update instead of adding a second comment.
+- Example compact preview block:
+
+```markdown
+<details open>
+<summary>Signup journey screenshots</summary>
+
+| Step | Preview |
+| --- | --- |
+| Account details | Shows the default account form before submission; reviewer should check required fields and spacing.<br><img src="https://example.test/01-account.png" width="420" alt="Account details form"> |
+| Validation error | Shows the blocked submit state; reviewer should check copy, focus, and error placement.<br><img src="https://example.test/02-validation.png" width="420" alt="Validation error state"> |
+
+</details>
+```
 - If PR commenting is not authorized or a connector is unavailable, write the exact Markdown comment body into the artifact folder and report the path.
 
 ## Stop Conditions
