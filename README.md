@@ -120,7 +120,7 @@ folders provide agent-specific discovery metadata and detailed instructions.
 This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
 through the Codex harness and Claude models through the Claude Code harness.
 Codex is the engineering workhorse. Most well-scoped implementation work
-doesn't need the biggest model. Right now, `GPT-5.5 medium fast` is the
+doesn't need the biggest model. Right now, `GPT-5.6 medium fast` is the
 everyday implementation default: it is strong enough for most clear tickets,
 fast enough to feel like you're flying, and cheap enough that you can work in
 long windows without feeling throttled by weekly limits.
@@ -138,7 +138,7 @@ framing. Codex can preserve the facts and still miss who the page is for, what
 moment the reader is in, and how the sentence should sound. That is how
 evergreen support copy quietly turns into the wrong tense.
 
-Reach for `GPT-5.5 xhigh fast` when the implementation is unusually ambitious:
+Reach for `GPT-5.6 max fast` when the implementation is unusually ambitious:
 lots of moving parts, fuzzy architecture boundaries, or a mistake that would be
 expensive to unwind. That should be the exception, not the default.
 
@@ -150,9 +150,10 @@ until what's left is either an intentional tradeoff, a very unlikely edge case,
 or no issue at all.
 
 For that review/audit loop, it is worth spending the expensive models
-sparingly: `GPT-5.5 xhigh fast` and `Claude 5 Fable` are not needed for most
+sparingly: `GPT-5.6 ultra fast` and `Claude 5 Fable` are not needed for most
 implementation, so save them for the places where sharper judgment changes the
-outcome. `Claude 5 Fable` is also the nicest model to talk with when the task is
+outcome. `GPT-5.6 max fast` is the heavier implementation lane; `Claude 5 Fable`
+is also the nicest model to talk with when the task is
 ambiguous and you want to reason through the shape of the work. If the extra
 usage cost is not worth it, `Claude 4.6 Opus` is an acceptable fallback. I
 would avoid `Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel
