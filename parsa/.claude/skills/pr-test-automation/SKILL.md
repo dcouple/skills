@@ -50,7 +50,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - State what was tested, the exact test identity/marker, and the observed outcome.
    - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
    - When screenshots are safe to share, upload them to a true temporary host that returns direct image URLs, or to the app/repo's own temporary upload endpoint if one exists. Prefer retention that comfortably covers review, record the provider and expiration/retention policy, and avoid hosts that delete after the first download.
-   - For GitHub PR targets where the user asked for PR testing, post or update one durable QA comment on the PR with tested flows, evidence, skim-friendly screenshot previews, and remaining human-review items. Use an HTML marker so reruns update the same comment instead of spamming the thread.
+   - For GitHub PR targets where the user asked for PR testing, update the PR description with a concise QA summary where reviewers look first. Use a marked section so reruns replace the latest QA summary without overwriting the author-written description. Use a separate marked QA comment for long evidence, logs, and screenshot galleries when the description would become unwieldy.
    - Include connector/query evidence with event names, identifiers, timestamps, and important properties.
    - Separate passed automated checks from remaining manual checks.
    - Call out artifacts caused by the test harness, such as intentionally prevented navigation or mocked browser properties.
@@ -143,7 +143,7 @@ For payment, email, SMS, analytics, and other third-party integrations:
 - If a provider key lacks read scopes, try another non-destructive readback source such as a connected mailbox, recipient-side tool, provider dashboard export, app database row, webhook table, logs, or analytics event. Report the scope limitation rather than treating it as product failure.
 - Never expose secrets in the final answer. Public analytics tokens are not the same as private API keys, but still describe them carefully.
 
-## PR QA Comments And Screenshots
+## PR QA Descriptions, Comments, And Screenshots
 
 When testing an open PR, preserve the result where reviewers will look first:
 
@@ -151,14 +151,22 @@ When testing an open PR, preserve the result where reviewers will look first:
 - Upload safe UI screenshots after testing. Do not upload PHI, secrets, private customer data, real inbox contents, payment details, or anything that would be inappropriate in a public/shared PR context.
 - Prefer direct image links with enough retention for the expected review window. `x0.at` is acceptable for non-sensitive QA screenshots when a longer-lived temp host is needed; it returns direct URLs and uses size-based retention between 3 and 100 days. If a repo or company has a preferred temporary upload API, use that instead.
 - Write a local upload manifest with provider, uploaded timestamp, retention/expiration expectation, original local path, URL, and a quick verification that each URL resolves as the expected content type.
-- Post or update one PR comment with marker `<!-- codex-pr-test-automation -->`. Include:
+- Treat the PR description as the primary review surface. Append or replace a marked section such as `<!-- codex-pr-test-automation-summary -->` without rewriting the human-authored PR summary. Keep the PR description QA section compact and include:
+  - current QA status;
+  - test account/org/marker identifiers;
+  - user journeys and surface areas tested;
+  - key external evidence IDs, such as Stripe subscription IDs, email IDs, PostHog event names, webhook IDs, or database readback;
+  - key screenshot previews when UI review is central and the set is small enough to skim;
+  - a link to the detailed QA comment or local artifacts when the full evidence is long;
+  - what remains for human review and what was intentionally skipped.
+- Post or update one PR comment with marker `<!-- codex-pr-test-automation -->` when detailed evidence, logs, or screenshot galleries are too large for the PR description. Include:
   - summary of automated manual QA outcome;
   - test account/org/marker identifiers;
   - user journeys and surface areas tested;
   - screenshot previews, not just screenshot links;
   - connector/provider evidence such as PostHog, Stripe, email, SMS, logs, or database readback;
   - what remains for human review and what was intentionally skipped.
-- Render safe uploaded screenshots inline so reviewers can skim the PR without opening every link. Do not leave the main PR comment as a plain list of screenshot URLs.
+- Render safe uploaded screenshots inline so reviewers can skim without opening every link. Do not leave the PR description or QA comment as a plain list of screenshot URLs when UI changed.
 - Prefer grouped preview galleries:
   - Use one `<details open>` section per user journey or touched UI surface when there are many screenshots.
   - Put screenshots in chronological order and label each one with the journey step and state it proves.
@@ -166,7 +174,7 @@ When testing an open PR, preserve the result where reviewers will look first:
   - Use a two-column Markdown/HTML table for compact skimming when there are more than four screenshots.
   - Use direct image URLs in Markdown image syntax or HTML `<img>` tags. If using HTML, constrain width around `360`-`480` pixels so the PR remains readable.
 - Keep unsafe screenshots local only and say why. Examples: payment card entry screens, PHI, secrets, private customer data, real inbox contents, MFA codes, or production admin data. Mention their local paths without rendering or uploading them.
-- When updating an existing QA comment that already has screenshot links, convert the safe links into inline previews during the same update instead of adding a second comment.
+- When updating an existing QA summary or comment that already has screenshot links, convert the safe links into inline previews during the same update instead of adding a second comment.
 - Example compact preview block:
 
 ```markdown
