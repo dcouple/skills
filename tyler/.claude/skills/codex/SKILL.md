@@ -51,7 +51,7 @@ Inputs for this run:
 - work item: <item path>
 - plan: <plan path, if the role uses one>
 - question / defect report: <for code-researcher / investigator>
-- review pass: <k>/3 <reviewers only>
+- review pass: <k>/<cap> <reviewers only — cap 3, or 1 on /do's light lane>
 - prior findings by ID: <reviewers, pass 2+> / fix instructions: <implementer fix rounds>
 
 Print the report as your final message, in exactly the specified format.

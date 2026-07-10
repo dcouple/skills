@@ -2,7 +2,7 @@
 
 > Returned **in-conversation** by the Plan Reviewer to the Overseer — **not a file**.
 > Runs 1+ times in the plan-review loop; the Overseer feeds Must-Fix items back into the
-> plan and re-reviews until zero Must-Fix (cap 3), then implement proceeds.
+> plan and re-reviews until zero Must-Fix (cap 3; light lane 1), then implement proceeds.
 > **Your final message IS the report: begin with the verdict.** Every line is a verdict,
 > a finding with a location, or a check you ran — no preamble, no process narration,
 > no closing summary.
@@ -10,7 +10,7 @@
 ---
 
 **Verdict:** `<Approve | Request changes>` — `<one-line rationale>`
-**Counts:** Must Fix: `<n>` · Should Fix: `<n>` · pass `<k>`/3
+**Counts:** Must Fix: `<n>` · Should Fix: `<n>` · pass `<k>`/`<cap>`
 
 ## Must Fix  *(blocks; loop back to plan)*
 - **MF-1** — `<what>` · `<where: plan section>` · `<concrete fix>` · violates `<D# / AC# | "new issue">`

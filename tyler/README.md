@@ -13,7 +13,9 @@ The flow separates *clarity*, *capture*, and *execution*:
 1. **`/discussion`** — clarify, understand, figure out. General-purpose: it
    dispatches the code-researcher / `web-researcher` for questions and the
    investigator (with `frontend-verifier` for reproduction) when the topic is a
-   defect. It produces clarity, never artifacts.
+   defect. It produces clarity plus a dated decision log
+   (`./tmp/discussions/`) that the `/create-*` drafting step reads — never
+   deliverables.
 2. **`/create-feature` · `/create-epic` · `/create-issue`** — manually invoked
    capture skills. Each turns what the conversation established into a lean
    work item at `./tmp/<id>/item.md` (Feature Ticket, Epic Spec, or Bug
@@ -31,10 +33,13 @@ The flow separates *clarity*, *capture*, and *execution*:
    full challenge.
 3. **`/do <issue # or item path>`** — the autonomous pipeline: pull the work
    item's artifacts from Notion into `./tmp/<id>/` (when given a GitHub
-   issue) → plan + review loop → implement → verify → PR-review loop →
-   PR + wrap-up, with `plan.md`/`wrapup.md` uploaded back to the Notion work
-   item at the end. Deliberately high-level: the Overseer judges how much
-   research a plan needs and when each review loop has converged.
+   issue) → lane call (light/full) → plan + review loop (full lane backed by
+   a research dossier, every plan under the evidence contract) → implement →
+   verify → build gate + PR → post-PR review loop + QA pass over the PR's
+   manual tests → wrap-up, with `plan.md`/`wrapup.md` uploaded back to the
+   Notion work item at the end. Deliberately high-level: the Overseer judges
+   the lane, how much research a plan needs, and when each review loop has
+   converged.
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
@@ -98,8 +103,9 @@ working notes — `tmp/` is untracked).
 The six workflow skills above, plus two infrastructure skills the others
 invoke — `codex` (dispatches Codex roles) and `notion` (the GitHub ↔ Notion
 artifact bridge) — are the whole surface. Web research is the
-`web-researcher` sub-agent, review lives inside `/do`, and all commit/PR
-prep lives in `/do`'s final step.
+`web-researcher` sub-agent, review lives inside `/do` (plan review before
+implement, code review + QA after the PR opens), and all commit/PR prep
+lives in `/do`'s PR step.
 
 ## Project templates
 

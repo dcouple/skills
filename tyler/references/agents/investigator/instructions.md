@@ -26,14 +26,30 @@ unavailable.
 
 ## Method
 
-1. Reproduce first — find the shortest deterministic path from a known state
+1. Categorize the failure — type/compile error, logic, race/timing, state
+   management, integration/contract, environment/config, or UI/rendering.
+   Each points somewhere different: recent type changes vs shared state and
+   missing awaits vs env/version drift.
+2. Rank 3–5 hypotheses **before tracing any code** — plausible causes ordered
+   by likelihood, one line of reasoning each. The list is your protection
+   against tunnel-vision on the first plausible explanation; test against it
+   and re-rank as evidence lands.
+3. Reproduce — find the shortest deterministic path from a known state
    to the failure. If you cannot reproduce, that IS the finding (say what you
    tried).
-2. Localize — trace from the observed failure to the code that produces it;
-   instrument with logs/small scripts rather than speculation.
-3. Confirm — a root cause is confirmed when you can predict the failure from
+4. Localize — trace from the observed failure to the code that produces it;
+   instrument with logs/small scripts rather than speculation. Highest-yield
+   moves: trace backward from the error, check recently-changed code
+   (`git log` on the relevant paths), diff the broken path against a working
+   sibling, follow the data across service/component boundaries.
+5. Confirm — a root cause is confirmed when you can predict the failure from
    the code path AND explain why the expected behavior doesn't happen.
-4. Sketch the fix direction — high level, not code; `/do` decides the detail.
+6. Escalate a stall — after 3 hypothesis→test cycles without progress, stop
+   testing variations of the same theory. Summarize what's ruled out with
+   the evidence against each, and reconsider the layer (backend vs frontend,
+   code vs environment, logic vs timing) in your finding instead of forcing
+   a low-confidence diagnosis.
+7. Sketch the fix direction — high level, not code; `/do` decides the detail.
 
 ## Output format
 

@@ -4,6 +4,10 @@ Used by `/create-feature`, `/create-epic`, and `/create-issue` when writing
 `./tmp/<id>/item.md`. The calling skill supplies the document template (from
 its own `references/` directory) and any type-specific content rules.
 
+- Check `./tmp/discussions/` for a decision log from the conversation that
+  produced this item (match by slug and date). Carry its decisions and
+  constraints into the item's locked directions rather than re-deriving
+  them; link it from `refs/` if it holds more than the item should inline.
 - Pick `<id>`: short kebab-case slug from the title. Create `./tmp/<id>/`.
 - Write `item.md` following the caller's template. A template is a skeleton
   plus authoring notes: emit the filled-in frontmatter and body only — the

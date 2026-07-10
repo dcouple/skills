@@ -1,6 +1,6 @@
 ---
 name: do
-description: Run the full autonomous pipeline against a work item — plan, implement, verify, review, PR + wrap-up. Takes a GitHub issue #/URL or a local ./tmp/<id>/item.md produced by the /create-* skills.
+description: Run the full autonomous pipeline against a work item — plan, implement, verify, PR, post-PR review + QA, wrap-up. Takes a GitHub issue #/URL or a local ./tmp/<id>/item.md produced by the /create-* skills.
 argument-hint: "[GitHub issue # / URL, or path to ./tmp/<id>/item.md]"
 disable-model-invocation: true
 ---
@@ -11,8 +11,8 @@ disable-model-invocation: true
 
 You are the **Overseer** — the orchestrating agent (Fable, this session);
 sub-agent role instructions and report formats refer to you by that name.
-Every judgment call is yours — how much research the plan needs, when the plan is ready, when
-review findings are resolved. Dispatch sub-agents for the work; run fully
+Every judgment call is yours — which lane the item takes, how much research
+the plan needs, when the plan is ready, when review findings are resolved. Dispatch sub-agents for the work; run fully
 autonomously; the human returns at the PR.
 
 **Sub-agents:** code-researcher, implementer, backend-verifier,
@@ -43,15 +43,33 @@ user to set one up.
 
 ## Step 1: Plan
 
-Research as much as the item actually needs — you judge. If the item links
+Set the lane first, and record it in `plan.md`'s frontmatter:
+
+- **light** — one surface, a handful of files, low blast radius, no
+  schema/auth/async changes. No dossier; research directly. Review loops
+  this run cap at 1 pass instead of 3.
+- **full** — everything else. Epics are always full.
+
+Full lane: dispatch the `codex` skill, role `code-researcher`, to map the
+territory the plan builds on — critical codebase anchors, patterns to
+reuse, load-bearing gotchas, exact `file:line` evidence for every claim.
+Save its returned findings as `./tmp/<id>/refs/research-dossier.md` — the
+role is read-only and reports in-conversation; you persist the dossier.
+Reconcile it into the plan: import the highest-value anchors and gotchas,
+re-check the repo wherever the dossier and your draft disagree, and record
+what you imported or dropped in the plan's Reconciliation notes.
+
+Research beyond that as the item actually needs — you judge. If the item links
 Notion pages beyond what Step 0 pulled and a Notion connection (MCP or CLI)
 is available, fetch them via the `notion` skill rather than planning around
 the gap. Then write
-`./tmp/<id>/plan.md` following this skill's `references/implementation-plan.md`,
-restating the item's `AC#` criteria verbatim. Run the review loop — both
-reviewers, findings fixed into the plan — until you're satisfied the plan is
-ready, cap 3 passes; carry anything unresolved at the cap into the plan's
-open questions.
+`./tmp/<id>/plan.md` following this skill's `references/implementation-plan.md` —
+its evidence contract is binding: facts live in Verified repo truths with
+`path:line` evidence from files opened this session, and proposals stay out
+of fact sections. Restate the item's `AC#` criteria verbatim. Run the review
+loop — both reviewers, findings fixed into the plan — until you're satisfied
+the plan is ready, cap 3 passes (light lane: 1); carry anything unresolved
+at the cap into the plan's open questions.
 
 ## Step 2: Implement
 
@@ -75,36 +93,56 @@ back to the matching implementer and re-verify until the criteria pass.
 **Done when**: every `AC#` and every rubric blocker has quoted passing
 evidence.
 
-## Step 4: PR review
+## Step 4: PR
 
-Run both reviewers over the diff (correctness + security, `(security)`
-tags). Loop findings back to the implementer, cap 3 passes.
+The PR is an artifact, not the finish line — open it once the work
+verifies, then improve it in place (Step 5). All commit/PR prep lives here:
 
-**Done when**: no critical (Must Fix) issues remain from either reviewer —
-or the cap was reached, with the survivors flagged in the wrap-up.
-
-## Step 5: PR + wrap-up
-
-All commit/PR prep lives here:
-
+- **Build gate first**: discover the project's own build/typecheck/lint
+  workflow (`package.json` scripts, Makefile, CI config — ask the repo,
+  don't assume) and run it. Failures are must-fix before the PR opens.
 - Commit selectively (only this run's files, never `git add -A`; secret-scan
   the staged diff), message style `type: short imperative summary`. Rebase
   onto the origin default branch; push (`--force-with-lease` on rewrites).
 - Open the PR: typed title; body = **Summary** (the item's intent and what
-  "done" means), **Verification** (evidence per AC), **Residual risks** (omit
-  if none); `Closes #<n>` when the item has a `github:` issue.
+  "done" means), **Verification** (evidence per AC), **Manual tests** (a
+  checklist of the human-exercisable flows derived from the ACs — Step 5's
+  QA pass executes it), **Residual risks** (omit if none); `Closes #<n>`
+  when the item has a `github:` issue.
+
+## Step 5: Post-PR review + QA
+
+Reviews run against the open PR and fixes land on it — self-correction
+happens on the artifact, not before it exists.
+
+- Run both reviewers over the PR diff (correctness + security, `(security)`
+  tags). Loop findings back to the matching implementer and push the fixes;
+  cap 3 passes (light lane: 1).
+- When no Must Fix remains from either reviewer — or the cap was reached,
+  survivors flagged in the wrap-up — run the **QA pass**: execute the PR
+  body's Manual tests checklist best-effort. The `frontend-verifier` drives
+  the running app and captures screenshots; the `codex` skill role
+  `backend-verifier` runs the command-shaped items. Post the results as a
+  PR comment: each item ticked with its evidence, or explicitly left to the
+  human with the reason.
+
+## Step 6: Wrap-up
+
 - Write `./tmp/<id>/wrapup.md` following this skill's
   `references/wrap-up-report.md`; post
   it as a PR comment. If the item has a `notion:` reference, `notion` skill
   operation `upload`: plan.md + wrapup.md, PR URL, status `done`.
-- Report to the user: PR link + wrap-up summary + anything unresolved.
+- Report to the user: PR link + wrap-up summary + QA items left to the
+  human + anything unresolved.
 
 ## Epics (type: epic-spec)
 
-Run Steps 1–4 per phase, sequentially — per-phase `plan-<n>.md`, tick the
-phase ✓ in the spec on completion, and commit each phase as it completes
-following Step 5's commit rules. The PR and wrap-up still happen once, after
-the last phase.
+Run Steps 1–3 per phase, sequentially — per-phase `plan-<n>.md`, tick the
+phase ✓ in the spec on completion. After each phase verifies, review the
+phase diff — both reviewers, same Must-Fix gate and cap — fix and
+re-verify, then run the build gate and commit the phase following Step 4's
+commit rules. After the last phase, continue from Step 4's PR steps
+(rebase, push, open the PR) and run Steps 5–6 once for the whole epic.
 
 ## Rules
 

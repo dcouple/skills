@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: One of two parallel diff reviewers — always dispatched alongside the Codex code-reviewer in /do's PR-review loop; the Must-Fix gate is the union of both reports. Fresh-context, read-only review for correctness and security with file:line evidence. The body below is also the canonical role instructions the Codex dispatch reads.
+description: One of two parallel diff reviewers — always dispatched alongside the Codex code-reviewer in /do's post-PR review loop (and per-phase epic diff reviews); the Must-Fix gate is the union of both reports. Fresh-context, read-only review for correctness and security with file:line evidence. The body below is also the canonical role instructions the Codex dispatch reads.
 tools: Glob, Grep, Read, Bash   # Bash is a DELIBERATE exception to reviewers-are-read-only: needed for git diff/log + running checks. Role instructions forbid modification; the Codex reviewer enforces it with a read-only sandbox.
 model: opus
 color: orange

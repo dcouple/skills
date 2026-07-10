@@ -6,12 +6,16 @@
 > **Calibrated for a frontier implementer: what to build & why, at file/module**
 > **granularity — not line-level code.** No placeholder content: "TBD" or "add
 > appropriate error handling" in a plan is a plan failure, not a plan.
+> Pre-save check: every `modify` path exists in the repo, every `new` path fits
+> the repo's current conventions, no template/placeholder paths, no line number
+> that wasn't verified in this checkout.
 
 ---
 ```yaml
 ---
 type: implementation-plan
 item: <id>
+lane: <light | full>
 phase: <n | —>
 ---
 ```
@@ -28,12 +32,24 @@ phase: <n | —>
 | `path/to/new-file.ts` | new | `<one clause>` |
 | `path/to/old-file.ts` | delete | `<one clause>` |
 
-## Context summary
-`<what exists now; recap the relevant current state so the implementer needs no other doc.`
-`Present-tense, evidence-backed — not proposals.>`
+## Verified repo truths
+`<what exists now, so the implementer needs no other doc — facts only, no proposals.`
+`Present tense; no "we add", "will", or other future wording here. Every bullet:>`
+
+- **Fact**: `<one present-tense claim about the repo>`
+  **Evidence**: `path/to/file.ts:12-34` `<opened this session>`
+  **Implication**: `<why it shapes this plan>`
+
+`<Absence claims — "no X exists", "never called" — additionally carry`
+`**Search evidence**: the search that came up empty.>`
 
 ## Key decisions (restated for this work)
 `<the locked calls from the item that shape this work — so nothing load-bearing is lost.>`
+
+## Reconciliation notes
+`<full lane: anchors/gotchas/docs imported from refs/research-dossier.md, conflicts`
+`re-checked against the repo and how they resolved, dossier content intentionally`
+`dropped as low-value. Light lane: "light lane — no dossier".>`
 
 ## Tasks (ordered, file/module granularity)
 - [ ] 1. `<task — what & why, where>`

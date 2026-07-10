@@ -1,6 +1,6 @@
 ---
 name: discussion
-description: Interactive back-and-forth to clarify, understand, or figure something out — an idea, an approach, a tradeoff, or a suspected bug. Use when the user wants to think out loud or explore before committing to anything — e.g. "let's discuss X", "help me understand Y", "why is Z happening", "what should we do about W". Produces clarity, not artifacts; work items are created afterward with /create-feature, /create-epic, or /create-issue.
+description: Interactive back-and-forth to clarify, understand, or figure something out — an idea, an approach, a tradeoff, or a suspected bug. Use when the user wants to think out loud or explore before committing to anything — e.g. "let's discuss X", "help me understand Y", "why is Z happening", "what should we do about W". Produces clarity plus a dated decision log, not deliverables; work items are created afterward with /create-feature, /create-epic, or /create-issue.
 argument-hint: "[idea, question, or topic]"
 ---
 
@@ -18,7 +18,8 @@ invokes the matching `/create-*` skill; this skill's job ends at clarity.
 Don't edit source files, propose diffs to apply, or write documents, specs, tickets,
 or verification criteria unless the user explicitly asks for one mid-discussion.
 Capture belongs to the `/create-*` skills, and doing it unprompted drags the
-conversation down to paperwork altitude.
+conversation down to paperwork altitude. The one exception is Step 3's
+decision log — a record of what was decided, not a deliverable.
 
 ## Steps
 
@@ -54,11 +55,20 @@ traces to a sub-agent finding or user statement, not a guess.
 **Success criteria**: the user says the question is answered, the direction is clear,
 or they're ready to capture a work item.
 
-### 3. Hand off
-When the discussion lands somewhere actionable, point at the capture skill — don't
-run it yourself unless the user asks:
+### 3. Log the decisions, then hand off
+When the discussion converges, write the decision log to
+`./tmp/discussions/YYYY-MM-DD-<slug>.md`: the decisions made and why, the
+direction chosen and over what alternatives, constraints the user stated,
+open questions. A few lines each — dated and slugged so parallel
+workstreams never collide. This is how intent survives past the
+conversation: the `/create-*` drafting step reads it, and anyone resuming
+the thread starts from it instead of from memory.
+
+Then point at the capture skill — don't run it yourself unless the user asks:
 
 ```
+Decision log: ./tmp/discussions/YYYY-MM-DD-<slug>.md
+
 Suggested next steps:
 - `/create-feature [title]` — capture a single-outcome change as a Feature Ticket
 - `/create-epic [title]` — capture a multi-phase workstream as an Epic Spec

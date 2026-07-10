@@ -44,6 +44,6 @@ rules, type checks, unit/integration tests, scripts (backend), natural
 navigation of the running app (frontend/mobile), migration checks, and more.
 The verify stage additionally applies the change type's rubric from
 `~/.references/rubrics/`. Evidence is quoted command output / interaction
-transcripts (screenshots & video deferred).
+transcripts (screenshots supplement, never the sole proof; video deferred).
 
 **Rule:** the verify stage must not report success until every mapped method passes.

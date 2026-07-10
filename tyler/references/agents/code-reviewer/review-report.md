@@ -1,8 +1,8 @@
 # Review Report (Code + Security) — agent output format
 
 > Returned **in-conversation** by the Code Reviewer to the Overseer — **not a file**.
-> Runs 1+ times in the final-review loop; Must-Fix items loop back to Implement until
-> zero Must-Fix (cap 3). The security review is mandatory: security findings live in
+> Runs 1+ times in the post-PR review loop (per-phase diff review on epics); Must-Fix
+> items loop back to Implement until zero Must-Fix (cap 3; light lane 1). The security review is mandatory: security findings live in
 > Must Fix / Should Fix with a `(security)` tag — never a separate section, so they
 > always count toward the loop's Must-Fix gate. Final outcome folds into `wrapup.md`.
 > **Your final message IS the report: begin with the verdict.** Every line is a verdict,
@@ -12,7 +12,7 @@
 ---
 
 **Verdict:** `<Approve | Request changes>` — `<one-line rationale>`
-**Counts:** Must Fix: `<n>` (security: `<m>`) · Should Fix: `<n>` · pass `<k>`/3
+**Counts:** Must Fix: `<n>` (security: `<m>`) · Should Fix: `<n>` · pass `<k>`/`<cap>`
 
 ## Must Fix  *(blocks merge; loop back to Implement)*
 - **MF-1** `(security)` — `<what>` · `<file:line>` · `<fix>` · violates `<D# / AC# | "new issue">`

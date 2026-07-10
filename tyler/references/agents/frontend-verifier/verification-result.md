@@ -3,8 +3,10 @@
 > Returned **in-conversation** to the Overseer — **not a file** — by a verifier:
 > the Claude `frontend-verifier` (both modes) or the Codex `backend-verifier`
 > (verify mode, via tests/scripts instead of the browser).
-> Two modes, selected by the dispatch prompt: **verify** (from `/do`'s verify stage —
-> prove the work meets its numbered criteria) and **reproduce** (from `/discussion` or
+> Modes, selected by the dispatch prompt: **verify** (from `/do`'s verify stage —
+> prove the work meets its numbered criteria; `/do`'s QA pass uses the same format,
+> one row per Manual-tests checklist item, Result additionally allowing
+> `Left to human — <reason>`) and **reproduce** (from `/discussion` or
 > `/create-issue` — make a reported failure happen deterministically; the failure
 > occurring IS the successful result).
 > Your final message IS the report — no preamble, no process narration.

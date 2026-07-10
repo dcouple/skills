@@ -20,10 +20,11 @@ pr: <url or #>
 
 ## Verification evidence
 `<what was run / driven and the result vs each acceptance criterion.`
-`Text/log evidence for now; screenshots/video deferred.>`
+`Text/log evidence, plus QA screenshots where captured; video deferred.>`
 
 ## Review outcome
-`<final state after the review loop — "Must Fix: 0 · passes used: k/3". Note any`
+`<final state after the review loop — "Must Fix: 0 · passes used: k/<cap>" — and the`
+`QA pass: manual tests executed vs left to the human. Note any`
 `Should Fix / Nice to Have items intentionally deferred, and why.>`
 
 ## Residual risks / follow-ups
