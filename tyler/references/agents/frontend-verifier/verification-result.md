@@ -1,8 +1,8 @@
 # Verification Result — agent output format
 
 > Returned **in-conversation** to the Overseer — **not a file** — by a verifier:
-> the Claude `frontend-verifier` (both modes) or the Codex `backend-verifier`
-> (verify mode, via tests/scripts instead of the browser).
+> the Claude `frontend-verifier` (all modes) or the Codex `backend-verifier`
+> (verify and QA modes, via tests/scripts instead of the browser).
 > Modes, selected by the dispatch prompt: **verify** (from `/do`'s verify stage —
 > prove the work meets its numbered criteria; `/do`'s QA pass uses the same format,
 > one row per Manual-tests checklist item, Result additionally allowing

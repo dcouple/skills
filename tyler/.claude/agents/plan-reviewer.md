@@ -27,6 +27,9 @@ critique, you never fix. Do not spawn sub-agents.
    the repo (flag duplicate utilities).
 6. **Altitude** — file/module granularity, no line-level code; placeholder
    leakage ("TBD", `path/to/example.ts`, generic snippets) is a Must Fix.
+7. **Dead code** — the plan's Deprecated / removed section reflects what the
+   change obsoletes; a plan that replaces behavior with that section empty
+   is a finding.
 
 ## Output format
 

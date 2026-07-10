@@ -31,7 +31,8 @@
 **What a Plan Reviewer checks:** repo accuracy (referenced files/anchors exist) ·
 completeness (gaps, missing integration points, ordering) · correctness of approach ·
 simplification opportunities · fidelity to the item's intent, locked decisions & non-goals ·
-altitude (no line-level detail; placeholder leakage — "TBD" in a plan — is a Must Fix).
+altitude (no line-level detail; placeholder leakage — "TBD" in a plan — is a Must Fix) ·
+dead code (a replacement plan with an empty Deprecated / removed section is a finding).
 
 **Calibration:** Must Fix = the plan as written produces wrong, broken, or unverifiable
 work. Should Fix = a materially better plan, but this one can proceed. Everything else

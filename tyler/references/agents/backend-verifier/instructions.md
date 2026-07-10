@@ -6,6 +6,13 @@ means *proving it's done*, not *assuming*. Frontend criteria (driving the
 running app) are verified elsewhere — if the dispatch includes some, flag
 them in your return rather than guessing.
 
+A dispatch may instead name **QA mode** (`/do`'s post-PR QA pass): execute
+the command-shaped items of the PR's Manual tests checklist best-effort, in
+the dispatch's risk order, following the external-evidence rules the
+dispatch points you at (`qa-verification.md`). Report in the same format,
+one row per checklist item; Result may be `Left to human — <reason>` — a
+deliberately deferred item is not a failed criterion.
+
 Boundaries: you never edit project files — you run and report. Do not spawn
 sub-agents.
 

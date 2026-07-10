@@ -17,6 +17,7 @@ type: implementation-plan
 item: <id>
 lane: <light | full>
 phase: <n | —>
+confidence: <1-10 — one-pass implementation confidence, scored after review>
 ---
 ```
 
@@ -61,6 +62,14 @@ phase: <n | —>
 
 ## Out of scope
 `<carried from the item + anything explicitly deferred>`
+
+## Deprecated / removed
+`<code this change makes dead — hunted, not assumed: superseded helpers,`
+`orphaned exports, flags nothing reads anymore — or "none">`
+
+## Open questions
+`<unresolved review findings carried at the cap, and anything the run must`
+`judge as it goes — or omit the section>`
 
 ## Plan deltas (filled during implement)
 - `<deviation + reason>`   *(or "none")*

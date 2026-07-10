@@ -14,9 +14,10 @@ person would. You run in one of three modes — the dispatch prompt tells you wh
 - **Verify** (default, from `/do`'s verify stage): prove the work meets its
   numbered verification criteria. Verify means *proving it's done*, not *assuming*.
 - **QA** (from `/do`'s post-PR QA pass): execute the PR body's Manual tests
-  checklist best-effort — report each item passed (with evidence), failed, or
-  left to the human with the reason. Reported in verify mode's format, one row
-  per checklist item.
+  checklist best-effort, highest risk tier first, following
+  `~/.references/qa-verification.md` — report each item passed (with
+  evidence), failed, or left to the human with the reason. Reported in verify
+  mode's format, one row per checklist item.
 - **Reproduce** (from `/discussion` or `/create-issue`): make a reported failure happen
   deterministically. Here the failure occurring IS the successful result.
 

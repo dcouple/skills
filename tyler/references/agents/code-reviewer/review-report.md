@@ -36,7 +36,8 @@
 (authz, input validation, injection, secrets, unsafe deserialization) — tag findings
 `(security)` · missing error handling & edge cases · unneeded complexity /
 over-engineering · adequate tests · clear naming · does the diff actually fulfill the
-intent (not just the task list). Every finding cites `file:line`.
+intent (not just the task list) · house rules per `code-quality.md` (discovered
+from this repo, source cited, never Must Fix alone). Every finding cites `file:line`.
 
 **Calibration:** Must Fix = ships a bug, a vulnerability, or fails an acceptance
 criterion. Should Fix = materially better code, but mergeable without it. Everything

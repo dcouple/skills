@@ -25,7 +25,8 @@ pr: <url or #>
 ## Review outcome
 `<final state after the review loop — "Must Fix: 0 · passes used: k/<cap>" — and the`
 `QA pass: manual tests executed vs left to the human. Note any`
-`Should Fix / Nice to Have items intentionally deferred, and why.>`
+`Should Fix / Nice to Have items intentionally deferred, and why — the same`
+`survivors live as inline PR comments; this is the summary, not a second list.>`
 
 ## Residual risks / follow-ups
 - `<anything unresolved, deferred, or worth a future work item>`

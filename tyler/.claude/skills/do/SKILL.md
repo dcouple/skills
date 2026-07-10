@@ -69,7 +69,11 @@ its evidence contract is binding: facts live in Verified repo truths with
 of fact sections. Restate the item's `AC#` criteria verbatim. Run the review
 loop — both reviewers, findings fixed into the plan — until you're satisfied
 the plan is ready, cap 3 passes (light lane: 1); carry anything unresolved
-at the cap into the plan's open questions.
+at the cap into the plan's open questions. Score the plan's `confidence:`
+(1–10, one-pass implementation confidence) as each pass exits — while
+budget remains within the caps, a low score is the signal to spend it (more
+research, another pass); the score recorded after the last pass is final.
+Never a reason to stop the run.
 
 ## Step 2: Implement
 
@@ -108,9 +112,11 @@ verifies, then improve it in place (Step 5). All commit/PR prep lives here:
   the staged diff), message style `type: short imperative summary`. Rebase
   onto the origin default branch; push (`--force-with-lease` on rewrites).
 - Open the PR: typed title; body = **Summary** (the item's intent and what
-  "done" means), **Verification** (evidence per AC), **Manual tests** (a
-  checklist of the human-exercisable flows derived from the ACs — Step 5's
-  QA pass executes it), **Deploy notes** (each finding: what changed + the
+  "done" means), **Verification** (evidence per AC), **Manual tests** (the
+  human-exercisable flows derived from the ACs, risk-tiered — Must /
+  Important / Nice, each item traced to the change motivating it, plus an
+  "areas not affected" line so safe surfaces are skippable — Step 5's QA
+  pass executes it), **Deploy notes** (each finding: what changed + the
   action the human takes before/at deploy — name env vars/secrets, never
   their values; omit when the scan finds nothing), **Residual risks** (omit
   if none); `Closes #<n>` when the item has a `github:` issue.
@@ -125,11 +131,18 @@ happens on the artifact, not before it exists.
   cap 3 passes (light lane: 1).
 - When no Must Fix remains from either reviewer — or the cap was reached,
   survivors flagged in the wrap-up — run the **QA pass**: execute the PR
-  body's Manual tests checklist best-effort. The `frontend-verifier` drives
-  the running app and captures screenshots; the `codex` skill role
-  `backend-verifier` runs the command-shaped items. Post the results as a
-  PR comment: each item ticked with its evidence, or explicitly left to the
-  human with the reason.
+  body's Manual tests checklist best-effort, highest risk tier first. The
+  `frontend-verifier` drives the running app and captures screenshots; the
+  `codex` skill role `backend-verifier` runs the command-shaped items. Both
+  dispatches follow `~/.references/qa-verification.md` — external-system
+  confirmation by unique marker, preflight, test-mode safety, cleanup. Post
+  the results as a PR comment: each item ticked with its evidence, or
+  explicitly left to the human with the reason.
+- After the loop and QA, post surviving Should Fix / Nice to Have findings
+  as line-anchored inline PR comments (`gh api` reviews, event `COMMENT` —
+  never `REQUEST_CHANGES`: the loop owns Must Fix, and capped survivors are
+  flagged in the wrap-up; these orient the returning human, they gate
+  nothing).
 
 ## Step 6: Wrap-up
 

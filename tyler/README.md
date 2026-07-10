@@ -88,7 +88,9 @@ working notes — `tmp/` is untracked).
   sibling of `~/.claude` and `~/.codex`) — anything referenced by more than
   one skill, or by any agent: the shared blocks (`verification-criteria.md`,
   `verification-methods.md`, `rubrics/` — per-surface verification rubrics,
-  `system-analysis.md`, `publish-work-item.md`, `draft-work-item.md`,
+  `code-quality.md` — the reviewers' house-rules rubric, `qa-verification.md`
+  — the QA pass's external-evidence discipline, `system-analysis.md`,
+  `publish-work-item.md`, `draft-work-item.md`,
   `socratic-gate.md`) and every agent's output format
   (`references/agents/<agent>/…`). Agents are flat `.md` files by design
   (Claude Code has no agent-folder format), so each agent's body carries a
