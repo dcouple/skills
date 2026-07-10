@@ -111,9 +111,9 @@ verifies, then improve it in place (Step 5). All commit/PR prep lives here:
   "done" means), **Verification** (evidence per AC), **Manual tests** (a
   checklist of the human-exercisable flows derived from the ACs — Step 5's
   QA pass executes it), **Deploy notes** (each finding: what changed + the
-  action the human takes before/at deploy; omit when the scan finds
-  nothing), **Residual risks** (omit if none); `Closes #<n>` when the item
-  has a `github:` issue.
+  action the human takes before/at deploy — name env vars/secrets, never
+  their values; omit when the scan finds nothing), **Residual risks** (omit
+  if none); `Closes #<n>` when the item has a `github:` issue.
 
 ## Step 5: Post-PR review + QA
 
@@ -147,7 +147,8 @@ phase ✓ in the spec on completion. After each phase verifies, review the
 phase diff — both reviewers, same Must-Fix gate and cap — fix and
 re-verify, then run the build gate and commit the phase following Step 4's
 commit rules. After the last phase, continue from Step 4's PR steps
-(rebase, push, open the PR) and run Steps 5–6 once for the whole epic.
+(deploy-notes scan over the whole epic diff, rebase, push, open the PR) and
+run Steps 5–6 once for the whole epic.
 
 ## Rules
 
