@@ -1,6 +1,6 @@
 ---
 name: codex
-description: Dispatches one Codex (GPT-5.5) sub-agent via `codex exec` — implementer, backend-verifier, plan-reviewer, code-reviewer, code-researcher, or investigator — and returns its report. Used by /do, /discussion, and /create-issue whenever one of these roles runs; not normally invoked by the user directly. Use when a pipeline stage needs its Codex sub-agent dispatched, resumed for a fix round, or re-run.
+description: Dispatches one Codex (GPT-5.6) sub-agent via `codex exec` — implementer, backend-verifier, plan-reviewer, code-reviewer, code-researcher, or investigator — and returns its report. Used by /do, /discussion, and /create-issue whenever one of these roles runs; not normally invoked by the user directly. Use when a pipeline stage needs its Codex sub-agent dispatched, resumed for a fix round, or re-run.
 argument-hint: "[role] [inputs: item/plan paths, question, pass number]"
 ---
 
@@ -10,19 +10,19 @@ argument-hint: "[role] [inputs: item/plan paths, question, pass number]"
 
 Run one Codex sub-agent non-interactively and hand its report back to the
 caller. One dispatch = one role + its inputs. Codex is the OpenAI coding
-agent CLI; each dispatch is a fresh GPT-5.5 session that knows nothing about
+agent CLI; each dispatch is a fresh GPT-5.6 session that knows nothing about
 this conversation — the prompt must carry everything the role needs.
 
 ## Role table
 
 | Role | Model / effort | Sandbox | Session |
 | --- | --- | --- | --- |
-| `implementer` | `gpt-5.5` / `medium` | `workspace-write` | persistent — resume for fix rounds |
-| `backend-verifier` | `gpt-5.5` / `medium` | `workspace-write` | `--ephemeral` |
-| `plan-reviewer` | `gpt-5.5` / `high` | `read-only` | `--ephemeral` |
-| `code-reviewer` | `gpt-5.5` / `high` | `read-only` | `--ephemeral` |
-| `code-researcher` | `gpt-5.5` / `medium` | `read-only` | `--ephemeral` |
-| `investigator` | `gpt-5.5` / `high` | `workspace-write` | `--ephemeral` |
+| `implementer` | `gpt-5.6-sol` / `medium` | `workspace-write` | persistent — resume for fix rounds |
+| `backend-verifier` | `gpt-5.6-sol` / `medium` | `workspace-write` | `--ephemeral` |
+| `plan-reviewer` | `gpt-5.6-sol` / `xhigh` | `read-only` | `--ephemeral` |
+| `code-reviewer` | `gpt-5.6-sol` / `xhigh` | `read-only` | `--ephemeral` |
+| `code-researcher` | `gpt-5.6-sol` / `medium` | `read-only` | `--ephemeral` |
+| `investigator` | `gpt-5.6-sol` / `xhigh` | `workspace-write` | `--ephemeral` |
 
 High effort is for judgment-heavy roles (review, investigation); medium for
 implementation, exploration, and verification. The investigator and
@@ -78,7 +78,7 @@ Run via Bash (timeout 600000 ms), from the repo root:
 
 ```bash
 # effort / sandbox / --ephemeral per the role table
-codex exec -m gpt-5.5 -c model_reasoning_effort="<effort>" -s <sandbox> \
+codex exec -m gpt-5.6-sol -c model_reasoning_effort="<effort>" -s <sandbox> \
   [--ephemeral] --skip-git-repo-check -C <repo root> \
   -o <scratchpad>/codex-<role>-<n>.md "<prompt>"
 

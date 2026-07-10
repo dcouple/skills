@@ -3,7 +3,7 @@
 A dual-harness development workflow (codenamed "Orchestra" in the build plan —
 that name stays out of the runtime files so every dispatched model gets plain
 definitions). Claude Code is the orchestrating harness: Fable makes the
-judgment calls and dispatches sub-agents; Codex (GPT-5.5) runs the
+judgment calls and dispatches sub-agents; Codex (GPT-5.6) runs the
 engineering-heavy roles.
 
 ## The workflow
@@ -48,14 +48,14 @@ skills point here; update it first when routing changes, and update `/do`'s
 | Overseer (conducts `/do`, all judgment) | main session — Fable | |
 | Web research | Claude `web-researcher` — Sonnet | |
 | Verify frontend (drive the running app) | Claude `frontend-verifier` — Sonnet | also reproduces failures for /discussion & /create-issue |
-| Verify backend (tests/scripts) | **Codex** GPT-5.5 `medium`, workspace-write | |
-| Explore codebase | **Codex** GPT-5.5 `medium`, read-only | Claude `code-researcher` (Sonnet) as backup |
-| Reproduce & root-cause | **Codex** GPT-5.5 `high`, workspace-write | |
-| Write the diff — backend/ops | **Codex** GPT-5.5 `medium`, workspace-write | |
+| Verify backend (tests/scripts) | **Codex** GPT-5.6 `medium`, workspace-write | |
+| Explore codebase | **Codex** GPT-5.6 `medium`, read-only | Claude `code-researcher` (Sonnet) as backup |
+| Reproduce & root-cause | **Codex** GPT-5.6 `xhigh`, workspace-write | |
+| Write the diff — backend/ops | **Codex** GPT-5.6 `medium`, workspace-write | |
 | Write the diff — frontend web/mobile (UI, styling, client state, user-facing copy) | Claude `frontend-implementer` — Opus | never routed through Codex |
 | Challenge the draft work item (Socratic gate) | Claude `socrates` — Opus | always invoked by all three `/create-*`; self-calibrates — fast-passes straightforward drafts, full challenge for epics/unargued items |
-| Review the plan | **two parallel reviewers**: Codex GPT-5.5 `high` + Claude `plan-reviewer` (Opus) | Must-Fix gate = union of both |
-| Review the diff + security | **two parallel reviewers**: Codex GPT-5.5 `high` + Claude `code-reviewer` (Opus) | Must-Fix gate = union of both |
+| Review the plan | **two parallel reviewers**: Codex GPT-5.6 `xhigh` + Claude `plan-reviewer` (Opus) | Must-Fix gate = union of both |
+| Review the diff + security | **two parallel reviewers**: Codex GPT-5.6 `xhigh` + Claude `code-reviewer` (Opus) | Must-Fix gate = union of both |
 
 Every Codex role is dispatched by the **`codex` skill**
 (`.claude/skills/codex/`), the one place that knows the `codex exec`
