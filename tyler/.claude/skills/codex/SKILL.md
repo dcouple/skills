@@ -70,8 +70,17 @@ investigator → `root-cause-finding.md` · backend-verifier →
 `../frontend-verifier/verification-result.md` (shared verifier format,
 verify mode).
 
-**Success criteria**: prompt carries the role, both file paths, and every
-input the role needs — nothing assumed from this conversation.
+**Path resolution**: the `~/` paths are the synced copies and the default
+in project repos. When the current repo carries the canonical copies
+itself (`tyler/references/` + `tyler/.claude/agents/` exist — the skills
+repo or a worktree of it), use those repo paths instead: the home copies
+may be unsynced or belong to a different workflow entirely. Either way,
+confirm both files exist before dispatching — a role that can't read its
+instructions improvises instead of failing.
+
+**Success criteria**: prompt carries the role, both file paths (resolved
+per the rule above, existence checked), and every input the role needs —
+nothing assumed from this conversation.
 
 ### 2. Execute
 Run via Bash (timeout 600000 ms), from the repo root:
