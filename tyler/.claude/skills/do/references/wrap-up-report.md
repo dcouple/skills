@@ -29,6 +29,7 @@ pr: <url or #>
 
 ## Residual risks / follow-ups
 - `<anything unresolved, deferred, or worth a future work item>`
+- Deploy notes: `<each item + human action before/at deploy, or "none">`
 
 ## Deltas vs plan
 `<only where the final diff diverges from the plan's Files-changed table — or "none".`

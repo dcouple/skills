@@ -101,14 +101,19 @@ verifies, then improve it in place (Step 5). All commit/PR prep lives here:
 - **Build gate first**: discover the project's own build/typecheck/lint
   workflow (`package.json` scripts, Makefile, CI config — ask the repo,
   don't assume) and run it. Failures are must-fix before the PR opens.
+- **Deploy notes scan**: scan the run's diff for schema/migrations, env
+  vars/secrets, infra/CI, new third-party dependencies, and one-time
+  scripts/backfills. Surface findings; never apply or gate on them.
 - Commit selectively (only this run's files, never `git add -A`; secret-scan
   the staged diff), message style `type: short imperative summary`. Rebase
   onto the origin default branch; push (`--force-with-lease` on rewrites).
 - Open the PR: typed title; body = **Summary** (the item's intent and what
   "done" means), **Verification** (evidence per AC), **Manual tests** (a
   checklist of the human-exercisable flows derived from the ACs — Step 5's
-  QA pass executes it), **Residual risks** (omit if none); `Closes #<n>`
-  when the item has a `github:` issue.
+  QA pass executes it), **Deploy notes** (each finding: what changed + the
+  action the human takes before/at deploy; omit when the scan finds
+  nothing), **Residual risks** (omit if none); `Closes #<n>` when the item
+  has a `github:` issue.
 
 ## Step 5: Post-PR review + QA
 

@@ -35,11 +35,11 @@ The flow separates *clarity*, *capture*, and *execution*:
    item's artifacts from Notion into `./tmp/<id>/` (when given a GitHub
    issue) → lane call (light/full) → plan + review loop (full lane backed by
    a research dossier, every plan under the evidence contract) → implement →
-   verify → build gate + PR → post-PR review loop + QA pass over the PR's
-   manual tests → wrap-up, with `plan.md`/`wrapup.md` uploaded back to the
-   Notion work item at the end. Deliberately high-level: the Overseer judges
-   the lane, how much research a plan needs, and when each review loop has
-   converged.
+   verify → build gate + deploy-notes scan + PR → post-PR review loop + QA
+   pass over the PR's manual tests → wrap-up, with `plan.md`/`wrapup.md`
+   uploaded back to the Notion work item at the end. Deliberately high-level:
+   the Overseer judges the lane, how much research a plan needs, and when
+   each review loop has converged.
 4. **`/postmortem`** — when a result falls short, root-cause it in *our
    system* (skill/agent/template), not just the code.
 
