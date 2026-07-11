@@ -8,6 +8,7 @@
 ---
 
 **Root cause:** `<one line>` · **Confidence:** `<confirmed | likely | hypothesis>`
+**Introduced:** `<commit / PR / timeframe — via git blame/log — or "unknown">`
 
 ## Reproduction
 `<numbered steps that reliably reproduce, from a known state>`

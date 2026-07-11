@@ -8,7 +8,8 @@
 > appropriate error handling" in a plan is a plan failure, not a plan.
 > Pre-save check: every `modify` path exists in the repo, every `new` path fits
 > the repo's current conventions, no template/placeholder paths, no line number
-> that wasn't verified in this checkout.
+> that wasn't verified in this checkout. Cheap mechanical catch: grep the plan
+> for `<feature>`, `path/to/`, `TBD`, and fact bullets missing `Evidence:`.
 
 ---
 ```yaml
@@ -46,6 +47,11 @@ confidence: <1-10 — one-pass implementation confidence, scored after review>
 
 ## Key decisions (restated for this work)
 `<the locked calls from the item that shape this work — so nothing load-bearing is lost.>`
+
+## Known mismatches / assumptions
+`<where the item's ask conflicts with repo reality — the conflict and how this`
+`plan resolves it — plus any assumption the plan stands on. Or "none". A false`
+`premise surfaced here is caught at plan review; buried, it ships to the PR.>`
 
 ## Reconciliation notes
 `<full lane: anchors/gotchas/docs imported from refs/research-dossier.md, conflicts`

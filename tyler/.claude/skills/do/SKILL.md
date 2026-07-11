@@ -53,11 +53,16 @@ Set the lane first, and record it in `plan.md`'s frontmatter:
 Full lane: dispatch the `codex` skill, role `code-researcher`, to map the
 territory the plan builds on — critical codebase anchors, patterns to
 reuse, load-bearing gotchas, exact `file:line` evidence for every claim.
-Save its returned findings as `./tmp/<id>/refs/research-dossier.md` — the
-role is read-only and reports in-conversation; you persist the dossier.
+When the item leans on an external library, framework, or API the repo
+alone can't answer, dispatch the `web-researcher` sub-agent in parallel —
+its cited findings (URL + why + the critical insight) go into the dossier
+too. Save the combined findings as `./tmp/<id>/refs/research-dossier.md` —
+the researchers report in-conversation; you persist the dossier.
 Reconcile it into the plan: import the highest-value anchors and gotchas,
-re-check the repo wherever the dossier and your draft disagree, and record
-what you imported or dropped in the plan's Reconciliation notes.
+re-check the repo wherever the dossier and your draft disagree — and
+wherever the *item* and the repo disagree, name the conflict in the plan's
+Known mismatches with how the plan resolves it — and record what you
+imported or dropped in the plan's Reconciliation notes.
 
 Research beyond that as the item actually needs — you judge. If the item links
 Notion pages beyond what Step 0 pulled and a Notion connection (MCP or CLI)
@@ -66,7 +71,10 @@ the gap. Then write
 `./tmp/<id>/plan.md` following this skill's `references/implementation-plan.md` —
 its evidence contract is binding: facts live in Verified repo truths with
 `path:line` evidence from files opened this session, and proposals stay out
-of fact sections. Restate the item's `AC#` criteria verbatim. Run the review
+of fact sections. When genuinely uncertain about a requirement or design
+detail, never decide by silent assumption — name it in the plan's Open
+questions and proceed on the least-committal reading. Restate the item's
+`AC#` criteria verbatim. Run the review
 loop — both reviewers, findings fixed into the plan — until you're satisfied
 the plan is ready, cap 3 passes (light lane: 1); carry anything unresolved
 at the cap into the plan's open questions. Score the plan's `confidence:`
@@ -113,10 +121,11 @@ verifies, then improve it in place (Step 5). All commit/PR prep lives here:
   onto the origin default branch; push (`--force-with-lease` on rewrites).
 - Open the PR: typed title; body = **Summary** (the item's intent and what
   "done" means), **Verification** (evidence per AC), **Manual tests** (the
-  human-exercisable flows derived from the ACs, risk-tiered — Must /
-  Important / Nice, each item traced to the change motivating it, plus an
-  "areas not affected" line so safe surfaces are skippable — Step 5's QA
-  pass executes it), **Deploy notes** (each finding: what changed + the
+  human-exercisable flows derived from the ACs, risk-tiered — Must: breaks
+  data/auth/money if wrong; Important: user-facing behavior; Nice:
+  cosmetic — each item traced to the change motivating it, 10–20 items
+  total, plus an "areas not affected" line so safe surfaces are skippable —
+  Step 5's QA pass executes it), **Deploy notes** (each finding: what changed + the
   action the human takes before/at deploy — name env vars/secrets, never
   their values; omit when the scan finds nothing), **Residual risks** (omit
   if none); `Closes #<n>` when the item has a `github:` issue.
