@@ -23,6 +23,10 @@ _Source: [docs/readme-skill-legend.excalidraw](docs/readme-skill-legend.excalidr
 
 ## The evolution — toward a software factory
 
+![From workflow to software factory](docs/software-factory-story.png)
+
+_Source: [docs/software-factory-story.excalidraw](docs/software-factory-story.excalidraw)_
+
 The `parsa/` workflow above is generation one: a human conducts every phase,
 and each skill hardens one step — evidence-disciplined planning, independent
 review lanes, first-pass QA, learning notes. `tyler/` ("Orchestra") is the
