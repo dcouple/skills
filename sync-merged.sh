@@ -30,7 +30,8 @@ rsync -a "$REPO/tyler/references/"     "$REFERENCES/"
 
 # --- 2. business + seo suites (parsa-only, no collisions) -----------------
 for skill in "$REPO"/parsa/business/*/ "$REPO"/parsa/seo/*/; do
-  [ -f "$skill/SKILL.md" ] && cp -r "$skill" "$CLAUDE_SKILLS/$(basename "$skill")"
+  # rsync, not cp -r: cp into an existing dir nests a copy inside it on rerun
+  [ -f "$skill/SKILL.md" ] && rsync -a "$skill" "$CLAUDE_SKILLS/$(basename "$skill")/"
 done
 
 # --- 3. preserve parsa's collided originals under p- ----------------------
@@ -56,6 +57,10 @@ done
 # create-plan spawns parsa's plan-reviewer, which now lives at p-plan-reviewer
 if [ -f "$CLAUDE_SKILLS/create-plan/SKILL.md" ] && [ -f "$CLAUDE_AGENTS/p-plan-reviewer.md" ]; then
   sedi 's/subagent_type: "plan-reviewer"/subagent_type: "p-plan-reviewer"/' "$CLAUDE_SKILLS/create-plan/SKILL.md"
+fi
+# parsa's Codex plan skill reviews against his own reviewer, now at p-plan-reviewer
+if [ -f "$CODEX_SKILLS/plan/SKILL.md" ] && [ -d "$CODEX_SKILLS/p-plan-reviewer" ]; then
+  sedi 's/`plan-reviewer`/`p-plan-reviewer`/' "$CODEX_SKILLS/plan/SKILL.md"
 fi
 
 echo "merged sync complete."
