@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Researcher"
+  short_description: "Explore the codebase; file:line findings, bottom line first"
+  default_prompt: "Use $code-researcher to answer the codebase question you are given with precise file:line references."

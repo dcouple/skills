@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implementer"
+  short_description: "Execute an Implementation Plan and return a status-first result"
+  default_prompt: "Use $implementer to execute the implementation plan you are given, keeping plan.md true as you work."
