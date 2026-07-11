@@ -39,6 +39,10 @@ done
 for pair in ".claude/skills:$CLAUDE_SKILLS" ".codex/skills:$CODEX_SKILLS"; do
   sub="${pair%%:*}" dest="${pair##*:}"
   for name in $(comm -12 <(ls "$REPO/parsa/$sub" | sort) <(ls "$REPO/tyler/$sub" | sort)); do
+    if diff -rq "$REPO/parsa/$sub/$name" "$REPO/tyler/$sub/$name" >/dev/null 2>&1; then
+      echo "identical in both sets: $sub/$name — no p- copy needed"
+      continue
+    fi
     rm -rf "$dest/p-$name"
     cp -r "$REPO/parsa/$sub/$name" "$dest/p-$name"
     [ -f "$dest/p-$name/SKILL.md" ] && sedi "s/^name: $name\$/name: p-$name/" "$dest/p-$name/SKILL.md"
