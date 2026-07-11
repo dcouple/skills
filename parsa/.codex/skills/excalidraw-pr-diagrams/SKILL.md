@@ -20,7 +20,7 @@ When using this skill for pull request diagrams in Codex or Claude:
 - PR visual overviews must include explicit `Before` and `After` diagrams so reviewers can see both the old behavior and the new behavior without inferring the diff from prose.
 - Keep each PR diagram focused on the change boundary: before, after, and why the new flow is safer.
 - After generating diagrams, update the PR description with a dedicated `## Visual Overview` section.
-- If the repo stores both `.codex/skills/excalidraw-pr-diagrams` and `.claude/skills/excalidraw-pr-diagrams`, keep the two skill copies materially equivalent unless there is an agent-specific reason to diverge.
+- This skill is stored in multiple trees (`parsa/.claude/skills/`, `parsa/.codex/skills/`, and `tyler/.claude/skills/` — tyler's `/do` embeds its PR standard in the Visual overview step). Keep all copies materially equivalent unless there is an agent-specific reason to diverge.
 
 ### PR Asset Publishing
 
