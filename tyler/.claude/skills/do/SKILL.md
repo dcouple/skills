@@ -28,8 +28,12 @@ web-researcher is a Claude sub-agent.
 
 Get everything about the work item into `./tmp/<id>/` before starting: for a
 GitHub issue, the `notion` skill (operation `pull`) fetches the Notion work
-item and all its artifacts — issue body as the fallback item when there's no
-Notion link. A local path is read directly. Invoked with no argument: list
+item and all its artifacts. No Notion link? The issue body is the item, and
+the issue's comments carry the refs — harvest every
+`<!-- ORCHESTRA-ARTIFACT path="..." -->` block back to its path under
+`./tmp/<id>/` (joining `part=n` splits) before planning; an issue with
+neither Notion nor artifact comments gives you the body alone, so say so in
+the plan's Known mismatches. A local path is read directly. Invoked with no argument: list
 the local items with `status: ready` (`./tmp/*/item.md`) and ask the user
 which to run — never pick one silently. Skim `refs/`; read individual refs
 as the work calls for them.

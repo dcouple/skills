@@ -13,9 +13,22 @@ Used by `/create-feature`, `/create-epic`, and `/create-issue` after
    `refs/` file, returning the page URL.
 4. Cross-link: add the Notion page URL to the GitHub issue body
    (`gh issue edit`), and record both in `item.md` frontmatter as `github:`
-   and `notion:`. On `NOTION UNAVAILABLE`, proceed GitHub + local only and
-   tell the user.
+   and `notion:`.
+5. On `NOTION UNAVAILABLE`, the issue must still carry everything a remote
+   `/do` needs — post each artifact as its own issue comment, wrapped in
+   markers so Step 0 can harvest them back:
 
-Done when: the issue exists, the Notion work item exists with all artifacts
-(or its absence was reported), and each of issue / Notion page / item.md
-links to the others.
+   ```
+   <!-- ORCHESTRA-ARTIFACT path="refs/discussion.md" -->
+   <full file content>
+   <!-- /ORCHESTRA-ARTIFACT -->
+   ```
+
+   One comment per file (`item.md` itself is the issue body, so just the
+   `refs/` files). A comment holds ~65K chars; split oversized files into
+   `part=1/2` markers. Then tell the user Notion was skipped and the issue
+   is self-contained.
+
+Done when: the issue exists, every artifact is reachable from it (Notion
+work item, or marker-delimited comments in degraded mode), and each of
+issue / Notion page / item.md links to the others.
