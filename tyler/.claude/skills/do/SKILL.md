@@ -120,7 +120,11 @@ verifies, then improve it in place (Step 5). All commit/PR prep lives here:
   the staged diff), message style `type: short imperative summary`. Rebase
   onto the origin default branch; push (`--force-with-lease` on rewrites).
 - Open the PR: typed title; body = **Summary** (the item's intent and what
-  "done" means), **Verification** (evidence per AC), **Manual tests** (the
+  "done" means), **Visual overview** (when the change is flow-, boundary-,
+  or lifecycle-shaped and the `excalidraw-pr-diagrams` skill is available:
+  a before → after diagram per that skill's PR standard, embedded as a
+  hosted-image URL — never a committed file; keep the `.excalidraw` source
+  in `./tmp/<id>/refs/`), **Verification** (evidence per AC), **Manual tests** (the
   human-exercisable flows derived from the ACs, risk-tiered — Must: breaks
   data/auth/money if wrong; Important: user-facing behavior; Nice:
   cosmetic — each item traced to the change motivating it, 10–20 items
@@ -145,8 +149,9 @@ happens on the artifact, not before it exists.
   `codex` skill role `backend-verifier` runs the command-shaped items. Both
   dispatches follow `~/.references/qa-verification.md` — external-system
   confirmation by unique marker, preflight, test-mode safety, cleanup. Post
-  the results as a PR comment: each item ticked with its evidence, or
-  explicitly left to the human with the reason.
+  the results as a PR comment: each item ticked with its evidence
+  (screenshots inlined as hosted-image URLs per the QA reference, never
+  committed files), or explicitly left to the human with the reason.
 - After the loop and QA, post surviving Should Fix / Nice to Have findings
   as line-anchored inline PR comments (`gh api` reviews, event `COMMENT` —
   never `REQUEST_CHANGES`: the loop owns Must Fix, and capped survivors are

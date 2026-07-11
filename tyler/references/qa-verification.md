@@ -68,6 +68,16 @@ anomaly a product bug. Every artifact the harness caused (mocked signals,
 prevented navigation, dummy keys) is named in the report, never left to be
 mistaken for product behavior.
 
+## Evidence hosting
+
+Screenshots and clips are evidence, not repo content — never commit them.
+Upload to whatever host the environment provides (a GitHub user-attachment
+URL outlives the review; a project upload endpoint or temporary image host
+works too) and inline the URLs in the PR comment so previews render where
+the reviewer reads. When only a temporary host is available, note its
+expiry next to the link and keep the textual evidence (quoted output, ids)
+self-sufficient without the image.
+
 ## Cleanup
 
 Kill the listeners, processes, and temp state the run started; leftovers
