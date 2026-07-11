@@ -52,6 +52,10 @@ done
 # agents (flat .md files)
 for f in $(comm -12 <(ls "$REPO/parsa/.claude/agents" | sort) <(ls "$REPO/tyler/.claude/agents" | sort)); do
   name="${f%.md}"
+  if diff -q "$REPO/parsa/.claude/agents/$f" "$REPO/tyler/.claude/agents/$f" >/dev/null 2>&1; then
+    echo "identical in both sets: agents/$f — no p- copy needed"
+    continue
+  fi
   cp "$REPO/parsa/.claude/agents/$f" "$CLAUDE_AGENTS/p-$f"
   sedi "s/^name: $name\$/name: p-$name/" "$CLAUDE_AGENTS/p-$f"
   echo "collision: agents/$f → tyler's; parsa's kept as p-$f"
