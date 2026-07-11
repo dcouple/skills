@@ -19,9 +19,20 @@ operation: `publish`, `upload`, or `pull`.
    `+notion search create fetch update attachment` and load what the
    operation needs (search, fetch, create-pages, update-page,
    create-attachment). Tool names vary by connector — match on the `notion`
-   prefix. If no Notion tools resolve and no `notion` CLI is on PATH, return
-   `NOTION UNAVAILABLE: <what was tried>` — the caller proceeds
-   GitHub + local only and says so.
+   prefix. If no Notion tools resolve and no `notion` CLI is on PATH, do
+   **not** silently degrade — how to proceed depends on whether a user is
+   present:
+   - **Interactive session** (a human invoked the calling skill): stop and
+     tell the user Notion isn't connected, give the connection path
+     (`claude mcp add --transport http notion https://mcp.notion.com/mcp`,
+     then `/mcp` to authenticate), and wait. Retry after they connect. Only
+     if they explicitly choose to skip, return `NOTION SKIPPED BY USER` —
+     the caller then runs its degraded mode so every artifact still ends up
+     reachable from the GitHub issue.
+   - **Headless run** (cron, cloud, no user to ask): return
+     `NOTION UNAVAILABLE: <what was tried>` and let the caller's degraded
+     mode carry the artifacts. Never block a headless run on a connection
+     prompt nobody can answer.
 2. **Find the target database** — resolution order, most specific wins:
    1. The project `CLAUDE.md`'s `Work-item tracking` section
       (`notion_data_source`) — per-repo override only.
@@ -31,8 +42,9 @@ operation: `publish`, `upload`, or `pull`.
       the match with the user, and offer to save it into this skill's
       `config.yaml` so the search never repeats.
 
-**Success criteria**: tools loaded and a data source resolved (or an explicit
-`NOTION UNAVAILABLE`).
+**Success criteria**: tools loaded and a data source resolved — or an explicit
+`NOTION SKIPPED BY USER` (interactive) / `NOTION UNAVAILABLE` (headless);
+never a silent fallback in an interactive session.
 
 ## Operation: publish  (called by /create-feature, /create-epic, /create-issue)
 
