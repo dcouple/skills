@@ -2,7 +2,7 @@
 # A project's CLAUDE.md "Work-item tracking" section overrides this per repo.
 # Fill notion_data_source with the data source ID or URL of the work-items
 # database (the skill offers to fill it after its first search-and-confirm).
-notion_data_source: ""
+notion_data_source: "collection://f71e2393-ba30-4286-a883-6c22fdee6060" # Orchestra - Software Factory Tasks
 # Property names on the database, if they differ from these defaults:
 properties:
   github_issue: "GitHub Issue"
