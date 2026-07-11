@@ -260,6 +260,19 @@ for skill in "$REPO"/parsa/seo/*/; do
 done
 ```
 
+### Both sets at once (merged sync)
+
+To run parsa's AND tyler's skills side by side, use `./sync-merged.sh` instead
+of the blocks above. It installs both sets; where names collide (currently
+`discussion`, the `plan-reviewer` agent, and two Codex role skills), tyler's
+version keeps the canonical name — his `/discussion` → `/create-*` → `/do`
+pipeline stays the default — and parsa's original is preserved under a `p-`
+prefix (`/p-discussion`, `p-plan-reviewer`, …). Collisions are detected
+dynamically, and parsa's `create-plan` is re-wired to spawn `p-plan-reviewer`
+so his planning loop keeps using his own reviewer. Inside this repo neither
+sync matters: the harness namespaces both sets automatically
+(`parsa:discussion`, `tyler:discussion`).
+
 Do not use `--delete` unless you want this repo to remove other local skills.
 Restart Codex after new skills sync so the active session can see them.
 
