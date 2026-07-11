@@ -257,7 +257,41 @@ folders:
 - Claude Code: `~/.claude/skills/`
 - Codex: `~/.codex/skills/`
 
-The simple sync shape is:
+**Use `./sync-merged.sh` — it's the whole setup in one command.** It installs
+parsa's AND tyler's sets side by side (tyler's names win the few collisions;
+parsa's originals are preserved under a `p-` prefix, and his skills are
+re-wired to keep using them). It's idempotent and safe to re-run.
+
+```bash
+REPO="$HOME/allGitHubRepos/skills"
+git -C "$REPO" pull --ff-only
+"$REPO"/sync-merged.sh
+```
+
+To keep it fresh automatically, run it on a schedule. On macOS, a launchd
+agent that exports `origin/main` and runs the script every 30 minutes:
+
+```bash
+# ~/bin/sync-dcouple-skills.sh
+#!/bin/sh
+set -eu
+REPO="$HOME/allGitHubRepos/skills"
+git -C "$REPO" fetch origin main
+TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
+git -C "$REPO" archive origin/main | tar -x -C "$TMP"
+bash "$TMP/sync-merged.sh"
+```
+
+Point a LaunchAgent (`StartInterval` 1800) or cron at that wrapper. Exporting
+`origin/main` means the sync never depends on what branch your checkout is on.
+Two warnings from experience: invoke the script with `bash` (it uses process
+substitution; `sh` silently skips the collision handling), and don't schedule
+the per-set rsync blocks below — a parsa-only sync running on a timer will
+silently clobber the merged arrangement every tick.
+
+### One set only (legacy)
+
+If you truly want just parsa's set, the per-set shape is:
 
 ```bash
 REPO="$HOME/allGitHubRepos/skills"
@@ -282,8 +316,8 @@ done
 
 ### Both sets at once (merged sync)
 
-To run parsa's AND tyler's skills side by side, use `./sync-merged.sh` instead
-of the blocks above. It installs both sets; where names collide (currently
+This is the default documented above — `./sync-merged.sh` instead
+of the per-set blocks. It installs both sets; where names collide (currently
 `discussion`, the `plan-reviewer` agent, and two Codex role skills), tyler's
 version keeps the canonical name — his `/discussion` → `/create-*` → `/do`
 pipeline stays the default — and parsa's original is preserved under a `p-`
