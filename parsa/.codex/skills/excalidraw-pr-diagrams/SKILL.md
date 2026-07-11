@@ -20,15 +20,30 @@ When using this skill for pull request diagrams in Codex or Claude:
 - PR visual overviews must include explicit `Before` and `After` diagrams so reviewers can see both the old behavior and the new behavior without inferring the diff from prose.
 - Keep each PR diagram focused on the change boundary: before, after, and why the new flow is safer.
 - After generating diagrams, update the PR description with a dedicated `## Visual Overview` section.
-- If the repo stores both `.codex/skills/excalidraw-pr-diagrams` and `.claude/skills/excalidraw-pr-diagrams`, keep the two skill copies materially equivalent unless there is an agent-specific reason to diverge.
+- This skill is stored in multiple trees (`parsa/.claude/skills/`, `parsa/.codex/skills/`, and `tyler/.claude/skills/` — tyler's `/do` embeds its PR standard in the Visual overview step). Keep all copies materially equivalent unless there is an agent-specific reason to diverge.
 
 ### PR Asset Publishing
 
-If the user wants the PR image committed:
+Default: PR images are **hosted, not committed**. Upload the rendered PNG to
+a durable host and reference it inline in the PR body. Scriptable default: a
+rolling GitHub release in the target repo — `gh release create pr-assets --notes "PR image assets"`
+once, then `gh release upload pr-assets <image>.png` per image; the asset's
+download URL renders inline and outlives branches. (GitHub user-attachment
+URLs — drag an image into a comment box — are equally durable but have no
+API; use them when a human or a browser-driving agent is doing the upload.
+A project upload endpoint or temporary host also works.) The repo stays
+free of multi-MB render blobs, and every re-render is just a new URL. If
+only a temporary host is available, note its expiry next to the image.
 
-- Commit only the final rendered image, usually under `.github/pr-assets/<short-topic>.png`. Keep temporary source and render files outside the repo unless the user asks to track them.
-- Reference the image from the PR body with a URL that works after push. For GitHub, prefer a blob URL with `?raw=1`, for example `https://github.com/<owner>/<repo>/blob/<branch>/.github/pr-assets/<image>.png?raw=1`.
-- After pushing, open or fetch the PR image URL. A PR visual with a 404 image is a failed handoff.
+Commit the image only when it is embedded in tracked docs (a README, design
+doc) that needs a stable in-repo path — then `.github/pr-assets/` or
+`docs/`, referenced with a blob URL + `?raw=1`, e.g.
+`https://github.com/<owner>/<repo>/blob/<branch>/.github/pr-assets/<image>.png?raw=1`.
+Keep `.excalidraw` sources outside the repo unless the user asks to track them.
+
+Either way:
+
+- After updating, open or fetch the image URL. A PR visual with a 404 image is a failed handoff.
 - Read back or preview the PR body after updating it. Markdown that collapses bullets, headings, or the image into one paragraph is a failed handoff.
 
 ### PR Diagram Standard
