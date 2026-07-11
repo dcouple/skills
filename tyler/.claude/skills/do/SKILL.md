@@ -155,10 +155,14 @@ happens on the artifact, not before it exists.
   `frontend-verifier` drives the running app and captures screenshots; the
   `codex` skill role `backend-verifier` runs the command-shaped items. Both
   dispatches follow `~/.references/qa-verification.md` — external-system
-  confirmation by unique marker, preflight, test-mode safety, cleanup. Post
-  the results as a PR comment: each item ticked with its evidence
-  (screenshots inlined as hosted-image URLs per the QA reference, never
-  committed files), or explicitly left to the human with the reason.
+  confirmation by unique marker, preflight, test-mode safety, cleanup.
+  Report at two altitudes: tick the passed items directly in the PR body's
+  Manual tests checklist (`gh pr edit --body-file` — flip `[ ]` to `[x]`,
+  append `— left to human: <reason>` on skipped items, change nothing
+  else), so the description stays the live dashboard GitHub renders; then
+  post the evidence as a PR comment — each item with its quoted output or
+  hosted-image screenshot URLs (never committed files). Body carries state,
+  comments carry proof.
 - After the loop and QA, post surviving Should Fix / Nice to Have findings
   as line-anchored inline PR comments (`gh api` reviews, event `COMMENT` —
   never `REQUEST_CHANGES`: the loop owns Must Fix, and capped survivors are
