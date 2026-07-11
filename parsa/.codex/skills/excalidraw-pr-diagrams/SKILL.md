@@ -25,9 +25,13 @@ When using this skill for pull request diagrams in Codex or Claude:
 ### PR Asset Publishing
 
 Default: PR images are **hosted, not committed**. Upload the rendered PNG to
-a durable image host (a GitHub user-attachment URL — obtained by attaching
-the image to a PR/issue comment — outlives the branch; a project upload
-endpoint works too) and reference it inline in the PR body. The repo stays
+a durable host and reference it inline in the PR body. Scriptable default: a
+rolling GitHub release in the target repo — `gh release create pr-assets --notes "PR image assets"`
+once, then `gh release upload pr-assets <image>.png` per image; the asset's
+download URL renders inline and outlives branches. (GitHub user-attachment
+URLs — drag an image into a comment box — are equally durable but have no
+API; use them when a human or a browser-driving agent is doing the upload.
+A project upload endpoint or temporary host also works.) The repo stays
 free of multi-MB render blobs, and every re-render is just a new URL. If
 only a temporary host is available, note its expiry next to the image.
 

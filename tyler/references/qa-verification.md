@@ -71,10 +71,13 @@ mistaken for product behavior.
 ## Evidence hosting
 
 Screenshots and clips are evidence, not repo content — never commit them.
-Upload to whatever host the environment provides (a GitHub user-attachment
-URL outlives the review; a project upload endpoint or temporary image host
-works too) and inline the URLs in the PR comment so previews render where
-the reviewer reads. When only a temporary host is available, note its
+Upload to whatever host the environment provides and inline the URLs in
+the PR comment so previews render where the reviewer reads. Durable +
+scriptable: a rolling GitHub release (`gh release create pr-assets` once,
+then `gh release upload pr-assets <img>` — asset URLs render inline and
+outlive the review). GitHub user-attachment URLs are just as durable but
+have no API (browser-only); a project upload endpoint or temporary image
+host works too. When only a temporary host is available, note its
 expiry next to the link and keep the textual evidence (quoted output, ids)
 self-sufficient without the image.
 
