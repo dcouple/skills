@@ -6,6 +6,12 @@ definitions). Claude Code is the orchestrating harness: Fable makes the
 judgment calls and dispatches sub-agents; Codex (GPT-5.6) runs the
 engineering-heavy roles.
 
+The whole system at a glance:
+
+![Orchestra workflow map](../docs/tyler-workflow-map.png)
+
+_Source: [docs/tyler-workflow-map.excalidraw](../docs/tyler-workflow-map.excalidraw)_
+
 ## The workflow
 
 The flow separates *clarity*, *capture*, and *execution*:
