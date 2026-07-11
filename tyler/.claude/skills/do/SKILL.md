@@ -122,9 +122,12 @@ verifies, then improve it in place (Step 5). All commit/PR prep lives here:
 - Open the PR: typed title; body = **Summary** (the item's intent and what
   "done" means), **Visual overview** (when the change is flow-, boundary-,
   or lifecycle-shaped and the `excalidraw-pr-diagrams` skill is available:
-  a before → after diagram per that skill's PR standard, embedded as a
-  hosted-image URL — never a committed file; keep the `.excalidraw` source
-  in `./tmp/<id>/refs/`), **Verification** (evidence per AC), **Manual tests** (the
+  the rendered before → after diagram per that skill's PR standard leads
+  the section, followed by before/after screenshots of the actual behavior
+  when the change is user-visible — before from the item's refs or
+  reproduction evidence, after from the verify captures. All hosted-image
+  URLs, never committed files; keep the `.excalidraw` source in
+  `./tmp/<id>/refs/`), **Verification** (evidence per AC), **Manual tests** (the
   human-exercisable flows derived from the ACs, risk-tiered — Must: breaks
   data/auth/money if wrong; Important: user-facing behavior; Nice:
   cosmetic — each item traced to the change motivating it, 10–20 items
