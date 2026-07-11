@@ -21,6 +21,22 @@ And here is the skill legend:
 
 _Source: [docs/readme-skill-legend.excalidraw](docs/readme-skill-legend.excalidraw)_
 
+## The evolution — toward a software factory
+
+The `parsa/` workflow above is generation one: a human conducts every phase,
+and each skill hardens one step — evidence-disciplined planning, independent
+review lanes, first-pass QA, learning notes. `tyler/` ("Orchestra") is the
+evolution: the same principles compiled into an autonomous pipeline. Capture
+passes an adversarial Socratic gate, execution runs end to end on a remote
+seat, review and QA self-correct on the open PR, and the human sits at the
+edges — the gate going in, the PR coming out. The two sets now share their
+strongest parts (evidence contracts, hosted PR visuals, external
+verification), and `./sync-merged.sh` installs both side by side.
+
+![Orchestra workflow map](docs/tyler-workflow-map.png)
+
+_Source: [docs/tyler-workflow-map.excalidraw](docs/tyler-workflow-map.excalidraw)_
+
 ## How we work with LLMs
 
 Don't ask an LLM to carry the whole project in its head.
