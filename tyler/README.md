@@ -102,9 +102,11 @@ working notes — `tmp/` is untracked).
 - `../tmp/templates/README.md` (local working notes, untracked) is the index
   mapping every format to its live home.
 
-The six workflow skills above, plus two infrastructure skills the others
-invoke — `codex` (dispatches Codex roles) and `notion` (the GitHub ↔ Notion
-artifact bridge) — are the whole surface. Web research is the
+The six workflow skills above, plus three infrastructure skills the others
+invoke — `codex` (dispatches Codex roles), `notion` (the GitHub ↔ Notion
+artifact bridge), and `excalidraw-pr-diagrams` (the PR visual-overview
+standard `/do`'s PR step uses; kept materially equivalent to parsa's
+copies) — are the whole surface. Web research is the
 `web-researcher` sub-agent, review lives inside `/do` (plan review before
 implement, code review + QA after the PR opens), and all commit/PR prep
 lives in `/do`'s PR step.
