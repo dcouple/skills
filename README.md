@@ -257,6 +257,15 @@ folders:
 - Claude Code: `~/.claude/skills/`
 - Codex: `~/.codex/skills/`
 
+> **Post-split note:** tyler's set now lives in
+> [dcouple/orchestra](https://github.com/dcouple/orchestra) (see its
+> `scripts/sync-user.sh` for the user-level install). To run both sets on one
+> machine, run that first, then `./sync-parsa-overlay.sh <orchestra-checkout>`
+> from this repo — it installs parsa's set, turning any name orchestra owns
+> into `p-<name>` so the two syncs never clobber each other, in any order.
+> `sync-merged.sh` below predates the split and only covers this repo's copy
+> of both sets.
+
 **Use `./sync-merged.sh` — it's the whole setup in one command.** It installs
 parsa's AND tyler's sets side by side (tyler's names win the few collisions;
 parsa's originals are preserved under a `p-` prefix, and his skills are
