@@ -29,17 +29,11 @@ _Source: [docs/software-factory-story.excalidraw](docs/software-factory-story.ex
 
 The `parsa/` workflow above is generation one: a human conducts every phase,
 and each skill hardens one step — evidence-disciplined planning, independent
-review lanes, first-pass QA, learning notes. `tyler/` ("Orchestra") is the
-evolution: the same principles compiled into an autonomous pipeline. Capture
-passes an adversarial Socratic gate, execution runs end to end on a remote
-seat, review and QA self-correct on the open PR, and the human sits at the
-edges — the gate going in, the PR coming out. The two sets now share their
-strongest parts (evidence contracts, hosted PR visuals, external
-verification), and `./sync-merged.sh` installs both side by side.
-
-![Orchestra workflow map](docs/tyler-workflow-map.png)
-
-_Source: [docs/tyler-workflow-map.excalidraw](docs/tyler-workflow-map.excalidraw)_
+review lanes, first-pass QA, learning notes. Tyler's "Orchestra" — the same
+principles compiled into an autonomous pipeline — has moved to its own repo,
+[dcouple/orchestra](https://github.com/dcouple/orchestra), where it syncs
+one-way into each repo that uses it instead of installing to user-level
+dirs. `./sync-merged.sh` now installs parsa's set only.
 
 ## How we work with LLMs
 
@@ -235,16 +229,13 @@ parsa/
   pane-chat/   Shared Pane Chat workflow references
   business/    Business agent skills (context, discussion, spec, artifact, release)
   seo/         SEO skills (briefing, strategy, readability, authority, drafting)
-tyler/
-  .claude/     Claude Code skills and agents (Claude orchestrates)
-  .codex/      Codex role skills, dispatched from Claude via codex exec
-  references/  Single-copy shared docs (output formats, criteria) both harnesses read
 ```
 
-Tyler's variant is a six-skill pipeline (`/discussion` → `/create-feature` /
+Tyler's variant — a six-skill pipeline (`/discussion` → `/create-feature` /
 `/create-epic` / `/create-issue` → `/do` → `/postmortem`) where Claude
 orchestrates and Codex runs implementation, review, codebase research, and
-investigation — see `tyler/README.md`.
+investigation — lives in
+[dcouple/orchestra](https://github.com/dcouple/orchestra).
 
 The skills are meant to be edited. The workflow shape should generalize, but the
 exact contents should change as your work changes.
@@ -258,9 +249,9 @@ folders:
 - Codex: `~/.codex/skills/`
 
 **Use `./sync-merged.sh` — it's the whole setup in one command.** It installs
-parsa's AND tyler's sets side by side (tyler's names win the few collisions;
-parsa's originals are preserved under a `p-` prefix, and his skills are
-re-wired to keep using them). It's idempotent and safe to re-run.
+parsa's set. It's idempotent and safe to re-run. (Tyler's set is not
+installed to user-level dirs anymore — it syncs one-way into each consumer
+repo from [dcouple/orchestra](https://github.com/dcouple/orchestra).)
 
 ```bash
 REPO="$HOME/allGitHubRepos/skills"
@@ -314,21 +305,14 @@ for skill in "$REPO"/parsa/seo/*/; do
 done
 ```
 
-### Both sets at once (merged sync)
-
-This is the default documented above — `./sync-merged.sh` instead
-of the per-set blocks. It installs both sets; where names collide (currently
-`discussion`, the `plan-reviewer` agent, and two Codex role skills), tyler's
-version keeps the canonical name — his `/discussion` → `/create-*` → `/do`
-pipeline stays the default — and parsa's original is preserved under a `p-`
-prefix (`/p-discussion`, `p-plan-reviewer`, …). Collisions are detected
-dynamically, and parsa's `create-plan` is re-wired to spawn `p-plan-reviewer`
-so his planning loop keeps using his own reviewer. Inside this repo neither
-sync matters: the harness namespaces both sets automatically
-(`parsa:discussion`, `tyler:discussion`).
-
 Do not use `--delete` unless you want this repo to remove other local skills.
 Restart Codex after new skills sync so the active session can see them.
+
+If a previous merged sync left tyler's skills or `p-`-prefixed copies in
+your user-level dirs, prune them by hand — tyler's set now arrives inside
+each consumer repo via
+[dcouple/orchestra](https://github.com/dcouple/orchestra), not user-level
+installs.
 
 ## Background
 

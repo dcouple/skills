@@ -1,4 +1,0 @@
-interface:
-  display_name: "Code Reviewer"
-  short_description: "Review the diff for correctness + security; verdict-first report"
-  default_prompt: "Use $code-reviewer to review the implementation diff against its plan and work item."

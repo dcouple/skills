@@ -1,4 +1,0 @@
-interface:
-  display_name: "Investigator"
-  short_description: "Reproduce a defect and isolate its root cause with evidence"
-  default_prompt: "Use $investigator to reproduce and root-cause the defect report you are given."
