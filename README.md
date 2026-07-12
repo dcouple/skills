@@ -35,7 +35,11 @@ passes an adversarial Socratic gate, execution runs end to end on a remote
 seat, review and QA self-correct on the open PR, and the human sits at the
 edges — the gate going in, the PR coming out. The two sets now share their
 strongest parts (evidence contracts, hosted PR visuals, external
-verification), and `./sync-merged.sh` installs both side by side.
+verification). Orchestra has since graduated to its own home —
+[dcouple/orchestra](https://github.com/dcouple/orchestra) — which is now the
+canonical source for that set; the `tyler/` tree here is its frozen ancestor.
+To run both sets on one machine: orchestra's `scripts/sync-user.sh`, then
+this repo's `./sync-parsa-overlay.sh`.
 
 ![Orchestra workflow map](docs/tyler-workflow-map.png)
 
