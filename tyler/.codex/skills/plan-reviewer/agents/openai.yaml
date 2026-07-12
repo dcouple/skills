@@ -1,4 +1,0 @@
-interface:
-  display_name: "Plan Reviewer"
-  short_description: "Audit an Implementation Plan; verdict-first Must/Should/Nice report"
-  default_prompt: "Use $plan-reviewer to review the implementation plan you are given against its work item."
