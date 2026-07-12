@@ -1,5 +1,9 @@
 # tyler
 
+> **Superseded.** This tree graduated to
+> [dcouple/orchestra](https://github.com/dcouple/orchestra) — edit and sync
+> from there. Kept here as the frozen ancestor for history.
+
 A dual-harness development workflow (codenamed "Orchestra" in the build plan —
 that name stays out of the runtime files so every dispatched model gets plain
 definitions). Claude Code is the orchestrating harness: Fable makes the
