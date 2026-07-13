@@ -52,10 +52,15 @@ for skill in "$REPO"/parsa/business/*/ "$REPO"/parsa/seo/*/; do
   [ -f "$skill/SKILL.md" ] && rsync -a "$skill" "$CS/$(basename "$skill")/"
 done
 
-# parsa's pipelines keep using parsa's reviewers via their p- twins
-if [ -f "$CS/create-plan/SKILL.md" ] && [ -f "$CA/p-plan-reviewer.md" ]; then
-  sedi 's/subagent_type: "plan-reviewer"/subagent_type: "p-plan-reviewer"/' "$CS/create-plan/SKILL.md"
-fi
+# parsa's pipelines keep using parsa's reviewers via their p- twins.
+# His create-plan lives at create-plan/ today and p-create-plan/ once
+# orchestra claims the name — the sed pattern only exists in his copy, so
+# applying to both paths is safe and self-selecting.
+for cp in "$CS/create-plan/SKILL.md" "$CS/p-create-plan/SKILL.md"; do
+  if [ -f "$cp" ] && [ -f "$CA/p-plan-reviewer.md" ]; then
+    sedi 's/subagent_type: "plan-reviewer"/subagent_type: "p-plan-reviewer"/' "$cp"
+  fi
+done
 if [ -f "$XS/plan/SKILL.md" ] && [ -d "$XS/p-plan-reviewer" ]; then
   sedi 's/`plan-reviewer`/`p-plan-reviewer`/' "$XS/plan/SKILL.md"
 fi
