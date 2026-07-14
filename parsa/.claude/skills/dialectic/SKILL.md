@@ -49,9 +49,12 @@ change costs more than being wrong would.
      read-only --ephemeral --skip-git-repo-check -C <repo root> -o <out>
      "<prompt>"`; each dispatch is a fresh session, so the prompt names this
      skill's `references/instructions.md` and `references/opponent-round.md`
-     by **absolute path** and carries the motion file path. Its job: rebut the advocate's
-     specific claims — no restating its own case as rebuttal — then present
-     the strongest alternative under the motion's constraints.
+     by **absolute path**, carries the motion file path, and **names the round
+     type** (blind opening / rebuttal / final) so it prints the matching format
+     variant. Its job: in round 1, an opening position from the motion alone
+     (nothing to rebut); in later rounds, rebut the advocate's specific claims —
+     no restating its own case as rebuttal — then present the strongest
+     alternative under the motion's constraints.
    - Sides alternate; each round reads everything before it; no side edits
      another's text. A side may concede with reasons — early convergence is
      a valid outcome, including convergence on a third design neither side
