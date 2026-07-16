@@ -1,0 +1,336 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>claudex — Claude Code harness on GPT-5.6 Sol</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --ink: #26211d;
+    --muted: #6f665e;
+    --accent: #c15f3c;
+    --accent-ink: #a34e30;
+    --code-bg: #211d1a;
+    --code-ink: #e8e2da;
+    --code-accent: #e8926b;
+    --code-comment: #8a8078;
+    --rule: #e3ddd4;
+    --card: #f1ede6;
+    --good: #3d7a4f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1b1815;
+      --ink: #e8e2da;
+      --muted: #a29a90;
+      --accent: #e8926b;
+      --accent-ink: #ee9f7b;
+      --code-bg: #12100e;
+      --code-ink: #ddd6cd;
+      --rule: #35302a;
+      --card: #242019;
+      --good: #7dbb8f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1815;
+    --ink: #e8e2da;
+    --muted: #a29a90;
+    --accent: #e8926b;
+    --accent-ink: #ee9f7b;
+    --code-bg: #12100e;
+    --code-ink: #ddd6cd;
+    --rule: #35302a;
+    --card: #242019;
+    --good: #7dbb8f;
+  }
+  :root[data-theme="light"] {
+    --bg: #faf8f5;
+    --ink: #26211d;
+    --muted: #6f665e;
+    --accent: #c15f3c;
+    --accent-ink: #a34e30;
+    --code-bg: #211d1a;
+    --code-ink: #e8e2da;
+    --rule: #e3ddd4;
+    --card: #f1ede6;
+    --good: #3d7a4f;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 3.5rem 1.25rem 5rem;
+  }
+  main { max-width: 46rem; margin: 0 auto; }
+  .eyebrow {
+    font: 600 0.72rem/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font: 700 2.1rem/1.15 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem;
+    text-wrap: balance;
+  }
+  h1 .dim { color: var(--muted); font-weight: 400; }
+  .lede { font-size: 1.08rem; color: var(--muted); margin: 0 0 2.5rem; max-width: 40rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  .flow {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+    font: 500 0.8rem/1.4 ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.9rem 1.1rem;
+    margin: 0 0 3rem;
+  }
+  .flow .node { white-space: nowrap; }
+  .flow .arrow { color: var(--accent-ink); }
+  .flow .hl { color: var(--accent-ink); font-weight: 700; }
+
+  h2 {
+    font: 700 1.05rem/1.3 ui-monospace, "SF Mono", Menlo, monospace;
+    margin: 3rem 0 0.75rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    display: flex; align-items: baseline; gap: 0.75rem;
+  }
+  h2 .n {
+    color: var(--accent-ink);
+    font-weight: 400;
+  }
+  p { margin: 0.75rem 0; max-width: 42rem; }
+  .why { color: var(--muted); font-size: 0.92rem; }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    font: 0.83rem/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  pre .c { color: var(--code-comment); }
+  pre .a { color: var(--code-accent); }
+  code {
+    font: 0.86em ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0.08em 0.35em;
+  }
+  pre code { background: none; border: none; padding: 0; }
+  .check { color: var(--good); font-weight: 600; }
+  ul { padding-left: 1.3rem; }
+  li { margin: 0.4rem 0; }
+  table {
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+    width: 100%;
+  }
+  .table-wrap { overflow-x: auto; }
+  th, td { text-align: left; padding: 0.5rem 1rem 0.5rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font: 600 0.72rem/1.4 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  td code { white-space: nowrap; }
+  .footnote { color: var(--muted); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
+  .os-label {
+    font: 600 0.7rem/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 1.25rem 0 -0.5rem;
+  }
+  .os-label .dot { color: var(--accent-ink); }
+</style>
+
+<main>
+  <p class="eyebrow">Setup guide · macOS / Linux / Windows (WSL) · ~10 minutes</p>
+  <h1>claudex <span class="dim">= Claude Code harness × GPT-5.6 Sol</span></h1>
+  <p class="lede">Run the <strong>Claude Code CLI</strong> — same tools, skills, and UI — with <strong>OpenAI's GPT-5.6 Sol</strong> as the model, billed against your existing ChatGPT/Codex subscription. Your normal <code>claude</code> command stays untouched; <code>claudex</code> is a separate escape hatch for when Anthropic usage runs out.</p>
+
+  <div class="flow">
+    <span class="node"><span class="hl">claudex</span> (shell alias)</span>
+    <span class="arrow">──▶</span>
+    <span class="node">Claude Code CLI</span>
+    <span class="arrow">──▶</span>
+    <span class="node">CLIProxyAPI <span class="hl">localhost:8317</span></span>
+    <span class="arrow">──▶</span>
+    <span class="node">OpenAI Codex backend (your OAuth)</span>
+  </div>
+
+  <h2><span class="n">00</span> Prerequisites</h2>
+  <ul>
+    <li><strong>Claude Code</strong> installed on any OS: <code>curl -fsSL https://claude.ai/install.sh | bash</code> (macOS/Linux/WSL), or <code>brew install --cask claude-code</code> (the plain <code>claude</code> cask is the desktop app, not the CLI), or <code>npm install -g @anthropic-ai/claude-code</code>.</li>
+    <li>An <strong>OpenAI account with Codex access</strong> (ChatGPT Plus/Pro). You do <em>not</em> need the Codex CLI installed — just the account.</li>
+    <li>A browser on the machine for a one-time OAuth login (headless servers: use <code>--no-browser</code> in step 04 and open the printed URL elsewhere).</li>
+    <li>On Windows, do everything inside WSL2 and follow the Linux variants.</li>
+  </ul>
+
+  <h2><span class="n">01</span> Install CLIProxyAPI</h2>
+  <p>CLIProxyAPI is a local proxy that speaks the Anthropic Messages API on one side and OpenAI's Codex backend on the other. Claude Code thinks it's talking to Anthropic; the proxy translates.</p>
+  <p class="os-label"><span class="dot">●</span> macOS (Homebrew)</p>
+  <pre><code>brew install cliproxyapi</code></pre>
+  <p class="os-label"><span class="dot">●</span> Linux / WSL (release binary)</p>
+  <pre><code><span class="c"># grab the latest release for your arch from</span>
+<span class="c"># https://github.com/router-for-me/CLIProxyAPI/releases</span>
+mkdir -p ~/.local/bin ~/.config/cliproxyapi
+tar -xzf CLIProxyAPI_*_linux_*.tar.gz
+mv cli-proxy-api ~/.local/bin/cliproxyapi
+cp config.example.yaml ~/.config/cliproxyapi/config.yaml
+<span class="c"># make sure ~/.local/bin is on your PATH</span></code></pre>
+
+  <h2><span class="n">02</span> Configure the proxy</h2>
+  <p>Generate an API key for the proxy (this is a local secret you invent, not an OpenAI key). Save the output — it's needed in steps 05 and 06:</p>
+  <pre><code>openssl rand -hex 24</code></pre>
+  <p>Open the config file in an editor:</p>
+  <div class="table-wrap"><table>
+    <tr><th>Platform</th><th>Config file</th></tr>
+    <tr><td>macOS (Homebrew)</td><td><code>$(brew --prefix)/etc/cliproxyapi.conf</code> — i.e. <code>/opt/homebrew/etc/…</code> on Apple Silicon, <code>/usr/local/etc/…</code> on Intel</td></tr>
+    <tr><td>Linux / WSL</td><td><code>~/.config/cliproxyapi/config.yaml</code> (passed via <code>-config</code> in step 03)</td></tr>
+  </table></div>
+  <p>and change three things:</p>
+  <pre><code><span class="c"># 1. bind to localhost only (default is all interfaces)</span>
+host: <span class="a">"127.0.0.1"</span>
+
+<span class="c"># 2. replace the placeholder api-keys with your generated key</span>
+api-keys:
+  - <span class="a">"&lt;paste the openssl output here&gt;"</span>
+
+<span class="c"># 3. add near the bottom — expose effort-tier variants of the model and</span>
+<span class="c">#    force a reasoning effort per tier</span>
+oauth-model-alias:
+  codex:
+    - name: <span class="a">"gpt-5.6-sol"</span>
+      alias: <span class="a">"gpt-5.6-sol-low"</span>
+      fork: <span class="a">true</span>
+    - name: <span class="a">"gpt-5.6-sol"</span>
+      alias: <span class="a">"gpt-5.6-sol-medium"</span>
+      fork: <span class="a">true</span>
+
+payload:
+  override:
+    - models:
+        - name: <span class="a">"gpt-5.6-sol"</span>
+          protocol: <span class="a">"codex"</span>
+      params:
+        <span class="a">"reasoning.effort"</span>: <span class="a">"high"</span>
+    - models:
+        - name: <span class="a">"gpt-5.6-sol-low"</span>
+          protocol: <span class="a">"codex"</span>
+      params:
+        <span class="a">"reasoning.effort"</span>: <span class="a">"low"</span>
+    - models:
+        - name: <span class="a">"gpt-5.6-sol-medium"</span>
+          protocol: <span class="a">"codex"</span>
+      params:
+        <span class="a">"reasoning.effort"</span>: <span class="a">"medium"</span></code></pre>
+  <p class="why">This creates three client-visible names for the same upstream model, each pinned to a reasoning effort at the proxy — no matter what the client sends. The point: the main session (the orchestrator) runs <code>gpt-5.6-sol</code> at high, while agents and background calls remapped to <code>-low</code>/<code>-medium</code> (step 06) get cheaper effort automatically. Verified: the proxy's override wins even when the client requests a different effort.</p>
+
+  <h2><span class="n">03</span> Start it as a startup service</h2>
+  <p>Run once; after this the proxy starts itself at every boot/login, forever. <span class="check">Set-and-forget</span> — you never start it manually again (see step 08).</p>
+  <p class="os-label"><span class="dot">●</span> macOS (Homebrew → launchd)</p>
+  <pre><code>brew services start cliproxyapi
+<span class="c"># after any config edit:</span>
+brew services restart cliproxyapi</code></pre>
+  <p class="os-label"><span class="dot">●</span> Linux / WSL (systemd user unit)</p>
+  <pre><code>mkdir -p ~/.config/systemd/user
+cat &gt; ~/.config/systemd/user/cliproxyapi.service &lt;&lt;'EOF'
+[Unit]
+Description=CLIProxyAPI
+
+[Service]
+ExecStart=%h/.local/bin/cliproxyapi -config %h/.config/cliproxyapi/config.yaml
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+EOF
+systemctl --user enable --now cliproxyapi
+sudo loginctl enable-linger $USER   <span class="c"># keep it running from boot, not just login</span>
+<span class="c"># after any config edit:</span>
+systemctl --user restart cliproxyapi</code></pre>
+
+  <h2><span class="n">04</span> Connect your OpenAI account</h2>
+  <pre><code>cliproxyapi --codex-login
+<span class="c"># Linux: add -config ~/.config/cliproxyapi/config.yaml</span>
+<span class="c"># headless box: add --no-browser and open the printed URL on another device</span></code></pre>
+  <p>A browser tab opens at <code>auth.openai.com</code> — sign in and authorize. Credentials land in <code>~/.cli-proxy-api/</code> (a <code>codex-&lt;email&gt;.json</code> file) and refresh themselves from then on. This is one-time.</p>
+
+  <h2><span class="n">05</span> Verify the proxy sees the models</h2>
+  <pre><code>curl -s http://127.0.0.1:8317/v1/models \
+  -H "Authorization: Bearer &lt;your-generated-key&gt;" | python3 -m json.tool</code></pre>
+  <p>You should see <code>gpt-5.6-sol</code> in the list, plus your <code>gpt-5.6-sol-low</code> and <code>gpt-5.6-sol-medium</code> forks from step 02 (and <code>gpt-5.6-luna</code>, <code>gpt-5.5</code>, and friends). An empty <code>data: []</code> means step 04 didn't complete.</p>
+
+  <h2><span class="n">06</span> Add the alias</h2>
+  <p>Append to your shell's rc file — <code>~/.zshrc</code> for zsh (macOS default), <code>~/.bashrc</code> for bash (most Linux/WSL defaults); <code>echo $SHELL</code> tells you which. Substitute your generated key from step 02:</p>
+  <pre><code><span class="c"># claudex — Claude Code harness driving GPT-5.6 Sol via CLIProxyAPI</span>
+alias claudex=<span class="a">'ANTHROPIC_BASE_URL=http://127.0.0.1:8317 \
+ANTHROPIC_AUTH_TOKEN=&lt;your-generated-key&gt; \
+ANTHROPIC_DEFAULT_HAIKU_MODEL=gpt-5.6-sol-low \
+ANTHROPIC_DEFAULT_SONNET_MODEL=gpt-5.6-sol-low \
+ANTHROPIC_DEFAULT_OPUS_MODEL=gpt-5.6-sol-medium \
+CLAUDE_CODE_MAX_CONTEXT_TOKENS=250000 \
+CLAUDE_CODE_ALWAYS_ENABLE_EFFORT=1 \
+CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY=3 \
+ENABLE_TOOL_SEARCH=true \
+claude --model gpt-5.6-sol'</span></code></pre>
+  <p>Then reload the shell (<code>source ~/.zshrc</code> / <code>source ~/.bashrc</code>, or just open a new terminal). What each variable does:</p>
+  <div class="table-wrap"><table>
+    <tr><th>Variable</th><th>Purpose</th></tr>
+    <tr><td><code>ANTHROPIC_BASE_URL</code></td><td>Points Claude Code at the local proxy instead of Anthropic.</td></tr>
+    <tr><td><code>ANTHROPIC_AUTH_TOKEN</code></td><td>Authenticates to the proxy with your generated key.</td></tr>
+    <tr><td><code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code><br><code>ANTHROPIC_DEFAULT_SONNET_MODEL</code><br><code>ANTHROPIC_DEFAULT_OPUS_MODEL</code></td><td>Remap every Claude model alias to an effort tier of GPT-5.6 Sol: haiku (background chores like session titles) and sonnet-pinned agents → <code>-low</code>; opus-pinned agents → <code>-medium</code>; the main session stays on the base name at high. Covers agent definitions that pin <code>model:</code> in frontmatter, so nothing in the session can accidentally try to reach Anthropic. Don't set <code>CLAUDE_CODE_SUBAGENT_MODEL</code> — it would force one model onto all subagents and defeat the tiers.</td></tr>
+    <tr><td><code>CLAUDE_CODE_MAX_CONTEXT_TOKENS</code></td><td>Declares the model's effective context budget (applies only to non-<code>claude-*</code> model IDs) — ~250k, matching Codex's live-session cap; see the context-window section below.</td></tr>
+    <tr><td><code>CLAUDE_CODE_ALWAYS_ENABLE_EFFORT</code></td><td>Enables reasoning-effort controls for non-Anthropic models.</td></tr>
+    <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code></td><td>Caps parallel tool calls at 3 — the Codex backend handles bursts poorly.</td></tr>
+    <tr><td><code>ENABLE_TOOL_SEARCH</code></td><td>Forced on — defers MCP tool schemas behind a search index instead of eager-loading them (~30k tokens reclaimed with a typical MCP setup). Verified: GPT-5.6 Sol discovers and calls deferred tools via ToolSearch through the proxy. Explicit <code>true</code> matters: auto-defer only kicks in above ~10% of the context budget.</td></tr>
+  </table></div>
+  <p class="why">Because the variables are inline in the alias, they apply to that invocation only. Plain <code>claude</code> keeps using your Anthropic login. Extra arguments pass through: <code>claudex --continue</code>, <code>claudex -p "…"</code> all work.</p>
+
+  <h2><span class="n">07</span> Smoke test</h2>
+  <pre><code>claudex -p "Reply with exactly: claudex works."</code></pre>
+  <p><span class="check">✓</span> A reply means the whole chain works. You'll also see a warning that claude.ai connectors are disabled — expected, since the auth token overrides your claude.ai login for that session.</p>
+
+  <h2><span class="n">§</span> Reading the startup banner</h2>
+  <pre><code>gpt-5.6-sol with high effort · API Usage Billing</code></pre>
+  <p><strong>"API Usage Billing" does not mean you're paying per-token.</strong> The label only means Claude Code is authenticating with an <code>ANTHROPIC_AUTH_TOKEN</code> instead of your claude.ai login — from its point of view, that's "API mode." But the token is the local proxy's key, the "API" is <code>127.0.0.1:8317</code>, and the proxy pays for nothing: it forwards to OpenAI's Codex backend using your ChatGPT OAuth, so usage comes out of your ChatGPT subscription quota.</p>
+  <ul>
+    <li><strong>No Anthropic API charges</strong> — requests never touch Anthropic.</li>
+    <li><strong>No OpenAI API charges</strong> — it's not an API key, it's your subscription login.</li>
+  </ul>
+  <p class="why">The effort shown in the banner is Claude Code's client-side setting — change it in-session with <code>/effort</code>. Either way, the proxy's per-tier <code>reasoning.effort</code> overrides from step 02 win upstream: base model high, <code>-medium</code> medium, <code>-low</code> low, regardless of what the client sends.</p>
+
+  <h2><span class="n">08</span> Nothing to re-do after a restart</h2>
+  <p>Every piece of this setup is persistent. After a reboot, opening a terminal and typing <code>claudex</code> just works — there is no daily ritual.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Piece</th><th>Where it lives</th><th>How it survives restarts</th></tr>
+    <tr><td>Proxy server</td><td>macOS: launchd LaunchAgent (<code>homebrew.mxcl.cliproxyapi</code>) · Linux: systemd user unit (<code>cliproxyapi.service</code>)</td><td>Registered once in step 03; the OS relaunches it at every boot/login. Verify anytime: <code>brew services info cliproxyapi</code> / <code>systemctl --user status cliproxyapi</code>.</td></tr>
+    <tr><td>Proxy config &amp; key</td><td>macOS: <code>$(brew --prefix)/etc/cliproxyapi.conf</code> · Linux: <code>~/.config/cliproxyapi/config.yaml</code></td><td>Plain file, read on every proxy start.</td></tr>
+    <tr><td>OpenAI credentials</td><td><code>~/.cli-proxy-api/codex-*.json</code></td><td>Saved by step 04's one-time OAuth; the proxy refreshes the token itself. You only re-login if you revoke access or change accounts.</td></tr>
+    <tr><td><code>claudex</code> command</td><td>Alias in <code>~/.zshrc</code> / <code>~/.bashrc</code></td><td>Loaded by every new shell, forever.</td></tr>
+  </table></div>
+  <p class="why">The only one-time actions are steps 01–07 themselves. If <code>claudex</code> ever fails after a reboot, the troubleshooting table below covers the two realistic causes: the service not running, or a stale shell.</p>
+
+  <h2><span class="n">§</span> Context window: declare the real size, never <code>[1m]</code></h2>
+  <p>The Codex models' window is <strong>400k tokens total, split ~272k input + 128k output/reasoning</strong> — and in live coding sessions the effective usable context caps around <strong>~258k</strong>. Raw single-shot probes accept more input (a 328k-input request with tiny output passes, because only the 400k total is checked), which is misleading: a real session that grows past ~258k starts hitting context errors. Claude Code doesn't know any of this — it budgets non-Anthropic models at 200k by default, and its <code>[1m]</code> model-ID suffix budgets 1M, which lets long sessions crash far before auto-compact would ever trigger.</p>
+  <p>The fix is <code>CLAUDE_CODE_MAX_CONTEXT_TOKENS=250000</code> in the alias — a Claude Code override that sets the context budget for any model whose ID doesn't start with <code>claude-</code>. 250k sits just under the ~258k effective cap, so auto-compact fires while sessions are still safely inside the window; <code>/context</code> confirms the budget (<code>30.9k / 250k</code>), and auto-compact + <code>/compact</code> are verified working through the proxy. (We ran 340k for a while on the strength of the raw probes — real sessions occasionally errored near the top; 250k matches how Codex itself caps live sessions.)</p>
+  <p class="why">Don't "upgrade" this to <code>[1m]</code> or past ~258k — bigger numbers route fine and look like they work, right up until a long run crosses the effective cap and dies mid-task. Custom suffixes like <code>[400k]</code> aren't supported (silent fallback to 200k); the env var is the supported mechanism.</p>
+
+  <h2><span class="n">##</span> Troubleshooting</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Symptom</th><th>Fix</th></tr>
+    <tr><td>Model list is <code>[]</code></td><td>Re-run <code>cliproxyapi --codex-login</code>; check a <code>codex-*.json</code> file exists in <code>~/.cli-proxy-api/</code>.</td></tr>
+    <tr><td><code>401</code> from the proxy</td><td>Key in the alias doesn't match <code>api-keys</code> in the config. After editing the config, restart the service (step 03's restart command).</td></tr>
+    <tr><td>Connection refused on 8317</td><td>Service isn't running — <code>brew services info cliproxyapi</code> / <code>systemctl --user status cliproxyapi</code>. Check the port isn't taken by something else.</td></tr>
+    <tr><td>claudex answers as Claude/Anthropic</td><td>The alias didn't load — reload your shell rc file, and confirm <code>type claudex</code> reports the alias.</td></tr>
+  </table></div>
+
+  <p class="footnote">Origin: <a href="https://x.com/thsottiaux">Tibo</a> & <a href="https://x.com/theo">Theo</a> on X, July 2026 — this guide extends their setup with effort tiers, the real context budget, deferred MCP tool search, and startup persistence, each verified end-to-end. Everything is local: the proxy binds to 127.0.0.1 only, and the only credential that leaves the machine is the OpenAI OAuth token, talking to OpenAI.</p>
+  <p class="footnote">Maintained by <a href="https://github.com/parsakhaz"><strong>@parsakhaz</strong></a> · canonical home: <a href="https://github.com/dcouple/skills/tree/main/docs/claudex"><strong>github.com/dcouple/skills</strong></a>. If this saved you time, <a href="https://github.com/dcouple/skills">star the repo</a> and follow along — we publish our coding-agent skills and workflows there as we build <a href="https://runpane.com">Pane</a>.</p>
+</main>
