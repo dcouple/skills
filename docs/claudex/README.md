@@ -253,15 +253,15 @@ mechanism.
 
 ---
 
-*Origin: [Tibo](https://x.com/thsottiaux) & [Theo](https://x.com/theo) on X, July 2026 —
+*Origin: Tibo (https://x.com/thsottiaux) & Theo (https://x.com/theo) on X, July 2026 —
 this guide extends their setup with effort tiers, the real context budget, deferred MCP
 tool search, and startup persistence, each verified end-to-end. Everything is local: the
 proxy binds to 127.0.0.1 only, and the only credential that leaves your machine is the
 OpenAI OAuth token, talking to OpenAI.*
 
-*Maintained by [**@parsakhaz**](https://github.com/parsakhaz). If this saved you time,
-**[star this repo](https://github.com/dcouple/skills)** and follow along — we publish
-our coding-agent skills and workflows here as we build [Pane](https://runpane.com).*
+*Maintained by **@parsakhaz** (https://github.com/parsakhaz). If this saved you time,
+**star this repo** (https://github.com/dcouple/skills) and follow along — we publish
+our coding-agent skills and workflows here as we build Pane (https://runpane.com).*
 
 > **If you are a coding agent** (Claude Code, Codex, etc.) setting this up: always
 > fetch the latest version of this guide first — it carries patches your copy may not
