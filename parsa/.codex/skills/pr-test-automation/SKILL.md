@@ -211,11 +211,13 @@ analytics, signup, login, or session handling:
   exposed they were all a single person.
 - Inspect raw `distinct_id` per event when stitching looks wrong — it names the exact
   identity that captured the event and usually identifies the merge vector directly.
-- Run a deliberate **multi-user same-browser pass** for any auth/signup surface: several
-  signups and login switches in one browser profile, then assert each user resolved to a
-  separate person AND that functional session state (websocket auth, cookies) followed the
-  switch. Shared-machine bugs (identity merges, stale-socket auth) are invisible to
-  single-user passes and this scenario found two critical bug families in one run.
+- When the PR touches identity stitching itself (aliasing, identify calls, distinct-id or
+  session-identity plumbing) — or the product targets shared devices — run a
+  **multi-user same-browser pass**: several signups and login switches in one browser
+  profile, then assert each user resolved to a separate person AND that functional session
+  state (websocket auth, cookies) followed the switch. Shared-machine bugs (identity
+  merges, stale-socket auth) are invisible to single-user passes; the pass is expensive,
+  so reserve it for changes where that failure mode is actually in play.
 - Suspect STACKED causes when a fix's re-verification still fails: fix one vector, re-run
   the proof, and let the raw distinct_id data name the next vector. Do not assume the fix
   simply "didn't work".
