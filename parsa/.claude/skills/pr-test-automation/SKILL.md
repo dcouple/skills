@@ -199,3 +199,48 @@ Stop and ask the user before:
 - Posting comments, sending emails, toggling flags, or changing dashboards unless the user asked for that action.
 
 Otherwise, keep going through setup, execution, verification, cleanup, and a concise result summary.
+
+## Analytics Identity Verification
+
+Event ingestion alone is not enough — verify PERSON STITCHING whenever a PR touches
+analytics, signup, login, or session handling:
+
+- Group verification queries by `person_id`, never by `person.properties.*` — event-time
+  person properties differ per row and can make N merged users each look like "one clean
+  person". Six merged QA users passed an email-grouped check; a `person_id`-grouped check
+  exposed they were all a single person.
+- Inspect raw `distinct_id` per event when stitching looks wrong — it names the exact
+  identity that captured the event and usually identifies the merge vector directly.
+- Run a deliberate **multi-user same-browser pass** for any auth/signup surface: several
+  signups and login switches in one browser profile, then assert each user resolved to a
+  separate person AND that functional session state (websocket auth, cookies) followed the
+  switch. Shared-machine bugs (identity merges, stale-socket auth) are invisible to
+  single-user passes and this scenario found two critical bug families in one run.
+- Suspect STACKED causes when a fix's re-verification still fails: fix one vector, re-run
+  the proof, and let the raw distinct_id data name the next vector. Do not assume the fix
+  simply "didn't work".
+- Test events fired immediately before hard navigations (checkout redirects, external
+  scheduling links): SDK batching silently drops them on unload; they need per-capture
+  `sendBeacon` transport. Absence in the warehouse — not the network tab — is the proof.
+
+## Fix-Verify Loop Hygiene
+
+- Before driving a browser proof of a just-committed fix, verify the SERVED bundle
+  contains it (fetch the bundle URL and grep a distinctive marker, or compare the hash in
+  page/script URLs). Dev-server rebuild races cost entire proof rounds and mimic "fix
+  didn't work".
+- Wait ~45-60s before querying an analytics warehouse for just-captured events; an empty
+  result inside that window proves nothing.
+
+## Browser-Extension and Vendor Interference
+
+- Password-manager extensions (1Password) steal focus into extension frames on
+  credential-like fields; afterwards ALL automation on the tab fails with
+  "Cannot access a chrome-extension:// URL". Prefer setting form values by element
+  reference over click+type, dismiss popovers by clicking neutral page areas (Escape may
+  feed the popover), and recover a wedged tab only by opening a fresh one (hosted
+  checkout URLs resume by URL).
+- Export GIF recordings BEFORE closing their tab — recordings die with the tab group.
+- Vendor sandboxes rate-limit (e.g. Dropbox Sign test API throttles after ~6 signature
+  requests/day, stalling embeds ~10 min). Budget signature-heavy passes and report
+  throttling as an environment limit, not a product bug.
