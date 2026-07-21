@@ -77,6 +77,9 @@ oauth-model-alias:
     - name: "gpt-5.6-sol"
       alias: "gpt-5.6-sol-medium"
       fork: true
+    - name: "gpt-5.6-sol"
+      alias: "gpt-5.6-sol-xhigh"
+      fork: true
 
 payload:
   override:
@@ -95,6 +98,11 @@ payload:
           protocol: "codex"
       params:
         "reasoning.effort": "medium"
+    - models:
+        - name: "gpt-5.6-sol-xhigh"
+          protocol: "codex"
+      params:
+        "reasoning.effort": "xhigh"
 ```
 
 This creates three client-visible names for the same upstream model, each pinned to a
@@ -167,6 +175,7 @@ ANTHROPIC_AUTH_TOKEN=<your-generated-key> \
 ANTHROPIC_DEFAULT_HAIKU_MODEL=gpt-5.6-sol-low \
 ANTHROPIC_DEFAULT_SONNET_MODEL=gpt-5.6-sol-low \
 ANTHROPIC_DEFAULT_OPUS_MODEL=gpt-5.6-sol-medium \
+ANTHROPIC_DEFAULT_FABLE_MODEL=gpt-5.6-sol-xhigh \
 CLAUDE_CODE_MAX_CONTEXT_TOKENS=250000 \
 CLAUDE_CODE_ALWAYS_ENABLE_EFFORT=1 \
 CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY=3 \
@@ -180,7 +189,7 @@ Then reload the shell (`source ~/.zshrc` / `source ~/.bashrc`, or open a new ter
 | --- | --- |
 | `ANTHROPIC_BASE_URL` | Points Claude Code at the local proxy instead of Anthropic. |
 | `ANTHROPIC_AUTH_TOKEN` | Authenticates to the proxy with your generated key. |
-| `ANTHROPIC_DEFAULT_{HAIKU,SONNET,OPUS}_MODEL` | Remaps every Claude model alias to an effort tier: haiku (background chores like session titles) and sonnet-pinned agents → `-low`; opus-pinned agents → `-medium`; the main session stays on the base name at high. Don't set `CLAUDE_CODE_SUBAGENT_MODEL` — it forces one model onto all subagents and defeats the tiers. |
+| `ANTHROPIC_DEFAULT_{HAIKU,SONNET,OPUS,FABLE}_MODEL` | Remaps every Claude model alias to an effort tier: haiku (background chores like session titles) and sonnet-pinned agents → `-low`; opus-pinned agents → `-medium`; fable-pinned agents (e.g. a Socratic gate) → `-xhigh`; the main session stays on the base name at high. Don't set `CLAUDE_CODE_SUBAGENT_MODEL` — it forces one model onto all subagents and defeats the tiers. |
 | `CLAUDE_CODE_MAX_CONTEXT_TOKENS` | Declares the model's effective context budget (non-`claude-*` model IDs only) — see the context-window section below. |
 | `CLAUDE_CODE_ALWAYS_ENABLE_EFFORT` | Enables reasoning-effort controls for non-Anthropic models. |
 | `CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY` | Caps parallel tool calls at 3 — the Codex backend handles bursts poorly. |

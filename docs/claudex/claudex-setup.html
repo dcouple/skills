@@ -218,6 +218,9 @@ oauth-model-alias:
     - name: <span class="a">"gpt-5.6-sol"</span>
       alias: <span class="a">"gpt-5.6-sol-medium"</span>
       fork: <span class="a">true</span>
+    - name: <span class="a">"gpt-5.6-sol"</span>
+      alias: <span class="a">"gpt-5.6-sol-xhigh"</span>
+      fork: <span class="a">true</span>
 
 payload:
   override:
@@ -235,7 +238,12 @@ payload:
         - name: <span class="a">"gpt-5.6-sol-medium"</span>
           protocol: <span class="a">"codex"</span>
       params:
-        <span class="a">"reasoning.effort"</span>: <span class="a">"medium"</span></code></pre>
+        <span class="a">"reasoning.effort"</span>: <span class="a">"medium"</span>
+    - models:
+        - name: <span class="a">"gpt-5.6-sol-xhigh"</span>
+          protocol: <span class="a">"codex"</span>
+      params:
+        <span class="a">"reasoning.effort"</span>: <span class="a">"xhigh"</span></code></pre>
   <p class="why">This creates three client-visible names for the same upstream model, each pinned to a reasoning effort at the proxy — no matter what the client sends. The point: the main session (the orchestrator) runs <code>gpt-5.6-sol</code> at high, while agents and background calls remapped to <code>-low</code>/<code>-medium</code> (step 06) get cheaper effort automatically. Verified: the proxy's override wins even when the client requests a different effort.</p>
 
   <h2><span class="n">03</span> Start it as a startup service</h2>
@@ -281,6 +289,7 @@ ANTHROPIC_AUTH_TOKEN=&lt;your-generated-key&gt; \
 ANTHROPIC_DEFAULT_HAIKU_MODEL=gpt-5.6-sol-low \
 ANTHROPIC_DEFAULT_SONNET_MODEL=gpt-5.6-sol-low \
 ANTHROPIC_DEFAULT_OPUS_MODEL=gpt-5.6-sol-medium \
+ANTHROPIC_DEFAULT_FABLE_MODEL=gpt-5.6-sol-xhigh \
 CLAUDE_CODE_MAX_CONTEXT_TOKENS=250000 \
 CLAUDE_CODE_ALWAYS_ENABLE_EFFORT=1 \
 CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY=3 \
@@ -291,7 +300,7 @@ claude --model gpt-5.6-sol'</span></code></pre>
     <tr><th>Variable</th><th>Purpose</th></tr>
     <tr><td><code>ANTHROPIC_BASE_URL</code></td><td>Points Claude Code at the local proxy instead of Anthropic.</td></tr>
     <tr><td><code>ANTHROPIC_AUTH_TOKEN</code></td><td>Authenticates to the proxy with your generated key.</td></tr>
-    <tr><td><code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code><br><code>ANTHROPIC_DEFAULT_SONNET_MODEL</code><br><code>ANTHROPIC_DEFAULT_OPUS_MODEL</code></td><td>Remap every Claude model alias to an effort tier of GPT-5.6 Sol: haiku (background chores like session titles) and sonnet-pinned agents → <code>-low</code>; opus-pinned agents → <code>-medium</code>; the main session stays on the base name at high. Covers agent definitions that pin <code>model:</code> in frontmatter, so nothing in the session can accidentally try to reach Anthropic. Don't set <code>CLAUDE_CODE_SUBAGENT_MODEL</code> — it would force one model onto all subagents and defeat the tiers.</td></tr>
+    <tr><td><code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code><br><code>ANTHROPIC_DEFAULT_SONNET_MODEL</code><br><code>ANTHROPIC_DEFAULT_OPUS_MODEL</code><br><code>ANTHROPIC_DEFAULT_FABLE_MODEL</code></td><td>Remap every Claude model alias to an effort tier of GPT-5.6 Sol: haiku (background chores like session titles) and sonnet-pinned agents → <code>-low</code>; opus-pinned agents → <code>-medium</code>; fable-pinned agents (e.g. a Socratic gate) → <code>-xhigh</code>; the main session stays on the base name at high. Covers agent definitions that pin <code>model:</code> in frontmatter, so nothing in the session can accidentally try to reach Anthropic. Don't set <code>CLAUDE_CODE_SUBAGENT_MODEL</code> — it would force one model onto all subagents and defeat the tiers.</td></tr>
     <tr><td><code>CLAUDE_CODE_MAX_CONTEXT_TOKENS</code></td><td>Declares the model's effective context budget (applies only to non-<code>claude-*</code> model IDs) — ~250k, matching Codex's live-session cap; see the context-window section below.</td></tr>
     <tr><td><code>CLAUDE_CODE_ALWAYS_ENABLE_EFFORT</code></td><td>Enables reasoning-effort controls for non-Anthropic models.</td></tr>
     <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code></td><td>Caps parallel tool calls at 3 — the Codex backend handles bursts poorly.</td></tr>
