@@ -114,12 +114,17 @@ before creating the ticket or plan.
 #### I want an agent to manage many issues end to end
 
 Use `runpane-orchestrator`. It is the higher-level loop for asking an agent to
-fan out GitHub issues into Pane workstreams, run discussion, planning,
-implementation, PR testing, independent Codex/Claude review, and dogfood notes.
+fan out GitHub issues into persistent Pane workstreams and proactively advance
+already-authorized reversible stages through current-head review, PR, QA, and CI.
 
 ```text
-runpane-orchestrator -> discussion -> plan/create-plan -> implement -> pr-test-automation -> prepare-pr -> review loop
+investigate -> plan/create-plan|simple-plan -> implement -> implementation review -> prepare-pr -> address review feedback -> PR test automation -> CI/re-review -> ready to merge
 ```
+
+The orchestrator remembers stage and external-mutation grants, monitors parallel
+workstreams, and does not ask again for covered reversible progress. Merge,
+deploy, release, version/publish, production/destructive action, and scope
+expansion remain exact-authorization hard stops.
 
 The skill exists in both Parsa variants:
 

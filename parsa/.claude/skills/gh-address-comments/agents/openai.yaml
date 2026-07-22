@@ -1,0 +1,4 @@
+interface:
+  display_name: "Address PR Comments"
+  short_description: "Resolve actionable PR review feedback"
+  default_prompt: "Use $gh-address-comments to inspect and address actionable review feedback on the current pull request."

@@ -31,10 +31,12 @@ long-lived release such as `pr-assets`; inspect it with `gh release list` and
 Do not create a new release per PR, and do not use an arbitrary temporary host
 when a suitable repository release exists.
 
-If no suitable release exists, create or point to one dedicated long-lived
-`pr-assets` release only when the user's GitHub write/comment authorization
-covers that release mutation. Target the default branch, use `--latest=false`,
-and explain in its notes that it stores long-lived PR/QA images. If creation or
+If no suitable release exists, creating one dedicated long-lived `pr-assets`
+release is a separate hard stop requiring an exact grant such as
+`{"action":"create_release","repo":"owner/name","tag":"pr-assets"}`. Generic
+GitHub, PR, comment, or asset-upload authorization does not grant creation.
+Target the default branch, use `--latest=false`, and explain in its notes that it
+stores long-lived PR/QA images. If creation or
 upload is not authorized, keep the render local and prepare the exact release
 creation/upload commands, manifest, and marked PR Markdown; report durable
 publication as blocked instead of falling back to a temporary host.
