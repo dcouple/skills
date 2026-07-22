@@ -233,6 +233,14 @@ The skills are in three buckets: proactive (monitoring + strategy), foundational
 (readability + authority passes, run anytime), and execution (new content
 drafting). See `parsa/seo/` for the full README.
 
+Every copy skill runs through `seo-writing-framework`: research, draft, reader
+hat, edit, slop gate, score. The slop gate is `no-ai-slop`, adapted from
+[petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT). It
+names the AI patterns that survive a normal edit because they're grammatical
+and confident, and it also runs standalone on any draft: paste one to get it
+edited, or ask whether it reads as AI to get each pattern quoted back with a
+fix.
+
 ## What is in this repo
 
 Each contributor has their own folder. Start with `parsa/`.

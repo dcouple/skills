@@ -26,7 +26,7 @@ pages, comparison pages, explainer pages, category pages.
 
 ## Prerequisites
 
-- **Writing process**: Follow `seo-writing-framework` for every piece of content. This is the most important prerequisite. Research real examples, draft with reference, reader hat, edit, read out loud.
+- **Writing process**: Follow `seo-writing-framework` for every piece of content. This is the most important prerequisite. Research real examples, draft with reference, reader hat, edit, run the `no-ai-slop` gate, score.
 - **Strategy**: `.seo/strategy.md` should exist from a prior `seo-content-strategy` run.
 - **Voice guide**: Must exist in the repo (`AGENTS.md` or `VOICE.md`).
 
