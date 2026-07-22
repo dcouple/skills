@@ -78,7 +78,18 @@ Read it out loud. Not in your head. Out loud. 90% of the time, reading
 out loud catches where it's awkward or feels wrong. If a sentence sounds
 weird when you say it, rewrite it.
 
-### 5. Final check: does it land?
+### 5. Run the slop gate
+
+Run `good-writing-fundamentals` in detect mode. It names each AI pattern it finds with the
+quoted line, so you can check the call yourself instead of trusting a verdict.
+Fix what it names, re-run, repeat until it comes back clean.
+
+This is the step that catches the patterns your own ear misses, because they're
+grammatical and confident: colon reveals, binary contrasts, "highlighting the
+team's commitment," "experts agree." Nothing proceeds to the final check with
+findings outstanding.
+
+### 6. Final check: does it land?
 
 One more pass as the reader. Does the writing:
 - Say what it needs to say? (not more, not less)
@@ -88,6 +99,16 @@ One more pass as the reader. Does the writing:
 
 If yes, ship it. If any of these fail, go back to step 4.
 
+### Which craft rules apply: pick the register
+
+Some moves work on a landing page and read as slop in a support reply. Before
+drafting, decide whether the piece is **persuasive** (landing pages, launch
+emails, marketing copy) or **explanatory** (docs, support replies, changelogs,
+pricing emails, technical posts). Curiosity gaps and a deliberate ending belong
+to the first. The second ends on the last concrete point or the next action.
+Banned words and the hard-banned patterns apply to both. See
+`seo-writing-framework` for the full rules.
+
 ## How this maps to the skill workflow
 
 ```
@@ -95,7 +116,8 @@ Research (step 1)    →  seo-data-pull, WebSearch, competitor analysis
 Draft (step 2)       →  LLM writes with voice guide + examples as context
 Reader hat (step 3)  →  the humanity pass from seo-readability-pass
 Edit (step 4)        →  human edits, or LLM rewrites with specific corrections
-Final check (step 5) →  read out loud, ship or iterate
+Slop gate (step 5)   →  good-writing-fundamentals detect, fix, re-run until clean
+Final check (step 6) →  read out loud, ship or iterate
 ```
 
 ## Rules for LLM-assisted writing
@@ -115,3 +137,6 @@ Final check (step 5) →  read out loud, ship or iterate
 - Listing benefits without naming the pain they solve
 - Generic enthusiasm ("exciting", "thrilled", "game-changing")
 - Em dashes used as a crutch for weak sentence structure
+- Confident patterns your ear skips because they're grammatical: binary
+  contrasts ("it's not X, it's Y"), colon reveals, "highlighting the team's
+  commitment," "experts agree." The full inventory is in `good-writing-fundamentals`.

@@ -12,7 +12,7 @@ Each skill is one step in the process. They're composable: you can run one by it
 
 ## How it works, simply
 
-There are 8 skills. They start with foundations (if you're new), then break into three buckets:
+There are 10 skills. They start with foundations (if you're new), then break into three buckets:
 
 ### 0. Starting from scratch (greenfield)
 
@@ -120,10 +120,28 @@ Everything else runs automatically. The skills handle the writing, the metadata,
 1. **Research** real examples of how good companies write the same type of thing
 2. **Draft** with examples as reference, not from nothing
 3. **Reader hat**: read the draft as the person receiving it, not the person writing it
-4. **Edit**: remove LLM-isms, replace with how you'd actually say it
-5. **Read out loud**: catches 90% of awkward phrasing that reading silently misses
+4. **Edit**: remove LLM-isms, replace with how you'd actually say it, read it out loud
+5. **Slop gate**: run `/good-writing-fundamentals` in detect mode, fix what it names, re-run until clean
+6. **Score** against the rubric and revise until it hits 90%
 
 Never draft from nothing. Never ship a first draft. The LLM is a research tool and a drafting tool. It is not the writer.
+
+**`/good-writing-fundamentals`** is the line-level layer: active voice, concrete detail, direct verbs, and the AI patterns to cut. Use it on any prose before it goes out, not just SEO copy. PR descriptions, release notes, and Slack messages count.
+
+Two modes. Paste a draft and it returns an edited version plus a "What changed" note. Or ask "is this AI slop?" and it names each pattern with the quoted line and a short fix, without rewriting. Detect mode never scores the draft or claims AI wrote it: named patterns are evidence you can check, and a score isn't.
+
+It routes rather than overreaching. If the piece is a customer-facing deliverable that doesn't exist yet, it sends you to `/seo-writing-framework` first, because no line-level rule fixes a draft written from nothing. If a draft already exists, or the piece is short and internal, it just does the pass.
+
+Adapted from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
+
+### Register
+
+Some craft moves work on a landing page and read as slop in a support reply. The framework picks a register before drafting:
+
+- **Persuasive** (landing pages, launch emails, headlines, comparison pages): curiosity gaps allowed, two per page maximum, each one closed on the page. A deliberate ending is allowed if it's concrete.
+- **Explanatory** (docs, support replies, changelogs, pricing emails, technical posts): no curiosity gaps, no kicker. End on the last concrete point or the next action.
+
+Banned words and hard-banned patterns apply to both.
 
 ## Model choice
 
@@ -136,7 +154,8 @@ Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or
 | `/seo-foundations` | greenfield | Crawl site, find competitors, map search landscape |
 | `/seo-briefing` | proactive | Pull data from all sources, produce a report |
 | `/seo-content-strategy` | proactive | Turn the report into a prioritized plan |
-| `/seo-writing-framework` | foundational | Research, draft, reader-hat, edit, read-aloud process |
+| `/seo-writing-framework` | foundational | Research, draft, reader-hat, edit, slop-gate, score process |
+| `/good-writing-fundamentals` | foundational | Line-level rules for any prose: edit out AI patterns, or detect them without rewriting |
 | `/seo-readability-pass` | foundational | Audit and rewrite copy for voice and clarity |
 | `/seo-authority-pass` | foundational | Add explainer pages, glossary, author, E-E-A-T |
 | `/seo-content-drafting` | execution | Write new blog posts, landing pages, comparisons |

@@ -233,6 +233,18 @@ The skills are in three buckets: proactive (monitoring + strategy), foundational
 (readability + authority passes, run anytime), and execution (new content
 drafting). See `parsa/seo/` for the full README.
 
+Every copy skill runs through `seo-writing-framework`: research, draft, reader
+hat, edit, slop gate, score. The gate is `good-writing-fundamentals`, adapted
+from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
+
+That one is worth reaching for outside SEO too. It holds the line-level rules
+for any prose a person will read, including PR descriptions and release notes:
+active voice, concrete detail, direct verbs, and the AI patterns that survive a
+normal edit because they're grammatical and confident. Paste a draft to get it
+edited, or ask whether it reads as AI to get each pattern quoted back with a
+fix. If the piece doesn't exist yet and it's customer-facing, it points you at
+the framework first.
+
 ## What is in this repo
 
 Each contributor has their own folder. Start with `parsa/`.

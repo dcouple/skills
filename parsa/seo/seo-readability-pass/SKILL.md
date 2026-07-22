@@ -27,7 +27,7 @@ better than 4.7 or 4.8 at copywriting and writing in specific voice styles.
 
 ## Prerequisites
 
-- **Writing process**: Follow `seo-writing-framework` when rewriting pages. Research examples, draft with reference, reader hat, edit, read out loud.
+- **Writing process**: Follow `seo-writing-framework` when rewriting pages. Research examples, draft with reference, reader hat, edit, run the `good-writing-fundamentals` gate, score.
 - **Voice guide**: Looks for a voice guide in `AGENTS.md`, `VOICE.md`, or `CLAUDE.md`. Creates one if missing (step 1).
 
 ## Goal

@@ -30,7 +30,7 @@ better than 4.7 or 4.8 at copywriting and writing in specific voice styles.
 
 ## Prerequisites
 
-- **Writing process**: Follow `seo-writing-framework` when writing explainer pages and copy. Research examples, draft with reference, reader hat, edit, read out loud.
+- **Writing process**: Follow `seo-writing-framework` when writing explainer pages and copy. Research examples, draft with reference, reader hat, edit, run the `good-writing-fundamentals` gate, score.
 - **Voice guide**: Must exist in repo (`AGENTS.md`, `VOICE.md`, or `CLAUDE.md`). If missing, run `seo-readability-pass` first (it creates one).
 - **Term list (optional)**: If `seo-readability-pass` produced a list of concepts needing explainers, use it. Otherwise, discover terms in step 1.
 
