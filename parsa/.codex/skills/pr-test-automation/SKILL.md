@@ -49,7 +49,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
 6. Report results:
    - State what was tested, the exact test identity/marker, and the observed outcome.
    - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
-   - When screenshots are safe to share, upload them to a true temporary host that returns direct image URLs, or to the app/repo's own temporary upload endpoint if one exists. Prefer retention that comfortably covers review, record the provider and expiration/retention policy, and avoid hosts that delete after the first download.
+   - When screenshots are safe to share, publish them on a repository-owned durable asset surface. For GitHub PRs, prefer an existing long-lived release such as `pr-assets`; do not use an arbitrary temporary host when a suitable repository release is available.
    - For GitHub PR targets where the user asked for PR testing, update the PR description with a concise QA summary where reviewers look first. Use a marked section so reruns replace the latest QA summary without overwriting the author-written description. Use a separate marked QA comment for long evidence, logs, and screenshot galleries when the description would become unwieldy.
    - Include connector/query evidence with event names, identifiers, timestamps, and important properties.
    - Separate passed automated checks from remaining manual checks.
@@ -143,15 +143,39 @@ For payment, email, SMS, analytics, and other third-party integrations:
 - If a provider key lacks read scopes, try another non-destructive readback source such as a connected mailbox, recipient-side tool, provider dashboard export, app database row, webhook table, logs, or analytics event. Report the scope limitation rather than treating it as product failure.
 - Never expose secrets in the final answer. Public analytics tokens are not the same as private API keys, but still describe them carefully.
 
-## PR QA Descriptions, Comments, And Screenshots
+## Durable PR QA Descriptions, Comments, And Screenshots
 
 When testing an open PR, preserve the result where reviewers will look first:
 
-- Create a local artifact folder such as `tmp/pr-<number>-qa/` containing raw screenshots, scripts, manifests, and notes.
-- Upload safe UI screenshots after testing. Do not upload PHI, secrets, private customer data, real inbox contents, payment details, or anything that would be inappropriate in a public/shared PR context.
-- Prefer direct image links with enough retention for the expected review window. `x0.at` is acceptable for non-sensitive QA screenshots when a longer-lived temp host is needed; it returns direct URLs and uses size-based retention between 3 and 100 days. If a repo or company has a preferred temporary upload API, use that instead.
-- Write a local upload manifest with provider, uploaded timestamp, retention/expiration expectation, original local path, URL, and a quick verification that each URL resolves as the expected content type.
-- Treat the PR description as the primary review surface. Append or replace a marked section such as `<!-- codex-pr-test-automation-summary -->` without rewriting the human-authored PR summary. Keep the PR description QA section compact and include:
+- Create a local artifact folder such as `tmp/pr-<number>-qa/` containing raw screenshots, scripts, the exact PR Markdown, and `pr-assets-manifest.json`.
+- Classify every image before upload. Do not upload PHI, secrets, private customer data, real inbox contents, payment details, MFA codes, production admin data, or anything inappropriate for every person who can read the PR. Keep sensitive images local and redact a copy only when the redaction can be verified visually.
+- Prefer a repository-owned durable surface. For GitHub PRs, discover and reuse a published, mutable, long-lived release such as `pr-assets` or the repository's documented equivalent:
+
+  ```bash
+  repo="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
+  default_branch="$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)"
+  gh release list -R "$repo" --limit 100 \
+    --json tagName,name,isDraft,isPrerelease
+  gh release view pr-assets -R "$repo" \
+    --json tagName,isDraft,isPrerelease,isImmutable,url,assets
+  ```
+
+  Do not create a release per PR. Do not use an arbitrary temporary host when a suitable repository release exists.
+- If no suitable release exists, create or point to one dedicated long-lived `pr-assets` release only when the user's GitHub write/comment authorization covers that release mutation. Use the default branch as its target and keep it out of Latest-release semantics:
+
+  ```bash
+  gh release create pr-assets -R "$repo" --title "PR assets" \
+    --notes "Long-lived image assets for pull requests and QA evidence." \
+    --latest=false --target "$default_branch"
+  ```
+
+  If release creation or upload is not authorized, do not fall back to a temporary host. Write the intended filenames, manifest, exact `gh release create` / `gh release upload` commands, and ready-to-paste marked PR Markdown into the artifact folder; report that durable publication is blocked.
+- Compute the source SHA-256 before upload. Name every asset with stable context plus content identity, for example `pr-<number>-<head-short-sha>-<content-sha12>-<step>.png`. Use a branch slug when the PR number does not exist yet. Sanitize names to portable lowercase ASCII.
+- Make reruns idempotent. Inspect release assets before uploading. If the exact name exists and its GitHub digest—or a downloaded byte-for-byte hash when no digest is present—matches the local file, reuse its URL. If the content differs, do not overwrite or use `gh release upload --clobber`; extend the hash or add a deterministic suffix and upload a new asset so an older PR never changes underneath reviewers.
+- Upload with `gh release upload <tag> <path> -R "$repo"`, then read back the release and asset metadata. Require the intended tag, a non-draft release, uploaded asset state, expected filename, size, SHA-256 digest when GitHub supplies it, and `browser_download_url`.
+- Perform a direct GET of the uploaded bytes (authenticated through GitHub for private repositories), not only a HEAD request. Compare the downloaded SHA-256 and size with the local source and verify the decoded file type or image magic; an HTML login/error page with a misleading status is a failure. Record the verification timestamp and result.
+- Maintain `pr-assets-manifest.json` across reruns. For each asset record the repository, release tag and URL, PR number, head commit, source path, semantic step, asset name, local SHA-256 and size, asset API URL, browser download URL, upload-or-reuse status, timestamp, and content-verification result. Never put tokens, cookies, or sensitive test data in the manifest.
+- Treat the PR description as the primary review surface. Append or replace only the section between `<!-- pr-test-automation-summary:start -->` and `<!-- pr-test-automation-summary:end -->` without rewriting the human-authored PR summary. If a legacy `<!-- codex-pr-test-automation-summary -->` section exists, migrate that section once instead of duplicating it. Keep the PR description QA section compact and include:
   - current QA status;
   - test account/org/marker identifiers;
   - user journeys and surface areas tested;
@@ -159,7 +183,7 @@ When testing an open PR, preserve the result where reviewers will look first:
   - key screenshot previews when UI review is central and the set is small enough to skim;
   - a link to the detailed QA comment or local artifacts when the full evidence is long;
   - what remains for human review and what was intentionally skipped.
-- Post or update one PR comment with marker `<!-- codex-pr-test-automation -->` when detailed evidence, logs, or screenshot galleries are too large for the PR description. Include:
+- Post or update one PR comment whose owned content is bounded by `<!-- pr-test-automation-detail:start -->` and `<!-- pr-test-automation-detail:end -->` when detailed evidence, logs, or screenshot galleries are too large for the PR description. Recognize the legacy `<!-- codex-pr-test-automation -->` marker so reruns update rather than duplicate an older comment. Include:
   - summary of automated manual QA outcome;
   - test account/org/marker identifiers;
   - user journeys and surface areas tested;
@@ -174,7 +198,7 @@ When testing an open PR, preserve the result where reviewers will look first:
   - Use a two-column Markdown/HTML table for compact skimming when there are more than four screenshots.
   - Use direct image URLs in Markdown image syntax or HTML `<img>` tags. If using HTML, constrain width around `360`-`480` pixels so the PR remains readable.
 - Keep unsafe screenshots local only and say why. Examples: payment card entry screens, PHI, secrets, private customer data, real inbox contents, MFA codes, or production admin data. Mention their local paths without rendering or uploading them.
-- When updating an existing QA summary or comment that already has screenshot links, convert the safe links into inline previews during the same update instead of adding a second comment.
+- When updating an existing marked QA summary or comment, replace dead, expiring, temporary, or local-only image references with verified durable URLs and inline previews during the same update instead of adding a second comment. Preserve all author-written text outside the markers. If an image URL outside a marker is broken, change only that URL after verifying the intended replacement; do not rewrite the surrounding prose.
 - Example compact preview block:
 
 ```markdown

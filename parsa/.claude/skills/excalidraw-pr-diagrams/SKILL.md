@@ -20,20 +20,44 @@ When using this skill for pull request diagrams in Codex or Claude:
 - PR visual overviews must include explicit `Before` and `After` diagrams so reviewers can see both the old behavior and the new behavior without inferring the diff from prose.
 - Keep each PR diagram focused on the change boundary: before, after, and why the new flow is safer.
 - After generating diagrams, update the PR description with a dedicated `## Visual Overview` section.
-- This skill is stored in multiple trees (`parsa/.claude/skills/`, `parsa/.codex/skills/`, and `tyler/.claude/skills/` — tyler's `/do` embeds its PR standard in the Visual overview step). Keep all copies materially equivalent unless there is an agent-specific reason to diverge.
+- Keep the active `parsa/.claude/skills/` and `parsa/.codex/skills/` copies materially equivalent unless there is an agent-specific reason to diverge. Treat `tyler/` as the frozen ancestor documented by this repository; make Orchestra changes in its canonical repository instead.
 
 ### PR Asset Publishing
 
-Default: PR images are **hosted, not committed**. Upload the rendered PNG to
-a durable host and reference it inline in the PR body. Scriptable default: a
-rolling GitHub release in the target repo — `gh release create pr-assets --notes "PR image assets"`
-once, then `gh release upload pr-assets <image>.png` per image; the asset's
-download URL renders inline and outlives branches. (GitHub user-attachment
-URLs — drag an image into a comment box — are equally durable but have no
-API; use them when a human or a browser-driving agent is doing the upload.
-A project upload endpoint or temporary host also works.) The repo stays
-free of multi-MB render blobs, and every re-render is just a new URL. If
-only a temporary host is available, note its expiry next to the image.
+Default: PR images are **hosted, not committed**. Prefer a repository-owned
+durable asset surface. For GitHub PRs, discover and reuse a published, mutable,
+long-lived release such as `pr-assets`; inspect it with `gh release list` and
+`gh release view <tag> --json tagName,isDraft,isPrerelease,isImmutable,url,assets`.
+Do not create a new release per PR, and do not use an arbitrary temporary host
+when a suitable repository release exists.
+
+If no suitable release exists, create or point to one dedicated long-lived
+`pr-assets` release only when the user's GitHub write/comment authorization
+covers that release mutation. Target the default branch, use `--latest=false`,
+and explain in its notes that it stores long-lived PR/QA images. If creation or
+upload is not authorized, keep the render local and prepare the exact release
+creation/upload commands, manifest, and marked PR Markdown; report durable
+publication as blocked instead of falling back to a temporary host.
+
+Before upload, calculate the PNG SHA-256 and use a portable name such as
+`pr-<number>-<head-short-sha>-<content-sha12>-visual-overview.png`; use a branch
+slug before a PR number exists. Make publishing idempotent by inspecting
+existing assets first. Reuse an exact
+name only when its GitHub digest, or a downloaded hash when the digest is
+absent, matches. On different content, extend the digest or add a deterministic
+suffix and upload a new name. Never use `--clobber`: replacing an asset can
+silently change images embedded in older PRs.
+
+After `gh release upload`, read back the release and asset metadata. Verify the
+tag, non-draft release, uploaded state, filename, size, digest when present, and
+browser download URL. Perform a direct GET of the bytes (authenticated for a
+private repository), compare SHA-256 and size with the local render, and verify
+the decoded file type or image magic so an HTML error page cannot pass.
+
+Maintain a local `pr-assets-manifest.json` with repository, release tag and URL,
+PR number, head commit, source/render paths, asset name, SHA-256, size, asset API
+and browser URLs, upload-or-reuse status, timestamp, and content-verification
+result. Never put credentials or sensitive source material in the manifest.
 
 Commit the image only when it is embedded in tracked docs (a README, design
 doc) that needs a stable in-repo path — then `.github/pr-assets/` or
@@ -44,7 +68,8 @@ Keep `.excalidraw` sources outside the repo unless the user asks to track them.
 Either way:
 
 - After updating, open or fetch the image URL. A PR visual with a 404 image is a failed handoff.
-- Read back or preview the PR body after updating it. Markdown that collapses bullets, headings, or the image into one paragraph is a failed handoff.
+- Embed the verified image inline inside a `## Visual Overview` PR body/comment section bounded by `<!-- pr-visual-overview:start -->` and `<!-- pr-visual-overview:end -->`. Replace dead, expiring, temporary, or local-only references on rerun. Update only the marked section and preserve author text; for a broken image outside a marker, replace only the URL after verifying the intended asset.
+- Read back or preview the PR body/comment after updating it. Markdown that collapses bullets, headings, or the image into one paragraph is a failed handoff.
 
 ### PR Diagram Standard
 
@@ -621,7 +646,7 @@ After generating the initial JSON, run this cycle:
 - Overall composition feels lopsided or unbalanced
 - Any part of the title, subtitle, truth statement, or major region clipped by the screenshot bounds
 - A horizontally sprawling image whose important content is hard to scan in a GitHub PR
-- PR-specific defects: the committed image URL 404s, the PR body image does not render, or Markdown formatting collapses into a single paragraph.
+- PR-specific defects: the published image URL 404s, the PR body image does not render, or Markdown formatting collapses into a single paragraph.
 
 **4. Fix** — Edit the JSON to address everything you found. Common fixes:
 - Widen containers when text is clipped

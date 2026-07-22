@@ -89,6 +89,16 @@ For each build:
 
 **Commit build fixes** as a separate commit: `fix: resolve build errors`
 
+## Step 3.5: Make PR Images Durable
+
+Before opening or updating the PR:
+
+1. Use `excalidraw-pr-diagrams` for a required visual overview and keep working sources/renders under `/tmp`.
+2. Prefer an existing repository-owned, published, mutable, long-lived release such as `pr-assets`. Follow the diagram skill's PR/commit/hash-specific naming, idempotent collision handling, manifest, and release-metadata plus direct-content verification rules.
+3. Do not create a release per PR or use an arbitrary temporary host when a suitable repository release exists. Create the one dedicated release only when the user's GitHub write/comment authorization covers that mutation; otherwise prepare the exact release/upload commands, manifest, and marked Markdown and report durable publication as blocked.
+4. Inspect existing PR body/comment images. Replace dead, expiring, temporary, or local-only references with verified durable assets. Update agent-owned marked sections in place, preserve author text outside them, and change only a broken URL when it sits in author-owned prose.
+5. Embed verified diagrams and safe QA screenshots inline. Bound visual overviews with `<!-- pr-visual-overview:start -->` / `<!-- pr-visual-overview:end -->` and use the PR test skill's paired QA markers; do not leave reviewers a plain list of URLs. Never upload sensitive screenshots.
+
 ## Step 4: Create or Update Pull Request
 
 1. Check for existing PR: `gh pr view --json number,title,body,url,state 2>/dev/null`
@@ -113,7 +123,7 @@ EOF
 
 ### PR Description Template
 
-Build the PR description from the done-plans. List work in **chronological order** based on plan dates (the `YYYY-MM-DD` prefix in filenames). When updating an existing PR, **append** new work to the existing description — never overwrite previous entries.
+Build the PR description from the done-plans. List work in **chronological order** based on plan dates (the `YYYY-MM-DD` prefix in filenames). When updating an existing PR, **append** new author-owned work and replace agent-owned marked sections in place—never overwrite previous author text. Read the body back after editing and verify inline images render from their durable URLs.
 
 ```markdown
 ## Summary
