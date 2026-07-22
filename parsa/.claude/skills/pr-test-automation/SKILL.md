@@ -161,7 +161,7 @@ When testing an open PR, preserve the result where reviewers will look first:
   ```
 
   Do not create a release per PR. Do not use an arbitrary temporary host when a suitable repository release exists.
-- If no suitable release exists, create or point to one dedicated long-lived `pr-assets` release only when the user's GitHub write/comment authorization covers that release mutation. Use the default branch as its target and keep it out of Latest-release semantics:
+- If no suitable release exists, creating one dedicated long-lived `pr-assets` release is a separate hard stop requiring an exact grant such as `{"action":"create_release","repo":"owner/name","tag":"pr-assets"}`. Generic GitHub, PR, comment, or asset-upload authorization does not grant creation. Use the default branch as its target and keep it out of Latest-release semantics:
 
   ```bash
   gh release create pr-assets -R "$repo" --title "PR assets" \
