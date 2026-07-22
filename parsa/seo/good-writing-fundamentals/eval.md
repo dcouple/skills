@@ -1,4 +1,4 @@
-# No AI slop eval
+# Good writing fundamentals eval
 
 Use this after the rewrite. Answer each check with pass or fail. If any check
 fails, fix the draft before returning it.

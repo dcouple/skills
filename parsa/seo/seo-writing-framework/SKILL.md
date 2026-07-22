@@ -56,7 +56,7 @@ Pick the register before drafting, because it decides which ones are allowed.
 
 **Persuasive**: landing pages, launch emails, marketing copy, headlines,
 comparison pages. The reader hasn't decided to care yet. Curiosity gaps and a
-deliberate ending are allowed, within the limits in `no-ai-slop`.
+deliberate ending are allowed, within the limits in `good-writing-fundamentals`.
 
 **Explanatory**: docs, support replies, changelogs, pricing and policy emails,
 technical posts, announcements of changes. The reader already has a question.
@@ -136,7 +136,7 @@ Edit these out. Replace with how the founder or brand actually sounds.
 **Read it out loud.** Not in your head. Out loud. 90% of awkward phrasing
 is caught by hearing it. If a sentence sounds weird when spoken, rewrite it.
 
-The full pattern list lives in `no-ai-slop` (words to cut, patterns to cut).
+The full pattern list lives in `good-writing-fundamentals` (words to cut, patterns to cut).
 That skill is the canonical inventory. The table further down this file is the
 short version for drafting; don't maintain a second copy of the long one.
 
@@ -144,7 +144,7 @@ short version for drafting; don't maintain a second copy of the long one.
 
 ### 5. Run the slop gate
 
-Run `no-ai-slop` on the draft in detect mode with the register you picked.
+Run `good-writing-fundamentals` on the draft in detect mode with the register you picked.
 It returns named patterns with quoted lines, not a score.
 
 Fix everything it names, then re-run until it comes back clean. This is a
@@ -157,7 +157,7 @@ Two things the gate is not allowed to do:
 - Rewrite a weak ending into a better metaphor. Weak endings get deleted, and
   the piece ends on the clearest concrete sentence already in it.
 
-**Success criteria**: `no-ai-slop` detect returns no findings.
+**Success criteria**: `good-writing-fundamentals` detect returns no findings.
 
 ### 6. Score and revise loop
 
@@ -285,7 +285,7 @@ transformation visible in one sentence.
 5. **Looking good is not being good.** Polish doesn't fix wrong messaging.
 6. **Em dashes are rationed.** None in short copy. One or two in a long draft, and only when they clearly beat a comma, colon, period, or parentheses. Never as a rhythm crutch.
 7. **No generic enthusiasm.** "Exciting" and "thrilled" say nothing.
-8. **Banned words.** The full list is in `no-ai-slop`. If it sounds like a textbook, rewrite it.
+8. **Banned words.** The full list is in `good-writing-fundamentals`. If it sounds like a textbook, rewrite it.
 9. **Vary sentence length.** Short is good. Monotonous is bad. Same-length paragraphs scream AI. Three or more fragments in a row is its own kind of slop.
 10. **Name the pain.** Describe the problem the thing solves, not the thing itself.
 11. **Cut what doesn't earn its place.** Usually about 30% of a first draft. That's a typical yield, not a quota, and never a reason to cut character.
@@ -293,7 +293,7 @@ transformation visible in one sentence.
 13. **Write 5 headlines, pick 1.** One will outpull the others by 2-10x. Never go with the first one.
 14. **Go three levels deep.** Feature > outcome > emotional/financial impact. Write from the bottom.
 15. **Pick the register first.** Persuasive and explanatory copy get different craft rules.
-16. **Pass the slop gate before scoring.** `no-ai-slop` detect has to come back clean.
+16. **Pass the slop gate before scoring.** `good-writing-fundamentals` detect has to come back clean.
 
 ## Common LLM failures to watch for
 
@@ -319,7 +319,7 @@ transformation visible in one sentence.
 | Synonym cycling | agent, then assistant, then tool | Repeat the right word. |
 | Fake-profound kicker | A metaphor as the last line | Delete it. End on the clearest concrete sentence. |
 
-`no-ai-slop` holds the full inventory with before/after rewrites. This table is
+`good-writing-fundamentals` holds the full inventory with before/after rewrites. This table is
 the drafting-time short list.
 
 ## Scoring rubric
@@ -341,7 +341,7 @@ These are non-negotiable for any deliverable.
 | 1 | **Research-derived** | 2x | Draft built from 3-5 real examples, not from nothing | LLM drafted from zero context |
 | 2 | **Sounds human** | 2x | Reads like someone talking inside your head | Reads like a committee or AI wrote it |
 | 3 | **Reader perspective** | 2x | Reader walks away knowing exactly what to do | Reader finishes confused |
-| 4 | **No LLM-isms** | 2x | `no-ai-slop` detect returns zero findings | Filler, hedging, generic enthusiasm, or any named slop pattern |
+| 4 | **No LLM-isms** | 2x | `good-writing-fundamentals` detect returns zero findings | Filler, hedging, generic enthusiasm, or any named slop pattern |
 | 5 | **Clarity** | 2x | A first-timer understands every sentence | Jargon without context |
 | 6 | **Every word essential** | 2x | Nothing left to remove without losing meaning or voice | Filler, hedging, redundant points |
 

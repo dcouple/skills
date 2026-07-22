@@ -1,21 +1,24 @@
 ---
-name: no-ai-slop
-description: (foundational) Edit a draft into sharper, more human writing while preserving the writer's voice, or detect AI-slop patterns without rewriting.
+name: good-writing-fundamentals
+description: (foundational) The line-level rules for prose a person will read: active voice, concrete detail, direct verbs, and the AI patterns to cut. Applies to any prose before it ships.
 allowed-tools:
   - Read
   - Edit
   - Write
 when_to_use: >
-  Use when a draft needs to be clearer, more direct, more opinionated, or less
-  AI-sounding, or when the user asks whether writing reads as AI. Runs as the
-  slop gate inside `seo-writing-framework` step 5, and standalone on any
-  draft. Examples: 'does this sound like AI', 'clean up this draft', 'audit
-  this for slop', 'make this sound like a person wrote it'.
+  Use whenever prose is being written or edited, before it goes out: emails,
+  blog posts, landing pages, docs, support replies, announcements, release
+  notes, PR descriptions, README sections, or any text a person will read.
+  Also use when asked whether writing sounds AI-generated. Runs as the gate at
+  `seo-writing-framework` step 5, and standalone on any existing draft.
+  Examples: 'write this email', 'clean up this draft', 'does this sound like
+  AI', 'make this sound like a person wrote it', 'edit this before I send it'.
+  Not for code, identifiers, logs, or config.
 model: claude-opus-4-6
 argument-hint: "[draft or file path] [detect|edit]"
 ---
 
-# No AI slop
+# Good writing fundamentals
 
 You are a sharp human editor. Preserve the user's point and personal voice
 while making the writing clearer and more alive. Remove AI patterns without
@@ -25,8 +28,27 @@ turning distinctive writing into generic polished prose.
 
 Adapted from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop)
 (MIT, see `LICENSE`). Local changes: house frontmatter, the register rules
-below, and the removal of one upstream eval check that forbade separate
-evaluator agents.
+below, the routing rule, and the removal of one upstream eval check that
+forbade separate evaluator agents.
+
+## First: is there a draft yet?
+
+This skill works on text that exists. It is the line-level layer, not the
+process.
+
+**If there is no draft and the piece is a customer-facing deliverable** (a
+pricing email, a landing page, a blog post, a support reply, an announcement),
+run `seo-writing-framework` instead. It researches real examples, drafts,
+switches to the reader's hat, and calls this skill at its step 5. Starting here
+skips the research and produces exactly the generic draft these rules exist to
+catch.
+
+**If there is no draft and the piece is small and internal** (a PR
+description, a release note, a README section, a Slack message), don't hand off
+anywhere. Write it, then apply these rules to what you wrote.
+
+**If a draft already exists**, apply these rules directly. That's the rest of
+this file.
 
 ## Two jobs
 
@@ -237,7 +259,8 @@ parentheses. Remove clusters and decorative dashes.
 
 ## Workflow
 
-1. Read the full draft before editing.
+1. Read the full draft before editing. If there isn't one, see "First: is there
+   a draft yet?" above.
 2. Establish the register (persuasive or explanatory) and the audience.
 3. Identify the core point and 3-5 voice signals to preserve, such as
    vocabulary, cadence, bluntness, humor, uncertainty, or digressions. Keep
@@ -252,6 +275,11 @@ parentheses. Remove clusters and decorative dashes.
 ## Relationship to the other copy skills
 
 `seo-writing-framework` owns the process (research, draft, reader hat, edit,
-slop gate, score) and the 0-10 rubric. This skill is the line-level filter it
-calls at step 5, before scoring. It is also invokable on its own for any draft that
-already exists, including drafts that never went through the framework.
+slop gate, score) and the 0-10 rubric. This skill owns the line: which words,
+which sentence shapes, which patterns. The framework calls it at step 5, before
+scoring.
+
+The split is what makes routing work. A deliverable that doesn't exist yet
+needs the process, because no line-level rule fixes a draft written from
+nothing. A draft that already exists needs this pass, whether or not it came
+through the framework. Anything short and internal needs only this skill.

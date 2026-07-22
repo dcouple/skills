@@ -80,7 +80,7 @@ weird when you say it, rewrite it.
 
 ### 5. Run the slop gate
 
-Run `no-ai-slop` in detect mode. It names each AI pattern it finds with the
+Run `good-writing-fundamentals` in detect mode. It names each AI pattern it finds with the
 quoted line, so you can check the call yourself instead of trusting a verdict.
 Fix what it names, re-run, repeat until it comes back clean.
 
@@ -116,7 +116,7 @@ Research (step 1)    →  seo-data-pull, WebSearch, competitor analysis
 Draft (step 2)       →  LLM writes with voice guide + examples as context
 Reader hat (step 3)  →  the humanity pass from seo-readability-pass
 Edit (step 4)        →  human edits, or LLM rewrites with specific corrections
-Slop gate (step 5)   →  no-ai-slop detect, fix, re-run until clean
+Slop gate (step 5)   →  good-writing-fundamentals detect, fix, re-run until clean
 Final check (step 6) →  read out loud, ship or iterate
 ```
 
@@ -139,4 +139,4 @@ Final check (step 6) →  read out loud, ship or iterate
 - Em dashes used as a crutch for weak sentence structure
 - Confident patterns your ear skips because they're grammatical: binary
   contrasts ("it's not X, it's Y"), colon reveals, "highlighting the team's
-  commitment," "experts agree." The full inventory is in `no-ai-slop`.
+  commitment," "experts agree." The full inventory is in `good-writing-fundamentals`.

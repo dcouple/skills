@@ -1,7 +1,8 @@
 This skill is adapted from https://github.com/petergyang/no-ai-slop and is
 redistributed here under its original MIT license, reproduced below. The
-adaptation adds house frontmatter, register rules, and eval checks, and drops
-one upstream eval check.
+adaptation renames the skill to good-writing-fundamentals, adds house
+frontmatter, register rules, a routing rule, and eval checks, and drops one
+upstream eval check.
 
 MIT License
 
