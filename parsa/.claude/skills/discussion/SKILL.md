@@ -30,6 +30,8 @@ Only research what's needed. Let the conversation guide what needs investigating
 
 ## Step 2: Discuss with the User
 
+- Before responding to the user, reference `rewrite-simply` and apply it to the
+  discussion response.
 - Present findings and initial thoughts
 - Ask targeted questions about preferences, constraints, and goals
 - Explore different approaches and their tradeoffs
