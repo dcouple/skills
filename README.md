@@ -245,6 +245,51 @@ edited, or ask whether it reads as AI to get each pattern quoted back with a
 fix. If the piece doesn't exist yet and it's customer-facing, it points you at
 the framework first.
 
+### rewrite-simply
+
+`parsa/.claude/skills/rewrite-simply/` is the layer above that one. It is a
+standing policy, not a tool you call: once loaded it governs every human-facing
+thing written for the rest of the session, including chat answers, emails, PR
+descriptions, commit messages, and issue bodies.
+
+`good-writing-fundamentals` fixes the line. `rewrite-simply` fixes the shape:
+what comes first, what gets cut, what earns space. Run it first, since
+restructuring after a line polish wastes the polish.
+
+```text
+rewrite-simply -> good-writing-fundamentals
+```
+
+It is assembled from three sources, carried verbatim rather than summarised so
+no agent has to fetch anything at runtime.
+
+| Section in the skill | Source | Notes |
+| --- | --- | --- |
+| Rules, Tone, Code comments and docs, Format for scanning | Attention-kind output style, from [alexgreensh/attention-span](https://github.com/alexgreensh/attention-span) | Verbatim. AGPL-3.0, `LICENSE` vendored into the skill directory |
+| Reading the ask, Discipline, Anti-patterns, Formatting in conversation, Writing a deliverable | doozy `shared/communication-style` and `shared/deliverable-writing` prompts | Verbatim, minus product-specific rules. Its `<current_context>` datetime reference is rendered as "as of now" so the rule stands alone |
+| Clutter and the line, Refuse to cut | Zinsser, *On Writing Well* | Our phrasing of his principles: clutter, short words, one term per concept, humanity |
+| Where this sits, The register rule, Procedure, Modes | Ours | The part neither source supplies |
+
+**The register rule is the reason all three fit together.** They genuinely
+disagree about formatting, because each assumes a different reader.
+Attention-kind assumes a terminal and wants arrow markers with bold carrying
+the whole answer. doozy assumes a chat and bans headers and bullet walls
+outright. Zinsser assumes prose. All three are right for their own reader, so
+the skill picks by register: terminal, conversational chat, written document,
+or a customer under stress. That last one takes the plainest formatting,
+because heavy markup in an email about someone's money or their patients reads
+as a form letter.
+
+Two rules fall out of it. Bold everything and you teach the reader that
+unbolded text is skippable, which makes it filler by definition. And never bold
+a bad outcome for the reader, because it reads as leverage.
+
+The skill directory is AGPL-3.0 by way of attention-span. It is an independent
+work aggregated alongside the rest of this repo, which is unaffected. doozy is
+private and this repo is public, so its text is here on purpose, with its
+product-specific rules left out: the lowercase house voice, artifact and
+approval-form handling, and integration naming.
+
 ## What is in this repo
 
 Each contributor has their own folder. Start with `parsa/`.
