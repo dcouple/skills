@@ -80,9 +80,17 @@ trigger below fires. Record the chosen lane, and the triggers checked, on the
 ledger.
 
 **Light lane (default).** `investigate` → `discussion` → `simple-plan` →
-`implement` → `prepare-pr` → `pr-test-automation`, run continuously in one
-implementation panel. Standing "finish this" or "do not stop and ask"
-authorization stands in as plan approval at state 3.
+`implement` → `prepare-pr` → `pr-test-automation`, run continuously. Only
+the implementation-authority stages share one panel. `implementation_review` and
+`pr-test-automation` still dispatch to fresh panels per
+`## Ownership And Context`; the light lane does not relax context isolation.
+
+The light lane does not lower the approval bar. State 3 applies unchanged: a
+clean plan advances without a fresh prompt only where implementation through PR
+readiness was already authorized. A standing "finish this" or "do not stop and
+ask" adds persistence, never scope, and never substitutes for that grant. Both
+`simple-plan` variants require approval before implementing, and nothing here
+overrides that.
 
 In lifecycle terms the light lane runs states 1, 2, 3, 4, 5, 6, 8, and 10. It
 differs from the full lifecycle in exactly four ways, and no others:
@@ -124,10 +132,16 @@ do not weigh it against how simple the change feels.
 
 Escalation is one-way. An agent already running light that hits any trigger
 mid-run escalates immediately; it does not finish light and note the trigger
-afterwards. Re-enter the full lifecycle at the earliest state the trigger
-invalidates: a contradicted premise returns to `investigating`, a still-open
-design decision to `planning`, and anything found at or after `implementing`
-completes the full state 5, 7, and 9 gates on the current head. Record the
+afterwards.
+
+Re-enter at the earliest state the trigger invalidates, not at the state you
+happen to have reached. A contradicted premise returns to `investigating`. Every
+other trigger returns to `planning`, including one discovered during or after
+`implementing`: the existing plan came from `simple-plan` under an assumption
+the trigger just falsified, and a high-risk change is precisely what the full
+lane's planning pass exists for. Adding gates to a light plan is not escalation.
+Work already implemented is not discarded; it is re-planned against, then
+carried through the full state 5, 7, and 9 gates on the current head. Record the
 trigger, the timestamp, and the state re-entered. Never de-escalate a workstream
 back to the light lane.
 
@@ -148,10 +162,11 @@ above.
 
 1. `queued`: resolve exact repo/issue/scope and authorization.
 2. `investigating`: use `investigate` when behavior/root cause is unknown.
-   When complete, automatically route the evidence through `discussion` to
-   `simple-plan` by default, or to `plan` when any escalation trigger fires. Run
-   `discussion` before either plan so the open design decision is settled and
-   recorded rather than deferred.
+   When complete, route the evidence to `discussion` and then `simple-plan` by
+   default, so the open design decision is settled and recorded rather than
+   deferred. When any escalation trigger fires, route to `plan` instead and skip
+   `discussion`: the full lane settles design inside planning and at its human
+   approval gate, so running both would duplicate that work.
 3. `planning`: require a factually clean approved plan/brief. If implementation
    through PR readiness is already authorized, the clean plan advances without
    another approval prompt.
