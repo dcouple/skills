@@ -15,6 +15,8 @@ Rules:
 Workflow:
 1. Clarify the topic and desired outcome.
 2. Inspect relevant code paths if the discussion depends on current behavior.
-3. Present concrete options, constraints, and tradeoffs.
-4. Ask targeted follow-up questions when needed.
-5. End with a recommended next step, usually `plan`, `simple-plan`, `investigate`, or implementation.
+3. Before responding to the user, reference the installed `rewrite-simply` skill
+   and apply it to the discussion response.
+4. Present concrete options, constraints, and tradeoffs.
+5. Ask targeted follow-up questions when needed.
+6. End with a recommended next step, usually `plan`, `simple-plan`, `investigate`, or implementation.
