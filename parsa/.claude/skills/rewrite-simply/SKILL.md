@@ -183,6 +183,7 @@ look like leverage.
 7. **Read it aloud as its reader**, who never saw this conversation.
 8. **Check the human survived.** Would you send this to someone you respect?
 9. **Report the cut:** before and after word count, and what you removed.
+10. **Verify against this file, not your memory of it.** Reopen it and walk the finished text against each rule and anti-pattern by name. The ones you break are the ones you think you know, because from memory you check the spirit and miss the letter. Do a literal scan for the mechanical bans first, since they are the cheapest to catch and the easiest to miss: em-dashes, "it's not X, it's Y", filler openers, contrast scaffolding, bold on a full sentence, bold on a bad outcome, a thesis closing, the same term swapped for a synonym. Fix what you find before shipping. Say which rule you broke rather than silently correcting it, so the miss is visible.
 
 Then hand off to `good-writing-fundamentals` for the line pass.
 
