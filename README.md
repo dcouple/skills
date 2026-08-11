@@ -247,10 +247,12 @@ the framework first.
 
 ### rewrite-simply
 
-`parsa/.claude/skills/rewrite-simply/` is the layer above that one. It is a
-standing policy, not a tool you call: once loaded it governs every human-facing
-thing written for the rest of the session, including chat answers, emails, PR
-descriptions, commit messages, and issue bodies.
+`parsa/.claude/skills/rewrite-simply/` and `parsa/.codex/skills/rewrite-simply/`
+are the layer above that one. It is a standing policy, not a tool you call: once
+loaded it governs every human-facing thing written for the rest of the session,
+including chat answers, emails, PR descriptions, commit messages, and issue
+bodies. It ships to both agents because both write for people, and the two
+copies are byte-identical.
 
 `good-writing-fundamentals` fixes the line. `rewrite-simply` fixes the shape:
 what comes first, what gets cut, what earns space. Run it first, since
