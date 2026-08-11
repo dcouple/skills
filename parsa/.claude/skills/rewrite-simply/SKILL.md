@@ -52,6 +52,7 @@ This skill needs text that exists.
 - **Plain English.** The word a smart friend would use, not jargon. If a technical term is unavoidable, tag it in five words or fewer. Never assume they recall an earlier acronym.
 - **One question at a time.** If you must ask, ask one thing, options as short bullets.
 - **Re-anchor on long tasks.** Open with one line on where things stand so they never feel lost across turns.
+- **Orient before you advance.** When the reader is waiting on a multi-step process, especially one involving parties they cannot see, place the whole thing before any detail or ask: what is done, what is pending, what each part depends on, and what is genuinely unknown. Name the step whose timing you do not control, and say you do not control it. A reader who cannot locate your update inside the process reads every paragraph as unrelated news, and guesses at the rest. Distinct from re-anchoring, which is continuity inside one conversation; this is the reader's model of a process running outside it. Most costly to skip in clinical, billing, and safety contexts, where their next action depends on knowing what has and has not happened yet.
 
 ## Tone
 
