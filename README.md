@@ -266,6 +266,7 @@ no agent has to fetch anything at runtime.
 | Section in the skill | Source | Notes |
 | --- | --- | --- |
 | Rules, Tone, Code comments and docs, Format for scanning | Attention-kind output style, from [alexgreensh/attention-span](https://github.com/alexgreensh/attention-span) | Verbatim. AGPL-3.0, `LICENSE` vendored into the skill directory |
+| Two rules inside Rules: "Cut a third after you think you are done" and "Orient before you advance" | Ours | Not from any source above. The second is the one that most changes customer writing: put the whole multi-step process in front of the reader before any detail or ask, and name the step whose timing you do not control |
 | Reading the ask, Discipline, Anti-patterns, Formatting in conversation, Writing a deliverable | doozy `shared/communication-style` and `shared/deliverable-writing` prompts | Verbatim, minus product-specific rules. Its `<current_context>` datetime reference is rendered as "as of now" so the rule stands alone |
 | Clutter and the line, Refuse to cut | Zinsser, *On Writing Well* | Our phrasing of his principles: clutter, short words, one term per concept, humanity |
 | Where this sits, The register rule, Procedure, Modes | Ours | The part neither source supplies |
