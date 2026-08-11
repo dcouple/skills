@@ -132,6 +132,15 @@ in both registers.
   integration improved efficiency" becomes "The integration cut deploy time
   from 40 minutes to 4." Names, numbers, dates, mechanisms, and examples beat
   abstractions.
+- **Use the portability test.** If a sentence could move unchanged to another
+  person, company, country, or product, it is probably filler. Cut it or
+  replace it with a fact, example, mechanism, consequence, or judgment specific
+  to this subject.
+- **Always show, don't tell the reader what to think.** Make facts, actions,
+  examples, and consequences carry the emphasis. Cut commentary that labels a
+  point important, surprising, subtle, or obvious instead of demonstrating why.
+  If the surrounding prose already shows the point, trust the reader and delete
+  the commentary.
 - **Protect the specific fact.** Don't smooth a useful detail into generic
   importance. "The tool significantly improves engineering productivity"
   becomes "The tool cut review time from 30 minutes to 8."
@@ -203,6 +212,13 @@ without leaving the editor."
 significance." State the fact and let the reader judge whether it matters. "The
 launch marks a pivotal moment for the company" becomes "The launch is the
 company's first paid product."
+
+**Interpretive metadiscourse.** Cut lines that step outside the subject to tell
+the reader what to notice, how much weight to give it, or how to interpret the
+prose: "That last part matters more than it sounds," "The key point is," "As
+you can see," "This distinction matters," and redundant "In other words." If
+the point is clear, delete the aside. Otherwise, replace it with support or
+facts already in the content.
 
 **Weasel attribution.** "Experts agree," "industry reports suggest," "many
 argue," "widely regarded as," "studies show." Name the source or cut the claim.

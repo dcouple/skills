@@ -22,10 +22,14 @@ quoted line and a short fix, without rewriting the draft.
    unit into the same structure?
 7. Do sentences earn their place, with concrete facts, protected details, and
    direct verbs where the draft supports them?
-8. Does the draft use active voice with human subjects where possible?
-9. Does the edit keep useful edge and preserve structure unless the structure
-   was hurting the piece?
-10. Are genuinely tangled sentences fixed while clear spoken cadence,
+8. Does every generic sentence pass the portability test, or was it cut or made
+   specific to this subject?
+9. Do facts, actions, examples, and consequences carry the emphasis, rather
+   than commentary telling the reader a point is important or surprising?
+10. Does the draft use active voice with human subjects where possible?
+11. Does the edit keep useful edge and preserve structure unless the structure
+    was hurting the piece?
+12. Are genuinely tangled sentences fixed while clear spoken cadence,
     fragments, and changes in pace remain intact?
 
 ## Words to cut
@@ -41,17 +45,19 @@ quoted line and a short fix, without rewriting the draft.
    verbs, synonym cycling, dramatic fragments, and robotic rhythm fixed?
 3. Are importance puffery and weasel attribution replaced with plain facts and
    named sources, or flagged for the user when no source exists?
-4. Are fake-profound kicker lines deleted instead of rewritten into better
+4. Is interpretive metadiscourse removed, including authorial metacommentary,
+   reader guidance, emphasis markers, and redundant glossing?
+5. Are fake-profound kicker lines deleted instead of rewritten into better
    metaphors?
-5. Are summary-recap endings cut so the piece ends on a concrete point,
+6. Are summary-recap endings cut so the piece ends on a concrete point,
    takeaway, or next action?
-6. Is formatting slop removed: emoji headings, decorative bold, bullets that
+7. Is formatting slop removed: emoji headings, decorative bold, bullets that
    should be prose, headers over tiny sections?
-7. Are colons sentence case unless grammar, a proper noun, a title, or code
+8. Are colons sentence case unless grammar, a proper noun, a title, or code
    requires otherwise?
-8. Are em dashes used sparingly: usually none in short copy, and only 1-2 in
+9. Are em dashes used sparingly: usually none in short copy, and only 1-2 in
    longer drafts when they clearly help?
-9. Does sentence length vary without stacking three or more fragments in a row?
+10. Does sentence length vary without stacking three or more fragments in a row?
 
 ## Register
 
