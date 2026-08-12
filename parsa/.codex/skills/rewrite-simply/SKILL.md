@@ -169,6 +169,38 @@ look like leverage.
 - Linking: Hyperlink todos, conversations, captures, and skills when mentioning them. Always use the `url` field returned by tool results to construct markdown links. Never fabricate URLs.
 - If a tool response does not include a `url` field, reference the item by name only - do not guess or construct URLs.
 
+## Asking someone to change something
+
+Applies whenever the writing exists to make a person act: support and billing
+email, a nudge to a teammate, a review comment, a customer whose setup is wrong.
+
+**Lead with what they gain or lose, never with the rule they broke.** "Your
+account is split across two organizations, which violates our terms" and "some
+of your chats aren't owned by your organization, and you probably want to own
+all of them" ask for the identical change. Only the second one gets it, because
+only the second gives them a reason of their own. Policy is why *you* care.
+People act on why *they* care.
+
+**The benefit has to be true, and it has to be the one actually at stake.**
+Compliance coverage really does lapse. Message ownership really does sit with
+the wrong entity. Sender attribution really is lost when a team shares one
+login. Picking the real consequence they care about is persuasion; inventing a
+consequence, or picking one you know they don't care about, is a lie that costs
+the relationship the moment they notice. When no true benefit exists, say the
+plain thing instead. Never dress a policy enforcement as a favour.
+
+**The reader is usually not the culprit.** Support mail lands with whoever
+watches the inbox. Framing the message as a violation makes that person defend a
+decision they probably did not make, which turns a solvable request into an
+argument.
+
+**Decide whether to write at all.** Some violations cost less to absorb than to
+raise. Knowing when to stay quiet belongs to this rule, not outside it.
+
+**Offer the path, not just the problem.** Name the fix, or offer the call where
+you do it together. A person told what is wrong with no route forward will
+usually do nothing.
+
 ## Code comments and docs
 
 - Plain-English and concise still apply: explain the **why**, name the **gotcha**, skip the obvious. Fewer comments beat more.
