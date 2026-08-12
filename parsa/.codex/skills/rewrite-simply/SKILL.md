@@ -183,7 +183,15 @@ look like leverage.
 7. **Read it aloud as its reader**, who never saw this conversation.
 8. **Check the human survived.** Would you send this to someone you respect?
 9. **Report the cut:** before and after word count, and what you removed.
-10. **Verify against this file, not your memory of it.** Reopen it and walk the finished text against each rule and anti-pattern by name. The ones you break are the ones you think you know, because from memory you check the spirit and miss the letter. Do a literal scan for the mechanical bans first, since they are the cheapest to catch and the easiest to miss: em-dashes, "it's not X, it's Y", filler openers, contrast scaffolding, bold on a full sentence, bold on a bad outcome, a thesis closing, the same term swapped for a synonym. Fix what you find before shipping. Say which rule you broke rather than silently correcting it, so the miss is visible.
+10. **Verify against this file, not your memory of it. This step is mandatory.** Reopen this file and walk the finished text against each rule and anti-pattern by name. Running the pass is the requirement; having read the rules earlier does not satisfy it. The rules you break are the ones you are surest you know, because from memory you check the spirit and miss the letter.
+
+    Scan literally for the mechanical bans, which are the cheapest to catch and the easiest to miss: em-dashes, "it's not X, it's Y", filler openers, contrast scaffolding, bold on a full sentence, bold on a bad outcome, a thesis closing, the same term swapped for a synonym.
+
+    Then scan for the restated negative: a sentence whose only job is to name what something is *not*, or to re-argue a point already settled. Answering feedback, a code review, or a correction makes this one especially likely, because restating the negative feels like proof you understood.
+
+    Fix what you find, and name the rule you broke rather than silently correcting it, so the miss is visible.
+
+**Nothing ships until step 10 has actually run.** A draft that skipped it is unfinished however good it looks. About to send, publish, commit, or push? Reopen this file first. This is the most common way the skill fails, and it fails silently, because the text always reads fine to the writer.
 
 Then hand off to `good-writing-fundamentals` for the line pass.
 

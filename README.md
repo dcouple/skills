@@ -271,7 +271,7 @@ no agent has to fetch anything at runtime.
 | Two rules inside Rules: "Cut a third after you think you are done" and "Orient before you advance" | Ours | Not from any source above. The second is the one that most changes customer writing: put the whole multi-step process in front of the reader before any detail or ask, and name the step whose timing you do not control |
 | Reading the ask, Discipline, Anti-patterns, Formatting in conversation, Writing a deliverable | doozy `shared/communication-style` and `shared/deliverable-writing` prompts | Verbatim, minus product-specific rules. Its `<current_context>` datetime reference is rendered as "as of now" so the rule stands alone |
 | Clutter and the line, Refuse to cut | Zinsser, *On Writing Well* | Our phrasing of his principles: clutter, short words, one term per concept, humanity |
-| Where this sits, The register rule, Procedure, Modes | Ours | The part neither source supplies |
+| Where this sits, The register rule, Procedure, Modes | Ours | The part neither source supplies. Step 10 is a hard gate rather than a closing suggestion: nothing ships until the verify pass has actually run against the file, because the rules a writer breaks are the ones they are surest they know |
 
 **The register rule is the reason all three fit together.** They genuinely
 disagree about formatting, because each assumes a different reader.
