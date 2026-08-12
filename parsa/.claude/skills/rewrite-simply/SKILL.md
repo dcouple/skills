@@ -33,8 +33,10 @@ Structure, not lines. This decides what comes first, what gets cut, what earns
 space.
 
 `good-writing-fundamentals` is the line-level layer: active voice, concrete
-detail, direct verbs, AI patterns. **Run this one first, then that one.**
-Restructuring after a line polish wastes the polish.
+detail, direct verbs, AI patterns. **Restructure with this one first, then run
+that one, then verify against this file last.** Restructuring after a line
+polish wastes the polish, and shipping straight out of a line polish means the
+text that ships was never checked against these rules.
 
 No draft yet and it is customer-facing? Run `seo-writing-framework` instead.
 This skill needs text that exists.
@@ -183,7 +185,10 @@ look like leverage.
 7. **Read it aloud as its reader**, who never saw this conversation.
 8. **Check the human survived.** Would you send this to someone you respect?
 9. **Report the cut:** before and after word count, and what you removed.
-10. **YOU MUST verify against this file, not your memory of it.** Reopen this file and walk the finished text against each rule and anti-pattern by name. Running the pass is the requirement; having read the rules earlier does not satisfy it. The rules you break are the ones you are surest you know, because from memory you check the spirit and miss the letter.
+10. **Hand off to `good-writing-fundamentals`** for the line pass, whenever that skill is being run.
+11. **YOU MUST verify against this file, not your memory of it, and YOU MUST do it last.** Reopen this file and walk the finished text against each rule and anti-pattern by name. Running the pass is the requirement; having read the rules earlier does not satisfy it. The rules you break are the ones you are surest you know, because from memory you check the spirit and miss the letter.
+
+    Verify the exact text that will ship. Any later edit, including the line pass at step 10, voids this step and YOU MUST run it again. The two skills genuinely disagree in places: this file bans em dashes outright, while `good-writing-fundamentals` allows one or two in a longer draft. Where they conflict on anything a person reads, this file wins, which is why it runs last rather than first.
 
     YOU MUST scan literally for the mechanical bans, which are the cheapest to catch and the easiest to miss: em-dashes, "it's not X, it's Y", filler openers, contrast scaffolding, bold on a full sentence, bold on a bad outcome, a thesis closing, the same term swapped for a synonym.
 
@@ -191,9 +196,7 @@ look like leverage.
 
     YOU MUST fix what you find, and name the rule you broke rather than silently correcting it, so the miss is visible.
 
-**YOU MUST NOT send, publish, commit, or push any human-facing text until step 10 has actually run.** A draft that skipped it is unfinished however good it looks. This is the most common way the skill fails, and it fails silently, because the text always reads fine to the writer. The moment you notice you are about to ship without having reopened this file: stop, reopen it, run the pass.
-
-Then hand off to `good-writing-fundamentals` for the line pass.
+**YOU MUST NOT send, publish, commit, or push any human-facing text until step 11 has actually run on the exact text that ships.** A draft that skipped it is unfinished however good it looks. This is the most common way the skill fails, and it fails silently, because the text always reads fine to the writer. The moment you notice you are about to ship without having reopened this file: stop, reopen it, run the pass.
 
 ## Refuse to cut
 
