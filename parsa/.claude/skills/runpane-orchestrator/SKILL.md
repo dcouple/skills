@@ -75,9 +75,9 @@ asset upload remains its own structured grant. Continue other unblocked streams.
 
 ## Delivery Lanes
 
-Three lanes. Choose after `discussion`, never before: the first trigger below
-cannot be evaluated until the design question is either settled or shown to be
-open. Recommend a lane with what it buys, not as a label.
+Three lanes. Choose after `discussion`: the first trigger below becomes
+evaluable once the design question is settled or shown to be open. Recommend a
+lane by what it buys.
 
 **Light (default).** `investigate`, `discussion`, `simple-plan`, `implement`,
 `prepare-pr`, `pr-test-automation`, run continuously.
@@ -92,15 +92,15 @@ a handoff, so escalating late costs more than escalating early.
 
 ### What Each Lane Buys
 
-Where the repository runs an automated PR review, all three lanes get it, so no
-lane ships unreviewed. Read that workflow's triggers before relying on it: one
-firing on `opened` and `ready_for_review` but not `synchronize` reviews the
-version that opened the PR and never the version that merges.
+Where the repository runs an automated PR review, all three lanes get it. Read
+that workflow's triggers before relying on it: one firing on `opened` and
+`ready_for_review` alone reviews the version that opened the pull request, and
+the version that merges goes unread.
 
 Light and medium add the plan and implementation reviewers and a QA pass. Their
 findings arrive as comments a run may decline to act on. Only heavy re-reviews
-the current head behind a gate that blocks. State that difference when
-recommending, rather than the lane's name.
+the current head behind a gate that blocks. State that difference when you
+recommend.
 
 ### Escalation Triggers
 
