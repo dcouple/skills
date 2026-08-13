@@ -14,8 +14,15 @@ Used by `/create-feature`, `/create-epic`, and `/create-issue` after
 4. Cross-link: add the Notion page URL to the GitHub issue body
    (`gh issue edit`), and record both in `item.md` frontmatter as `github:`
    and `notion:`.
-5. On `NOTION UNAVAILABLE`, the issue must still carry everything a remote
-   `/do` needs — post each artifact as its own issue comment, wrapped in
+5. Notion is not optional in an interactive session. If the notion skill
+   reports no connection, it blocks and helps the user connect (see its
+   setup step); the publish resumes at step 3 once connected. Degraded mode
+   below runs only on an explicit `NOTION SKIPPED BY USER`, or on
+   `NOTION UNAVAILABLE` from a headless run.
+6. Degraded mode: the issue must carry everything a remote `/do` needs —
+   set the issue body to the **full `item.md` content** (not the summary),
+   record `notion: SKIPPED — re-run notion publish when connected` in the
+   frontmatter, and post each artifact as its own issue comment, wrapped in
    markers so Step 0 can harvest them back:
 
    ```
@@ -31,4 +38,6 @@ Used by `/create-feature`, `/create-epic`, and `/create-issue` after
 
 Done when: the issue exists, every artifact is reachable from it (Notion
 work item, or marker-delimited comments in degraded mode), and each of
-issue / Notion page / item.md links to the others.
+issue / Notion page / item.md links to the others. A publish that leaves
+artifacts only on the local machine, or an issue that references a Notion
+page that doesn't exist, is a failed publish — never that.
