@@ -19,4 +19,4 @@ Workflow:
    and apply it to the discussion response.
 4. Present concrete options, constraints, and tradeoffs.
 5. Ask targeted follow-up questions when needed.
-6. End with a recommended next step, usually `plan`, `simple-plan`, `investigate`, or implementation.
+6. End with a recommended next step, usually `create-plan`, `simple-plan`, `investigate`, or implementation.

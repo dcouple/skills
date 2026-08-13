@@ -1,6 +1,6 @@
 ---
 name: simple-plan
-description: Quick gut-check before implementing when the user directly asks you to do something. Investigates, proposes a lightweight plan, and implements only after approval. Use this instead of `plan` when the change is straightforward.
+description: Quick gut-check before implementing when the user directly asks you to do something. Investigates, proposes a lightweight plan, and implements only after approval. Use this instead of `create-plan` when the change is straightforward.
 argument-hint: "[what the user wants done]"
 ---
 
@@ -39,5 +39,5 @@ plan before writing code.
 
 - Keep the plan concise but concrete
 - Include file references whenever possible
-- If the task is broad or risky, recommend switching to `plan`
+- If the task is broad or risky, recommend switching to `create-plan`
 - Do not implement anything until the user approves

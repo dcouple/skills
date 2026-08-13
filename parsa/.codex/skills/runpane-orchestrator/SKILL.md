@@ -79,8 +79,8 @@ Use these durable states and transition only on recorded evidence:
 
 1. `queued`: resolve exact repo/issue/scope and authorization.
 2. `investigating`: use `investigate` when behavior/root cause is unknown.
-   When complete, automatically route the evidence to `plan` or, only for a
-   clearly narrow low-risk change, `simple-plan`.
+   When complete, automatically route the evidence to `create-plan` or, only for
+   a clearly narrow low-risk change, `simple-plan`.
 3. `planning`: require a factually clean approved plan/brief. If implementation
    through PR readiness is already authorized, the clean plan advances without
    another approval prompt.

@@ -125,7 +125,7 @@ Use the team's skill system to explain the practical next step:
 
 - Unknown failure, crash, or regression: `investigate`.
 - Fuzzy product idea or broad feature: `discussion`, then `create-ticket`.
-- Crisp implementation issue: `plan`/`create-plan` or `simple-plan`, then
+- Crisp implementation issue: `create-plan` or `simple-plan`, then
   `implement`.
 - Completed branch that needs confidence: `implementation-reviewer`, then
   `pr-test-automation`.
