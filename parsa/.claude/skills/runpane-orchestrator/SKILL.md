@@ -123,22 +123,25 @@ Evaluate after `discussion`, and again whenever new evidence lands.
 Risk forces medium; ambiguity forces heavy. A risky change with a testable
 outcome is what medium's reviewed plan and gates exist for. Heavy is for work
 whose shape is still uncertain, where orchestra's investigation and review
-fan-out earns its cost.
+fan-out earns its cost — plus one exception: the charge path goes heavy even
+when testable, because its failures are silent and customers are the detection
+channel.
 
 Medium or heavier:
 
-- It touches authentication, authorization/permissions, billing, payments, PHI
-  or other regulated patient data, or a data migration.
+- It touches authentication, authorization/permissions, billing-adjacent code,
+  PHI or other regulated patient data, or a data migration.
 - It changes a public or cross-service contract, or a shared schema: an API
   request/response, an event payload, a published package's exports, or a table
   another service reads.
-- It spans more than one deploy surface.
 - The diff exceeds 300 changed lines (added plus deleted, excluding lockfiles,
   generated files, and snapshots) or touches more than 10 files.
 - No automated test or required check will exercise the change on the PR head.
 
 Heavy:
 
+- It changes what a customer is charged, or whether money moves or service is
+  delivered or cut off: the charge path, as opposed to billing-adjacent code.
 - The design decision is still open after `discussion`, or `discussion` produced
   more than one viable approach with no evidence separating them.
 - Investigation contradicts the work item's stated premise.
