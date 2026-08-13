@@ -61,8 +61,10 @@ for cp in "$CS/create-plan/SKILL.md" "$CS/p-create-plan/SKILL.md"; do
     sedi 's/subagent_type: "plan-reviewer"/subagent_type: "p-plan-reviewer"/' "$cp"
   fi
 done
-if [ -f "$XS/plan/SKILL.md" ] && [ -d "$XS/p-plan-reviewer" ]; then
-  sedi 's/`plan-reviewer`/`p-plan-reviewer`/' "$XS/plan/SKILL.md"
-fi
+for xp in "$XS/create-plan/SKILL.md" "$XS/p-create-plan/SKILL.md"; do
+  if [ -f "$xp" ] && [ -d "$XS/p-plan-reviewer" ]; then
+    sedi 's/`plan-reviewer`/`p-plan-reviewer`/' "$xp"
+  fi
+done
 
 echo "parsa overlay complete."
