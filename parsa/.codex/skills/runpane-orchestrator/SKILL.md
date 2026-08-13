@@ -79,16 +79,28 @@ Three lanes. Choose after `discussion`: the first trigger below becomes
 evaluable once the design question is settled or shown to be open. Recommend a
 lane by what it buys.
 
-**Light (default).** `investigate`, `discussion`, `simple-plan`, `implement`,
-`prepare-pr`, `pr-test-automation`, run continuously.
+`investigate` and `discussion` run with the user in the orchestrating
+conversation. When the work item already specifies the change, they collapse
+into the delegated run as a confirmation that settles residual choices and
+records them. Delegation starts at planning.
+
+**Light (default).** `simple-plan`, then `prepare-pr` and `pr-test-automation`,
+run continuously. `simple-plan` owns its whole arc — it plans, implements on the
+approved plan, and runs the implementation reviewer — so states 3-5 run inside
+it and the chain names no separate implement stage. A standing run-continuously
+grant is the plan approval it waits for.
 
 **Medium.** The same chain with `create-plan` in place of `simple-plan`, adding
-a reviewed plan before implementation. One stage apart from light, so a run can
-move between them cheaply.
+a reviewed plan before implementation, with `implement` as its own stage on the
+approved plan. One stage apart from light, so a run can move between them
+cheaply.
 
 **Heavy.** Hand the work item to the orchestra `/do` pipeline, a different
-execution model with zone-based review lanes and Must-Fix gates. Entering it is
-a handoff, so escalating late costs more than escalating early.
+execution model with zone-based review lanes and Must-Fix gates. `/do` is
+Claude-run: a workstream escalating to heavy hands the item to an
+orchestra-capable Claude panel through the orchestrator rather than running it
+in place. Entering it is a handoff, so escalating late costs more than
+escalating early.
 
 ### What Each Lane Buys
 
@@ -97,7 +109,8 @@ that workflow's triggers before relying on it: one firing on `opened` and
 `ready_for_review` alone reviews the version that opened the pull request, and
 the version that merges goes unread.
 
-Light and medium add the plan and implementation reviewers and a QA pass. Their
+Light adds the implementation reviewer and a QA pass; medium adds the plan
+reviewer on top. Their
 findings arrive as comments a run may decline to act on. Only heavy re-reviews
 the current head behind a gate that blocks. State that difference when you
 recommend, and name the lane in the pull request body so the reviewer knows
@@ -160,7 +173,8 @@ Use these durable states and transition only on recorded evidence:
    here: fresh current-head post-PR review panels, observed to completion;
    actionable feedback routes through the interrupt below, and only a completed
    clean review advances to QA.
-8. `pr_qa`: after the reviewed PR exists, use a fresh `pr-test-automation`
+8. `pr_qa`: once the PR exists — reviewed, where the lane runs state 7 — use a
+   fresh `pr-test-automation`
    panel. Store reproducible current-head evidence and remaining manual gaps.
 9. `ci_rereview`: heavy only, satisfied inside the orchestra handoff. The wait
    for current-head required checks survives in every lane through the PR-ready
@@ -173,8 +187,8 @@ Use these durable states and transition only on recorded evidence:
 
 From any post-PR state, actionable review feedback interrupts the normal next
 transition. Invoke `gh-address-comments` in the implementation authority. If a
-fix changes the head, return through implementation review, PR update, QA, CI,
-and re-review. If feedback requires only an authorized explanation/resolution,
+fix changes the head, return through implementation review, PR update, QA, and
+required checks — and, in the heavy lane, independent re-review. If feedback requires only an authorized explanation/resolution,
 verify the GitHub readback and resume. Never stall waiting for a review that has
 not arrived.
 
