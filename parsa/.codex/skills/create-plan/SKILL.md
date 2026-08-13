@@ -1,10 +1,10 @@
 ---
-name: plan
+name: create-plan
 description: Creates a reconciled implementation plan by combining a structured plan draft with a normalized intent brief and a PRP-style research dossier, then auto-reviews the final plan. Use when planning a new feature or significant change in Codex.
 argument-hint: "[feature description or ticket reference]"
 ---
 
-# Plan
+# Create Plan
 
 Generate a complete plan for feature implementation with thorough research. The
 plan must contain enough context for an AI agent to implement the feature in a
