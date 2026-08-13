@@ -114,7 +114,9 @@ reviewer on top. Their
 findings arrive as comments a run may decline to act on. Only heavy re-reviews
 the current head behind a gate that blocks. State that difference when you
 recommend, and name the lane in the pull request body so the reviewer knows
-which checks ran.
+which checks ran. When the recommendation is medium, also offer heavy and say
+what it would buy: heavy is expensive, and the user decides when a medium item
+earns it.
 
 ### Escalation Triggers
 
@@ -140,8 +142,9 @@ Medium or heavier:
 
 Heavy:
 
-- It changes what a customer is charged, or whether money moves or service is
-  delivered or cut off: the charge path, as opposed to billing-adjacent code.
+- It changes what a paying customer is charged, or whether money moves or their
+  service is delivered or cut off: the charge path. Billing-adjacent code and
+  trial-scoped limits are medium.
 - The design decision is still open after `discussion`, or `discussion` produced
   more than one viable approach with no evidence separating them.
 - Investigation contradicts the work item's stated premise.
