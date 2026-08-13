@@ -120,13 +120,12 @@ which checks ran.
 
 Evaluate after `discussion`, and again whenever new evidence lands.
 
+Risk forces medium; ambiguity forces heavy. A risky change with a testable
+outcome is what medium's reviewed plan and gates exist for. Heavy is for work
+whose shape is still uncertain, where orchestra's investigation and review
+fan-out earns its cost.
+
 Medium or heavier:
-
-- The design decision is still open after `discussion`, or `discussion` produced
-  more than one viable approach with no evidence separating them.
-- Investigation contradicts the work item's stated premise.
-
-Heavy:
 
 - It touches authentication, authorization/permissions, billing, payments, PHI
   or other regulated patient data, or a data migration.
@@ -137,6 +136,14 @@ Heavy:
 - The diff exceeds 300 changed lines (added plus deleted, excluding lockfiles,
   generated files, and snapshots) or touches more than 10 files.
 - No automated test or required check will exercise the change on the PR head.
+
+Heavy:
+
+- The design decision is still open after `discussion`, or `discussion` produced
+  more than one viable approach with no evidence separating them.
+- Investigation contradicts the work item's stated premise.
+- The outcome cannot be verified by tests, required checks, or a QA drive within
+  the run.
 
 A user asking for a heavier lane is sufficient on its own and needs no trigger.
 A user asking for a lighter lane than the triggers select must name the trigger
