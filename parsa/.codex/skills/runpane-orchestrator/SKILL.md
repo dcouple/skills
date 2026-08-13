@@ -100,7 +100,8 @@ the version that merges goes unread.
 Light and medium add the plan and implementation reviewers and a QA pass. Their
 findings arrive as comments a run may decline to act on. Only heavy re-reviews
 the current head behind a gate that blocks. State that difference when you
-recommend.
+recommend, and name the lane in the pull request body so the reviewer knows
+which checks ran.
 
 ### Escalation Triggers
 
@@ -131,7 +132,8 @@ being overridden.
 Escalation is one-way. An agent that hits a trigger mid-run escalates
 immediately. Re-enter at the earliest state the trigger invalidates: a
 contradicted premise returns to `investigating`, every other trigger to
-`planning`. Work already implemented is re-planned against, not discarded, then
+`planning` — inside the orchestra handoff when the trigger forces heavy. Work
+already implemented is re-planned against, not discarded, then
 carried through the gates on the current head. Never de-escalate.
 
 ## Lifecycle State Machine
@@ -153,14 +155,16 @@ Use these durable states and transition only on recorded evidence:
 6. `preparing_pr`: use `prepare-pr` in the implementation authority to create
    scoped commits, safely rebase, check, push, publish the authorized visual,
    and create/update a non-draft PR. A semantic conflict is a blocker.
-7. `pr_open`: start fresh current-head post-PR review panels and monitor review
-   events. Do not advance until the panels have completed and their output was
-   observed. Route actionable feedback through the interrupt below; only a
-   completed clean review advances to QA.
+7. `pr_open`: heavy only, satisfied inside the orchestra handoff by its zone
+   reviews and Must-Fix gate. Light and medium skip this state. Where it runs
+   here: fresh current-head post-PR review panels, observed to completion;
+   actionable feedback routes through the interrupt below, and only a completed
+   clean review advances to QA.
 8. `pr_qa`: after the reviewed PR exists, use a fresh `pr-test-automation`
    panel. Store reproducible current-head evidence and remaining manual gaps.
-9. `ci_rereview`: wait for current-head required CI, query complete review-thread
-   state, and rerun independent review when the head or relevant diff changed.
+9. `ci_rereview`: heavy only, satisfied inside the orchestra handoff. The wait
+   for current-head required checks survives in every lane through the PR-ready
+   gate; the independent re-review is what light and medium skip.
 10. `ready_to_merge`: enter only when every readiness predicate below is true.
 11. `blocked`: record the exact missing decision/grant/conflict and keep
     monitoring other streams. Resume from recorded state when it clears.
