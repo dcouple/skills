@@ -82,7 +82,7 @@ open. Recommend a lane with what it buys, not as a label.
 **Light (default).** `investigate`, `discussion`, `simple-plan`, `implement`,
 `prepare-pr`, `pr-test-automation`, run continuously.
 
-**Medium.** The same chain with `plan` in place of `simple-plan`, adding
+**Medium.** The same chain with `create-plan` in place of `simple-plan`, adding
 a reviewed plan before implementation. One stage apart from light, so a run can
 move between them cheaply.
 
