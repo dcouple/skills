@@ -75,98 +75,62 @@ asset upload remains its own structured grant. Continue other unblocked streams.
 
 ## Delivery Lanes
 
-Default to the light lane. Use the full lifecycle only when an escalation
-trigger below fires. Record the chosen lane, and the triggers checked, on the
-ledger.
+Default to the light lane. Use the full lifecycle when an escalation trigger
+below fires, or whenever the user asks for it; that request is sufficient on its
+own and needs no trigger.
 
-**Light lane (default).** `investigate` → `discussion` → `simple-plan` →
-`implement` → `prepare-pr` → `pr-test-automation`, run continuously. Only
-the implementation-authority stages share one panel. `implementation_review` and
-`pr-test-automation` still dispatch to fresh panels per
-`## Ownership And Context`; the light lane does not relax context isolation.
-
-The light lane does not lower the approval bar. State 3 applies unchanged: a
-clean plan advances without a fresh prompt only where implementation through PR
-readiness was already authorized. A standing "finish this" or "do not stop and
-ask" adds persistence, never scope, and never substitutes for that grant. Both
-`simple-plan` variants require approval before implementing, and nothing here
-overrides that.
-
-In lifecycle terms the light lane runs states 1, 2, 3, 4, 5, 6, 8, and 10. It
-differs from the full lifecycle in exactly four ways, and no others:
+**Light lane (default).** `investigate`, `discussion`, `simple-plan`,
+`implement`, `prepare-pr`, `pr-test-automation`, in that order, run
+continuously. It differs from the full lifecycle in exactly four ways, and no
+others:
 
 1. It routes state 2 to `simple-plan` instead of `plan`.
-2. It inserts `discussion` between `investigate` and the plan, so the open
-   design decision is made and recorded now rather than deferred to the human
-   reviewer.
+2. It inserts `discussion` between `investigate` and the plan.
 3. It does not open fresh-context post-PR review panels (state 7, `pr_open`).
 4. It does not run `ci_rereview` (state 9). The wait for current-head required
    checks survives in the PR-ready gate; the independent re-review does not.
 
-Omission 3 is the real cost and must be stated, not glossed. State 7 is where a
-fresh context catches defects the implementing context is blind to, because that
-context already believes its own reasoning. The light lane trades that check for
-speed and leans on the human PR reviewer to supply it. Say so in the PR body
-whenever the light lane produced the PR.
+Omission 3 is the real cost. State 7 is where a fresh context catches defects
+the implementing context is blind to, because that context already believes its
+own reasoning. The light lane trades that check for speed and leans on the human
+PR reviewer. Say so in the PR body whenever the light lane produced the PR.
+
+The light lane changes which states run and nothing else.
 
 ### Escalation Triggers
 
 Check every trigger before choosing the lane, and again whenever new evidence
-lands. Any single one true forces the full lifecycle. This list is the decision;
-do not weigh it against how simple the change feels.
+lands. Any single one true forces the full lifecycle.
 
-- The change is not already specified: the design decision is still genuinely
-  open after `discussion`, or `discussion` produced more than one viable
-  approach with no evidence separating them.
+- The design decision is still genuinely open after `discussion`, or
+  `discussion` produced more than one viable approach with no evidence
+  separating them.
 - It touches authentication, authorization/permissions, billing, payments, PHI
   or other regulated patient data, or a data migration.
 - It changes a public or cross-service contract, or a shared schema: an API
   request/response, an event payload, a published package's exports, or a table
   another service reads.
 - It spans more than one deploy surface.
-- Investigation contradicts the ticket's stated premise — the reported cause,
-  the reproduction, or the proposed fix turns out to be wrong.
+- Investigation contradicts the ticket's stated premise.
 - The diff exceeds 300 changed lines (added plus deleted, excluding lockfiles,
   generated files, and snapshots) or touches more than 10 files.
 - No automated test or required check will exercise the change on the PR head.
 
-Escalation is one-way. An agent already running light that hits any trigger
-mid-run escalates immediately; it does not finish light and note the trigger
-afterwards.
-
-Re-enter at the earliest state the trigger invalidates, not at the state you
-happen to have reached. A contradicted premise returns to `investigating`. Every
-other trigger returns to `planning`, including one discovered during or after
-`implementing`: the existing plan came from `simple-plan` under an assumption
-the trigger just falsified, and a high-risk change is precisely what the full
-lane's planning pass exists for. Adding gates to a light plan is not escalation.
-Work already implemented is not discarded; it is re-planned against, then
-carried through the full state 5, 7, and 9 gates on the current head. Record the
-trigger, the timestamp, and the state re-entered. Never de-escalate a workstream
-back to the light lane.
-
-The light lane changes which states run. It changes nothing else. Every hard
-stop in `## Authorization Boundary` applies unchanged: the light lane still
-stops before merge, deploy, app/package release, publish, version bump, and any
-production or destructive mutation. It is a lane, not a grant. It must still
-satisfy `## Exact PR-Ready Gate` in full, still obeys
-`## Invalidate Evidence On Head Change`, and still honors the
-`### Review Feedback Interrupt` — human review feedback interrupts in either
-lane.
+Escalation is one-way. An agent that hits a trigger mid-run escalates
+immediately. Re-enter at the earliest state the trigger invalidates: a
+contradicted premise returns to `investigating`, every other trigger to
+`planning`. Work already implemented is re-planned against, not discarded, then
+carried through the full state 5, 7, and 9 gates on the current head. Never
+de-escalate.
 
 ## Lifecycle State Machine
 
-Use these durable states and transition only on recorded evidence. This is the
-full lifecycle; the light lane's subset and its four omissions are defined
-above.
+Use these durable states and transition only on recorded evidence:
 
 1. `queued`: resolve exact repo/issue/scope and authorization.
 2. `investigating`: use `investigate` when behavior/root cause is unknown.
-   When complete, route the evidence to `discussion` and then `simple-plan` by
-   default, so the open design decision is settled and recorded rather than
-   deferred. When any escalation trigger fires, route to `plan` instead and skip
-   `discussion`: the full lane settles design inside planning and at its human
-   approval gate, so running both would duplicate that work.
+   When complete, route the evidence to `discussion` and then `simple-plan`, or
+   to `plan` when any escalation trigger fires.
 3. `planning`: require a factually clean approved plan/brief. If implementation
    through PR readiness is already authorized, the clean plan advances without
    another approval prompt.
@@ -177,17 +141,14 @@ above.
 6. `preparing_pr`: use `prepare-pr` in the implementation authority to create
    scoped commits, safely rebase, check, push, publish the authorized visual,
    and create/update a non-draft PR. A semantic conflict is a blocker.
-7. `pr_open`: full lifecycle only. Start fresh current-head post-PR review
-   panels and monitor review events. Do not advance until the panels have
-   completed and their output was observed. Route actionable feedback through
-   the interrupt below; only a completed clean review advances to QA. The light
-   lane skips this state and says so in the PR body.
+7. `pr_open`: start fresh current-head post-PR review panels and monitor review
+   events. Do not advance until the panels have completed and their output was
+   observed. Route actionable feedback through the interrupt below; only a
+   completed clean review advances to QA.
 8. `pr_qa`: after the reviewed PR exists, use a fresh `pr-test-automation`
    panel. Store reproducible current-head evidence and remaining manual gaps.
-9. `ci_rereview`: full lifecycle only. Wait for current-head required CI, query
-   complete review-thread state, and rerun independent review when the head or
-   relevant diff changed. The light lane skips this state; its required-check
-   wait and current-head thread query are still enforced by the PR-ready gate.
+9. `ci_rereview`: wait for current-head required CI, query complete review-thread
+   state, and rerun independent review when the head or relevant diff changed.
 10. `ready_to_merge`: enter only when every readiness predicate below is true.
 11. `blocked`: record the exact missing decision/grant/conflict and keep
     monitoring other streams. Resume from recorded state when it clears.
