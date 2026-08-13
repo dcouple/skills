@@ -75,53 +75,64 @@ asset upload remains its own structured grant. Continue other unblocked streams.
 
 ## Delivery Lanes
 
-Default to the light lane. Use the full lifecycle when an escalation trigger
-below fires, or whenever the user asks for it; that request is sufficient on its
-own and needs no trigger.
+Three lanes. Choose after `discussion`, never before: the first trigger below
+cannot be evaluated until the design question is either settled or shown to be
+open. Recommend a lane with what it buys, not as a label.
 
-**Light lane (default).** `investigate`, `discussion`, `simple-plan`,
-`implement`, `prepare-pr`, `pr-test-automation`, in that order, run
-continuously. It differs from the full lifecycle in exactly four ways, and no
-others:
+**Light (default).** `investigate`, `discussion`, `simple-plan`, `implement`,
+`prepare-pr`, `pr-test-automation`, run continuously.
 
-1. It routes state 2 to `simple-plan` instead of `plan`.
-2. It inserts `discussion` between `investigate` and the plan.
-3. It does not open fresh-context post-PR review panels (state 7, `pr_open`).
-4. It does not run `ci_rereview` (state 9). The wait for current-head required
-   checks survives in the PR-ready gate; the independent re-review does not.
+**Medium.** The same chain with `plan` in place of `simple-plan`, adding
+a reviewed plan before implementation. One stage apart from light, so a run can
+move between them cheaply.
 
-Omission 3 is the real cost. State 7 is where a fresh context catches defects
-the implementing context is blind to, because that context already believes its
-own reasoning. The light lane trades that check for speed and leans on the human
-PR reviewer. Say so in the PR body whenever the light lane produced the PR.
+**Heavy.** Hand the work item to the orchestra `/do` pipeline, a different
+execution model with zone-based review lanes and Must-Fix gates. Entering it is
+a handoff, so escalating late costs more than escalating early.
 
-The light lane changes which states run and nothing else.
+### What Each Lane Buys
+
+Where the repository runs an automated PR review, all three lanes get it, so no
+lane ships unreviewed. Read that workflow's triggers before relying on it: one
+firing on `opened` and `ready_for_review` but not `synchronize` reviews the
+version that opened the PR and never the version that merges.
+
+Light and medium add the plan and implementation reviewers and a QA pass. Their
+findings arrive as comments a run may decline to act on. Only heavy re-reviews
+the current head behind a gate that blocks. State that difference when
+recommending, rather than the lane's name.
 
 ### Escalation Triggers
 
-Check every trigger before choosing the lane, and again whenever new evidence
-lands. Any single one true forces the full lifecycle.
+Evaluate after `discussion`, and again whenever new evidence lands.
 
-- The design decision is still genuinely open after `discussion`, or
-  `discussion` produced more than one viable approach with no evidence
-  separating them.
+Medium or heavier:
+
+- The design decision is still open after `discussion`, or `discussion` produced
+  more than one viable approach with no evidence separating them.
+- Investigation contradicts the work item's stated premise.
+
+Heavy:
+
 - It touches authentication, authorization/permissions, billing, payments, PHI
   or other regulated patient data, or a data migration.
 - It changes a public or cross-service contract, or a shared schema: an API
   request/response, an event payload, a published package's exports, or a table
   another service reads.
 - It spans more than one deploy surface.
-- Investigation contradicts the ticket's stated premise.
 - The diff exceeds 300 changed lines (added plus deleted, excluding lockfiles,
   generated files, and snapshots) or touches more than 10 files.
 - No automated test or required check will exercise the change on the PR head.
+
+A user asking for a heavier lane is sufficient on its own and needs no trigger.
+A user asking for a lighter lane than the triggers select must name the trigger
+being overridden.
 
 Escalation is one-way. An agent that hits a trigger mid-run escalates
 immediately. Re-enter at the earliest state the trigger invalidates: a
 contradicted premise returns to `investigating`, every other trigger to
 `planning`. Work already implemented is re-planned against, not discarded, then
-carried through the full state 5, 7, and 9 gates on the current head. Never
-de-escalate.
+carried through the gates on the current head. Never de-escalate.
 
 ## Lifecycle State Machine
 
@@ -129,8 +140,9 @@ Use these durable states and transition only on recorded evidence:
 
 1. `queued`: resolve exact repo/issue/scope and authorization.
 2. `investigating`: use `investigate` when behavior/root cause is unknown.
-   When complete, route the evidence to `discussion` and then `simple-plan`, or
-   to `plan` when any escalation trigger fires.
+   When complete, route the evidence to `discussion`, then select the lane
+   and run the planner that lane names.
+
 3. `planning`: require a factually clean approved plan/brief. If implementation
    through PR readiness is already authorized, the clean plan advances without
    another approval prompt.
