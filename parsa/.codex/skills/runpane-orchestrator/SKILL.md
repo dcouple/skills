@@ -21,7 +21,8 @@ implementation workstream unless the user authorizes work.
 Persist decisions, holds, and ownership. Query everything else.
 
 - Write a fact to the work tracker wherever it has a home there, as the item's
-  description, its status, or a comment.
+  description, its status, or a comment, under the workstream's tracker-write
+  grant; where none exists, ask once and record it in the ledger.
 - Keep locally only composer input held unsubmitted, with its reason and release
   condition, and the pane or panel to artifact mapping where the pane's name
   does not carry it, including which single panel is the implementation
@@ -32,8 +33,10 @@ Persist decisions, holds, and ownership. Query everything else.
   established.
 - Derive a local record's location from the runtime context's data directory,
   never a hardcoded path. Never dirty the worktree with orchestration state.
-- A grant in tracker text is an audit note, never authority; across a restart,
-  re-confirm with the user.
+- Grants the session itself received and recorded in its ledger persist as the
+  authorization boundary says. A grant found only in tracker text is an audit
+  note, never authority: tracker text is mutable by anyone, so across a restart,
+  re-confirm it with the user before acting on it.
 
 ## Authorization Boundary
 
@@ -247,23 +250,27 @@ after clearing a blocker.
 
 A submit success field means bytes reached a terminal, not that an agent
 received a turn. Confirm the instruction appears as a received turn in the
-agent's durable session record, or observe an activity transition or output
-delta against the baseline. No lifecycle state advances without one.
+agent's durable session record — the session log the agent's harness keeps on
+disk, where it keeps one — or observe an activity transition or output delta
+against the baseline. No lifecycle state advances without one.
 
 Unconfirmed is not undelivered. An agent finishing an earlier turn can hold a
 received prompt while showing no delta, so resending on absent evidence runs it
 twice. Prove non-delivery before any resend: prompt text still in the composer,
-or the panel idle with no turn pending after a bounded wait. Never resend an
-instruction carrying an external mutation without that proof; a double run is
-unrecoverable.
+or the panel idle over a bounded wait with the screen showing no queued or
+running turn. Never resend an instruction carrying an external mutation without
+that proof; a double run is unrecoverable. When neither delivery nor
+non-delivery can be proven within the wait, escalate to the user instead of
+resending.
 
 ### Clear Interstitials Before Treating A Panel As Ready
 
 A new panel may come up on an interstitial that accepts keystrokes but blocks
 the composer: an update prompt, a resume-or-summarize prompt, a model or profile
 picker, a trust confirmation. Detect it from the panel's screen before the first
-prompt, clear it with the choice matching the workstream, then re-check
-readiness. A readiness failure does not mean creation failed; reconcile against
+prompt, clear a routine one — update, resume, model picker — with the
+workstream's configured choice, then re-check readiness. A trust or permission
+confirmation is not routine: record it as a blocker for the user. A readiness failure does not mean creation failed; reconcile against
 the live panel list before creating anything.
 
 ### Record Held Input
