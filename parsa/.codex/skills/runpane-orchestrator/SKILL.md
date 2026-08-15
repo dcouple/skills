@@ -102,6 +102,13 @@ orchestra-capable Claude panel through the orchestrator rather than running it
 in place. Entering it is a handoff, so escalating late costs more than
 escalating early.
 
+Two moments are the same in every lane. When `discussion` converges, send the
+probe verbatim before selecting a lane: "is this addressing the root cause or a
+symptom? dig deep" — a premise-changing answer reopens `discussion`, and the
+lane choice waits for it. And before any deliverable addressed to a person is
+handed off — the pull request body above all — the producing agent runs
+`fresh-eyes` on it.
+
 ### What Each Lane Buys
 
 Where the repository runs an automated PR review, all three lanes get it. Read
