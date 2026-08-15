@@ -23,6 +23,7 @@ Workflow:
 7. Audit existing PR body/comment image references. Replace dead, expiring, temporary, or local-only URLs with verified durable assets. Update agent-owned marked sections in place, preserve author text outside them, and change only a broken URL when it sits in author-owned prose.
 8. Push the branch. Use `--force-with-lease` only when the rebase made it necessary.
 9. Create or update the PR with a summary built from the plans, current diff, and a visual overview bounded by `<!-- pr-visual-overview:start -->` / `<!-- pr-visual-overview:end -->` that embeds the verified image inline. Read the PR back and confirm it is non-draft when the requested outcome is a ready PR.
+10. Run the `fresh-eyes` skill on the PR title and body and apply its improvements before reporting done. Human review has not been requested yet, so its creative freedom applies in full.
 
 Rules:
 - Never use blanket staging.
