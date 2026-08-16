@@ -24,6 +24,7 @@ Workflow:
 8. Push the branch. Use `--force-with-lease` only when the rebase made it necessary.
 9. Create or update the PR with a summary built from the plans, current diff, and a visual overview bounded by `<!-- pr-visual-overview:start -->` / `<!-- pr-visual-overview:end -->` that embeds the verified image inline. Read the PR back and confirm it is non-draft when the requested outcome is a ready PR.
 10. Run the `fresh-eyes` skill on the PR title and body and apply its improvements before reporting done. Human review has not been requested yet, so its creative freedom applies in full.
+11. Size the PR with `git diff origin/main...HEAD --numstat`, counting hand-written files and lines only (exclude lockfiles, generated and vendored files). If it exceeds 10 files or 300 lines, end the report with one line offering `refactor` — the blind simple + deep pass that merges once and stops before applying. Under that size say nothing. Offer, never run; `refactor` is Claude-run and the user's call.
 
 Rules:
 - Never use blanket staging.
