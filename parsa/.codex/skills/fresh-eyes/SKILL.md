@@ -28,7 +28,9 @@ front-load — whatever makes it land for that reader.
 Once your improvements are applied, hand the deliverable to a
 fresh-context agent — one that has seen neither its production nor this
 conversation — running this same skill. Repeat until a pass produces no
-material change. Two passes is typical.
+material change, to a ceiling of three passes; after the third, keep the
+last version and say the cap was reached. Two passes is typical, and an
+autonomous caller needs the ceiling to be finite.
 
 ## Boundaries
 
