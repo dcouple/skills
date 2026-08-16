@@ -1,6 +1,6 @@
 ---
 name: refactor-deep
-description: Read-only comprehensive analysis of the branch against origin/main for large features — derives conventions per layer, hunts for correctness defects in the new code paths, and writes a prioritized refactor plan to ./tmp/. Usually run by the refactor orchestrator alongside refactor-simple; use directly on 10+ file changes.
+description: Read-only comprehensive analysis of the branch against the remote default branch for large features — derives conventions per layer, hunts for correctness defects in the new code paths, and writes a prioritized refactor plan to ./tmp/. Usually run by the refactor orchestrator alongside refactor-simple; use directly on 10+ file changes.
 ---
 
 # Deep Refactor
@@ -45,14 +45,22 @@ Diff against the merge-base with the remote default branch, never a bare local
 finding in them becomes a false positive.
 
 ```bash
-git fetch origin main
-git diff origin/main...HEAD --name-status
-git diff origin/main...HEAD --numstat
-git diff origin/main...HEAD --stat
+BASE=$(git symbolic-ref -q refs/remotes/origin/HEAD | sed 's|refs/remotes/||')
+[ -n "$BASE" ] || BASE=origin/$(git remote show origin | sed -n 's/.*HEAD branch: //p')
+git fetch origin "${BASE#origin/}"
+MB=$(git merge-base "$BASE" HEAD)
+git diff "$MB" --name-status
+git diff "$MB" --numstat
+git diff "$MB" --stat
 ```
 
-If the branch is behind `origin/main`, note it once as "rebase before merge";
-it is not a finding and does not lower the score.
+`$BASE` is the remote's real default branch (`main`, `master`, `develop`),
+never an assumed name. Diffing from the merge-base to the working tree — one
+revision, not two — includes committed, staged, and unstaged work, so a
+pre-PR run sees the edits that are not committed yet.
+
+If the branch is behind `$BASE`, note it once as "rebase before merge"; it is
+not a finding and does not lower the score.
 
 **Classify:**
 - **Size**: Large (500-1000 lines) | Huge (>1000 lines) — of hand-written
@@ -89,7 +97,7 @@ Type:       New Feature (12 added, 3 modified)
 Complexity: Complex (multiple modules)
 Layers:     [as the repo names them, with file counts]
 Modules:    [list]
-Diff base:  origin/main...HEAD at [sha]
+Diff base:  merge-base with $BASE at [sha], to working tree
 
 📋 Conventions sourced from:
 [the guidance files and exemplars read in step 1-2]
@@ -200,7 +208,7 @@ Write to `./tmp/deep-refactor-plan-[timestamp].md`:
 - Layers: [as the repo names them]
 - Modules: [list]
 - Files Changed: X added, Y modified, Z deleted
-- Diff base: origin/main...HEAD at [sha]
+- Diff base: merge-base with $BASE at [sha], to working tree
 - Conventions sourced from: [files]
 
 ## Quality Score: X/10
@@ -277,11 +285,11 @@ owns that gate.
 - `--force-all-patterns`: Check all conventions regardless of classification
 - `--classify-as=<type>`: Override type classification
 - `--size=<size>`: Override size classification
-- `--strict`: Use strictest thresholds (require 9/10)
+- `--strict`: Warnings count as Critical for the score and the target rises to 10/10 — strict is never looser than the default 9.8
 
 ## Success Checklist
 
-- [ ] Diffed against `origin/main...HEAD`, not a local branch
+- [ ] Diffed from the merge-base with the remote default branch to the working tree
 - [ ] Classified with generated lines excluded; complexity judged on the change
 - [ ] Conventions read from THIS repo's guidance files and exemplars, per layer
 - [ ] Every convention finding confirmed by grep before it was written

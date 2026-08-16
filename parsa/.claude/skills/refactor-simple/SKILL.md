@@ -1,6 +1,6 @@
 ---
 name: refactor-simple
-description: Read-only code quality analysis of the branch against origin/main for small to medium changes — classifies the diff, derives conventions from the target repo, and writes a refactor plan to ./tmp/. Usually run by the refactor orchestrator; use directly for a quick pre-PR check on 2-10 files.
+description: Read-only code quality analysis of the branch against the remote default branch for small to medium changes — classifies the diff, derives conventions from the target repo, and writes a refactor plan to ./tmp/. Usually run by the refactor orchestrator; use directly for a quick pre-PR check on 2-10 files.
 ---
 
 # Simple Refactor
@@ -41,14 +41,22 @@ Diff against the merge-base with the remote default branch, never a bare local
 finding in them becomes a false positive.
 
 ```bash
-git fetch origin main
-git diff origin/main...HEAD --name-status
-git diff origin/main...HEAD --numstat
-git diff origin/main...HEAD --stat
+BASE=$(git symbolic-ref -q refs/remotes/origin/HEAD | sed 's|refs/remotes/||')
+[ -n "$BASE" ] || BASE=origin/$(git remote show origin | sed -n 's/.*HEAD branch: //p')
+git fetch origin "${BASE#origin/}"
+MB=$(git merge-base "$BASE" HEAD)
+git diff "$MB" --name-status
+git diff "$MB" --numstat
+git diff "$MB" --stat
 ```
 
-If the branch is behind `origin/main`, note it once as "rebase before merge";
-it is not a finding and does not lower the score.
+`$BASE` is the remote's real default branch (`main`, `master`, `develop`),
+never an assumed name. Diffing from the merge-base to the working tree — one
+revision, not two — includes committed, staged, and unstaged work, so a
+pre-PR run sees the edits that are not committed yet.
+
+If the branch is behind `$BASE`, note it once as "rebase before merge"; it is
+not a finding and does not lower the score.
 
 **Determine:**
 - **Size**: Tiny (<50) | Small (50-200) | Medium (200-500)
@@ -102,7 +110,7 @@ whatever steps 1-3 above surfaced, cited to the file that states them.
 
 Read the changed files:
 ```bash
-git diff origin/main...HEAD --name-only
+git diff "$MB" --name-only
 ```
 
 **Pre-existing vs introduced:** only issues in lines this branch adds or
@@ -122,7 +130,7 @@ Write the plan to `./tmp/simple-refactor-plan-[timestamp].md`:
 - Size: [X] ([N] hand-written lines; [M] generated/lockfile lines excluded)
 - Type: [X]
 - Complexity: [X]
-- Diff base: origin/main...HEAD at [sha]
+- Diff base: merge-base with $BASE at [sha], to working tree
 - Conventions sourced from: [files read in step 2]
 
 ## Quality Score: X/10
@@ -188,7 +196,7 @@ owns that gate.
 
 ## Success Checklist
 
-- [ ] Diffed against `origin/main...HEAD`, not a local branch
+- [ ] Diffed from the merge-base with the remote default branch to the working tree
 - [ ] Changes classified, generated lines excluded from size
 - [ ] Conventions read from THIS repo's guidance files and exemplars
 - [ ] Every convention finding confirmed by grep before it was written

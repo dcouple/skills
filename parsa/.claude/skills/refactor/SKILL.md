@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: Post-PR refactor pass — sizes the diff against origin/main, fans out refactor-simple (and refactor-deep on large changes) as fresh subagents that cannot see each other, merges their plans once with max-severity rules, shows the merged report, and only on the user's word hands it to refactor-apply. Use after a PR is open, or whenever the user asks to refactor or clean up the branch.
+description: Post-PR refactor pass — sizes the diff against the remote default branch, fans out refactor-simple (and refactor-deep on large changes) as fresh subagents that cannot see each other, merges their plans once with max-severity rules, shows the merged report, and only on the user's word hands it to refactor-apply. Use after a PR is open, or whenever the user asks to refactor or clean up the branch.
 argument-hint: "[--size=small|large] [--plan-only]"
 ---
 
@@ -27,9 +27,14 @@ findings, and averaging them has been shown to demote real Criticals.
 ### 1. Size the change
 
 ```bash
-git fetch origin main
-git diff origin/main...HEAD --numstat
+BASE=$(git symbolic-ref -q refs/remotes/origin/HEAD | sed 's|refs/remotes/||')
+[ -n "$BASE" ] || BASE=origin/$(git remote show origin | sed -n 's/.*HEAD branch: //p')
+git fetch origin "${BASE#origin/}"
+git diff "$(git merge-base "$BASE" HEAD)" --numstat
 ```
+
+Merge-base to working tree, so uncommitted work counts; the remote's real
+default branch, not an assumed `main`.
 
 Exclude lockfiles, generated files, and vendored directories from the count.
 Under ~10 hand-written files and ~500 lines is **small**; above is **large**.
