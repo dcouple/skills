@@ -194,6 +194,8 @@ Use these durable states and transition only on recorded evidence:
    and put its merged report in front of the user with the PR. Applying is
    the user's word, never automatic; a fix that lands returns through this
    state so review and QA see the final head once. Under that size, offer it.
+   Post-PR order is fixed: review, then `refactor`, then `fresh-eyes` on the
+   PR body, then QA — the last two must see the final head and body.
 7. `pr_open`: heavy only, satisfied inside the orchestra handoff by its zone
    reviews and Must-Fix gate. Light and medium skip this state. Where it runs
    here: fresh current-head post-PR `review` panels, observed to completion;

@@ -7,7 +7,9 @@ argument-hint: "[--size=small|large] [--plan-only]"
 # Refactor
 
 One command for the post-PR quality pass. It sizes the change, runs the right
-analyses independently, merges once, stops for the user, then applies.
+analyses independently, merges once, stops for the user, then applies. It
+runs after review and before `fresh-eyes` on the PR body and before QA: it
+changes the head, and QA evidence must be current-head evidence.
 
 ## Why the analyses run blind
 
