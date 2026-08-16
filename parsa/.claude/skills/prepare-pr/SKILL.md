@@ -203,3 +203,7 @@ Branch: <branch name> (rebased on main)
 Done-plans included:
 - <list of plan files>
 ```
+
+Optional next step, offered not run: `refactor` — the post-PR quality pass.
+It sizes the diff, runs the analyses blind, merges once, and stops for the
+user before applying anything.

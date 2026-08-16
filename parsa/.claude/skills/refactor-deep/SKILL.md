@@ -1,3 +1,8 @@
+---
+name: refactor-deep
+description: Read-only comprehensive analysis of the branch against origin/main for large features — derives conventions per layer, hunts for correctness defects in the new code paths, and writes a prioritized refactor plan to ./tmp/. Usually run by the refactor orchestrator alongside refactor-simple; use directly on 10+ file changes.
+---
+
 # Deep Refactor
 
 **Comprehensive read-only analysis for large features and architectural changes.**
@@ -24,7 +29,7 @@ Thorough code quality analysis that:
 - **Architectural changes** requiring comprehensive validation
 - **Pre-PR comprehensive check** for complex work
 
-For small/medium changes, use `/simple` instead. Simple and deep are the whole
+For small/medium changes, use `refactor-simple` instead. Simple and deep are the whole
 set; on a large PR their findings overlap by about half and the rest is
 complementary, so running both is coverage, not redundancy. Do not run this
 command three times and merge the results — repeated runs on the same diff
@@ -235,9 +240,9 @@ that do not apply to this repo rather than marking them N/A]
 **Overall: X/10** — target ≥ 9.8
 
 ## Recommendations
-1. Run `/refactor-apply --plan=./tmp/deep-refactor-plan-[TS].md --auto-only`
+1. Hand this plan to `refactor-apply` (auto-fixable first)
 2. Address Priority 1, then Priority 2
-3. Re-run `/deep` to verify
+3. Re-run `refactor-deep` to verify
 
 ## References
 - Exemplar files studied: [paths]
@@ -260,11 +265,12 @@ Key Issues:
 - [criticals, one line each — reproduced ones first]
 - [warnings summary]
 
-Would you like me to run `/refactor-apply` to implement the fixes?
+Return the plan path to the caller. When run standalone, ask before running `refactor-apply`.
 ```
 
-**IMPORTANT:** Always ask the user before proceeding with fixes. Do not
-automatically run refactor-apply.
+**IMPORTANT:** This skill never applies fixes. Standalone, ask the user
+before proceeding to `refactor-apply`; under `refactor`, the orchestrator
+owns that gate.
 
 ## Command Arguments
 
@@ -291,4 +297,4 @@ automatically run refactor-apply.
 **This command is read-only and comprehensive.** It analyzes code against
 the conventions of the repository you are in, hunts for correctness defects
 in the new paths, and writes a detailed plan for you to review. For smaller
-work, use `/simple`. Run `/refactor-apply` after reviewing the plan.
+work, use `refactor-simple`. Run `refactor-apply` after reviewing the plan.

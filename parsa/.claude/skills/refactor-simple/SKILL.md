@@ -1,3 +1,8 @@
+---
+name: refactor-simple
+description: Read-only code quality analysis of the branch against origin/main for small to medium changes — classifies the diff, derives conventions from the target repo, and writes a refactor plan to ./tmp/. Usually run by the refactor orchestrator; use directly for a quick pre-PR check on 2-10 files.
+---
+
 # Simple Refactor
 
 **Read-only code quality analysis for small to medium changes.**
@@ -21,7 +26,7 @@ Fast, focused code quality analysis that:
 - **Bug fixes** and **enhancements**
 - Quick pre-PR quality check
 
-For large features (>10 files, >500 lines), use `/deep` instead. Simple and
+For large features (>10 files, >500 lines), use `refactor-deep` instead. Simple and
 deep are the whole set: simple is the cheap pass with the cleanest
 signal-to-noise, deep is the one that finds real defects in big diffs. Run
 both on a large PR when you want coverage; their findings overlap by about
@@ -146,9 +151,9 @@ Write the plan to `./tmp/simple-refactor-plan-[timestamp].md`:
 ✓/✗ [each repo-derived rule checked, with its source file]
 
 ## Recommendations
-1. Run `/refactor-apply --plan=./tmp/simple-refactor-plan-[TS].md --auto-only`
+1. Hand this plan to `refactor-apply` (auto-fixable first)
 2. Manually fix [specific issues]
-3. Re-run `/simple` to verify
+3. Re-run `refactor-simple` to verify
 
 ## References
 - Exemplar files studied: [paths]
@@ -168,11 +173,12 @@ Quality Score: X/10
 Auto-fixable: X issues · Manual fixes: Y issues
 Issues found: [one line each for criticals and warnings]
 
-Would you like me to run `/refactor-apply` to implement the fixes?
+Return the plan path to the caller. When run standalone, ask before running `refactor-apply`.
 ```
 
-**IMPORTANT:** Always ask the user before proceeding with fixes. Do not
-automatically run refactor-apply.
+**IMPORTANT:** This skill never applies fixes. Standalone, ask the user
+before proceeding to `refactor-apply`; under `refactor`, the orchestrator
+owns that gate.
 
 ## Command Arguments
 
@@ -195,4 +201,4 @@ automatically run refactor-apply.
 
 **This command is read-only and safe.** It analyzes code against the
 conventions of the repository you are in and writes a refactor plan for you
-to review. Run `/refactor-apply` after reviewing the plan to apply fixes.
+to review. Run `refactor-apply` after reviewing the plan to apply fixes.
