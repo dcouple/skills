@@ -270,3 +270,12 @@ analytics, signup, login, or session handling:
 - Vendor sandboxes rate-limit (e.g. Dropbox Sign test API throttles after ~6 signature
   requests/day, stalling embeds ~10 min). Budget signature-heavy passes and report
   throttling as an environment limit, not a product bug.
+
+## After QA Passes
+
+When the QA pass is clean, size the PR (`git diff origin/main...HEAD
+--numstat`, hand-written files and lines only). If it exceeds 10 files or 300
+lines, end the report with one line offering `refactor` — the PR is now known
+to work, which is the moment a blind simple + deep cleanup pass is worth the
+most. Offer, never run: it edits the head this QA evidence is about, so a
+landed refactor means QA runs again.

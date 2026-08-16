@@ -71,8 +71,11 @@ plan. The merged report is the same shape as the individual plans, so
 
 ### 4. Stop for the user
 
-Show the merged report — Criticals in full, Warnings and Info summarised —
-with the auto-fixable and manual counts, and stop. This is the gate: nothing
+Run `fresh-eyes` on the merged report first — it is a document a person reads
+to decide what to change in their code, and fresh-eyes may reorder, retitle,
+and clarify but never touch a severity, a finding, or a `file:line`. Then show
+it — Criticals in full, Warnings and Info summarised — with the auto-fixable
+and manual counts, and stop. This is the gate: nothing
 is applied until the user says so. `--plan-only` ends here.
 
 Auto-fixable items are the safe class; still show them. Manual items always
