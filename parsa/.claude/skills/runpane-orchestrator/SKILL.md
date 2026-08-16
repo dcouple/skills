@@ -189,6 +189,11 @@ Use these durable states and transition only on recorded evidence:
 6. `preparing_pr`: use `prepare-pr` in the implementation authority to create
    scoped commits, safely rebase, check, push, publish the authorized visual,
    and create/update a non-draft PR. A semantic conflict is a blocker.
+   When the hand-written diff is large — the same >10 files or >500 lines
+   that marks medium — run `refactor --plan-only` here, before review and QA,
+   and put its merged report in front of the user with the PR. Applying is
+   the user's word, never automatic; a fix that lands returns through this
+   state so review and QA see the final head once. Under that size, offer it.
 7. `pr_open`: heavy only, satisfied inside the orchestra handoff by its zone
    reviews and Must-Fix gate. Light and medium skip this state. Where it runs
    here: fresh current-head post-PR `review` panels, observed to completion;
