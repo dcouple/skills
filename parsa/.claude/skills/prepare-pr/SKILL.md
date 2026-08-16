@@ -203,3 +203,23 @@ Branch: <branch name> (rebased on main)
 Done-plans included:
 - <list of plan files>
 ```
+
+Then size the PR and decide whether to offer `refactor`, the post-PR quality
+pass:
+
+```bash
+git diff origin/main...HEAD --numstat
+```
+
+Count hand-written lines and files only — exclude lockfiles, generated files,
+and vendored directories. If the diff exceeds **10 files or 300 lines**, add
+one line to the summary:
+
+```
+Large PR (<N> files, <M> lines): run `refactor` for a blind simple + deep
+pass? It merges once and stops before applying anything.
+```
+
+Under that size, say nothing — a small PR gets nothing from it. Offer, never
+run: `refactor` is the user's call, and it edits the head that review and QA
+are about to see.
