@@ -2,17 +2,20 @@
 
 **Comprehensive read-only analysis for large features and architectural changes.**
 
-Safe to run anytime. Performs deep analysis against codebase patterns and writes detailed refactor plan without modifying files.
+Safe to run anytime. Performs deep analysis against the target repository's
+own conventions, hunts for correctness defects in the new code paths, and
+writes a detailed refactor plan without modifying files.
 
 ## What This Does
 
-Thorough, comprehensive code quality analysis that:
+Thorough code quality analysis that:
 1. Classifies changes with detailed metrics
-2. Deep analysis of backend and frontend architecture
-3. Validates against ALL codebase patterns
-4. Identifies architectural issues and violations
-5. Generates comprehensive refactor plan
-6. Writes detailed plan to `./tmp/` for review
+2. Learns the conventions of the repository you are in, per layer
+3. Analyzes each layer the diff touches against those conventions
+4. Hunts for correctness defects in the new code paths (the part that finds
+   real bugs — unguarded I/O, bypassed guards, lifecycle and cleanup gaps)
+5. Checks cross-cutting concerns (SOLID, DRY, documentation, error handling)
+6. Writes a comprehensive, prioritized plan to `./tmp/`
 
 ## When to Use
 
@@ -21,446 +24,268 @@ Thorough, comprehensive code quality analysis that:
 - **Architectural changes** requiring comprehensive validation
 - **Pre-PR comprehensive check** for complex work
 
-For small/medium changes, use `/simple-refactor` instead.
+For small/medium changes, use `/simple` instead. Simple and deep are the whole
+set; on a large PR their findings overlap by about half and the rest is
+complementary, so running both is coverage, not redundancy. Do not run this
+command three times and merge the results — repeated runs on the same diff
+converge on the same findings, and a merge step has been shown to lose the
+severe ones.
 
 ## Process
 
-### Phase 0: Classification & Pattern Selection
+### Phase 0: Classification & Convention Discovery
 
-**Analyze change metrics:**
+Diff against the merge-base with the remote default branch, never a bare local
+`main` — a stale local `main` pulls unrelated commits into the review and every
+finding in them becomes a false positive.
+
 ```bash
-git diff main --name-status
-git diff main --numstat
-git diff main --stat
+git fetch origin main
+git diff origin/main...HEAD --name-status
+git diff origin/main...HEAD --numstat
+git diff origin/main...HEAD --stat
 ```
 
+If the branch is behind `origin/main`, note it once as "rebase before merge";
+it is not a finding and does not lower the score.
+
 **Classify:**
-- **Size**: Large (500-1000 lines) | Huge (>1000 lines)
+- **Size**: Large (500-1000 lines) | Huge (>1000 lines) — of hand-written
+  change. Lockfiles, generated files, and vendored directories are excluded
+  from the count and named as excluded.
 - **Type**: New Feature | Major Refactor | Enhancement
-- **Complexity**: Complex | Very Complex
-- **Layers**: Backend | Frontend | Both
-- **Modules**: List affected modules
+- **Complexity**: Complex | Very Complex — judged on the change, not the line
+  count. A huge diff that is one mechanical operation is not Complex; say so.
+- **Layers**: list them as this repository names them (for example
+  main/preload/renderer in an Electron app; api/webapp in a monorepo)
+- **Modules**: affected modules
 
-**Pattern Selection Matrix:**
+**Discover conventions, per layer.** Conventions come from the repository you
+are in, never from a rule remembered from another repo:
 
-| Size | Type | Universal | Architecture | Organization | Documentation |
-|------|------|-----------|--------------|--------------|---------------|
-| Large | Feature | ✓ | ✓ | ✓ | Required |
-| Huge | Feature | ✓ | ✓ | ✓ | Required |
+1. Read `CLAUDE.md` / `AGENTS.md` at the root and in every directory the diff
+   touches.
+2. For each layer, read two or three exemplar files that neighbour the changed
+   code and note how they import, structure, handle errors, test, and document.
+3. Before flagging any convention violation, confirm the convention exists
+   here — `grep` how many existing files already do the thing. If the codebase
+   does it everywhere, it is the convention, not a violation.
+
+Example — Doozy states "zero relative imports" in `CLAUDE.md`, and a grep
+confirms none exist, so `../` there is Critical. Pane has hundreds of `../`
+imports and no alias, so the same line in Pane is nothing. The rule is not the
+pattern; the repository is.
 
 **Show classification to user:**
 ```
 📊 Change Classification:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Size:       Large (15 files, 742 lines changed)
+Size:       Large (15 files, 742 hand-written lines; lockfile excluded)
 Type:       New Feature (12 added, 3 modified)
 Complexity: Complex (multiple modules)
-Layers:     Backend (7 files), Frontend (8 files)
-Modules:    feed, artifacts, workspace
+Layers:     [as the repo names them, with file counts]
+Modules:    [list]
+Diff base:  origin/main...HEAD at [sha]
 
-📋 Patterns to Check:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✓ Universal (imports, errors, basic patterns)
-✓ Architecture (controller-service, hooks, TanStack Query)
-✓ Organization (orchestration hooks, underscore-prefix locality)
-✓ Documentation (all new files must have documentation)
+📋 Conventions sourced from:
+[the guidance files and exemplars read in step 1-2]
 
 Proceeding with comprehensive analysis...
 ```
 
-### Phase 1: Backend Analysis
+### Phase 1: Per-Layer Convention Analysis
 
-**Reference patterns from:**
-- `apps/api/CLAUDE.md` - Complete backend architecture
-- `CLAUDE.md` - Import conventions, shared library usage
+For each layer the diff touches, check the changed code against the
+conventions discovered in Phase 0, citing the file that states each one.
+Typical dimensions — fill them from the repository, do not assume:
 
-**Exemplar files to study:**
-- Controller: `apps/api/src/modules/feed/controllers/feed.controller.ts`
-- Service: `apps/api/src/modules/feed/services/feed.service.ts`
-- Validator: `apps/api/src/modules/feed/validators/feed-tag.validator.ts`
-- Complex service: `apps/api/src/modules/audio/services/recording/` (folder pattern)
+- **Import style**: alias vs relative, ordering, allowed cross-layer imports
+- **Layering**: where logic is allowed to live (handlers vs services, pages
+  vs hooks, main vs renderer), and what must not leak across
+- **Error handling**: the error types and propagation the repo uses; where
+  try/catch is expected and where a wrapper handles it
+- **State and data**: the repo's server-state / IPC / persistence patterns and
+  the invariants that come with them (cache keys, invalidation, cleanup)
+- **Structure**: file and folder placement rules, local-vs-shared conventions,
+  when a subfolder with an index is expected
+- **Tests**: what the repo tests and how; whether new surface has a test
+  neighbouring code would have
 
-**Check patterns:**
+Worked example of what a filled-in checklist looks like (Doozy's monorepo,
+kept as illustration only — derive your own for the repo you are in):
+controllers use `authenticatedHandler` and hold no business logic; services
+extend `BaseService`, throw `ApiError`, own all business logic; validators
+are Zod schemas outside controllers; pages are thin JSX with all logic in an
+orchestration hook; hooks never return JSX and use TanStack Query with full
+dependency keys and mutation invalidation; `_components/`, `_hooks/`,
+`_types/` mean local-only. None of these apply anywhere else unless that
+repo's guidance says so.
 
-**Controllers (apps/api/src/modules/*/controllers/):**
-- ✓ Uses `authenticatedHandler` wrapper for auth routes
-- ✓ Accesses `req.user` (provided by authenticatedHandler)
-- ✓ Extracts params/query clearly at top
-- ✓ Delegates to service methods (no business logic)
-- ✓ Returns `{ success: true, data: ... }` format
-- ✓ No database queries (in services)
-- ✓ No try/catch blocks (authenticatedHandler handles)
-- ✓ File-level documentation
+### Phase 2: Correctness Defects in New Paths
 
-**Services (apps/api/src/modules/*/services/):**
-- ✓ Extends `BaseService` when using database
-- ✓ Uses `this.db` for database access
-- ✓ Contains ALL business logic
-- ✓ Throws `ApiError` (not generic Error)
-- ✓ Single responsibility (one domain concept)
-- ✓ Complex services in subfolders with index.ts
-- ✓ File-level documentation
-- ✓ No controller logic leaking in
+This is where deep earns its keep. For each new or materially changed code
+path, ask what happens when it goes wrong, and read far enough to answer:
 
-**Validators (apps/api/src/modules/*/validators/):**
-- ✓ Uses Zod schemas
-- ✓ Exports both schema and inferred types
-- ✓ Validation NOT in controllers/services
+- **Unguarded I/O**: child processes, sockets, streams, files. Is every
+  `write`/`spawn` paired with an error handler? What happens on early exit,
+  EPIPE, timeout, or a partial handshake? Would an unhandled error surface in
+  the process's global handler — and does this process even have one?
+- **Bypassed guards**: a check enforced in one entry point (a doctor, a
+  validator, a platform gate, a permission check) — is it also enforced on
+  every other entry point that reaches the same operation? Grep for the
+  guard's usages.
+- **Lifecycle and cleanup**: is every started thing stopped? Timers cleared,
+  listeners removed, in-flight work cancelled on unmount/switch, process trees
+  killed and not just the wrapper shell?
+- **Stale state**: does state reset when its key changes (session, id,
+  account)? Can a failure leave old data rendered beside a new error?
+- **Boundary and platform assumptions**: paths, shells, environment
+  (WSL/remote/browser), encodings; anything hardcoded that another platform
+  would break.
+- **Untested surface**: new logic with no test where neighbouring code has
+  one — name the specific case that would have caught the defect above.
 
-**Import Patterns (Backend):**
-- ✓ Uses `@/` for local API imports
-- ✓ Uses `@doozy/shared` for shared types
-- ✓ ZERO relative imports (`../`, `../../`)
-- ✓ Imports organized: external, @doozy/shared, @/
-
-**Database & Error Handling:**
-- ✓ Drizzle ORM queries in services only
-- ✓ ApiError thrown with proper status codes
-- ✓ No raw SQL queries
-- ✓ Proper transaction handling where needed
-
-### Phase 2: Frontend Analysis
-
-**Reference patterns from:**
-- `apps/webapp/CLAUDE.md` - Complete frontend architecture
-- `apps/webapp/src/hooks/CLAUDE.md` - Hook patterns, TanStack Query
-- `apps/webapp/src/components/CLAUDE.md` - Component patterns
-- `CLAUDE.md` - Import conventions
-
-**Exemplar files to study:**
-- Page: `apps/webapp/src/app/(protected)/workspaces/[workspaceId]/feed/page.tsx`
-- Orchestration Hook: `apps/webapp/src/app/(protected)/workspaces/[workspaceId]/archive/useArchivePage.ts`
-- Shared Hook: `apps/webapp/src/hooks/feed/useFeed.ts`
-- Component: Study underscore-prefix `_components/` vs `src/components/`
-
-**Check patterns:**
-
-**Pages (apps/webapp/src/app/*/page.tsx):**
-- ✓ Has `'use client'` directive (most pages need it)
-- ✓ Has file-level documentation comment
-- ✓ Thin composition layer (mostly JSX)
-- ✓ ALL logic in orchestration hooks (e.g., `usePage`)
-- ✓ Calls `getMobileBottomSpacing(true)` for mobile pages
-- ✓ No direct API calls (uses hooks)
-- ✓ No state management (uses hooks)
-- ✓ No business logic
-
-**Orchestration Hooks (*/_hooks/usePage.ts):**
-- ✓ Has file-level JSDoc explaining purpose
-- ✓ Combines multiple hooks
-- ✓ Contains business logic & event handlers
-- ✓ Returns object with data/functions (NEVER JSX)
-- ✓ Uses TanStack Query for server state
-- ✓ Proper error handling with toast
-- ✓ Query mutations invalidate related queries
-
-**Underscore-Prefix Locality Convention:**
-- ✓ Code in `_components/` only used by this page/feature
-- ✓ Code in `_hooks/` only used by this page/feature
-- ✓ Code in `_types/` only used by this page/feature
-- ✓ Code in `_providers/` only used by this page/feature
-- ✓ Code in `_utils/` only used by this page/feature
-- ✓ Shared code (2+ features) in `src/`
-- ✓ No underscore folders in `src/`
-
-**Hooks (Shared or Local):**
-- ✓ Name starts with `use` prefix
-- ✓ NEVER returns JSX (returns data/functions only)
-- ✓ Uses TanStack Query for server state
-- ✓ Query keys include ALL dependencies (e.g., `['notes', workspaceId]`)
-- ✓ Mutations invalidate related queries on success
-- ✓ Error handling with toast notifications
-- ✓ Not called conditionally (uses `enabled` option)
-
-**Components (Shared or Local):**
-- ✓ No business logic (in hooks)
-- ✓ No direct API calls (use hooks)
-- ✓ Correct location (local vs shared)
-- ✓ Has loading/error states
-- ✓ Props drilling ≤2 levels
-
-**Import Patterns (Frontend):**
-- ✓ Uses `@/` for local webapp imports
-- ✓ Uses `@doozy/shared` for shared types
-- ✓ ZERO relative imports (`../`, `../../`)
-- ✓ Imports organized: external, @doozy/shared, @/
-
-**TanStack Query Patterns:**
-- ✓ Query keys include all dependencies
-- ✓ Mutations have `onSuccess` invalidation
-- ✓ Uses `useQuery` for reads
-- ✓ Uses `useMutation` for writes
-- ✓ Proper `enabled` option for conditional queries
-- ✓ Background refetch configured appropriately
+Every finding here cites `file:line`, states the concrete failure ("child
+exits after `initialize` → EPIPE → uncaught in main process → error dialog"),
+and — where cheap — is reproduced. A reproduced defect is Critical; a
+plausible one is a Warning with the reproduction it needs.
 
 ### Phase 3: Cross-Cutting Concerns
 
-**SOLID Principles:**
+**SOLID / SRP:** each service, hook, function has one clear purpose; no god
+objects.
 
-**SRP (Single Responsibility):**
-- Each service has one clear domain purpose
-- Each hook has one clear purpose
-- Each function does one thing
-- No "god" services/classes
-
-**DRY (Don't Repeat Yourself):**
-- No duplicate code blocks
-- Shared logic in utilities or base classes
-- Common types in `@doozy/shared`
-- Reusable components/hooks in `src/`
+**DRY:** no duplicate blocks; shared logic in utilities or base types; a
+single source of truth for each type.
 
 **Configuration Object Pattern (CRITICAL):**
-- ❌ Multiple similar functions → consolidate with options parameter
-  - Bad: `formatTime()`, `formatTimeCompact()`, `formatTimeShort()`
-  - Good: `formatTime(date, { format?: 'full' | 'compact' | 'short' })`
+- ❌ Multiple similar functions → consolidate with an options parameter
+  (`formatTime()`, `formatTimeCompact()` → `formatTime(date, { format })`)
 - ❌ Similar hooks with variations → consolidate with options
-  - Bad: `useGetItems()`, `useGetArchivedItems()`
-  - Good: `useGetItems({ archived?: boolean })`
-- ❌ Importing multiple utilities for same purpose → use single utility with options
-  - Bad: Using `formatDistanceToNow` AND custom `formatRelativeTime`
-  - Good: Single `formatRelativeTime(date, { compact?, short? })`
+- ❌ Two utilities imported for the same purpose → one with options
 - ❌ Duplicate interface/type definitions → single source of truth
-  - Bad: Same interface defined in 3 files
-  - Good: Export from one file, import everywhere else
-- ❌ Similar services with minor config differences → consolidate with configuration
-- ✅ Correct: Same function called with different options (not duplication)
+- ❌ Similar services with minor config differences → consolidate
+- ✅ Same function called with different options is not duplication
 
-**Documentation Standards:**
-- All major files have top-of-file comment
-- Complex services/hooks have detailed JSDoc
-- Non-obvious logic has inline comments
-- TODOs include context or issue number
+**Documentation:** major files have a top-of-file comment where neighbouring
+files do; complex units have JSDoc; non-obvious logic has inline comments;
+TODOs carry context or an issue number.
 
-**Error Handling:**
-- Backend: `ApiError` with proper status codes
-- Frontend: Toast notifications for user-facing errors
-- Proper try/catch where needed
-- No silent failures
+**Error handling:** the repo's error types, no silent failures, no swallowed
+rejections.
+
+**Pre-existing vs introduced:** only issues in lines this branch adds or
+changes count against the PR. Pre-existing debt in touched files may be
+listed under Info as "pre-existing, not against this PR" and never lowers the
+score. `git blame` settles it.
 
 ### Phase 4: Generate Comprehensive Report
 
-Write detailed refactor plan to `./tmp/deep-refactor-plan-[timestamp].md`:
+Write to `./tmp/deep-refactor-plan-[timestamp].md`:
 
 ```markdown
 # Deep Refactor Plan
 
 ## Classification
-- Size: [Large/Huge]
+- Size: [Large/Huge] ([N] hand-written lines; [M] generated/lockfile excluded)
 - Type: [X]
 - Complexity: [Complex/Very Complex]
-- Layers: [Backend/Frontend/Both]
-- Modules: [List]
+- Layers: [as the repo names them]
+- Modules: [list]
 - Files Changed: X added, Y modified, Z deleted
-- Lines Changed: +X -Y
+- Diff base: origin/main...HEAD at [sha]
+- Conventions sourced from: [files]
 
 ## Quality Score: X/10
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ## Issues Found
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ### Critical Issues (Must Fix Before Merge)
-
-**Backend:**
 - [file:line] Issue description
-  → Fix: Detailed fix instructions
-  → Pattern: Reference to CLAUDE.md section
-  → Auto-fixable: Yes/No
-
-**Frontend:**
-- [file:line] Issue description
-  → Fix: Detailed fix instructions
-  → Exemplar: Path to similar implementation
+  → Failure: the concrete thing that goes wrong, reproduced: yes/no
+  → Fix: detailed instructions
+  → Convention: [file that states it] | "correctness"
   → Auto-fixable: Yes/No
 
 ### Warnings (Should Fix)
-
-**Architecture:**
 - [file:line] Issue description
-  → Suggestion: Improvement recommendation
-  → Impact: Why this matters
-  → Auto-fixable: Yes/No
-
-**Organization:**
-- [file:line] Issue description
-  → Suggestion: Better organization approach
-  → Auto-fixable: Yes/No
+  → Suggestion / Impact / Auto-fixable
 
 ### Info (Nice to Have)
+- [file:line] Suggestion → Benefit
+- [file:line] Pre-existing, not against this PR: description
 
-**Code Quality:**
-- [file:line] Suggestion
-  → Benefit: What this improves
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ## Auto-Fixable Issues: X
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-- Convert relative imports to @/ aliases (X files)
-- Remove unused imports (Y files)
-- Fix import organization (Z files)
-- Add missing 'use client' directives (W files)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ## Manual Fixes Required: Y
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+**Priority 1 (Blocking):** ...
+**Priority 2 (Important):** ...
+**Priority 3 (Nice to Have):** ...
 
-**Priority 1 (Blocking):**
-1. [file:line] - Specific issue requiring human judgment
-2. [file:line] - Architectural decision needed
+## Convention Compliance Matrix
+[one row per convention actually checked, with its source file; omit rows
+that do not apply to this repo rather than marking them N/A]
 
-**Priority 2 (Important):**
-1. [file:line] - Pattern violation requiring refactor
-2. [file:line] - Documentation needed
-
-**Priority 3 (Nice to Have):**
-1. [file:line] - Code quality improvement
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-## Pattern Compliance Matrix
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-### Backend
-✓ Import conventions: [Status] - [Details]
-✓ Controller pattern: [Status] - [Details]
-✓ Service pattern: [Status] - [Details]
-✓ BaseService usage: [Status] - [Details]
-✓ ApiError usage: [Status] - [Details]
-✓ Validator pattern: [Status] - [Details]
-
-### Frontend
-✓ Import conventions: [Status] - [Details]
-✓ Thin pages: [Status] - [Details]
-✓ Orchestration hooks: [Status] - [Details]
-✓ TanStack Query: [Status] - [Details]
-✓ Underscore-prefix locality: [Status] - [Details]
-✓ Component organization: [Status] - [Details]
-
-### Cross-Cutting
-✓ SRP compliance: [Status] - [Details]
-✓ DRY compliance: [Status] - [Details]
-✓ Documentation: [Status] - [Details]
-✓ Error handling: [Status] - [Details]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-## Recommendations
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-### Immediate Actions
-1. Run `/refactor-apply --plan=./tmp/deep-refactor-plan-[TS].md --auto-only`
-2. Address Critical Issues (Priority 1)
-3. Fix Warnings (Priority 2)
-
-### Study These Patterns
-Similar implementations to reference:
-- Backend: [Exemplar file paths]
-- Frontend: [Exemplar file paths]
-- Hooks: [Exemplar file paths]
-
-### Documentation to Review
-- Backend patterns: `apps/api/CLAUDE.md`
-- Frontend patterns: `apps/webapp/CLAUDE.md`
-- Hook patterns: `apps/webapp/src/hooks/CLAUDE.md`
-- Component patterns: `apps/webapp/src/components/CLAUDE.md`
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ## Quality Score Breakdown
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-- Import conventions:     [X/10]
-- Architecture:           [X/10]
-- Organization:           [X/10]
+- Correctness (Phase 2):  [X/10]
+- Conventions (Phase 1):  [X/10]
+- Cross-cutting (Phase 3): [X/10]
 - Documentation:          [X/10]
-- Error handling:         [X/10]
-- Code quality:           [X/10]
+**Overall: X/10** — target ≥ 9.8
 
-**Overall: X/10**
+## Recommendations
+1. Run `/refactor-apply --plan=./tmp/deep-refactor-plan-[TS].md --auto-only`
+2. Address Priority 1, then Priority 2
+3. Re-run `/deep` to verify
 
-Target: ≥ 9.8/10
-Current status: [Score status]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-## Next Steps
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. Review this comprehensive plan
-2. Run: `/refactor-apply --plan=./tmp/deep-refactor-plan-[TS].md --auto-only`
-3. Address Priority 1 manual fixes (blocking)
-4. Address Priority 2 manual fixes (important)
-5. Re-run `/deep-refactor` to verify improvements
-6. Continue fixing until score ≥ 9.8
-7. Run `/refactor-full` for final PR readiness assessment
+## References
+- Exemplar files studied: [paths]
+- Convention sources: [paths]
 ```
+
+An empty Critical section is a valid result. Do not manufacture findings to
+fill the template, and do not pad the compliance matrix with rows that do not
+apply. "No PR-introduced defects" is the honest baseline for a clean change
+and should score accordingly.
 
 ### Phase 5: Show Summary
 
-**Show results:**
-```bash
+```
 📊 Deep Analysis Complete!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Comprehensive plan written to:
-./tmp/deep-refactor-plan-[timestamp].md
-
-📈 Quality Score: X/10 (target: 9.8)
-
-🔍 Analysis Summary:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Files Analyzed:     X
-Critical Issues:    Y
-Warnings:           Z
-Auto-fixable:       W
-
+Plan: ./tmp/deep-refactor-plan-[timestamp].md
+Quality Score: X/10 (target 9.8)
+Files Analyzed: X · Critical: Y · Warnings: Z · Auto-fixable: W
 Key Issues:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- [Critical issues summary]
-- [Warnings summary]
+- [criticals, one line each — reproduced ones first]
+- [warnings summary]
 
 Would you like me to run `/refactor-apply` to implement the fixes?
-(This will apply auto-fixable changes and guide you through manual fixes)
 ```
 
-**IMPORTANT:** Always ask the user before proceeding with fixes. Do not automatically run refactor-apply.
-
-## Critical Patterns (Always Enforced)
-
-These patterns are verified from YOUR codebase and always enforced:
-
-1. **Zero relative imports** - Verified via grep: codebase has ZERO `../` imports
-2. **authenticatedHandler wrapper** - Controllers never have try/catch blocks
-3. **BaseService extension** - Services using DB must extend BaseService
-4. **TanStack Query for server state** - No direct API calls in components
-5. **Thin pages + orchestration hooks** - Pages are JSX composition only
-6. **Underscore-prefix locality** - `_folders/` = local only
-7. **File-level documentation** - All major files have top comment
-8. **ApiError for errors** - Backend throws ApiError, not generic Error
+**IMPORTANT:** Always ask the user before proceeding with fixes. Do not
+automatically run refactor-apply.
 
 ## Command Arguments
 
-- `--force-all-patterns`: Check all patterns regardless of classification
+- `--force-all-patterns`: Check all conventions regardless of classification
 - `--classify-as=<type>`: Override type classification
 - `--size=<size>`: Override size classification
 - `--strict`: Use strictest thresholds (require 9/10)
 
 ## Success Checklist
 
-- [ ] Changes classified with detailed metrics
-- [ ] All applicable patterns selected
-- [ ] Backend analysis completed
-- [ ] Frontend analysis completed
+- [ ] Diffed against `origin/main...HEAD`, not a local branch
+- [ ] Classified with generated lines excluded; complexity judged on the change
+- [ ] Conventions read from THIS repo's guidance files and exemplars, per layer
+- [ ] Every convention finding confirmed by grep before it was written
+- [ ] Phase 2 correctness hunt done on every new path, findings cite file:line
 - [ ] Cross-cutting concerns checked
-- [ ] Issues categorized by priority
-- [ ] Auto-fixable vs manual identified
-- [ ] Pattern compliance matrix generated
-- [ ] Quality score calculated with breakdown
-- [ ] Comprehensive plan written to ./tmp/
+- [ ] Pre-existing debt separated from PR-introduced issues
+- [ ] Issues prioritized; auto-fixable vs manual identified
+- [ ] Plan written to ./tmp/
 - [ ] No files modified (read-only)
-- [ ] Next steps clearly shown
 
 ---
 
-**This command is read-only and comprehensive.** It performs deep analysis against YOUR codebase's actual patterns (from CLAUDE.md files) and writes a detailed refactor plan for you to review.
-
-Use this for large features and architectural changes. For smaller work, use `/simple-refactor` instead.
-
-Run `/refactor-apply --plan=./tmp/deep-refactor-plan-[TS].md` after reviewing the plan to apply fixes.
+**This command is read-only and comprehensive.** It analyzes code against
+the conventions of the repository you are in, hunts for correctness defects
+in the new paths, and writes a detailed plan for you to review. For smaller
+work, use `/simple`. Run `/refactor-apply` after reviewing the plan.

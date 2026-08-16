@@ -2,16 +2,17 @@
 
 **Read-only code quality analysis for small to medium changes.**
 
-Safe to run anytime. Analyzes code against codebase patterns and writes refactor plan without modifying files.
+Safe to run anytime. Analyzes the branch against the target repository's own
+conventions and writes a refactor plan without modifying files.
 
 ## What This Does
 
 Fast, focused code quality analysis that:
 1. Classifies your changes (size, type, complexity)
-2. Checks applicable patterns from CLAUDE.md files
-3. Identifies code smells and pattern violations
-4. Generates refactor plan with auto-fixable and manual issues
-5. Writes plan to `./tmp/` for review
+2. Learns the conventions of the repository you are in
+3. Identifies code smells and convention violations in the lines you changed
+4. Generates a refactor plan with auto-fixable and manual issues
+5. Writes the plan to `./tmp/` for review
 
 ## When to Use
 
@@ -20,17 +21,29 @@ Fast, focused code quality analysis that:
 - **Bug fixes** and **enhancements**
 - Quick pre-PR quality check
 
-For large features (>10 files, >500 lines), use `/deep-refactor` instead.
+For large features (>10 files, >500 lines), use `/deep` instead. Simple and
+deep are the whole set: simple is the cheap pass with the cleanest
+signal-to-noise, deep is the one that finds real defects in big diffs. Run
+both on a large PR when you want coverage; their findings overlap by about
+half and the rest is complementary.
 
 ## Process
 
 ### 1. Classify Changes
 
+Diff against the merge-base with the remote default branch, never a bare local
+`main` — a stale local `main` pulls unrelated commits into the review and every
+finding in them becomes a false positive.
+
 ```bash
-git diff main --name-status
-git diff main --numstat
-git diff main --stat
+git fetch origin main
+git diff origin/main...HEAD --name-status
+git diff origin/main...HEAD --numstat
+git diff origin/main...HEAD --stat
 ```
+
+If the branch is behind `origin/main`, note it once as "rebase before merge";
+it is not a finding and does not lower the score.
 
 **Determine:**
 - **Size**: Tiny (<50) | Small (50-200) | Medium (200-500)
@@ -38,91 +51,74 @@ git diff main --stat
 - **Complexity**: Trivial | Simple | Moderate
 - **Layers**: Backend | Frontend | Both
 
-### 2. Select Applicable Patterns
+Size counts changed source lines. A lockfile, generated file, or vendored
+directory can add thousands of lines and no complexity — say so and classify
+on the hand-written change.
+
+### 2. Learn the Repository's Conventions
+
+Conventions come from the repository you are in, never from a rule remembered
+from another repo. In order:
+
+1. Read `CLAUDE.md` / `AGENTS.md` at the root and in every directory the diff
+   touches. These state the conventions the maintainers actually enforce.
+2. Read two or three exemplar files that neighbour the changed code — files
+   the maintainers clearly consider done — and note how they import, structure,
+   handle errors, and document.
+3. Before flagging any convention violation, confirm the convention exists
+   here. `grep` how many existing files already do the thing. If the codebase
+   does it everywhere, it is the convention, not a violation.
+
+Example — Doozy states "zero relative imports" in its `CLAUDE.md`, and a grep
+confirms no `../` imports exist, so a `../` there is a real Critical. Pane has
+hundreds of `../` imports and no alias, so the same line in Pane is nothing.
+The rule is not the pattern; the repository is.
 
 **Pattern Matrix:**
-- **Tiny/Bug Fix** → Universal patterns only (imports, errors)
-- **Small/Enhancement** → Universal + Basic architecture
-- **Medium** → Universal + Architecture + Documentation (new files)
+- **Tiny/Bug Fix** → Universal smells only
+- **Small/Enhancement** → Universal + the repo's basic architecture rules
+- **Medium** → Universal + architecture + documentation for new files
 
-**Universal Patterns (Always Checked):**
-- Zero relative imports (`../` is a bug)
-- Proper error handling
-- No commented-out code
-- No TODOs without context
+**Universal Smells (any repository):**
+- Long functions (>100 lines), deep nesting (>3 levels)
+- Magic numbers/strings
+- Missing or swallowed error handling on new paths
+- Unused imports/variables, commented-out code, TODOs without context
+- Duplicate logic: two similar functions, hooks, or types where one with
+  options would do
+- New public surface without a file-level or symbol-level comment when the
+  neighbouring code has them
 
-**Architecture Patterns (Medium+):**
-- Controller-service separation
-- BaseService extension
-- TanStack Query for server state
-- Proper hook patterns
+**Repo-Derived Rules (Small+):** import style, layering (where logic is allowed
+to live), state-management and hook patterns, error types, test conventions —
+whatever steps 1-3 above surfaced, cited to the file that states them.
 
 ### 3. Analyze Files
 
-**Read changed files:**
+Read the changed files:
 ```bash
-git diff main --name-only
+git diff origin/main...HEAD --name-only
 ```
 
-**Check patterns from:**
-- `CLAUDE.md` - Import conventions, monorepo structure
-- `apps/api/CLAUDE.md` - Backend architecture (authenticatedHandler, BaseService, ApiError)
-- `apps/webapp/CLAUDE.md` - Frontend architecture (thin pages, orchestration hooks)
-- `apps/webapp/src/hooks/CLAUDE.md` - TanStack Query patterns, query keys
-- `apps/webapp/src/components/CLAUDE.md` - Component patterns
+**Pre-existing vs introduced:** only issues in lines this branch adds or
+changes count against the PR. Pre-existing debt in touched files may be listed
+under Info as "pre-existing, not against this PR" and never lowers the score.
+Read enough surrounding code to tell the difference — a `git blame` on the
+line settles it.
 
-**Study exemplar files:**
-- Controller: `apps/api/src/modules/feed/controllers/feed.controller.ts`
-- Service: `apps/api/src/modules/feed/services/feed.service.ts`
-- Page: `apps/webapp/src/app/(protected)/workspaces/[workspaceId]/feed/page.tsx`
-- Hook: `apps/webapp/src/app/(protected)/workspaces/[workspaceId]/archive/useArchivePage.ts`
+### 4. Generate Report
 
-### 4. Detect Code Smells
-
-**Universal Smells:**
-- ❌ Relative imports (`../`, `../../`) - codebase has ZERO
-- ❌ Long functions (>100 lines)
-- ❌ Deep nesting (>3 levels)
-- ❌ Magic numbers/strings
-- ❌ Missing error handling
-- ❌ Unused imports/variables
-- ❌ Missing file-level documentation
-
-**Backend Smells:**
-- ❌ Business logic in controllers (should be in services)
-- ❌ Controllers not using `authenticatedHandler` wrapper
-- ❌ Services not extending `BaseService` when using DB
-- ❌ Services not throwing `ApiError` for errors
-- ❌ Multiple responsibilities in one service (SRP violation)
-
-**Frontend Smells:**
-- ❌ Business logic in pages (should be in hooks)
-- ❌ Direct API calls instead of TanStack Query
-- ❌ Hooks returning JSX (hooks return data/functions only)
-- ❌ Missing `'use client'` directive
-- ❌ Query mutations not invalidating related queries
-- ❌ Local code NOT in underscore folders (`_components/`, `_hooks/`, `_types/`)
-- ❌ Shared code used in only one place
-
-**Configuration Object Pattern Violations:**
-- ❌ Multiple similar functions (e.g., `formatTime`, `formatTimeCompact`) → consolidate with options
-- ❌ Similar hooks with slight variations (e.g., `useGetItems`, `useGetArchivedItems`) → consolidate with options
-- ❌ Importing multiple utilities for same purpose (e.g., `formatDistanceToNow` + custom `formatRelativeTime`)
-- ❌ Duplicate interface/type definitions across files → single source of truth
-- ❌ Similar services with minor differences → consolidate with configuration
-
-### 5. Generate Report
-
-Write refactor plan to `./tmp/simple-refactor-plan-[timestamp].md`:
+Write the plan to `./tmp/simple-refactor-plan-[timestamp].md`:
 
 ```markdown
 # Simple Refactor Plan
 
 ## Classification
-- Size: [X]
+- Size: [X] ([N] hand-written lines; [M] generated/lockfile lines excluded)
 - Type: [X]
 - Complexity: [X]
-- Patterns Applied: [List]
+- Diff base: origin/main...HEAD at [sha]
+- Conventions sourced from: [files read in step 2]
 
 ## Quality Score: X/10
 
@@ -130,6 +126,7 @@ Write refactor plan to `./tmp/simple-refactor-plan-[timestamp].md`:
 
 ### Critical (Must Fix)
 - [file:line] Description
+  → Convention: [file that states it, or "universal"]
   → Fix: How to fix
   → Auto-fixable: Yes/No
 
@@ -140,75 +137,42 @@ Write refactor plan to `./tmp/simple-refactor-plan-[timestamp].md`:
 
 ### Info (Nice to Have)
 - [file:line] Suggestion
+- [file:line] Pre-existing, not against this PR: description
 
 ## Auto-Fixable Issues: X
-
-- Convert relative imports to @/ aliases
-- Remove unused imports
-- Fix formatting issues
-
 ## Manual Fixes Required: Y
 
-- [Specific issues requiring human judgment]
-
-## Pattern Compliance
-
-✓/✗ Import conventions
-✓/✗ Controller-service separation
-✓/✗ TanStack Query usage
-✓/✗ File documentation
+## Convention Compliance
+✓/✗ [each repo-derived rule checked, with its source file]
 
 ## Recommendations
-
 1. Run `/refactor-apply --plan=./tmp/simple-refactor-plan-[TS].md --auto-only`
 2. Manually fix [specific issues]
-3. Re-run `/simple-refactor` to verify improvements
+3. Re-run `/simple` to verify
 
 ## References
-
-Similar patterns to study:
-- [Exemplar file paths from codebase]
-
-Documentation:
-- Backend patterns: `apps/api/CLAUDE.md`
-- Frontend patterns: `apps/webapp/CLAUDE.md`
-- Hook patterns: `apps/webapp/src/hooks/CLAUDE.md`
+- Exemplar files studied: [paths]
+- Convention sources: [paths]
 ```
 
-### 6. Show Next Steps
+An empty Critical section is a valid, common result. Do not manufacture
+findings to fill the template; "no PR-introduced defects" is the honest
+baseline for a clean change and should score accordingly.
 
-**Show results:**
-```bash
+### 5. Show Next Steps
+
+```
 📊 Analysis complete!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 Plan written to: ./tmp/simple-refactor-plan-[timestamp].md
-
-Quality Score: X/10 (target: 9.8)
-Auto-fixable: X issues
-Manual fixes: Y issues
-
-Issues found:
-- [Critical issues summary]
-- [Warnings summary]
+Quality Score: X/10
+Auto-fixable: X issues · Manual fixes: Y issues
+Issues found: [one line each for criticals and warnings]
 
 Would you like me to run `/refactor-apply` to implement the fixes?
-(This will apply auto-fixable changes and guide you through manual fixes)
 ```
 
-**IMPORTANT:** Always ask the user before proceeding with fixes. Do not automatically run refactor-apply.
-
-## Critical Patterns (Verified from Codebase)
-
-These patterns are enforced by reading the CLAUDE.md files:
-
-1. **Zero relative imports** - Any `../` is a bug (verified via grep)
-2. **authenticatedHandler wrapper** - Controllers never have try/catch
-3. **BaseService extension** - Services using DB must extend BaseService
-4. **TanStack Query for server state** - No direct API calls in components
-5. **Thin pages + orchestration hooks** - Pages are JSX only
-6. **Underscore-prefix locality** - `_components/`, `_hooks/`, `_types/` = local only
-7. **File-level documentation** - All major files have top comment
+**IMPORTANT:** Always ask the user before proceeding with fixes. Do not
+automatically run refactor-apply.
 
 ## Command Arguments
 
@@ -218,18 +182,17 @@ These patterns are enforced by reading the CLAUDE.md files:
 
 ## Success Checklist
 
-- [ ] Changes classified (size/type/complexity)
-- [ ] Applicable patterns selected
-- [ ] Changed files analyzed
-- [ ] Code smells identified
+- [ ] Diffed against `origin/main...HEAD`, not a local branch
+- [ ] Changes classified, generated lines excluded from size
+- [ ] Conventions read from THIS repo's guidance files and exemplars
+- [ ] Every convention finding confirmed by grep before it was written
+- [ ] Pre-existing debt separated from PR-introduced issues
 - [ ] Auto-fixable vs manual separated
-- [ ] Quality score calculated
 - [ ] Plan written to ./tmp/
 - [ ] No files modified (read-only)
-- [ ] Next steps shown
 
 ---
 
-**This command is read-only and safe.** It analyzes code against YOUR codebase's actual patterns (from CLAUDE.md files) and writes a refactor plan for you to review.
-
-Run `/refactor-apply` after reviewing the plan to apply fixes.
+**This command is read-only and safe.** It analyzes code against the
+conventions of the repository you are in and writes a refactor plan for you
+to review. Run `/refactor-apply` after reviewing the plan to apply fixes.
