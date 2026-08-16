@@ -122,8 +122,11 @@ repo's guidance says so.
 
 ### Phase 2: Correctness Defects in New Paths
 
-This is where deep earns its keep. For each new or materially changed code
-path, ask what happens when it goes wrong, and read far enough to answer:
+This is where deep earns its keep, and it does not shrink when the diff is
+big. If budget is tight, a convention row can be dropped; a correctness
+finding cannot — on Huge diffs, do this phase before Phase 1. For each new or
+materially changed code path, ask what happens when it goes wrong, and read
+far enough to answer:
 
 - **Unguarded I/O**: child processes, sockets, streams, files. Is every
   `write`/`spawn` paired with an error handler? What happens on early exit,
