@@ -88,13 +88,46 @@ is applied until the user says so. `--plan-only` ends here.
 Auto-fixable items are the safe class; still show them. Manual items always
 wait for the user's judgment on each.
 
-### 5. Apply
+### 5. Apply, then prove it
 
 On the user's go, invoke `refactor-apply` on the merged report — auto-fixable
-first, then manual with the user. When apply finishes, re-run the same
-analyses (step 2, fresh subagents again) once and show the delta: what
-closed, what remains, anything new. One verification pass, not a loop to a
-target score.
+first, then manual with the user. `refactor-apply` leaves its edits
+uncommitted; this step commits them as one scoped commit (message names the
+plan and the round) so the adversary has an exact diff to review. Every later
+fix round is committed the same way before its adversary runs.
+
+Then run the **adversarial loop**, as one continuous chain — do not stop
+between rounds to report; the user reads the outcome. Adversary passes are
+numbered 1 to 3, and 3 is the cap:
+
+1. **Pass 1 — the apply commit.** A fresh subagent reviews that commit's diff
+   **only** (`git diff <sha>~1..<sha>`), briefed to prove it broke something:
+   treat every claim in the apply report as a claim to falsify; check that
+   behaviour-preserving changes preserved behaviour, and that a consolidation
+   did not narrow an edge case a caller depended on. Where a test claims to
+   demonstrate a defect fix, run it on the parent (must fail) and the head
+   (must pass); characterization tests for behaviour-preserving changes may
+   pass on both. It returns CLEAN or REGRESSION with `file:line` and a repro.
+2. **On REGRESSION**, hand the repro back to the applier for a repair, commit
+   it, and run pass 2 — a fresh adversary on the repair commit alone. Each
+   repair adds the repro as a test proven failing on its parent.
+3. **Pass 3 is the last.** If it is reached, the repairs are hand-tuning to
+   the last reported inputs while breaking the next; the repair before pass 3
+   is **spec-driven, not patch-driven** — the applier writes the input class
+   as a test table or replaces the mechanism with a pure derivation, and
+   STOPS rather than commits if the correct fix needs scope beyond the files
+   at hand. Whatever pass 3 finds is reported to the user with the plan,
+   not repaired.
+
+A CLEAN pass advances. At the cap, advance anyway: the survivors are
+reported as open Criticals beside the delta, and the user decides. Then
+re-run the analyses (step 2, fresh subagents) once and show the delta: what
+closed, what remains, anything new.
+
+Why: on the first real run, two apply commits passed every check and their
+own new tests, and the adversary found a reproduced regression in each; the
+repairs then broke adjacent cases twice, with tests that passed trivially.
+Nothing but an adversary told to falsify caught any of it.
 
 ## Rules
 
@@ -105,3 +138,5 @@ target score.
 - Merge means cluster and keep the maximum, never vote, never average.
 - If a subagent fails or returns no plan, say so and merge what exists; do
   not re-run it with hints from the plan that succeeded.
+- The adversarial loop runs in one chain. Waiting on a human between rounds
+  turns ten minutes of agent work into hours; report at the end.
