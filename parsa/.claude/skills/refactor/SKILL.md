@@ -91,35 +91,42 @@ wait for the user's judgment on each.
 ### 5. Apply, then prove it
 
 On the user's go, invoke `refactor-apply` on the merged report — auto-fixable
-first, then manual with the user.
+first, then manual with the user. `refactor-apply` leaves its edits
+uncommitted; this step commits them as one scoped commit (message names the
+plan and the round) so the adversary has an exact diff to review. Every later
+fix round is committed the same way before its adversary runs.
 
 Then run the **adversarial loop**, as one continuous chain — do not stop
-between rounds to report; the user reads the outcome:
+between rounds to report; the user reads the outcome. Adversary passes are
+numbered 1 to 3, and 3 is the cap:
 
-1. **Adversary.** A fresh subagent reviews the apply commit's diff **only**
-   (`git diff <apply-sha>~1..<apply-sha>`), briefed to prove it broke
-   something: treat every claim in the apply report as a claim to falsify;
-   check that behaviour-preserving changes preserved behaviour, that a
-   consolidation did not narrow an edge case a caller depended on, and that
-   the new tests are real — run them on the parent (must fail) and the head
-   (must pass). It returns CLEAN or REGRESSION with `file:line` and a repro.
-2. **On REGRESSION**, hand the repro back to the applier for a fix round,
-   then run a fresh adversary on the fix commit alone. Each fix must add the
-   repro as a test and prove it fails on the parent.
-3. **Cap 3 fix rounds.** Rounds 1-2 may patch. If round 3 is reached, the
-   pattern is a fix that keeps hand-tuning to the last reported inputs while
-   breaking the next one; round 3 is **spec-driven, not patch-driven** — the
-   applier writes the input class as a test table or replaces the mechanism
-   with a pure derivation, and STOPS rather than pushes if the correct fix
-   needs scope beyond the files at hand. Whatever round 3's adversary finds
-   is reported to the user, not fixed.
+1. **Pass 1 — the apply commit.** A fresh subagent reviews that commit's diff
+   **only** (`git diff <sha>~1..<sha>`), briefed to prove it broke something:
+   treat every claim in the apply report as a claim to falsify; check that
+   behaviour-preserving changes preserved behaviour, and that a consolidation
+   did not narrow an edge case a caller depended on. Where a test claims to
+   demonstrate a defect fix, run it on the parent (must fail) and the head
+   (must pass); characterization tests for behaviour-preserving changes may
+   pass on both. It returns CLEAN or REGRESSION with `file:line` and a repro.
+2. **On REGRESSION**, hand the repro back to the applier for a repair, commit
+   it, and run pass 2 — a fresh adversary on the repair commit alone. Each
+   repair adds the repro as a test proven failing on its parent.
+3. **Pass 3 is the last.** If it is reached, the repairs are hand-tuning to
+   the last reported inputs while breaking the next; the repair before pass 3
+   is **spec-driven, not patch-driven** — the applier writes the input class
+   as a test table or replaces the mechanism with a pure derivation, and
+   STOPS rather than commits if the correct fix needs scope beyond the files
+   at hand. Whatever pass 3 finds is reported to the user with the plan,
+   not repaired.
 
-Only a CLEAN verdict advances. Then re-run the analyses (step 2, fresh
-subagents) once and show the delta: what closed, what remains, anything new.
+A CLEAN pass advances. At the cap, advance anyway: the survivors are
+reported as open Criticals beside the delta, and the user decides. Then
+re-run the analyses (step 2, fresh subagents) once and show the delta: what
+closed, what remains, anything new.
 
 Why: on the first real run, two apply commits passed every check and their
 own new tests, and the adversary found a reproduced regression in each; the
-fix rounds then broke adjacent cases twice, with tests that passed trivially.
+repairs then broke adjacent cases twice, with tests that passed trivially.
 Nothing but an adversary told to falsify caught any of it.
 
 ## Rules
