@@ -104,14 +104,16 @@ ends. Three review passes is the cap.
    defect runs on the parent (must fail) and the head (must pass);
    characterization tests for behaviour-preserving changes may pass on both.
    It returns CLEAN, or REGRESSION with `file:line` and a repro.
-2. **On REGRESSION, the applier repairs and the same reviewer verifies.** The
+2. **On REGRESSION, the applier repairs, then two reviewers look.** The
    repro goes back to the apply session, which knows the code; the repair is
-   committed with the repro as a test proven failing on its parent; then the
-   repair commit goes back to the reviewer who found the finding, as a
-   follow-up in that same session, briefed to re-run its own repro against the
-   repair and then attack the repair itself. That reviewer knows the failure
-   best. A fresh reviewer is for pass 1, and for a finding with no prior
-   reviewer.
+   committed with the repro as a test proven failing on its parent. Then, in
+   the same message: the reviewer who found the finding gets the repair as a
+   follow-up in its own session, to re-run its repro and say whether that
+   finding is closed; and a fresh subagent reads the repair commit's diff
+   alone, briefed to break the repair itself, since a repair that changed
+   code can break an adjacent case the first reviewer was primed to look
+   past. The follow-up settles the finding; the fresh pass is the numbered
+   pass and counts toward the cap.
 3. **Pass 3 is the last.** Reaching it means each repair fixed the reported
    inputs and broke the next; the repair before pass 3 is spec-driven: the
    applier writes the input class as a test table, or replaces the mechanism
@@ -139,5 +141,6 @@ adversary told to falsify caught all of it.
 - If a subagent fails or returns no plan, say so and merge what exists.
 - The adversarial loop runs in one chain. Waiting on a human between rounds
   turns ten minutes of agent work into hours; report at the end.
-- The reviewer who found a finding verifies its repair, in the same session.
-  A new reviewer re-learns the code and the failure from zero.
+- The reviewer who found a finding verifies its repair, in its own session;
+  a fresh reviewer hunts what the repair introduced. Two questions, two
+  readers.
