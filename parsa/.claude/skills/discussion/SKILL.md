@@ -38,6 +38,16 @@ Only research what's needed. Let the conversation guide what needs investigating
 - Spawn sub-agents mid-conversation if new questions arise
 - Be opinionated — share recommendations with reasoning, but defer to user judgment
 
+### Prototype before you ask
+
+Classify every fork question before you surface it. If the answer is
+observable by running something — behavior, timing, output, perf, layout —
+build the cheapest throwaway probe outside the project tree, run it, and
+present the result with a recommendation instead of the question. Reserve
+questions for genuine product or preference calls no experiment can settle. A
+probe usually answers faster than a human, and it hands them a result to
+react to instead of a decision to make.
+
 ## Step 3: Suggest Next Steps
 
 ```
