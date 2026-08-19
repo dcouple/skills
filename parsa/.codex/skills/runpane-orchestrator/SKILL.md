@@ -180,9 +180,13 @@ Use these durable states and transition only on recorded evidence:
 
 3. `planning`: require a factually clean approved plan/brief. If implementation
    through PR readiness is already authorized, the clean plan advances without
-   another approval prompt.
+   another approval prompt. More than one defensible shape for a non-trivial
+   artifact runs `arena` on that artifact before implementing, and the plan
+   carries its synthesized result.
 4. `implementing`: use `implement` in the implementation panel. Keep feeding
-   missing plan tasks or recoverable blockers back until complete.
+   missing plan tasks or recoverable blockers back until complete. A work item
+   naming one metric and a target runs `hillclimb` as the implementation loop:
+   baseline first, then one change per measurement, accept or revert.
 5. `implementation_review`: use a fresh `implementation-reviewer` panel. Return
    legitimate fixes to the implementation authority and repeat on the new head.
 6. `preparing_pr`: use `prepare-pr` in the implementation authority to create
