@@ -2,7 +2,6 @@
 name: prepare-pr
 description: Commits changes grouped by done-plans, rebases main, builds API and webapp, then creates or updates a PR. Replaces the commit command. Use when you're ready to open or update a pull request.
 argument-hint: "[optional: PR title or description]"
-disable-model-invocation: true
 ---
 
 # Prepare PR Agent
