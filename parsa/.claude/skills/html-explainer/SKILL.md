@@ -83,6 +83,23 @@ The whole vocabulary. A page uses what it needs and invents nothing:
 - `details > summary`: for depth the reader opts into. The page must
   read complete with every `details` closed.
 
+## Visual weight
+
+The page is graphic-first: diagrams carry the argument and prose
+annotates them, the way an excalidraw sketch carries a PR review. When
+drafting, budget the page as pictures interrupted by words, not words
+garnished with pictures; if a section has no visual, ask whether it
+earns its place or belongs inside a details block. There is no hosting,
+no capability layer, no publish step to design for: one local file,
+opened in a browser, tuned entirely for reading.
+
+Sketch aesthetic is welcome and cheap in SVG: slightly rounded corners,
+imperfect widths, dashed strokes for the tentative, solid for the
+certain, arrows with real heads. Warmth comes from the drawing, never
+from decoration; no gradients, no shadows, no icon fonts. When the user
+wants a diagram they can edit themselves, that is the
+excalidraw-pr-diagrams skill's job, not an inline SVG.
+
 ## Diagrams
 
 Every explainer opens with one diagram directly after the masthead: the
