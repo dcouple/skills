@@ -74,7 +74,36 @@ Shared review criteria used by both the PR review skill and the implementation-r
 - Interfaces preferred over type aliases for object shapes
 - No `I` prefix on interface names
 
-## 6. Tailwind CSS and shadcn/ui (Suggestion)
+## 6. UX Fit and Placement (Should-Fix)
+
+Applies to any change that adds or moves user-facing surface: a control, a
+panel, a tab, a widget, a toggle, a setting. Ask these before the code
+questions, since a correct widget in the wrong place still costs every user.
+
+- **Placement matches the information's scope.** Account-level information
+  (usage, plan, billing, identity) lives in Settings; per-item information
+  lives beside the item; global actions live in a global bar. A per-pane
+  sidebar carrying account-level data is misplaced.
+- **Progressive disclosure.** A surface appears when it can show something
+  and stays hidden otherwise. Detection beats a toggle: a Usage tab that
+  appears when a login is detected needs no preference, no enable step, and
+  nothing in the toolbar.
+- **Scoped to the panels it concerns.** A control for one agent or tool
+  shows only where that agent runs, never on every panel type.
+- **One way to reach it.** A hidden toggle plus a persisted preference plus
+  an auto-open is three behaviours to discover; one predictable path is the
+  standard.
+- **Fits the surface it joins.** A crowded bar stays sparse; a new affordance
+  earns its place against what is already there, and joins an existing home
+  (an existing Settings category, an in-flight surface for the same concern)
+  before creating a rival one.
+- **Comparable products.** Where do mature tools put this? A placement no
+  comparable product uses needs a stated reason.
+
+Recommend the placement, name why, and give the path to it. The plumbing
+under a misplaced surface is usually right and reusable; say so.
+
+## 7. Tailwind CSS and shadcn/ui (Suggestion)
 
 - Semantic token classes (`text-primary`, `bg-background`) — no hardcoded hex/rgb values
 - Design tokens centralized in `globals.css` via `@theme` — not scattered in component files
@@ -84,7 +113,7 @@ Shared review criteria used by both the PR review skill and the implementation-r
 - Radix UI accessibility props (`role`, `aria-*`, `data-state`) preserved — not stripped
 - `{...props}` spread present on wrapper components for prop forwarding
 
-## 7. Conventions (Suggestion)
+## 8. Conventions (Suggestion)
 
 - All imports use `@/` aliases for local files, `@doozy/shared` for shared — no `../` relative imports
 - Underscore-prefix locality: `_components/`, `_hooks/` for route-scoped files
