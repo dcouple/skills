@@ -1,13 +1,17 @@
 ---
 name: reality-check
-description: Assess where a project actually stands against what its README, plan, or pitch promises, with every claim tested against the artifact itself rather than the docs. Use when someone asks "where are we", "are we on track", "what's missing", "does this actually work", or before a demo, a handoff, or a decision that assumes the project is further along than it might be.
+description: Assess where a project actually stands against what its README, plan, or pitch promises, with every claim tested against the artifact itself rather than the docs, reported in chat and as an HTML page per the html-explainer standards. Use when someone asks "where are we", "are we on track", "what's missing", "does this actually work", or before a demo, a handoff, or a decision that assumes the project is further along than it might be. With no argument, check the project in the current directory.
 argument-hint: "[project path, repo, or plan to check against]"
-allowed-tools: Read, Grep, Glob, Bash
+allowed-tools: Read, Grep, Glob, Bash, Write
 ---
 
 # Reality Check
 
 ## Task: $ARGUMENTS
+
+With no argument, the project is the current working directory; run
+from any worktree at any time. With an argument, it is the path, repo,
+or plan named.
 
 A project's documents describe the project its authors intended. The
 project that exists is whatever survives being run, read, and poked at
@@ -62,6 +66,20 @@ nothing. Then:
 - the three gaps most worth closing next, each with why it is the one
   blocking the story the docs tell
 - what the docs should stop claiming today, if anything
+
+Deliver it twice: in chat, and as a page in the project's `./tmp/`
+(gitignored location of the caller's choice otherwise), rendered per
+the html-explainer skill and opened in the browser. On the page:
+
+- Masthead: project name, checked-at date, and one badge summarizing
+  the stance (holds, mostly holds, diverges, contradicted).
+- Opening diagram: promises as a strip, each colored by verdict, so the
+  shape of the gap is visible before a word is read.
+- One card per promise: the promise verbatim, the verdict badge, the
+  evidence line. Contradictions first, then absences, then the rest.
+- Unpromised findings and the three gaps as panels; stop-claiming items
+  as a warn callout.
+- Raw evidence (command output, file excerpts) inside `details`.
 
 ## Boundaries
 

@@ -1,6 +1,6 @@
 ---
 name: teach-back
-description: Write a plain-language teaching note after a completed task or project so the user learns from the work. Use when the user asks Claude for a learning writeup, after-action explanation, personal teacher note, or breakdown of what happened and why, especially at the end of a unit of work, after PR testing/manual testing, or before merge.
+description: Write a plain-language teaching note after a completed task or project so the user learns from the work, and render it as a rich HTML explainer per the html-explainer standards. Use when the user asks Claude for a learning writeup, after-action explanation, personal teacher note, or breakdown of what happened and why, especially at the end of a unit of work, after PR testing/manual testing, or before merge.
 argument-hint: "[completed task, PR, issue, or work summary]"
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit
 ---
@@ -91,11 +91,39 @@ Use these sections, but write them naturally:
 - Keep the tone warm, direct, and useful.
 - Do not turn this into a status report or PR summary.
 
+## The HTML explainer
+
+The markdown note is the durable record; alongside it, render the same
+material as a page the user actually wants to open, following the
+html-explainer skill for tokens, components, diagrams, and the quality
+bar. Same basename, `.html` extension, saved next to the note.
+
+The page is not the note poured into HTML. It is the lesson taught
+visually:
+
+- Masthead: the task as the title, a one-sentence "what you should take
+  away" standfirst, and badges for the repo and date.
+- The opening diagram: how the parts of this work connect (section 3 of
+  the note, drawn instead of described).
+- Approach and roads not taken as a panel pair: what was done beside
+  what was rejected, each rejection with its one-line reason.
+- Tradeoffs and mistakes as cards; the mess stays visible, that is the
+  teaching.
+- Pitfalls and expert-eye observations as a callout list: the "wish
+  someone told me earlier" material, front and center.
+- Transferable lessons last, as the section the user will reread; keep
+  it to the three that are actually general.
+- Depth (full reasoning paths, command output, links into the diff)
+  goes in `details` blocks so the page reads in five minutes closed.
+
+Open the page in the browser when done.
+
 ## Workflow
 
 1. Reconstruct the completed work from conversation, git diff, PR, issue, plan, test output, and review notes.
 2. Identify the real learning points, especially decisions and tradeoffs.
 3. Choose the destination path.
 4. Create or update the learning note.
-5. If updating an existing learning repo, reorganize lightly when it improves future findability.
-6. Tell me where the note was saved.
+5. Render the HTML explainer from the note per the section above and open it.
+6. If updating an existing learning repo, reorganize lightly when it improves future findability.
+7. Tell me where the note and the page were saved.
