@@ -56,8 +56,9 @@ rather than forcing an object.
 
 ## Words
 
-- Floor 1 under a hundred words; the whole page under six hundred,
-  excluding `details`.
+- Floor 1 under a hundred words; the whole page under six hundred.
+  The budget counts every word the reader sees with `details` closed,
+  captions and masthead included; markup and style count nothing.
 - Short declarative sentences. No "simply", no "just", no "magic".
 - Numbers over adjectives: "answers in about 7 seconds" beats "fast".
 - Every sentence survives the question "does the reader need this to

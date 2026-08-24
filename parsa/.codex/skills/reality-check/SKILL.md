@@ -42,6 +42,10 @@ For each promise, go find out, in the artifact, not the docs:
   to it.
 - **Contradicted**: the artifact does the opposite of the promise. These
   outrank everything else in the report.
+- **Untestable here**: the promise needs something this environment does
+  not have (owned assets, credentials, hardware). Name what would test
+  it, and report whatever partial corroboration the artifact does
+  offer; untestable is a fact about the check, never a soft pass.
 
 Run the cheapest honest test first: the install one-liner in a clean
 temp directory, the quickstart verbatim, the demo path as a stranger

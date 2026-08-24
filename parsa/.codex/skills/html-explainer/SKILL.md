@@ -118,8 +118,10 @@ Before opening the page, verify all of these; fix rather than ship:
    them and the headers leaves oriented.
 2. Renders complete with JavaScript disabled and every `details`
    closed.
-3. No external request of any kind (grep the file for `http` and
-   `url(`).
+3. Nothing is fetched: no `src`, `href`, or `url()` that loads an
+   external resource (stylesheet, script, font, image). URLs quoted as
+   text or code content are fine; a page about an endpoint must be able
+   to print it.
 4. Both color schemes hold: readable in light and dark.
 5. Every fact on the page came from the caller's material; the page
    adds structure and pictures, never claims.
@@ -128,8 +130,9 @@ Before opening the page, verify all of these; fix rather than ship:
 
 ## Boundaries
 
-- This skill owns form. The invoking skill owns content, truth, and
-  where the file lives.
+- This skill owns form. The invoking skill owns content, truth, where
+  the file lives, and what the chat reply says; its reply and
+  open-in-browser rules override the defaults here.
 - When a caller's needs exceed the vocabulary, extend the vocabulary
   here in a PR, do not fork the style inline.
 - No em dashes, on the page and in this file.
