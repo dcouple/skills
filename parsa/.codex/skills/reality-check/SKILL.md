@@ -27,6 +27,12 @@ falsifiable. "Users can install with one command" is a promise.
 "Modern, fast architecture" is not; drop vagueness rather than grading
 it.
 
+A promise is the document as it stands. When the ground truth moved
+after the document was written (a PR body quoting copy that later
+commits rewrote, a README describing a renamed command), that drift is
+itself a Contradicted finding: the document is asking for sign-off on
+something that no longer exists.
+
 ## Test the promise
 
 For each promise, go find out, in the artifact, not the docs:
