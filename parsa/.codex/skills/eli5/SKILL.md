@@ -2,6 +2,7 @@
 name: eli5
 description: Explain one topic to a smart person who knows nothing about it, as a single HTML page that leads with a picture and earns every word, rendered per the html-explainer standards. Use when the user types /eli5 <topic>, asks for a dead-simple explainer of how something works, or wants to start learning about the code they are sitting in without a lecture.
 argument-hint: "<topic, question, or path to explain>"
+model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write
 ---
 
@@ -12,6 +13,15 @@ allowed-tools: Read, Grep, Glob, Bash, Write
 The reader is not five. The reader is sharp, busy, and new to exactly
 this. Respect both halves: no jargon they have not been given, and no
 padding they have to wade through. One page, one topic, picture first.
+
+## The writer
+
+The page is written by Opus 4.6; it writes better. The frontmatter pins
+it for direct invocation. When an orchestrator or a session on another
+model runs this skill, it hands the writing to an Opus 4.6 session
+(`claude -p --model claude-opus-4-6` with this skill and the grounding
+facts) rather than writing the page itself; the grounding below can be
+done by whoever is cheapest, the prose and drawings cannot.
 
 ## Ground it
 
