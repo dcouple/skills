@@ -1,18 +1,39 @@
 ---
 name: reality-check
-description: Assess where a project actually stands against what its README, plan, or pitch promises, with every claim tested against the artifact itself rather than the docs. Use when someone asks "where are we", "are we on track", "what's missing", "does this actually work", or before a demo, a handoff, or a decision that assumes the project is further along than it might be.
+description: Assess where a project actually stands against what its README, plan, or pitch promises, with every claim tested against the artifact itself rather than the docs, reported in chat and as an HTML page per the html-explainer standards. Use when someone asks "where are we", "are we on track", "what's missing", "does this actually work", or before a demo, a handoff, or a decision that assumes the project is further along than it might be. With no argument, check the project in the current directory.
 argument-hint: "[project path, repo, or plan to check against]"
-allowed-tools: Read, Grep, Glob, Bash
+model: claude-opus-4-6
+allowed-tools: Read, Grep, Glob, Bash, Write
 ---
 
 # Reality Check
 
 ## Task: $ARGUMENTS
 
+With no argument, the project is the current working directory; run
+from any worktree at any time. With an argument, it is the path, repo,
+or plan named.
+
 A project's documents describe the project its authors intended. The
 project that exists is whatever survives being run, read, and poked at
 today. This skill measures the distance between the two, and it never
 takes the documents' word for anything.
+
+## The writer and the checker
+
+The page and the chat report are written by Opus 4.6; it writes better.
+The frontmatter pins it for direct runs. When an orchestrator or a
+session on another model runs this skill, the checking (promise
+testing, evidence gathering) stays with the capable model and only the
+writing is handed to an Opus 4.6 session (`claude -p --model
+claude-opus-4-6` with this skill and the complete findings).
+
+Opus 4.6 forgets things, and that is the dispatcher's problem, not the
+reader's: hand it the findings as a complete numbered list with every
+verdict and its evidence line, and after it writes, diff the page
+against that list. Every finding present, every verdict unchanged, no
+evidence softened. A dropped or drifted finding goes back to the same
+session as a correction until the diff is clean.
 
 ## Establish the promise
 
@@ -22,6 +43,12 @@ Distill them into a numbered list of concrete promises, each one
 falsifiable. "Users can install with one command" is a promise.
 "Modern, fast architecture" is not; drop vagueness rather than grading
 it.
+
+A promise is the document as it stands. When the ground truth moved
+after the document was written (a PR body quoting copy that later
+commits rewrote, a README describing a renamed command), that drift is
+itself a Contradicted finding: the document is asking for sign-off on
+something that no longer exists.
 
 ## Test the promise
 
@@ -38,6 +65,10 @@ For each promise, go find out, in the artifact, not the docs:
   to it.
 - **Contradicted**: the artifact does the opposite of the promise. These
   outrank everything else in the report.
+- **Untestable here**: the promise needs something this environment does
+  not have (owned assets, credentials, hardware). Name what would test
+  it, and report whatever partial corroboration the artifact does
+  offer; untestable is a fact about the check, never a soft pass.
 
 Run the cheapest honest test first: the install one-liner in a clean
 temp directory, the quickstart verbatim, the demo path as a stranger
@@ -62,6 +93,20 @@ nothing. Then:
 - the three gaps most worth closing next, each with why it is the one
   blocking the story the docs tell
 - what the docs should stop claiming today, if anything
+
+Deliver it twice: in chat, and as a page in the project's `./tmp/`
+(gitignored location of the caller's choice otherwise), rendered per
+the html-explainer skill and opened in the browser. On the page:
+
+- Masthead: project name, checked-at date, and one badge summarizing
+  the stance (holds, mostly holds, diverges, contradicted).
+- Opening diagram: promises as a strip, each colored by verdict, so the
+  shape of the gap is visible before a word is read.
+- One card per promise: the promise verbatim, the verdict badge, the
+  evidence line. Contradictions first, then absences, then the rest.
+- Unpromised findings and the three gaps as panels; stop-claiming items
+  as a warn callout.
+- Raw evidence (command output, file excerpts) inside `details`.
 
 ## Boundaries
 
