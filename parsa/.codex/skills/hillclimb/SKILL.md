@@ -1,6 +1,6 @@
 ---
 name: hillclimb
-description: Sustained improvement of one named metric toward a target — measure a baseline, then loop hypothesis, implement, re-measure, accept or revert. Use for perf, bundle size, lint count, or test time. A one-off fix is /investigate; this is the loop.
+description: Sustained improvement of one named metric toward a target — measure a baseline, then loop hypothesis, implement, re-measure, accept or revert. Use for performance, bundle size, lint count, or test time. Use investigate for a one-off fix; use this for the loop.
 argument-hint: "[metric and target, e.g. 'cold start under 400ms']"
 ---
 
