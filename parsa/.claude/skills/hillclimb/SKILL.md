@@ -32,20 +32,23 @@ Take the live hypothesis with the biggest expected win. Each names a mechanism
 
 ## Throughput — parallelize by default
 
-Every iteration, ask: is this work throughput-bound, and is it parallelizable?
-If both, wall-clock per unit of work is the one exception to "one metric":
-climb it alongside the primary. Sequential over N items is a bug when N > ~20;
-the bar is a model lab's — every core, as many instances as limits allow.
+The invariant: **measure → find the constrained resource → add bounded,
+adaptive concurrency → prove the wall-clock gain → stop at the plateau.** Ask on every
+iteration whether independent units are throughput-bound and parallelizable. If
+they are, wall-clock per unit is the one exception to "one metric": climb it
+alongside the primary. Inherently sequential or dependency-bound work is exempt;
+optimize its critical path or change the algorithm instead.
 
-- Per-item time first, then a target wall-clock; prove the rate on a 50-item dry run.
-- I/O-bound → asyncio plus a bounded worker queue (64, then 128–256 within
-  resource and rate limits). CPU-bound →
-  ProcessPoolExecutor at os.cpu_count(). Mixed → async front, process pool back.
-  Beyond one machine → say so; ray/dask, never hand-rolled.
+- Baseline per-item time, throughput, and total wall-clock; set the target, then
+  prove the rate on a reproducible 50-item dry run.
+- Start conservatively and change concurrency one step per measurement. Stop
+  after two increases miss the predeclared material gain, or sooner when errors,
+  tail latency, rate limits, or spend worsen.
+- Apply backpressure: stream input through a bounded queue or batches with
+  O(concurrency) resident work. Never create one task per item.
 - Enforce real keyed caps for each scarce resource — host, provider, API key,
-  database partition — and evict idle keys. A comment is not a limiter.
-- Stream input through O(concurrency) resident tasks. Never create one task per
-  item; that fails before a million-item run starts.
+  CPU, memory, database partition — and evict idle keys. Published limits and a
+  hard spend cap are ceilings, not targets; back off on transient pressure.
 - Every item idempotent and checkpointed with an atomic commit (temp file plus
   rename, or one database transaction). One item's crash and its error logging
   never escape the worker; the run resumes, never restarts.
@@ -53,11 +56,13 @@ the bar is a model lab's — every core, as many instances as limits allow.
   HTTP, DNS pre-resolve and HEAD before GET when they actually save work.
 - A progress line every N items — rate, ETA, success %, error classes — to a
   log the orchestrator can read without a screen.
-- Paid or rate-limited calls: the provider's published limits and a hard spend
-  cap bound concurrency; back off only on transient errors.
 
-The toolkit, not a mandate — the generic I/O-bound shape (`cap_for` is a real
-keyed, idle-evicting limiter; `items` is a stream):
+Examples, not requirements: I/O-bound work can use an event loop plus a bounded
+queue; CPU-bound work can use a process pool up to the measured useful core
+count; mixed work can use an async front and process back; multi-machine work
+can use ray/dask instead of a hand-rolled coordinator. A generic I/O-bound shape
+follows (`concurrency` comes from the measurement loop, `cap_for` is a real
+keyed idle-evicting limiter, and `items` is a stream):
 ```python
 STOP = object()
 async def one(item):
@@ -74,7 +79,7 @@ async def worker(queue):
         try: await one(item)
         finally: queue.task_done()
     queue.task_done()
-async def main(items, concurrency=64):
+async def main(items, concurrency):
     queue = asyncio.Queue(maxsize=2 * concurrency)
     workers = [asyncio.create_task(worker(queue)) for _ in range(concurrency)]
     for item in items: await queue.put(item)
