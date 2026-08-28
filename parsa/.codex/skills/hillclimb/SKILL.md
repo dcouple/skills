@@ -36,7 +36,7 @@ first paint"), not "try memoizing something".
 Log every attempt, kept or reverted, so the search accumulates instead of
 circling.
 
-## Throughput — parallelize by default
+## Throughput
 
 When work has independent units, treat bounded parallelism as a hypothesis, not
 a mandate.
