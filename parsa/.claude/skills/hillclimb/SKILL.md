@@ -68,5 +68,5 @@ async def main(items):
 
 ## Report
 
-A table of attempts — hypothesis, before, after, verdict — then the accepted
-wins and what each rejected hypothesis ruled out.
+A table of attempts — hypothesis, before, after (metric and wall-clock),
+verdict — then the accepted wins and what each rejected hypothesis ruled out.
