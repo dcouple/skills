@@ -168,6 +168,15 @@ If you apply fixes after either lane reports issues:
   flow control, auth, async work, or finish-line wiring
 - wait for all active review lanes again before continuing
 
+Finish all refactoring and simplification before the first review pass.
+Review and fix cycles are capped at three passes total, even when a prompt says
+to repeat until clean; at the cap, report unresolved findings instead of
+starting a fourth pass. Complete all review-driven changes before QA; if QA
+requires a code change, discard its evidence, return using only the original
+budget's remaining review passes, and rerun QA so the final accepted phase is
+QA; with no pass left, report the QA finding as a blocker instead of changing
+code.
+
 If the Codex plugin is unavailable, run only the Claude review lane and treat
 it as the review gate.
 

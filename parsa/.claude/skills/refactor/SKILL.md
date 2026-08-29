@@ -1,15 +1,15 @@
 ---
 name: refactor
-description: Post-PR refactor pass. Sizes the diff against the remote default branch, fans out refactor-simple (and refactor-deep on large changes) as fresh subagents that run blind to each other, merges their plans once with max-severity rules, shows the merged report, and hands it to refactor-apply on the user's word. Use after a PR is open, or whenever the user asks to refactor or clean up the branch.
+description: Pre-review refactor pass. Sizes the diff against the remote default branch, fans out refactor-simple (and refactor-deep on large changes) as fresh subagents that run blind to each other, merges their plans once with max-severity rules, shows the merged report, and hands it to refactor-apply on the user's word. Use before final review, whether or not a PR is already open, or whenever the user asks to refactor or clean up the branch.
 argument-hint: "[--size=small|large] [--plan-only]"
 ---
 
 # Refactor
 
-One command for the post-PR quality pass. It sizes the change, runs the right
+One command for the pre-review quality pass. It sizes the change, runs the right
 analyses independently, merges once, stops for the user, then applies. It
-runs after review and before `fresh-eyes` on the PR body and before QA: it
-changes the head, and QA evidence must be current-head evidence.
+runs after implementation and before final review, `fresh-eyes` on the PR body,
+and QA; the PR may already be open, but QA is the final readiness gate.
 
 ## Why the analyses run blind
 
@@ -90,46 +90,9 @@ wait for the user's judgment on each.
 On the user's go, invoke `refactor-apply` on the merged report, auto-fixable
 first, then manual with the user. `refactor-apply` leaves its edits
 uncommitted; this step commits them as one scoped commit named for the plan
-and the round, so the adversary has an exact diff. Every repair is committed
-the same way before its review.
-
-Then run the adversarial loop as one continuous chain, and report when it
-ends. Three review passes is the cap.
-
-1. **Pass 1 reviews the apply commit.** A fresh subagent reads that commit's
-   diff alone (`git diff <sha>~1..<sha>`), briefed to prove it broke
-   something: every claim in the apply report is a claim to falsify; a
-   behaviour-preserving change must have preserved behaviour; a consolidation
-   must keep every edge case a caller relied on. A test that claims to fix a
-   defect runs on the parent (must fail) and the head (must pass);
-   characterization tests for behaviour-preserving changes may pass on both.
-   It returns CLEAN, or REGRESSION with `file:line` and a repro.
-2. **On REGRESSION, the applier repairs, then two reviewers look.** The
-   repro goes back to the apply session, which knows the code; the repair is
-   committed with the repro as a test proven failing on its parent. Then, in
-   the same message: the reviewer who found the finding gets the repair as a
-   follow-up in its own session, to re-run its repro and say whether that
-   finding is closed; and a fresh subagent reads the repair commit's diff
-   alone, briefed to break the repair itself, since a repair that changed
-   code can break an adjacent case the first reviewer was primed to look
-   past. The follow-up settles the finding; the fresh pass is the numbered
-   pass and counts toward the cap.
-3. **Pass 3 is the last.** Reaching it means each repair fixed the reported
-   inputs and broke the next; the repair before pass 3 is spec-driven: the
-   applier writes the input class as a test table, or replaces the mechanism
-   with a pure derivation, and stops rather than commits when the correct fix
-   needs scope beyond the files at hand. Whatever pass 3 finds goes to the
-   user with the plan.
-
-A CLEAN pass advances. At the cap, advance anyway: the survivors are reported
-as open Criticals beside the delta, and the user decides. Then re-run the
-analyses (step 2, fresh subagents) once and show the delta: what closed,
-what remains, anything new.
-
-On the first real run, two apply commits passed every check and their own new
-tests, and the adversary found a reproduced regression in each; the repairs
-then broke adjacent cases twice, with tests that passed trivially. The
-adversary told to falsify caught all of it.
+and the round. Run the repository checks named by the merged plan, then hand
+the final head to the workflow's single capped review phase. Do not start a
+separate refactor-review loop or rerun the analyses automatically.
 
 ## Rules
 
@@ -139,8 +102,5 @@ adversary told to falsify caught all of it.
   every other analysis.
 - Merge means cluster and keep the maximum severity.
 - If a subagent fails or returns no plan, say so and merge what exists.
-- The adversarial loop runs in one chain. Waiting on a human between rounds
-  turns ten minutes of agent work into hours; report at the end.
-- The reviewer who found a finding verifies its repair, in its own session;
-  a fresh reviewer hunts what the repair introduced. Two questions, two
-  readers.
+- Refactor ends before the shared review budget begins; final QA follows that
+  review and is never followed by more code changes.

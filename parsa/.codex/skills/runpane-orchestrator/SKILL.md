@@ -187,31 +187,37 @@ Use these durable states and transition only on recorded evidence:
    missing plan tasks or recoverable blockers back until complete. A work item
    naming one metric and a target runs `hillclimb` as the implementation loop:
    baseline first, then one change per measurement, accept or revert.
+   Before review, run any approved refactor or simplification work. For a
+   hand-written diff over 10 files or 500 lines, run `refactor --plan-only`,
+   offer its merged report to the user, and apply nothing without approval.
 5. `implementation_review`: use a fresh `implementation-reviewer` panel. Return
    legitimate fixes to the implementation authority and repeat on the new head.
+   Across the workstream, cap review-and-fix cycles at three passes total; every
+   later re-review uses this same budget, "repeat until clean" never authorizes
+   a fourth pass, and unresolved findings are reported at the cap.
 6. `preparing_pr`: use `prepare-pr` in the implementation authority to create
    scoped commits, safely rebase, check, push, publish the authorized visual,
    and create/update a non-draft PR. A semantic conflict is a blocker.
-   When the hand-written diff is large — the same >10 files or >500 lines
-   that marks medium — run `refactor --plan-only` here, before review and QA,
-   and put its merged report in front of the user with the PR. Applying is
-   the user's word, never automatic; a fix that lands returns through this
-   state so review and QA see the final head once. Under that size, offer it.
-   Post-PR order is fixed: review, then `refactor`, then `fresh-eyes` on the
-   PR body, then QA — the last two must see the final head and body.
+   PR preparation may happen before or after refactor and review, but it does
+   not finalize readiness. The fixed work-gate lifecycle is refactor or
+   simplify, capped review, `fresh-eyes` on the QA-ready PR body, then QA last
+   on the final head; only the administrative readiness update follows QA.
    `refactor` is Claude-run; a Codex workstream hands the branch to a Claude
    panel for it, as with the heavy lane.
 7. `pr_open`: heavy only, satisfied inside the orchestra handoff by its zone
    reviews and Must-Fix gate. Light and medium skip this state. Where it runs
    here: fresh current-head post-PR review panels, observed to completion;
    actionable feedback routes through the interrupt below, and only a completed
-   clean review advances to QA.
-8. `pr_qa`: once the PR exists — reviewed, where the lane runs state 7 — use a
-   fresh `pr-test-automation`
-   panel. Store reproducible current-head evidence and remaining manual gaps.
-9. `ci_rereview`: heavy only, satisfied inside the orchestra handoff. The wait
+   clean review advances toward QA.
+8. `ci_rereview`: heavy only, satisfied inside the orchestra handoff. The wait
    for current-head required checks survives in every lane through the PR-ready
    gate; the independent re-review is what light and medium skip.
+9. `pr_qa`: once the PR exists and its current-head review gates are complete,
+   use a fresh `pr-test-automation` panel. Store reproducible current-head
+   evidence and remaining manual gaps. A QA-driven code change invalidates that
+   evidence and returns using only the original budget's remaining review
+   passes before QA is rerun, so accepted QA is always last; with no pass left,
+   report the QA finding as a blocker instead of changing code.
 10. `ready_to_merge`: enter only when every readiness predicate below is true.
 11. `blocked`: record the exact missing decision/grant/conflict and keep
     monitoring other streams. When it clears, resume by deriving the earliest
@@ -221,8 +227,8 @@ Use these durable states and transition only on recorded evidence:
 
 From any post-PR state, actionable review feedback interrupts the normal next
 transition. Invoke `gh-address-comments` in the implementation authority. If a
-fix changes the head, return through implementation review, PR update, QA, and
-required checks — and, in the heavy lane, independent re-review. If feedback requires only an authorized explanation/resolution,
+fix changes the head, return through implementation review, PR update, required
+checks and, in the heavy lane, independent re-review before QA. If feedback requires only an authorized explanation/resolution,
 verify the GitHub readback and resume. Never stall waiting for a review that has
 not arrived.
 

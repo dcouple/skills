@@ -109,6 +109,14 @@ Split findings into:
 - Needs user input
 
 Apply straightforward fixes directly, then rerun the review gate when needed.
+Finish all refactoring and simplification before the first review pass.
+Review and fix cycles are capped at three passes total, even when a prompt says
+to repeat until clean; at the cap, report unresolved findings instead of
+starting a fourth pass. Complete all review-driven changes before QA; if QA
+requires a code change, discard its evidence, return using only the original
+budget's remaining review passes, and rerun QA so the final accepted phase is
+QA; with no pass left, report the QA finding as a blocker instead of changing
+code.
 
 ## Step 5.5: Generate Dev Migration SQL (If Schema Changed)
 

@@ -203,7 +203,7 @@ Done-plans included:
 - <list of plan files>
 ```
 
-Then size the PR and decide whether to offer `refactor`, the post-PR quality
+Then size the PR and decide whether to offer `refactor`, the pre-review quality
 pass:
 
 ```bash
@@ -220,5 +220,5 @@ pass? It merges once and stops before applying anything.
 ```
 
 Under that size, say nothing — a small PR gets nothing from it. Offer, never
-run: `refactor` is the user's call, and it edits the head that review and QA
-are about to see.
+run: `refactor` is the user's call; if accepted, it precedes final review, and
+QA remains the last readiness gate.
