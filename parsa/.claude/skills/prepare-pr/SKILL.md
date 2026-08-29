@@ -172,7 +172,7 @@ Use `$ARGUMENTS` as the PR title if provided, otherwise derive one from the done
 
 ### Step 4.5: Fresh Eyes on the PR Body
 
-Before finalizing the title and description, run the `fresh-eyes` skill on them
+Before finalizing the title and description, run the `cold-read` skill on them
 and apply its improvements. Human review has not been requested yet, so its
 creative freedom applies in full.
 
