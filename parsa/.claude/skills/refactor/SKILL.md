@@ -8,8 +8,8 @@ argument-hint: "[--size=small|large] [--plan-only]"
 
 One command for the post-PR quality pass. It sizes the change, runs the right
 analyses independently, merges once, stops for the user, then applies. It
-runs after review and before `fresh-eyes` on the PR body and before QA: it
-changes the head, and QA evidence must be current-head evidence.
+is a manual post-PR quality pass. It changes the head, so run it before
+QA when QA evidence must be current-head evidence.
 
 ## Why the analyses run blind
 
@@ -75,8 +75,8 @@ plan. The merged report is the same shape as the individual plans, so
 
 ### 4. Stop for the user
 
-Run `fresh-eyes` on the merged report first: a person reads it to decide what
-to change in their code. Fresh-eyes may reorder, retitle, and clarify;
+Run `cold-read` on the merged report first: a person reads it to decide what
+to change in their code. The cold-read may reorder, retitle, and clarify;
 severities, findings, and `file:line` stay as written. Then show it, Criticals
 in full, Warnings and Info summarised, with the auto-fixable and manual
 counts, and stop. This is the gate: nothing
