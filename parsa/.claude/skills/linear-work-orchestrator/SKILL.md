@@ -111,6 +111,5 @@ Stale / failed: <issue> — <classification> — <proposal>
 Dormant: <issues> — since <date>
 ```
 
-Maintain a standing `Orchestrator board` issue in the team with the
-portfolio label. Its comment holds the latest report and any grant lines.
-Edit it in place each sweep — state, not a log.
+State is in Linear — derive it from issues, statuses, and threads each
+sweep. Don't maintain a separate board issue.
