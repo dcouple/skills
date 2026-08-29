@@ -1,6 +1,6 @@
 ---
 name: hillclimb
-description: Sustained improvement of one named metric toward a target — measure a baseline, then loop hypothesis, implement, re-measure, accept or revert. Use for perf, bundle size, lint count, or test time. A one-off fix is /investigate; this is the loop.
+description: Sustained improvement of one named metric toward a target - measure a baseline, then loop hypothesis, implement, re-measure, accept or revert. Use for perf, bundle size, lint count, or test time. A one-off fix is /investigate; this is the loop.
 argument-hint: "[metric and target, e.g. 'cold start under 400ms']"
 ---
 
@@ -14,7 +14,7 @@ and never claim a win from reading the diff.
 1. Name one metric and the direction that counts as better. One, not three.
 2. Name the target that ends the run.
 3. Write the measurement method as a repeatable command and state it. Sample
-   enough to clear the noise — a median of N runs, not one. Freeze it;
+   enough to clear the noise - a median of N runs, not one. Freeze it;
    changing the method invalidates every number taken before the change.
 4. Record the baseline, plus a green run of the checks that have to keep
    passing.

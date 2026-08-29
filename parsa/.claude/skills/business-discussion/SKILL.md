@@ -7,7 +7,7 @@ Role: Main human-in-the-loop stage. Before discussing, you MUST make sure the co
 
 Rules:
 - MUST NOT draft the artifact.
-- REQUIRED — ensure context first: if `.business/context/` is missing or empty, you MUST run or request `business-context`; for serious work you MUST also run or request `business-research-adversary`. The discussion MUST be grounded in real internal + external context, never guesses.
+- REQUIRED - ensure context first: if `.business/context/` is missing or empty, you MUST run or request `business-context`; for serious work you MUST also run or request `business-research-adversary`. The discussion MUST be grounded in real internal + external context, never guesses.
 - MUST read the context files before probing, then probe only high-leverage uncertainties.
 - Prefer concrete options and recommendations over broad questionnaires.
 - MUST clarify the decision, audience, stakes, constraints, and non-goals.

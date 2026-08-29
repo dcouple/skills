@@ -231,13 +231,13 @@ Structure this section top-down: start with the big picture, then zoom into spec
 
 ### Architecture Overview
 
-High-level pseudocode showing how the pieces fit together — data flow, component relationships, API contracts. The reader should understand the overall approach before seeing any file-level details.
+High-level pseudocode showing how the pieces fit together - data flow, component relationships, API contracts. The reader should understand the overall approach before seeing any file-level details.
 
 For simple features (e.g. a single endpoint + UI page), a 2-3 sentence summary is sufficient. Reserve detailed architecture overviews for plans that introduce new data flows, new services, or cross-cutting changes.
 
 ### Key Pseudocode
 
-Focus on the **hot spots** — critical logic, tricky integration points, non-obvious decisions. Don't write pseudocode for straightforward CRUD or boilerplate.
+Focus on the **hot spots** - critical logic, tricky integration points, non-obvious decisions. Don't write pseudocode for straightforward CRUD or boilerplate.
 
 ```typescript
 // Pseudocode with CRITICAL details - don't write entire code
@@ -345,5 +345,5 @@ npm run typecheck          # TypeScript compilation
 - Don't skip validation because "it should work"
 - Don't mix async/await with callbacks
 - Don't hardcode values that should be in .env
-- Don't catch all errors — be specific with error types
+- Don't catch all errors - be specific with error types
 - Don't create new files when editing existing ones works

@@ -32,13 +32,13 @@ Shared review criteria used by both the PR review skill and the implementation-r
 
 **Webapp (Next.js frontend):**
 - Server Components by default; `"use client"` only when genuinely needed (hooks, event handlers, browser APIs)
-- `"use client"` placed at the smallest viable boundary — not on layouts or large parent containers
-- Thin pages — heavy logic lives in `_hooks/`, complex UI in `_components/`
-- No Server Actions — all data flows through the Express API
+- `"use client"` placed at the smallest viable boundary - not on layouts or large parent containers
+- Thin pages - heavy logic lives in `_hooks/`, complex UI in `_components/`
+- No Server Actions - all data flows through the Express API
 - No direct database access from the webapp
 
 **State management:**
-- Server data managed exclusively via TanStack Query — never duplicated into Zustand
+- Server data managed exclusively via TanStack Query - never duplicated into Zustand
 - Zustand used only for client/UI state (modals, theme, preferences)
 - Mutations use `useMutation` with `onSuccess` invalidation, not manual store updates
 - Components subscribe to Zustand via selectors, not full store objects
@@ -51,7 +51,7 @@ Shared review criteria used by both the PR review skill and the implementation-r
 ## 4. React and Component Design (Should-Fix)
 
 - Components under 200-300 lines; JSX under ~50 lines per component
-- Single responsibility — business logic separated from presentational rendering
+- Single responsibility - business logic separated from presentational rendering
 - Props destructured at the function signature, explicitly typed
 - Prop drilling through 3+ levels replaced with Context or state management
 - Hooks never called inside loops, conditionals, or nested functions
@@ -67,9 +67,9 @@ Shared review criteria used by both the PR review skill and the implementation-r
 ## 5. TypeScript (Should-Fix)
 
 - No `any` without a justifying comment; prefer `unknown` for genuinely unknown types
-- No `{}` as a type — use `Record<string, unknown>` or a named interface
+- No `{}` as a type - use `Record<string, unknown>` or a named interface
 - Type assertions (`as X`) include a comment explaining why
-- Double assertions (`as unknown as X`) are a strong code smell — flag these
+- Double assertions (`as unknown as X`) are a strong code smell - flag these
 - `import type` used for type-only imports
 - Interfaces preferred over type aliases for object shapes
 - No `I` prefix on interface names
@@ -105,17 +105,17 @@ under a misplaced surface is usually right and reusable; say so.
 
 ## 7. Tailwind CSS and shadcn/ui (Suggestion)
 
-- Semantic token classes (`text-primary`, `bg-background`) — no hardcoded hex/rgb values
-- Design tokens centralized in `globals.css` via `@theme` — not scattered in component files
-- shadcn/ui base components in `components/ui/` not modified directly — use wrapper pattern
+- Semantic token classes (`text-primary`, `bg-background`) - no hardcoded hex/rgb values
+- Design tokens centralized in `globals.css` via `@theme` - not scattered in component files
+- shadcn/ui base components in `components/ui/` not modified directly - use wrapper pattern
 - `cn()` argument ordering deliberate: `cn("base-classes", className)` for overridable, `cn(className, "forced")` for enforced
-- CVA used for component variants — not ad-hoc conditional class string concatenation
-- Radix UI accessibility props (`role`, `aria-*`, `data-state`) preserved — not stripped
+- CVA used for component variants - not ad-hoc conditional class string concatenation
+- Radix UI accessibility props (`role`, `aria-*`, `data-state`) preserved - not stripped
 - `{...props}` spread present on wrapper components for prop forwarding
 
 ## 8. Conventions (Suggestion)
 
-- All imports use `@/` aliases for local files, `@doozy/shared` for shared — no `../` relative imports
+- All imports use `@/` aliases for local files, `@doozy/shared` for shared - no `../` relative imports
 - Underscore-prefix locality: `_components/`, `_hooks/` for route-scoped files
 - File names match their default export
 - `const` by default, `let` only when reassignment required, never `var`

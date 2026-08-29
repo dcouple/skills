@@ -6,12 +6,12 @@ argument-hint: "[optional: commit message or description of what to commit]"
 
 # Commit Agent
 
-Commit only the changes you made in this session to the local branch. Ignore all other changes. **Do not ask for confirmation at any step — just classify, stage, commit, and report.**
+Commit only the changes you made in this session to the local branch. Ignore all other changes. **Do not ask for confirmation at any step - just classify, stage, commit, and report.**
 
 ## Step 1: Understand What Was Done
 
 Gather context about what you implemented:
-1. Check for plans in `./tmp/done-plans/` and `./tmp/ready-plans/` — if any exist, read them for file lists and feature descriptions.
+1. Check for plans in `./tmp/done-plans/` and `./tmp/ready-plans/` - if any exist, read them for file lists and feature descriptions.
 2. If no plans exist, use the conversation history to understand what files you created or modified and why.
 3. If `$ARGUMENTS` is provided and does NOT match the `type: description` commit message format, use it as additional context for what should be committed (it will be used for classification in Step 3, not as the commit message).
 
@@ -25,13 +25,13 @@ Gather context about what you implemented:
 
 For each changed file (whether staged or unstaged), determine if it was changed **by you in this session** or not:
 
-**Your changes** — include these:
+**Your changes** - include these:
 - Files you explicitly created or edited during this conversation
 - Files referenced in plans you implemented (done-plans or ready-plans)
 - Supporting changes (imports, types, config) that are clearly tied to your work
 - `./tmp/done-plans/` files and `./tmp/context.md` changes associated with your work
 
-**Not your changes** — skip these entirely:
+**Not your changes** - skip these entirely:
 - Files you did not touch in this conversation
 - Pre-existing modifications from before the session
 - Changes from other agents or manual edits unrelated to your task
@@ -45,7 +45,7 @@ If zero files are classified as yours, tell the user that no changes match this 
 
 ## Step 4: Stage and Verify
 
-1. `git add <specific files>` — only the files you changed. **Never** `git add .` or `git add -A`.
+1. `git add <specific files>` - only the files you changed. **Never** `git add .` or `git add -A`.
 2. Review the staged diff (`git diff --cached`) for secrets or credentials:
    - API keys, tokens, passwords
    - .env files or credential files
@@ -77,5 +77,5 @@ Files left uncommitted:
   - <file list, or "none">
 
 Next steps:
-  - `/prepare-pr` — Rebase, build, and open a PR
+  - `/prepare-pr` - Rebase, build, and open a PR
 ```

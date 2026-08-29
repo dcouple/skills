@@ -1,6 +1,6 @@
 ---
 name: refactor-deep
-description: Read-only comprehensive analysis of the branch against the remote default branch for large features — derives conventions per layer, hunts for correctness defects in the new code paths, and writes a prioritized refactor plan to ./tmp/. Usually run by the refactor orchestrator alongside refactor-simple; use directly on 10+ file changes.
+description: Read-only comprehensive analysis of the branch against the remote default branch for large features - derives conventions per layer, hunts for correctness defects in the new code paths, and writes a prioritized refactor plan to ./tmp/. Usually run by the refactor orchestrator alongside refactor-simple; use directly on 10+ file changes.
 ---
 
 # Deep Refactor
@@ -18,7 +18,7 @@ Thorough code quality analysis that:
 2. Learns the conventions of the repository you are in, per layer
 3. Analyzes each layer the diff touches against those conventions
 4. Hunts for correctness defects in the new code paths (the part that finds
-   real bugs — unguarded I/O, bypassed guards, lifecycle and cleanup gaps)
+   real bugs - unguarded I/O, bypassed guards, lifecycle and cleanup gaps)
 5. Checks cross-cutting concerns (SOLID, DRY, documentation, error handling)
 6. Writes a comprehensive, prioritized plan to `./tmp/`
 
@@ -32,7 +32,7 @@ Thorough code quality analysis that:
 For small/medium changes, use `refactor-simple` instead. Simple and deep are the whole
 set; on a large PR their findings overlap by about half and the rest is
 complementary, so running both is coverage, not redundancy. Do not run this
-command three times and merge the results — repeated runs on the same diff
+command three times and merge the results - repeated runs on the same diff
 converge on the same findings, and a merge step has been shown to lose the
 severe ones.
 
@@ -41,7 +41,7 @@ severe ones.
 ### Phase 0: Classification & Convention Discovery
 
 Diff against the merge-base with the remote default branch, never a bare local
-`main` — a stale local `main` pulls unrelated commits into the review and every
+`main` - a stale local `main` pulls unrelated commits into the review and every
 finding in them becomes a false positive.
 
 ```bash
@@ -55,19 +55,19 @@ git diff "$MB" --stat
 ```
 
 `$BASE` is the remote's real default branch (`main`, `master`, `develop`),
-never an assumed name. Diffing from the merge-base to the working tree — one
-revision, not two — includes committed, staged, and unstaged work, so a
+never an assumed name. Diffing from the merge-base to the working tree - one
+revision, not two - includes committed, staged, and unstaged work, so a
 pre-PR run sees the edits that are not committed yet.
 
 If the branch is behind `$BASE`, note it once as "rebase before merge"; it is
 not a finding and does not lower the score.
 
 **Classify:**
-- **Size**: Large (500-1000 lines) | Huge (>1000 lines) — of hand-written
+- **Size**: Large (500-1000 lines) | Huge (>1000 lines) - of hand-written
   change. Lockfiles, generated files, and vendored directories are excluded
   from the count and named as excluded.
 - **Type**: New Feature | Major Refactor | Enhancement
-- **Complexity**: Complex | Very Complex — judged on the change, not the line
+- **Complexity**: Complex | Very Complex - judged on the change, not the line
   count. A huge diff that is one mechanical operation is not Complex; say so.
 - **Layers**: list them as this repository names them (for example
   main/preload/renderer in an Electron app; api/webapp in a monorepo)
@@ -81,10 +81,10 @@ are in, never from a rule remembered from another repo:
 2. For each layer, read two or three exemplar files that neighbour the changed
    code and note how they import, structure, handle errors, test, and document.
 3. Before flagging any convention violation, confirm the convention exists
-   here — `grep` how many existing files already do the thing. If the codebase
+   here - `grep` how many existing files already do the thing. If the codebase
    does it everywhere, it is the convention, not a violation.
 
-Example — Doozy states "zero relative imports" in `CLAUDE.md`, and a grep
+Example - Doozy states "zero relative imports" in `CLAUDE.md`, and a grep
 confirms none exist, so `../` there is Critical. Pane has hundreds of `../`
 imports and no alias, so the same line in Pane is nothing. The rule is not the
 pattern; the repository is.
@@ -109,7 +109,7 @@ Proceeding with comprehensive analysis...
 
 For each layer the diff touches, check the changed code against the
 conventions discovered in Phase 0, citing the file that states each one.
-Typical dimensions — fill them from the repository, do not assume:
+Typical dimensions - fill them from the repository, do not assume:
 
 - **Import style**: alias vs relative, ordering, allowed cross-layer imports
 - **Layering**: where logic is allowed to live (handlers vs services, pages
@@ -124,7 +124,7 @@ Typical dimensions — fill them from the repository, do not assume:
   neighbouring code would have
 
 Worked example of what a filled-in checklist looks like (Doozy's monorepo,
-kept as illustration only — derive your own for the repo you are in):
+kept as illustration only - derive your own for the repo you are in):
 controllers use `authenticatedHandler` and hold no business logic; services
 extend `BaseService`, throw `ApiError`, own all business logic; validators
 are Zod schemas outside controllers; pages are thin JSX with all logic in an
@@ -137,16 +137,16 @@ repo's guidance says so.
 
 This is where deep earns its keep, and it does not shrink when the diff is
 big. If budget is tight, a convention row can be dropped; a correctness
-finding cannot — on Huge diffs, do this phase before Phase 1. For each new or
+finding cannot - on Huge diffs, do this phase before Phase 1. For each new or
 materially changed code path, ask what happens when it goes wrong, and read
 far enough to answer:
 
 - **Unguarded I/O**: child processes, sockets, streams, files. Is every
   `write`/`spawn` paired with an error handler? What happens on early exit,
   EPIPE, timeout, or a partial handshake? Would an unhandled error surface in
-  the process's global handler — and does this process even have one?
+  the process's global handler - and does this process even have one?
 - **Bypassed guards**: a check enforced in one entry point (a doctor, a
-  validator, a platform gate, a permission check) — is it also enforced on
+  validator, a platform gate, a permission check) - is it also enforced on
   every other entry point that reaches the same operation? Grep for the
   guard's usages.
 - **Lifecycle and cleanup**: is every started thing stopped? Timers cleared,
@@ -158,11 +158,11 @@ far enough to answer:
   (WSL/remote/browser), encodings; anything hardcoded that another platform
   would break.
 - **Untested surface**: new logic with no test where neighbouring code has
-  one — name the specific case that would have caught the defect above.
+  one - name the specific case that would have caught the defect above.
 
 Every finding here cites `file:line`, states the concrete failure ("child
 exits after `initialize` → EPIPE → uncaught in main process → error dialog"),
-and — where cheap — is reproduced. A reproduced defect is Critical; a
+and - where cheap - is reproduced. A reproduced defect is Critical; a
 plausible one is a Warning with the reproduction it needs.
 
 ### Phase 3: Cross-Cutting Concerns
@@ -245,7 +245,7 @@ that do not apply to this repo rather than marking them N/A]
 - Conventions (Phase 1):  [X/10]
 - Cross-cutting (Phase 3): [X/10]
 - Documentation:          [X/10]
-**Overall: X/10** — target ≥ 9.8
+**Overall: X/10** - target ≥ 9.8
 
 ## Recommendations
 1. Hand this plan to `refactor-apply` (auto-fixable first)
@@ -270,7 +270,7 @@ Plan: ./tmp/deep-refactor-plan-[timestamp].md
 Quality Score: X/10 (target 9.8)
 Files Analyzed: X · Critical: Y · Warnings: Z · Auto-fixable: W
 Key Issues:
-- [criticals, one line each — reproduced ones first]
+- [criticals, one line each - reproduced ones first]
 - [warnings summary]
 
 Return the plan path to the caller. When run standalone, ask before running `refactor-apply`.
@@ -285,7 +285,7 @@ owns that gate.
 - `--force-all-patterns`: Check all conventions regardless of classification
 - `--classify-as=<type>`: Override type classification
 - `--size=<size>`: Override size classification
-- `--strict`: Warnings count as Critical for the score and the target rises to 10/10 — strict is never looser than the default 9.8
+- `--strict`: Warnings count as Critical for the score and the target rises to 10/10 - strict is never looser than the default 9.8
 
 ## Success Checklist
 

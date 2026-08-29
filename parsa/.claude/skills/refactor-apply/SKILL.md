@@ -1,6 +1,6 @@
 ---
 name: refactor-apply
-description: Applies a refactor plan written by refactor-simple, refactor-deep, or the refactor orchestrator's merged report — auto-fixable items first, then manual items one at a time with the user, verifying with the repo's own checks after each group. Use only after the user has reviewed the plan and said to apply it.
+description: Applies a refactor plan written by refactor-simple, refactor-deep, or the refactor orchestrator's merged report - auto-fixable items first, then manual items one at a time with the user, verifying with the repo's own checks after each group. Use only after the user has reviewed the plan and said to apply it.
 argument-hint: "<plan-path> [--auto-only]"
 ---
 
@@ -14,7 +14,7 @@ directly.
 
 One plan file: an individual `./tmp/simple-refactor-plan-*.md` or
 `./tmp/deep-refactor-plan-*.md`, or the orchestrator's
-`./tmp/refactor-merged-*.md`. All three share the same shape — Critical /
+`./tmp/refactor-merged-*.md`. All three share the same shape - Critical /
 Warning / Info sections, each item with `file:line`, a fix, and an
 `Auto-fixable: Yes/No` flag.
 
@@ -22,7 +22,7 @@ Warning / Info sections, each item with `file:line`, a fix, and an
 
 ### 1. Read the plan and the repo's checks
 
-Parse every item. Then find what "passing" means in this repository — its
+Parse every item. Then find what "passing" means in this repository - its
 lint, typecheck, and test commands from `package.json`, `Makefile`, `CLAUDE.md`
 or `AGENTS.md`. Run them once before touching anything so a pre-existing
 failure is not mistaken for one you caused.
@@ -34,7 +34,7 @@ Apply every `Auto-fixable: Yes` item, grouped by file. Rules:
 - Change only the lines the finding names and what the fix strictly requires.
   A refactor pass does not widen a PR's scope.
 - Never alter behaviour to satisfy a convention; if a fix would, it is not
-  auto-fixable — move it to manual and say why.
+  auto-fixable - move it to manual and say why.
 - After the group, run the repo's checks. Fix straightforward failures you
   introduced; revert an item you cannot make pass and report it.
 
@@ -42,7 +42,7 @@ Apply every `Auto-fixable: Yes` item, grouped by file. Rules:
 
 ### 3. Manual, one at a time with the user
 
-For each `Auto-fixable: No` item, in plan priority order — Critical first:
+For each `Auto-fixable: No` item, in plan priority order - Critical first:
 state the finding, the proposed change, and any judgment call it needs; wait
 for the user's answer; apply; run the checks. The user may skip any item; a
 skipped Critical is recorded, not argued.
