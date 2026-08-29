@@ -1,6 +1,6 @@
 ---
 name: cold-read
-description: Walk through something with zero context — a document, a process, instructions, code — and report what's broken, confusing, or contradictory. Always dispatch as a fresh sub-agent with no conversation history — the zero context is the point.
+description: Give a fresh agent something to walk through with zero context — a document, a process, instructions, code. It reports what's broken, confusing, or contradictory. A fresh perspective on something before it ships. Always dispatch as a fresh sub-agent with no conversation history — the zero context is the point.
 ---
 
 # Cold Read
