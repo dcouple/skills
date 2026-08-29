@@ -1,16 +1,18 @@
 ---
 name: cold-read
-description: Walk through something with zero context — a document, a process, instructions, code — and report what's broken, confusing, or contradictory. The agent's ignorance is the tool.
+description: Walk through something with zero context — a document, a process, instructions, code — and report what's broken, confusing, or contradictory.
 ---
 
 # Cold Read
 
-You know nothing about this. Walk through it start to finish. Report
-what's broken, confusing, or contradictory.
+You know nothing about this. You're seeing it for the first time at
+8am with groggy eyes. Walk through it start to finish.
 
-Then fix what you can. Restructure, cut, rewrite — whatever makes it
-survive a stranger's first read. Claims, numbers, and evidence are
-read-only; everything else is fair game.
+Report what's broken, confusing, or contradictory. Report what could be
+described more simply. Report what information you don't have that you
+need — do you know the what, why, how, when, where? Be thorough about
+what you don't know and what you'd need to know.
 
-Hand the result to a fresh-context agent running this same skill. Repeat
-until a pass changes nothing. Cap: 3 passes.
+Don't fix anything. You don't have the context to know what the fixes
+should be. Just explain what you experienced as someone walking through
+this for the first time.
