@@ -107,7 +107,7 @@ probe verbatim before selecting a lane: "is this addressing the root cause or a
 symptom? dig deep" — a premise-changing answer reopens `discussion`, and the
 lane choice waits for it. And before any deliverable addressed to a person is
 handed off — the pull request body above all — the producing agent runs
-`fresh-eyes` on it.
+
 
 ### What Each Lane Buys
 
@@ -192,15 +192,7 @@ Use these durable states and transition only on recorded evidence:
 6. `preparing_pr`: use `prepare-pr` in the implementation authority to create
    scoped commits, safely rebase, check, push, publish the authorized visual,
    and create/update a non-draft PR. A semantic conflict is a blocker.
-   When the hand-written diff is large — the same >10 files or >500 lines
-   that marks medium — run `refactor --plan-only` here, before review and QA,
-   and put its merged report in front of the user with the PR. Applying is
-   the user's word, never automatic; a fix that lands returns through this
-   state so review and QA see the final head once. Under that size, offer it.
-   Post-PR order is fixed: review, then `refactor`, then `fresh-eyes` on the
-   PR body, then QA — the last two must see the final head and body.
-   `refactor` is Claude-run; a Codex workstream hands the branch to a Claude
-   panel for it, as with the heavy lane.
+   Post-PR order is fixed: review, then QA.
 7. `pr_open`: heavy only, satisfied inside the orchestra handoff by its zone
    reviews and Must-Fix gate. Light and medium skip this state. Where it runs
    here: fresh current-head post-PR review panels, observed to completion;
