@@ -1,6 +1,6 @@
 # Color Palette & Brand Style
 
-**This is the single source of truth for all colors and brand-specific styles.** To customize diagrams for your own brand, edit this file — everything else in the skill is universal.
+**This is the single source of truth for all colors and brand-specific styles.** To customize diagrams for your own brand, edit this file - everything else in the skill is universal.
 
 ---
 

@@ -36,12 +36,12 @@ Only research what's needed. Let the conversation guide what needs investigating
 - Ask targeted questions about preferences, constraints, and goals
 - Explore different approaches and their tradeoffs
 - Spawn sub-agents mid-conversation if new questions arise
-- Be opinionated — share recommendations with reasoning, but defer to user judgment
+- Be opinionated - share recommendations with reasoning, but defer to user judgment
 
 ### Prototype before you ask
 
 Classify every fork question before you surface it. If the answer is
-observable by running something — behavior, timing, output, perf, layout —
+observable by running something - behavior, timing, output, perf, layout -
 build the cheapest throwaway probe outside the project tree, run it, and
 present the result with a recommendation instead of the question. Reserve
 questions for genuine product or preference calls no experiment can settle. A
@@ -52,9 +52,9 @@ react to instead of a decision to make.
 
 ```
 Suggested next steps:
-- `/plan [description]` — Create an implementation plan
-- `/discussion [follow-up]` — Continue exploring a specific aspect
-- `/research-web [topic]` — Deep-dive into external documentation
+- `/plan [description]` - Create an implementation plan
+- `/discussion [follow-up]` - Continue exploring a specific aspect
+- `/research-web [topic]` - Deep-dive into external documentation
 ```
 
 Topic to discuss: $ARGUMENTS

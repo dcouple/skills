@@ -74,7 +74,7 @@ Draft tone guidance (read this every time):
 - **Emotional honesty where natural.** "was mad enough to fix it myself", "took me a while to untangle". Don't force it, don't suppress it.
 - **No corporate phrasing.** No "I wanted to share", "I hope this is helpful", "happy to provide more context", "looking forward to your thoughts". These are AI tells.
 - **No bulleted "key takeaways" in informal comments.** Prose only. Save bullets for upstream issue bodies where structure pulls its weight.
-- **No em dashes.** Hard rule. Only `,`, `;`, `:`, `-` (hyphen-minus for compounds and lists), or sentence breaks. Scan every draft for `—` before presenting and rewrite any that appear.
+- **No em dashes.** Hard rule. Only `,`, `;`, `:`, `-` (hyphen-minus for compounds and lists), or sentence breaks. Scan every draft for `-` before presenting and rewrite any that appear.
 - **No "Summary / Symptom / Root Cause / Impact / Solution" section headers in informal comments.** This is an AI-writing tell. Save structured markdown for upstream issue bodies.
 - **Don't always close parentheticals perfectly.** Slightly imperfect punctuation is more human than ChatGPT-grade polish. Don't insert typos performatively, but don't obsessively polish either.
 - **Don't summarize at the end.** Human comments trail off; AI comments tie a bow.

@@ -236,7 +236,7 @@ draft there.
 
 After saving the plan, run the review gates. Do not skip this step.
 
-1. **Claude review lane** — spawn a `plan-reviewer` sub-agent to review the
+1. **Claude review lane** - spawn a `plan-reviewer` sub-agent to review the
    plan:
 
 ```
@@ -276,8 +276,8 @@ Task tool:
    treat it as the review gate.
 
 3. **Triage and apply.** Split the combined review findings into two buckets:
-   - **Auto-fixable** — Straightforward suggestions (missing details, small corrections, obvious improvements) that don't require a design decision. Apply these directly to the plan.
-   - **Needs user input** — Questions about requirements, design trade-offs, ambiguous scope, or anything where multiple valid approaches exist.
+   - **Auto-fixable** - Straightforward suggestions (missing details, small corrections, obvious improvements) that don't require a design decision. Apply these directly to the plan.
+   - **Needs user input** - Questions about requirements, design trade-offs, ambiguous scope, or anything where multiple valid approaches exist.
 
    Apply all auto-fixable changes to the plan file silently.
 
@@ -287,9 +287,9 @@ Task tool:
 
 4. **Present to the user:**
 
-   **a) Plan Summary** — 3-5 bullet points covering what the plan does.
+   **a) Plan Summary** - 3-5 bullet points covering what the plan does.
 
-   **b) Questions for You** — Only combined review findings that need the user's input. For each one:
+   **b) Questions for You** - Only combined review findings that need the user's input. For each one:
    - The reviewer's question or concern
    - **Context**: What the surrounding functionality does and why this matters. Reference specific files, patterns, or behaviors.
 
@@ -308,7 +308,7 @@ Task tool:
    Research dossier: ./tmp/plan-artifacts/[dossier-filename]
    ```
 
-   **d) Next step prompt** — Always end with: "Want to run another review pass, or is this ready to implement?"
+   **d) Next step prompt** - Always end with: "Want to run another review pass, or is this ready to implement?"
 
 5. **If the user wants changes or another review pass:**
    - Apply any changes the user requested.
@@ -320,7 +320,7 @@ Task tool:
 
 **Do not treat the plan as ready if factual blockers remain unresolved.**
 
-## Step 6: Return the Plan — DO NOT IMPLEMENT
+## Step 6: Return the Plan - DO NOT IMPLEMENT
 
 Once the user confirms the plan is ready, tell them:
 
@@ -336,7 +336,7 @@ Optional Codex executor (gpt-5.6-sol, medium; use xhigh for harder work):
 /implement --codex ./tmp/ready-plans/[filename]
 ```
 
-**CRITICAL: Your job ends here.** Do NOT start implementing the plan. Do NOT spawn implementer agents. Do NOT write or modify any application code. The `/create-plan` skill only produces a plan file — implementation is a separate step that the user will trigger themselves with `/implement`.
+**CRITICAL: Your job ends here.** Do NOT start implementing the plan. Do NOT spawn implementer agents. Do NOT write or modify any application code. The `/create-plan` skill only produces a plan file - implementation is a separate step that the user will trigger themselves with `/implement`.
 
 ## Quality Checklist
 

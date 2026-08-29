@@ -66,11 +66,11 @@ Order PRs chronologically (oldest first).
 
 ## Step 3: Generate the Testing Checklist
 
-Analyze all changes across every PR and produce a **single consolidated testing checklist** with four tiers. Tests should be specific to what actually changed — not generic app tests.
+Analyze all changes across every PR and produce a **single consolidated testing checklist** with four tiers. Tests should be specific to what actually changed - not generic app tests.
 
 ### Tier definitions
 
-**🔴 Must Test** — Things that will break the app or lose data if wrong. Includes:
+**🔴 Must Test** - Things that will break the app or lose data if wrong. Includes:
 - Data mutations (create, update, delete flows)
 - Auth and permission changes
 - Database schema changes and migrations
@@ -78,7 +78,7 @@ Analyze all changes across every PR and produce a **single consolidated testing 
 - API breaking changes (changed request/response shapes)
 - Security-sensitive code
 
-**🟡 Important to Test** — Significant user-facing changes that should work correctly. Includes:
+**🟡 Important to Test** - Significant user-facing changes that should work correctly. Includes:
 - New UI pages or flows
 - Modified business logic
 - New or changed API endpoints
@@ -86,13 +86,13 @@ Analyze all changes across every PR and produce a **single consolidated testing 
 - WebSocket / real-time changes
 - Third-party integration changes
 
-**🔵 Nice to Test** — Lower-risk changes worth a quick check. Includes:
+**🔵 Nice to Test** - Lower-risk changes worth a quick check. Includes:
 - Styling and layout changes
 - Copy/text updates
 - Sort order or display logic
 - Minor UX improvements
 
-**⚪ Not Important** — Changed but very low risk. Skip unless you have time. Includes:
+**⚪ Not Important** - Changed but very low risk. Skip unless you have time. Includes:
 - Refactors with no behavior change
 - Dev tooling and config changes
 - Documentation updates
@@ -108,7 +108,7 @@ Each test item should include:
 
 ## Step 4: Identify Pre-Deploy Requirements
 
-Scan the full diff for anything that needs to happen **before or during** the production deploy. This section is critical — missing an ops requirement can cause the deploy to fail or the app to break.
+Scan the full diff for anything that needs to happen **before or during** the production deploy. This section is critical - missing an ops requirement can cause the deploy to fail or the app to break.
 
 ### 4a: Schema Changes
 
@@ -137,7 +137,7 @@ git diff origin/main...origin/staging --name-only | grep -E '(config/|\.env)'
 
 For each new environment variable or secret found:
 - Note the variable name and which service needs it (API, webapp)
-- Check if it already exists in `config/secrets-mapping.json` — if not, flag it
+- Check if it already exists in `config/secrets-mapping.json` - if not, flag it
 - Indicate whether it needs to be set in Cloud Run, Firebase, or GCP Secret Manager
 
 ### 4c: Infrastructure Changes
@@ -173,7 +173,7 @@ git diff origin/main...origin/staging --name-only | grep -iE '(script|backfill|m
 
 ### Compile the Pre-Deploy Requirements
 
-Gather all findings from 4a–4e into a single **Pre-Deploy Requirements** section. If nothing was found in a sub-step, omit it. If NO pre-deploy requirements were found at all, include a simple "No pre-deploy requirements — this is a clean code-only release." note.
+Gather all findings from 4a–4e into a single **Pre-Deploy Requirements** section. If nothing was found in a sub-step, omit it. If NO pre-deploy requirements were found at all, include a simple "No pre-deploy requirements - this is a clean code-only release." note.
 
 ## Step 5: Run Automated Checks
 
@@ -213,7 +213,7 @@ Use this exact structure for the PR body:
 
 <!-- If there are direct commits not associated with a PR -->
 ### Direct Commits
-- `[sha]` [commit message] — [brief explanation]
+- `[sha]` [commit message] - [brief explanation]
 
 ---
 
@@ -246,7 +246,7 @@ Use this exact structure for the PR body:
 ## Pre-Deploy Requirements
 
 <!-- If no requirements found: -->
-<!-- No pre-deploy requirements — this is a clean code-only release. -->
+<!-- No pre-deploy requirements - this is a clean code-only release. -->
 
 <!-- Include only the sections that apply: -->
 
@@ -271,7 +271,7 @@ COMMIT;
 - [ ] Terraform applied via CI
 
 ### New Dependencies
-- [ ] [dependency/service] — [what it's used for, any API keys needed]
+- [ ] [dependency/service] - [what it's used for, any API keys needed]
 
 ### Data Backfills
 - [ ] [description of backfill/script and when to run it]
@@ -304,7 +304,7 @@ EOF
 )"
 ```
 
-Use `$ARGUMENTS` as the PR title if provided, otherwise use: `Release: [date] — [brief summary of key changes]`
+Use `$ARGUMENTS` as the PR title if provided, otherwise use: `Release: [date] - [brief summary of key changes]`
 
 ## Step 7: Report
 
@@ -333,8 +333,8 @@ PR: <url>
 
 ## Rules
 
-- Be SPECIFIC — every test must trace back to an actual change in the diff, not generic app behavior
-- Keep the total checklist practical — aim for 10-20 test items total, not 50
+- Be SPECIFIC - every test must trace back to an actual change in the diff, not generic app behavior
+- Keep the total checklist practical - aim for 10-20 test items total, not 50
 - The summary should help someone who hasn't seen any of the PRs understand what this release contains
 - If the diff between staging and main is empty, tell the user there's nothing to release and stop
-- Do not push any code — the PR is created directly from the existing staging and main branches on the remote
+- Do not push any code - the PR is created directly from the existing staging and main branches on the remote

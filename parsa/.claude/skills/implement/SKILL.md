@@ -57,7 +57,7 @@ intent.
 
 **Collect into a "Manual Steps" list** and present to the user before proceeding.
 
-> **Note:** Schema/migration handling is done automatically in Step 5.5 after implementation and review — do NOT handle it here.
+> **Note:** Schema/migration handling is done automatically in Step 5.5 after implementation and review - do NOT handle it here.
 
 ## Step 3: Choose Execution Strategy
 
@@ -154,8 +154,8 @@ Task tool:
 
 After both lanes finish, combine the findings into one review result. Triage the
 combined findings:
-- **Auto-fixable** — apply the fixes directly
-- **Needs user input** — surface clearly to the user
+- **Auto-fixable** - apply the fixes directly
+- **Needs user input** - surface clearly to the user
 
 Do not ask the user questions from either lane before both lanes complete.
 Always wait for every active review lane, merge overlapping findings, and then
@@ -196,7 +196,7 @@ COMMIT;
 ```bash
 npm run db:migrate:dev
 ```
-(Or whatever the actual command is — run it and show the result.)
+(Or whatever the actual command is - run it and show the result.)
 
 3. Only include additive SQL (CREATE, ADD). If destructive SQL (DROP, ALTER type) appears, flag it and ask the user to confirm before proceeding.
 
@@ -213,7 +213,7 @@ mv ./tmp/ready-plans/<plan-file>.md ./tmp/done-plans/
 ```
 
 Create `./tmp/done-plans/` if it doesn't exist. Only move the plan when all
-tasks are confirmed complete — if the review pass found unresolved issues, wait
+tasks are confirmed complete - if the review pass found unresolved issues, wait
 until they are fixed.
 
 ## Step 7: Present Results
@@ -253,7 +253,7 @@ Plan moved to: ./tmp/done-plans/<plan-file>.md
 
 Next steps:
 - Fix any issues flagged above
-- `/prepare-pr` — Commit, build, and open/update a PR
+- `/prepare-pr` - Commit, build, and open/update a PR
 ```
 
 If either review lane found issues, offer to fix them before the user commits.

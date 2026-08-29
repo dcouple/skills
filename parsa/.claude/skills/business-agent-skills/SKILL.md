@@ -1,6 +1,6 @@
 ---
 name: business-agent-skills
-description: Orchestrate business work from a captured task through context, discussion, spec, artifact, review, and release — each stage in fresh context via filesystem handoff.
+description: Orchestrate business work from a captured task through context, discussion, spec, artifact, review, and release - each stage in fresh context via filesystem handoff.
 ---
 
 Rules: You MUST NOT do all the work in one context. Each stage MUST run fresh and hand the next stage a file under `.business/`.

@@ -62,7 +62,7 @@ and browser URLs, upload-or-reuse status, timestamp, and content-verification
 result. Never put credentials or sensitive source material in the manifest.
 
 Commit the image only when it is embedded in tracked docs (a README, design
-doc) that needs a stable in-repo path — then `.github/pr-assets/` or
+doc) that needs a stable in-repo path - then `.github/pr-assets/` or
 `docs/`, referenced with a blob URL + `?raw=1`, e.g.
 `https://github.com/<owner>/<repo>/blob/<branch>/.github/pr-assets/<image>.png?raw=1`.
 Keep `.excalidraw` sources outside the repo unless the user asks to track them.
@@ -122,7 +122,7 @@ For review diagrams, assume the reader is smart but has not learned this subsyst
 
 ## Customization
 
-**All colors and brand-specific styles live in one file:** `references/color-palette.md`. Read it before generating any diagram and use it as the single source of truth for all color choices — shape fills, strokes, text colors, evidence artifact backgrounds, everything.
+**All colors and brand-specific styles live in one file:** `references/color-palette.md`. Read it before generating any diagram and use it as the single source of truth for all color choices - shape fills, strokes, text colors, evidence artifact backgrounds, everything.
 
 To make this skill produce diagrams in your own brand style, edit `color-palette.md`. Everything else in this file is universal design methodology and Excalidraw best practices.
 
@@ -136,7 +136,7 @@ A diagram isn't formatted text. It's a visual argument that shows relationships,
 
 **The Isomorphism Test**: If you removed all text, would the structure alone communicate the concept? If not, redesign.
 
-**The Education Test**: Could someone learn something concrete from this diagram, or does it just label boxes? A good diagram teaches—it shows actual formats, real event names, concrete examples.
+**The Education Test**: Could someone learn something concrete from this diagram, or does it just label boxes? A good diagram teaches-it shows actual formats, real event names, concrete examples.
 
 **The Redundancy Test**: If the diagram is just the PR description broken into red and green rectangles, discard it. A good diagram uses spatial relationships, arrows, boundaries, and shape to reveal something the prose does not.
 
@@ -363,20 +363,20 @@ Before JSON, mentally trace how the eye moves through the diagram. There should 
 Only now create the Excalidraw elements. **See below for how to handle large diagrams.**
 
 ### Step 6: Render & Validate (MANDATORY)
-After generating the JSON, you MUST run the render-view-fix loop until the diagram looks right. This is not optional — see the **Render & Validate** section below for the full process.
+After generating the JSON, you MUST run the render-view-fix loop until the diagram looks right. This is not optional - see the **Render & Validate** section below for the full process.
 
 ---
 
 ## Large / Comprehensive Diagram Strategy
 
-**For comprehensive or technical diagrams, you MUST build the JSON one section at a time.** Do NOT attempt to generate the entire file in a single pass. This is a hard constraint — Claude Code has a ~32,000 token output limit per response, and a comprehensive diagram easily exceeds that in one shot. Even if it didn't, generating everything at once leads to worse quality. Section-by-section is better in every way.
+**For comprehensive or technical diagrams, you MUST build the JSON one section at a time.** Do NOT attempt to generate the entire file in a single pass. This is a hard constraint - Claude Code has a ~32,000 token output limit per response, and a comprehensive diagram easily exceeds that in one shot. Even if it didn't, generating everything at once leads to worse quality. Section-by-section is better in every way.
 
 ### The Section-by-Section Workflow
 
 **Phase 1: Build each section**
 
 1. **Create the base file** with the JSON wrapper (`type`, `version`, `appState`, `files`) and the first section of elements.
-2. **Add one section per edit.** Each section gets its own dedicated pass — take your time with it. Think carefully about the layout, spacing, and how this section connects to what's already there.
+2. **Add one section per edit.** Each section gets its own dedicated pass - take your time with it. Think carefully about the layout, spacing, and how this section connects to what's already there.
 3. **Use descriptive string IDs** (e.g., `"trigger_rect"`, `"arrow_fan_left"`) so cross-section references are readable.
 4. **Namespace seeds by section** (e.g., section 1 uses 100xxx, section 2 uses 200xxx) to avoid collisions.
 5. **Update cross-section bindings** as you go. When a new section's element needs to bind to an element from a previous section (e.g., an arrow connecting sections), edit the earlier element's `boundElements` array at the same time.
@@ -392,7 +392,7 @@ Fix any alignment or binding issues before rendering.
 
 **Phase 3: Render & validate**
 
-Now run the render-view-fix loop from the Render & Validate section. This is where you'll catch visual issues that aren't obvious from JSON — overlaps, clipping, imbalanced composition.
+Now run the render-view-fix loop from the Render & Validate section. This is where you'll catch visual issues that aren't obvious from JSON - overlaps, clipping, imbalanced composition.
 
 ### Section Boundaries
 
@@ -400,7 +400,7 @@ Plan your sections around natural visual groupings from the diagram plan. A typi
 
 - **Section 1**: Entry point / trigger
 - **Section 2**: First decision or routing
-- **Section 3**: Main content (hero section — may be the largest single section)
+- **Section 3**: Main content (hero section - may be the largest single section)
 - **Section 4-N**: Remaining phases, outputs, etc.
 
 Each section should be independently understandable: its elements, internal arrows, and any cross-references to adjacent sections.
@@ -490,7 +490,7 @@ Lines + free-floating text often creates a cleaner result than boxes + contained
 
 ## Shape Meaning
 
-Choose shape based on what it represents—or use no shape at all:
+Choose shape based on what it represents-or use no shape at all:
 
 | Concept Type | Shape | Why |
 |--------------|-------|-----|
@@ -510,11 +510,11 @@ Choose shape based on what it represents—or use no shape at all:
 
 ## Color as Meaning
 
-Colors encode information, not decoration. Every color choice should come from `references/color-palette.md` — the semantic shape colors, text hierarchy colors, and evidence artifact colors are all defined there.
+Colors encode information, not decoration. Every color choice should come from `references/color-palette.md` - the semantic shape colors, text hierarchy colors, and evidence artifact colors are all defined there.
 
 **Key principles:**
 - Each semantic purpose (start, end, decision, AI, error, etc.) has a specific fill/stroke pair
-- Free-floating text uses color for hierarchy (titles, subtitles, details — each at a different level)
+- Free-floating text uses color for hierarchy (titles, subtitles, details - each at a different level)
 - Evidence artifacts (code snippets, JSON examples) use their own dark background + colored text scheme
 - Always pair a darker stroke with a lighter fill for contrast
 
@@ -527,15 +527,15 @@ Colors encode information, not decoration. Every color choice should come from `
 For clean, professional diagrams:
 
 ### Roughness
-- `roughness: 0` — Clean, crisp edges. Use for modern/technical diagrams.
-- `roughness: 1` — Hand-drawn, organic feel. Use for brainstorming/informal diagrams.
+- `roughness: 0` - Clean, crisp edges. Use for modern/technical diagrams.
+- `roughness: 1` - Hand-drawn, organic feel. Use for brainstorming/informal diagrams.
 
 **Default to 0** for most professional use cases.
 
 ### Stroke Width
-- `strokeWidth: 1` — Thin, elegant. Good for lines, dividers, subtle connections.
-- `strokeWidth: 2` — Standard. Good for shapes and primary arrows.
-- `strokeWidth: 3` — Bold. Use sparingly for emphasis (main flow line, key connections).
+- `strokeWidth: 1` - Thin, elegant. Good for lines, dividers, subtle connections.
+- `strokeWidth: 2` - Standard. Good for shapes and primary arrows.
+- `strokeWidth: 3` - Bold. Use sparingly for emphasis (main flow line, key connections).
 
 ### Opacity
 **Always use `opacity: 100` for all elements.** Use color, size, and stroke width to create hierarchy instead of transparency.
@@ -608,7 +608,7 @@ See `references/element-templates.md` for copy-paste JSON templates for each ele
 
 ## Render & Validate (MANDATORY)
 
-You cannot judge a diagram from JSON alone. After generating or editing the Excalidraw JSON, you MUST render it to PNG, view the image, and fix what you see — in a loop until it's right. This is a core part of the workflow, not a final check.
+You cannot judge a diagram from JSON alone. After generating or editing the Excalidraw JSON, you MUST render it to PNG, view the image, and fix what you see - in a loop until it's right. This is a core part of the workflow, not a final check.
 
 ### How to Render
 
@@ -624,13 +624,13 @@ This outputs a PNG next to the `.excalidraw` file. Then use the available image 
 
 After generating the initial JSON, run this cycle:
 
-**1. Render & View** — Run the render script, then Read the PNG.
+**1. Render & View** - Run the render script, then Read the PNG.
 
-**2. Audit against your original vision** — Before looking for bugs, compare the rendered result to what you designed in Steps 1-4. Ask:
+**2. Audit against your original vision** - Before looking for bugs, compare the rendered result to what you designed in Steps 1-4. Ask:
 - Does the visual structure match the conceptual structure you planned?
 - Does each section use the pattern you intended (fan-out, convergence, timeline, etc.)?
 - Does the eye flow through the diagram in the order you designed?
-- Is the visual hierarchy correct — hero elements dominant, supporting elements smaller?
+- Is the visual hierarchy correct - hero elements dominant, supporting elements smaller?
 - For technical diagrams: are the evidence artifacts (code snippets, data examples) readable and properly placed?
 - For PR diagrams: does the rendered image tell a non-redundant before/after story through structure, not just labels?
 - Would the image still communicate the main change if the prose paragraphs were removed?
@@ -650,7 +650,7 @@ After generating the initial JSON, run this cycle:
 - A horizontally sprawling image whose important content is hard to scan in a GitHub PR
 - PR-specific defects: the published image URL 404s, the PR body image does not render, or Markdown formatting collapses into a single paragraph.
 
-**4. Fix** — Edit the JSON to address everything you found. Common fixes:
+**4. Fix** - Edit the JSON to address everything you found. Common fixes:
 - Widen containers when text is clipped
 - Adjust `x`/`y` coordinates to fix spacing and alignment
 - Add intermediate waypoints to arrow `points` arrays to route around elements
@@ -659,9 +659,9 @@ After generating the initial JSON, run this cycle:
 - Shrink titles and labels before enlarging the diagram further.
 - Replace long labels with a diagrammatic construct: boundary, queue, gate, loop, timeline, or swimlane.
 
-**5. Re-render & re-view** — Run the render script again and Read the new PNG.
+**5. Re-render & re-view** - Run the render script again and Read the new PNG.
 
-**6. Repeat** — Keep cycling until the diagram passes both the vision check (Step 2) and the defect check (Step 3). Typically takes 2-4 iterations. Don't stop after one pass just because there are no critical bugs — if the composition could be better, improve it.
+**6. Repeat** - Keep cycling until the diagram passes both the vision check (Step 2) and the defect check (Step 3). Typically takes 2-4 iterations. Don't stop after one pass just because there are no critical bugs - if the composition could be better, improve it.
 
 ### When to Stop
 

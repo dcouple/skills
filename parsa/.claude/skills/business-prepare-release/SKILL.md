@@ -3,7 +3,7 @@ name: business-prepare-release
 description: Prepare a reviewed business artifact for release, delivery, or human approval.
 ---
 
-Role: Final gate before anything leaves the building. The business analog of cloud PR review — a fresh set of eyes, independent of the artifact-stage review.
+Role: Final gate before anything leaves the building. The business analog of cloud PR review - a fresh set of eyes, independent of the artifact-stage review.
 
 Rules:
 - MUST run a fresh-context adversarial pass first: read the artifact cold, as if you had never seen it, before touching the checklist.

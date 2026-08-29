@@ -171,7 +171,7 @@ When testing an open PR, preserve the result where reviewers will look first:
 
   If release creation or upload is not authorized, do not fall back to a temporary host. Write the intended filenames, manifest, exact `gh release create` / `gh release upload` commands, and ready-to-paste marked PR Markdown into the artifact folder; report that durable publication is blocked.
 - Compute the source SHA-256 before upload. Name every asset with stable context plus content identity, for example `pr-<number>-<head-short-sha>-<content-sha12>-<step>.png`. Use a branch slug when the PR number does not exist yet. Sanitize names to portable lowercase ASCII.
-- Make reruns idempotent. Inspect release assets before uploading. If the exact name exists and its GitHub digest—or a downloaded byte-for-byte hash when no digest is present—matches the local file, reuse its URL. If the content differs, do not overwrite or use `gh release upload --clobber`; extend the hash or add a deterministic suffix and upload a new asset so an older PR never changes underneath reviewers.
+- Make reruns idempotent. Inspect release assets before uploading. If the exact name exists and its GitHub digest-or a downloaded byte-for-byte hash when no digest is present-matches the local file, reuse its URL. If the content differs, do not overwrite or use `gh release upload --clobber`; extend the hash or add a deterministic suffix and upload a new asset so an older PR never changes underneath reviewers.
 - Upload with `gh release upload <tag> <path> -R "$repo"`, then read back the release and asset metadata. Require the intended tag, a non-draft release, uploaded asset state, expected filename, size, SHA-256 digest when GitHub supplies it, and `browser_download_url`.
 - Perform a direct GET of the uploaded bytes (authenticated through GitHub for private repositories), not only a HEAD request. Compare the downloaded SHA-256 and size with the local source and verify the decoded file type or image magic; an HTML login/error page with a misleading status is a failure. Record the verification timestamp and result.
 - Maintain `pr-assets-manifest.json` across reruns. For each asset record the repository, release tag and URL, PR number, head commit, source path, semantic step, asset name, local SHA-256 and size, asset API URL, browser download URL, upload-or-reuse status, timestamp, and content-verification result. Never put tokens, cookies, or sensitive test data in the manifest.
@@ -226,17 +226,17 @@ Otherwise, keep going through setup, execution, verification, cleanup, and a con
 
 ## Analytics Identity Verification
 
-Event ingestion alone is not enough — verify PERSON STITCHING whenever a PR touches
+Event ingestion alone is not enough - verify PERSON STITCHING whenever a PR touches
 analytics, signup, login, or session handling:
 
-- Group verification queries by `person_id`, never by `person.properties.*` — event-time
+- Group verification queries by `person_id`, never by `person.properties.*` - event-time
   person properties differ per row and can make N merged users each look like "one clean
   person". Six merged QA users passed an email-grouped check; a `person_id`-grouped check
   exposed they were all a single person.
-- Inspect raw `distinct_id` per event when stitching looks wrong — it names the exact
+- Inspect raw `distinct_id` per event when stitching looks wrong - it names the exact
   identity that captured the event and usually identifies the merge vector directly.
 - When the PR touches identity stitching itself (aliasing, identify calls, distinct-id or
-  session-identity plumbing) — or the product targets shared devices — run a
+  session-identity plumbing) - or the product targets shared devices - run a
   **multi-user same-browser pass**: several signups and login switches in one browser
   profile, then assert each user resolved to a separate person AND that functional session
   state (websocket auth, cookies) followed the switch. Shared-machine bugs (identity
@@ -247,7 +247,7 @@ analytics, signup, login, or session handling:
   simply "didn't work".
 - Test events fired immediately before hard navigations (checkout redirects, external
   scheduling links): SDK batching silently drops them on unload; they need per-capture
-  `sendBeacon` transport. Absence in the warehouse — not the network tab — is the proof.
+  `sendBeacon` transport. Absence in the warehouse - not the network tab - is the proof.
 
 ## Fix-Verify Loop Hygiene
 
@@ -266,7 +266,7 @@ analytics, signup, login, or session handling:
   reference over click+type, dismiss popovers by clicking neutral page areas (Escape may
   feed the popover), and recover a wedged tab only by opening a fresh one (hosted
   checkout URLs resume by URL).
-- Export GIF recordings BEFORE closing their tab — recordings die with the tab group.
+- Export GIF recordings BEFORE closing their tab - recordings die with the tab group.
 - Vendor sandboxes rate-limit (e.g. Dropbox Sign test API throttles after ~6 signature
   requests/day, stalling embeds ~10 min). Budget signature-heavy passes and report
   throttling as an environment limit, not a product bug.
@@ -276,6 +276,6 @@ analytics, signup, login, or session handling:
 QA evidence is current-head evidence and the Manual tests checklist is the
 body's contract, so anything that would change either runs first. On a large
 PR (over 10 files or 300 hand-written lines) that has not had a `refactor`
-pass, say so and offer it before driving anything — a refactor landed after
+pass, say so and offer it before driving anything - a refactor landed after
 QA means this whole pass runs again. Likewise `fresh-eyes` on the PR body
 comes before QA, so the checklist you execute is the one the reader will see.

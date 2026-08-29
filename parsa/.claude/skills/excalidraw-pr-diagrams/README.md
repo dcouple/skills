@@ -6,7 +6,7 @@ Compatible with any coding agent that supports skills. Use `.claude/skills/` for
 
 ## What Makes This Different
 
-- **Diagrams that argue, not display.** Every shape/group of shapes mirrors the concept it represents — fan-outs for one-to-many, timelines for sequences, convergence for aggregation. No uniform card grids.
+- **Diagrams that argue, not display.** Every shape/group of shapes mirrors the concept it represents - fan-outs for one-to-many, timelines for sequences, convergence for aggregation. No uniform card grids.
 - **Evidence artifacts.** As an example, technical diagrams include real code snippets and actual JSON payloads.
 - **Built-in visual validation.** A Playwright-based render pipeline lets the agent see its own output, catch layout issues (overlapping text, misaligned arrows, unbalanced spacing), and fix them in a loop before delivering.
 - **PR-ready handoff.** The skill covers shareable reviewer explainers, durable repository-owned release assets, inline GitHub images, and PR body preview checks.
@@ -49,7 +49,7 @@ Or ask for a PR visual overview:
 
 > "Create a shareable PR diagram that explains the before and after behavior, publish the PNG on the repo's long-lived pr-assets release, and update the PR body."
 
-The skill handles the rest — concept mapping, layout, JSON generation, rendering, and visual validation.
+The skill handles the rest - concept mapping, layout, JSON generation, rendering, and visual validation.
 
 ## Customize Colors
 

@@ -1,6 +1,6 @@
 # Element Templates
 
-Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` and `backgroundColor` values are placeholders — always pull actual colors from `color-palette.md` based on the element's semantic purpose.
+Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` and `backgroundColor` values are placeholders - always pull actual colors from `color-palette.md` based on the element's semantic purpose.
 
 ## Free-Floating Text (no container)
 ```json
@@ -128,7 +128,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
   "fontFamily": 3,
   "textAlign": "center",
   "verticalAlign": "middle",
-  "strokeColor": "<text color — match parent shape's stroke or use 'on light/dark fills' from palette>",
+  "strokeColor": "<text color - match parent shape's stroke or use 'on light/dark fills' from palette>",
   "backgroundColor": "transparent",
   "fillStyle": "solid",
   "strokeWidth": 1,
@@ -155,7 +155,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
   "type": "arrow",
   "id": "arrow1",
   "x": 282, "y": 145, "width": 118, "height": 0,
-  "strokeColor": "<arrow color — typically matches source element's stroke from palette>",
+  "strokeColor": "<arrow color - typically matches source element's stroke from palette>",
   "backgroundColor": "transparent",
   "fillStyle": "solid",
   "strokeWidth": 2,

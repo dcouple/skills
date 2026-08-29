@@ -8,7 +8,7 @@ argument-hint: "[bug description, error message, or unexpected behavior]"
 
 Investigate this bug, find the root cause, and report back to the user.
 
-**Principle:** Your job is to find and explain the problem — not to fix it. Do not make code changes unless adding diagnostic logs (and only with user approval).
+**Principle:** Your job is to find and explain the problem - not to fix it. Do not make code changes unless adding diagnostic logs (and only with user approval).
 
 ## Phase 1: Understand the Bug
 
@@ -19,7 +19,7 @@ If not provided in $ARGUMENTS, ask for:
 
 ### Categorize the Bug Type
 
-Classify the issue early — different types need different investigation strategies:
+Classify the issue early - different types need different investigation strategies:
 
 | Category | Investigation Strategy |
 |---|---|
@@ -36,7 +36,7 @@ Classify the issue early — different types need different investigation strate
 Before investigating:
 - Confirm you understand how to trigger the bug
 - Note whether it's consistent or intermittent
-- If reproduction requires a running application, flag this to the user — you may need them to reproduce and provide logs
+- If reproduction requires a running application, flag this to the user - you may need them to reproduce and provide logs
 
 ## Phase 2: Form Hypotheses
 
@@ -45,9 +45,9 @@ Before investigating:
 Format:
 ```
 Hypotheses (ranked by likelihood):
-1. [Most likely cause] — because [reasoning]
-2. [Second most likely] — because [reasoning]
-3. [Third most likely] — because [reasoning]
+1. [Most likely cause] - because [reasoning]
+2. [Second most likely] - because [reasoning]
+3. [Third most likely] - because [reasoning]
 ...
 ```
 
@@ -61,17 +61,17 @@ Now trace through the code to test your hypotheses. Use `Explore` or `codebase-e
 
 Use these in order of effectiveness:
 
-1. **Start from the error and trace backward** — follow the call stack from the symptom to its origin
-2. **Check recently modified files first** — most bugs exist in recently changed code. Use `git log --oneline -20 -- [relevant paths]` to find recent changes
-3. **Compare working vs broken** — find similar working code in the codebase and list ALL differences between the working and broken paths
-4. **Trace data flow across boundaries** — follow data transformations across service/component boundaries (API → service → repository, or parent → child → grandchild)
-5. **Check git blame/log** — find the commit that introduced or changed the broken behavior
+1. **Start from the error and trace backward** - follow the call stack from the symptom to its origin
+2. **Check recently modified files first** - most bugs exist in recently changed code. Use `git log --oneline -20 -- [relevant paths]` to find recent changes
+3. **Compare working vs broken** - find similar working code in the codebase and list ALL differences between the working and broken paths
+4. **Trace data flow across boundaries** - follow data transformations across service/component boundaries (API → service → repository, or parent → child → grandchild)
+5. **Check git blame/log** - find the commit that introduced or changed the broken behavior
 
 ### What to Look For
 
-- **What's wrong** — the specific code causing the incorrect behavior
-- **When/how it was introduced** — the commit, PR, or change that broke things
-- **Why it happened** — the underlying reason (missed edge case, wrong assumption, incomplete refactor, etc.)
+- **What's wrong** - the specific code causing the incorrect behavior
+- **When/how it was introduced** - the commit, PR, or change that broke things
+- **Why it happened** - the underlying reason (missed edge case, wrong assumption, incomplete refactor, etc.)
 
 ### If the cause is clear from reading code:
 
@@ -100,12 +100,12 @@ Only enter this phase if Phase 3 didn't find the cause.
 
 If you've completed 3+ investigation cycles (hypothesis → test → inconclusive) without progress:
 
-1. **Summarize what's been ruled out** — list every hypothesis tested and the evidence against it
-2. **Propose a fundamentally different approach** — don't keep testing variations of the same theory. Consider:
+1. **Summarize what's been ruled out** - list every hypothesis tested and the evidence against it
+2. **Propose a fundamentally different approach** - don't keep testing variations of the same theory. Consider:
    - Is the bug actually in a different layer than assumed? (e.g., backend vs frontend, database vs application)
    - Could this be an environment/infrastructure issue rather than a code issue?
    - Is there a timing/race condition that only manifests under specific conditions?
-3. **Ask the user for help** — they may have domain knowledge or context that changes the investigation direction
+3. **Ask the user for help** - they may have domain knowledge or context that changes the investigation direction
 
 ## Phase 5: Report and Next Steps
 
@@ -115,7 +115,7 @@ Once the root cause is identified, present a summary:
 ## Investigation Report
 
 **Root cause:** [one-line summary]
-**Confidence:** [High / Medium / Low] — [brief justification]
+**Confidence:** [High / Medium / Low] - [brief justification]
 
 **File(s):** [affected files with line numbers]
 **Introduced:** [commit hash / PR / approximate timeframe if known]
@@ -124,16 +124,16 @@ Once the root cause is identified, present a summary:
 - [description of the fix needed]
 
 **Why this happened:**
-- [brief explanation of the underlying cause — missed edge case, wrong assumption, incomplete refactor, etc.]
+- [brief explanation of the underlying cause - missed edge case, wrong assumption, incomplete refactor, etc.]
 
 **Next steps:**
-- `/plan [description]` — Create a fix plan
-- `/simple-plan [description]` — Quick fix plan if it's straightforward
+- `/plan [description]` - Create a fix plan
+- `/simple-plan [description]` - Quick fix plan if it's straightforward
 ```
 
 If diagnostic logs were added in Phase 4, remove all `[DEBUG-FIX]` logs before finishing.
 
-## Red Flags — Catch Yourself
+## Red Flags - Catch Yourself
 
 Stop and reassess if you notice yourself doing any of these:
 

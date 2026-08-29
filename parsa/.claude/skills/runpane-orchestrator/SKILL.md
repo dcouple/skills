@@ -85,8 +85,8 @@ into the delegated run as a confirmation that settles residual choices and
 records them. Delegation starts at planning.
 
 **Light (default).** `simple-plan`, then `prepare-pr` and `pr-test-automation`,
-run continuously. `simple-plan` owns its whole arc — it plans, implements on the
-approved plan, and runs the implementation reviewer — so states 3-5 run inside
+run continuously. `simple-plan` owns its whole arc - it plans, implements on the
+approved plan, and runs the implementation reviewer - so states 3-5 run inside
 it and the chain names no separate implement stage. A standing run-continuously
 grant is the plan approval it waits for.
 
@@ -104,7 +104,7 @@ escalating early.
 
 One moment is the same in every lane. When `discussion` converges, send the
 probe verbatim before selecting a lane: "is this addressing the root cause or a
-symptom? dig deep" — a premise-changing answer reopens `discussion`, and the
+symptom? dig deep" - a premise-changing answer reopens `discussion`, and the
 lane choice waits for it.
 
 ### What Each Lane Buys
@@ -130,7 +130,7 @@ Evaluate after `discussion`, and again whenever new evidence lands.
 Risk forces medium; ambiguity forces heavy. A risky change with a testable
 outcome is what medium's reviewed plan and gates exist for. Heavy is for work
 whose shape is still uncertain, where orchestra's investigation and review
-fan-out earns its cost — plus one exception: the charge path goes heavy even
+fan-out earns its cost - plus one exception: the charge path goes heavy even
 when testable, because its failures are silent and customers are the detection
 channel.
 
@@ -163,7 +163,7 @@ being overridden.
 Escalation is one-way. An agent that hits a trigger mid-run escalates
 immediately. Re-enter at the earliest state the trigger invalidates: a
 contradicted premise returns to `investigating`, every other trigger to
-`planning` — inside the orchestra handoff when the trigger forces heavy. Work
+`planning` - inside the orchestra handoff when the trigger forces heavy. Work
 already implemented is re-planned against, not discarded, then
 carried through the gates on the current head. Never de-escalate.
 
@@ -197,7 +197,7 @@ Use these durable states and transition only on recorded evidence:
    here: fresh current-head post-PR `review` panels, observed to completion;
    actionable feedback routes through the interrupt below, and only a completed
    clean review advances to QA.
-8. `pr_qa`: once the PR exists — reviewed, where the lane runs state 7 — use a
+8. `pr_qa`: once the PR exists - reviewed, where the lane runs state 7 - use a
    fresh `pr-test-automation`
    panel. Store reproducible current-head evidence and remaining manual gaps.
 9. `ci_rereview`: heavy only, satisfied inside the orchestra handoff. The wait
@@ -213,7 +213,7 @@ Use these durable states and transition only on recorded evidence:
 From any post-PR state, actionable review feedback interrupts the normal next
 transition. Invoke `gh-address-comments` in the implementation authority. If a
 fix changes the head, return through implementation review, PR update, QA, and
-required checks — and, in the heavy lane, independent re-review. If feedback requires only an authorized explanation/resolution,
+required checks - and, in the heavy lane, independent re-review. If feedback requires only an authorized explanation/resolution,
 verify the GitHub readback and resume. Never stall waiting for a review that has
 not arrived.
 
@@ -261,8 +261,8 @@ after clearing a blocker.
 
 A submit success field means bytes reached a terminal, not that an agent
 received a turn. Confirm the instruction appears as a received turn in the
-agent's durable session record — the session log the agent's harness keeps on
-disk, where it keeps one — or observe an activity transition or output delta
+agent's durable session record - the session log the agent's harness keeps on
+disk, where it keeps one - or observe an activity transition or output delta
 against the baseline. No lifecycle state advances without one.
 
 Unconfirmed is not undelivered. An agent finishing an earlier turn can hold a
@@ -279,7 +279,7 @@ resending.
 A new panel may come up on an interstitial that accepts keystrokes but blocks
 the composer: an update prompt, a resume-or-summarize prompt, a model or profile
 picker, a trust confirmation. Detect it from the panel's screen before the first
-prompt, clear a routine one — update, resume, model picker — with the
+prompt, clear a routine one - update, resume, model picker - with the
 workstream's configured choice, then re-check readiness. A trust or permission
 confirmation is not routine: record it as a blocker for the user. A readiness failure does not mean creation failed; reconcile against
 the live panel list before creating anything.
