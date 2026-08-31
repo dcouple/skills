@@ -77,6 +77,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - `partial`: some checks passed, others left to human. List the gaps.
    - `blocked-env`: environment issue (service down, container missing). Name the blocker.
    - `blocked-auth`: missing credentials or connector scopes. Name what is needed.
+   - `blocked-timeout`: wall clock expired before all checks completed. List what finished and what remains.
    - `product-bug-found`: a check failed and the failure is in the product. Describe the bug with evidence.
 
    Beyond the verdict, the report must include:
@@ -260,12 +261,11 @@ Otherwise, keep going through setup, execution, verification, cleanup, and a con
 
 ## Run Bounds
 
-Set a 60-minute wall clock for the entire run. Per-journey, allow at most 2
+Set a 90-minute wall clock for the entire run. Per-journey, allow at most 2
 retry attempts before marking the journey failed or blocked. No combination
 of retries extends the wall clock. If the wall clock expires mid-journey,
 finalize evidence for what completed, mark in-progress items as
-`blocked-timeout`, and report. An unbounded run that hangs on a flaky
-service wastes more time than a bounded run that reports partial results.
+`blocked-timeout`, and report.
 
 ## Cleanup Discipline
 
@@ -345,19 +345,25 @@ pass, say so and offer it before driving anything. A refactor landed after
 QA means this whole pass runs again. Likewise `cold-read` on the PR body
 comes before QA, so the checklist you execute is the one the reader will see.
 
-Before spending a long QA pass, verify the PR is in a testable state:
+Before spending a long QA pass, verify the PR is in a testable state. Pass
+the identified PR number or URL to every `gh pr view` call (bare `gh pr view`
+defaults to the current branch's PR, which may differ from the test target):
 
-- **Mergeability.** Check `gh pr view --json mergeable,mergeStateStatus`. A
-  conflicting PR may get no gating CI run at all, and QA evidence against a
+- **Mergeability.** Check `gh pr view <PR> --json mergeable,mergeStateStatus`.
+  A conflicting PR may get no gating CI run at all, and QA evidence against a
   conflicting head is evidence against code that will change on merge. If
   conflicting, report blocked rather than driving.
-- **Head SHA match.** Confirm the local HEAD matches the PR's `headRefOid`
-  (`gh pr view --json headRefOid`). A stale local checkout produces evidence
-  for code the reviewer is not looking at.
+- **Head SHA incorporated.** Confirm the PR's `headRefOid` is part of the
+  tested state (`gh pr view <PR> --json headRefOid`). When testing companion
+  PRs together, the local HEAD may be a merge commit that incorporates
+  multiple PR heads; verify the target PR's head is in the ancestry
+  (`git merge-base --is-ancestor <headRefOid> HEAD`) and record the composite
+  SHA rather than requiring an exact match. A checkout that does not contain
+  the PR head produces evidence for code the reviewer is not looking at.
 - **CI existence.** Check whether at least one workflow run exists for the
-  head commit (`gh run list --commit <HEAD_SHA>`). If the repo has CI and no
-  run registered, something is wrong (path filters, a conflicting state, a
-  workflow syntax error). Note it; do not assume the code is healthy.
+  PR's head commit (`gh run list --commit <headRefOid>`). If the repo has CI
+  and no run registered, something is wrong (path filters, a conflicting
+  state, a workflow syntax error). Note it; do not assume the code is healthy.
 - **Tools alive.** Verify every tool the run will need before the first long
   flow: authenticated CLIs, running services, connectors, test-mode keys.
   A flow that dies at step 7 for a missing login wastes the entire run.
