@@ -35,6 +35,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - When UI changes are in scope, map each touched surface area and user journey to screenshots in a temporary, easy-to-observe folder such as `tmp/pr-<number>-qa/` or `tmp/<branch>-qa/`. Use ordered filenames that describe the journey step, such as `01-signup-account.png` and `02-dropdown-expanded.png`.
    - Capture meaningful UI states, not only final pages: empty/default, filled/selected, expanded menus, modals, validation errors, loading/success states, and at least one narrow viewport when responsive layout is likely affected.
    - Reuse the same screenshot artifact pattern for local/dev validation and, when the user asks for post-merge production verification, for production paths. Keep local and production artifacts separated by folder or filename.
+   - When a journey is driven by a scriptable browser driver, record it as a video alongside the stills. One video per journey, recorded at the driver level (e.g. Playwright's `recordVideo`) so it is a free byproduct of the drive, not a second pass. Keep the driver's native format (WebM from browser, MP4 from simulator). Videos complement stills, never replace them: per-step captures remain the frame-addressable evidence, the video is the continuity check. Where ffmpeg is available, scan for blank-frame bands (`ffprobe -f lavfi "movie=<video>,fps=5,signalstats" -show_entries frame=pts_time -show_entries frame_tags=lavfi.signalstats.YAVG`; YAVG ~235 is blank white) and report layout jumps, white flashes, or dead time as findings with timestamp ranges.
    - Prefer the app's built-in test/simulation path for external effects: local inboxes, Mailhog-style UIs, fake SMS numbers, test OTP logs, sandbox payment modes, webhook listeners, or provider test keys.
    - Parse local email/SMS verification links or codes from container logs when the local environment emits them.
    - Add small human-paced waits around analytics or step-transition tests so effects and batched events have time to fire in the same order a user would experience.
@@ -47,13 +48,46 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - For analytics dashboards, query the exact project and call out the date range and filters used.
 
 6. Report results:
-   - State what was tested, the exact test identity/marker, and the observed outcome.
-   - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
-   - When screenshots are safe to share, publish them on a repository-owned durable asset surface. For GitHub PRs, prefer an existing long-lived release such as `pr-assets`; do not use an arbitrary temporary host when a suitable repository release is available.
-   - For GitHub PR targets where the user asked for PR testing, update the PR description with a concise QA summary where reviewers look first. Use a marked section so reruns replace the latest QA summary without overwriting the author-written description. Use a separate marked QA comment for long evidence, logs, and screenshot galleries when the description would become unwieldy.
-   - Include connector/query evidence with event names, identifiers, timestamps, and important properties.
-   - Separate passed automated checks from remaining manual checks.
-   - Call out artifacts caused by the test harness, such as intentionally prevented navigation or mocked browser properties.
+
+   Open with a verdict, then the evidence. The structure:
+
+   ```
+   Verdict: <all-proven | partial | blocked-env | blocked-auth | product-bug-found>
+
+   | Journey / Check | Result | Evidence |
+   |-----------------|--------|----------|
+   | <flow or check> | Pass / Fail / Blocked / Left to human | <quoted output, screenshot ref, connector readback> |
+
+   Skipped (with rationale):
+   - <item>: <why it was skipped, not just "skipped">
+
+   Cleanup disposition:
+   | Created | Marker | System | Disposition |
+   |---------|--------|--------|-------------|
+   | <account, org, record> | <run marker> | <staging / analytics / billing> | deleted · registered (<why not safe>) · none created |
+   ```
+
+   A pass without quoted evidence is not a pass. "Blocked" is a terminal
+   verdict: when a check cannot be exercised (missing env, service down,
+   no credentials), stop trying rather than improvising a workaround.
+   Improvised test routes are not evidence.
+
+   Terminal states and what the human should do next:
+   - `all-proven`: every check passed with evidence. Ready for human review.
+   - `partial`: some checks passed, others left to human. List the gaps.
+   - `blocked-env`: environment issue (service down, container missing). Name the blocker.
+   - `blocked-auth`: missing credentials or connector scopes. Name what is needed.
+   - `product-bug-found`: a check failed and the failure is in the product. Describe the bug with evidence.
+
+   Beyond the verdict, the report must include:
+   - The exact test identity/marker used for external queries.
+   - Screenshot paths for changed UI, organized by journey step with the surface area, environment, and UI state each covers.
+   - Video paths for journey recordings, with duration and what each evidences.
+   - Connector/query evidence with event names, identifiers, timestamps, and important properties.
+   - What was intentionally skipped and why (per item, not a blanket "some things were skipped").
+   - Artifacts caused by the test harness (mocked browser properties, prevented navigation, masked automation signals).
+
+   When screenshots are safe to share, publish them on a repository-owned durable asset surface. For GitHub PRs, prefer an existing long-lived release such as `pr-assets`; do not use an arbitrary temporary host when a suitable repository release is available. For GitHub PR targets where the user asked for PR testing, update the PR description with a concise QA summary where reviewers look first. Use a marked section so reruns replace the latest QA summary without overwriting the author-written description. Use a separate marked QA comment for long evidence, logs, and screenshot galleries when the description would become unwieldy.
 
 ## PostHog And Browser Analytics
 
@@ -224,6 +258,37 @@ Stop and ask the user before:
 
 Otherwise, keep going through setup, execution, verification, cleanup, and a concise result summary.
 
+## Run Bounds
+
+Set a 60-minute wall clock for the entire run. Per-journey, allow at most 2
+retry attempts before marking the journey failed or blocked. No combination
+of retries extends the wall clock. If the wall clock expires mid-journey,
+finalize evidence for what completed, mark in-progress items as
+`blocked-timeout`, and report. An unbounded run that hangs on a flaky
+service wastes more time than a bounded run that reports partial results.
+
+## Cleanup Discipline
+
+The run's unique marker names real things that now exist in external systems:
+accounts, organizations, records, subscriptions, analytics events. Disclosure
+alone is not disposal.
+
+Delete in-run only when all three conditions hold:
+
+1. The surface is **non-production**, established from the environment the drive
+   actually reached (the ingestion target, the key, the project id), not
+   assumed from the stack you launched.
+2. The deletion is **scoped by this run's unique marker**, not a broader query.
+3. The drive **already holds** the credentials that perform it.
+
+If any condition fails or is uncertain, do not delete. Register the item:
+name the marker, the system, and what remains, precisely enough that a
+repo-side reaper can find it by marker alone. Production analytics and
+live-mode billing are register-only by default.
+
+Either way the disposition appears in the report's cleanup table. "None
+created" is a disposition too, not an excuse to omit the table.
+
 ## Analytics Identity Verification
 
 Event ingestion alone is not enough — verify PERSON STITCHING whenever a PR touches
@@ -271,11 +336,28 @@ analytics, signup, login, or session handling:
   requests/day, stalling embeds ~10 min). Budget signature-heavy passes and report
   throttling as an environment limit, not a product bug.
 
-## Before You Start: Head And Body Must Be Final
+## Before You Start: Preflight
 
 QA evidence is current-head evidence and the Manual tests checklist is the
 body's contract, so anything that would change either runs first. On a large
 PR (over 10 files or 300 hand-written lines) that has not had a `refactor`
-pass, say so and offer it before driving anything — a refactor landed after
+pass, say so and offer it before driving anything. A refactor landed after
 QA means this whole pass runs again. Likewise `cold-read` on the PR body
 comes before QA, so the checklist you execute is the one the reader will see.
+
+Before spending a long QA pass, verify the PR is in a testable state:
+
+- **Mergeability.** Check `gh pr view --json mergeable,mergeStateStatus`. A
+  conflicting PR may get no gating CI run at all, and QA evidence against a
+  conflicting head is evidence against code that will change on merge. If
+  conflicting, report blocked rather than driving.
+- **Head SHA match.** Confirm the local HEAD matches the PR's `headRefOid`
+  (`gh pr view --json headRefOid`). A stale local checkout produces evidence
+  for code the reviewer is not looking at.
+- **CI existence.** Check whether at least one workflow run exists for the
+  head commit (`gh run list --commit <HEAD_SHA>`). If the repo has CI and no
+  run registered, something is wrong (path filters, a conflicting state, a
+  workflow syntax error). Note it; do not assume the code is healthy.
+- **Tools alive.** Verify every tool the run will need before the first long
+  flow: authenticated CLIs, running services, connectors, test-mode keys.
+  A flow that dies at step 7 for a missing login wastes the entire run.
