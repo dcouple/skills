@@ -1,6 +1,6 @@
 ---
 name: seo-data-pull
-description: (support) Discover connected analytics sources, pull data, write .seo/data/ snapshots, and visualize results with deltas vs prior pulls.
+description: "Fetch missing or stale analytics snapshots needed by an SEO workflow from connected sources."
 allowed-tools:
   - Read
   - Write
@@ -13,11 +13,6 @@ allowed-tools:
   - WebFetch
   - mcp__posthog__*
   - mcp__composio__*
-when_to_use: >
-  This is a support skill. Don't invoke it directly. Other SEO skills
-  (seo-briefing, seo-readability-pass, seo-authority-pass, seo-content-strategy,
-  seo-content-drafting) call it as their first step when they need fresh data.
-  If .seo/data/ is stale or missing, any SEO skill should run this first.
 model: claude-opus-4-6
 ---
 

@@ -1,15 +1,10 @@
 ---
 name: seo-data-organize
-description: (support) Archive and organize .seo/ data into a dated wiki structure for historical tracking.
+description: "Archive SEO working data into a dated history when an SEO workflow produces or updates it."
 allowed-tools:
   - Read
   - Write
   - Bash
-when_to_use: >
-  This is a support skill that runs at the end of any SEO workflow. It archives
-  the current .seo/ working data into a dated, browsable wiki structure so
-  nothing gets lost and you can track SEO progress over time. Other SEO skills
-  should call this as their final step.
 model: claude-opus-4-6
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: seo-foundations
-description: (greenfield) Crawl your site, find competitors, map the search landscape, and build the starting point for all SEO work.
+description: "Establish the product, competitors, and search landscape when starting SEO for a site."
 allowed-tools:
   - Read
   - Write
@@ -8,12 +8,6 @@ allowed-tools:
   - Agent
   - WebSearch
   - WebFetch
-when_to_use: >
-  Use when starting SEO from scratch, onboarding a new site, or when the agent
-  doesn't know what the product is, who the competitors are, or what keywords
-  matter. This is the zeroth step before seo-briefing. Examples: 'start SEO
-  from scratch', 'set up SEO for this site', 'who are our competitors',
-  'what should we rank for', 'SEO foundations', 'greenfield SEO'.
 model: claude-opus-4-6
 ---
 

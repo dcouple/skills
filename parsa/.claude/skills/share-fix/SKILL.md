@@ -1,6 +1,6 @@
 ---
 name: share-fix
-description: After shipping a non-trivial fix, find related GitHub issues across the ecosystem, draft helpful human-sounding comments linking the fix and root cause, and optionally file upstream issues. Drafts must pass as human writing or the user's GitHub reputation suffers. Works on the current session's fix or retroactively on past commits/PRs. Always asks for approval before posting anything public.
+description: "Find related GitHub issues after a shipped fix and draft helpful follow-up comments; posting requires an explicit grant."
 argument-hint: "[optional: commit SHA, PR number, or description of the fix]"
 ---
 

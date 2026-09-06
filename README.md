@@ -21,29 +21,24 @@ And here is the skill legend:
 
 _Source: [docs/readme-skill-legend.excalidraw](docs/readme-skill-legend.excalidraw)_
 
-## The evolution — toward a software factory
+## The evolution toward a software factory
 
 ![From workflow to software factory](docs/software-factory-story.png)
 
 _Source: [docs/software-factory-story.excalidraw](docs/software-factory-story.excalidraw)_
 
-The `parsa/` workflow above is generation one: a human conducts every phase,
-and each skill hardens one step — evidence-disciplined planning, independent
-review lanes, first-pass QA, learning notes. `tyler/` ("Orchestra") is the
-evolution: the same principles compiled into an autonomous pipeline. Capture
-passes an adversarial Socratic gate, execution runs end to end on a remote
-seat, review and QA self-correct on the open PR, and the human sits at the
-edges — the gate going in, the PR coming out. The two sets now share their
-strongest parts (evidence contracts, hosted PR visuals, external
-verification). Orchestra has since graduated to its own home —
-[dcouple/orchestra](https://github.com/dcouple/orchestra) — which is now the
-canonical source for that set; the `tyler/` tree here is its frozen ancestor.
-To run both sets on one machine: orchestra's `scripts/sync-user.sh`, then
-this repo's `./sync-parsa-overlay.sh`.
+Parsa's skills are composable stages that can continue through an authorized
+implementation request. `runpane-orchestrator` also coordinates workstreams
+end to end. Orchestra packages capture, execution, review, and QA into `/do`
+and is maintained in [dcouple/orchestra](https://github.com/dcouple/orchestra).
+The `tyler/` tree here is a frozen ancestor, retained for historical reference.
 
-![Orchestra workflow map](docs/tyler-workflow-map.png)
-
-_Source: [docs/tyler-workflow-map.excalidraw](docs/tyler-workflow-map.excalidraw)_
+The story diagram contrasts earlier manual coordination with today's pipeline
+and the direction of further signal-driven intake. It does not promise that
+all shown schedules or deployments are enabled. The current Orchestra workflow
+is documented in [its WORKFLOW.md](https://github.com/dcouple/orchestra/blob/main/WORKFLOW.md).
+The [visual index](docs/README.md) separates current maps from historical
+snapshots, including `tyler-workflow-map` and `software-orchestra`.
 
 ## How we work with LLMs
 
@@ -59,7 +54,7 @@ Most of the time, you're only answering one question:
 
 If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
 **execute**. If work exists, **review** it. If review finds a gap, **fix** it
-and **review** again.
+and rerun the affected review and checks.
 
 ### A few common software scenarios
 
@@ -85,26 +80,30 @@ create-ticket -> discussion -> create-ticket
 Go straight into execution.
 
 ```text
-create-ticket -> plan -> implement -> review -> pr-test-automation -> human PR review -> manual test -> teach-back
+create-ticket -> create-plan (or simple-plan) -> implement -> implementation review
+-> prepare-pr -> pr-test-automation -> human PR review and remaining manual tests
 ```
 
-`plan`, `implement`, and `review` have their own internal checks. You don't
+`create-plan`, `implement`, and their reviewers have their own internal checks.
+`simple-plan` combines a short plan with execution when that work is authorized.
+The standalone `review` skill is available in the Claude variant. You don't
 need to think about every reviewer by hand every time; the important thing is
 that review loops back to implementation until the work matches the ticket. For
 non-trivial changes, use Codex and Claude as independent readers when possible:
-one implements, the other reviews, then rerun until the ticket intent, plan,
-diff, and runtime behavior agree.
+one implements, the other reviews, then rerun affected checks after concrete
+fixes until intent and behavior agree. A clean review of unchanged work ends that pass.
 
 Once the review loop is clean, run `pr-test-automation` before asking the human
 to spend attention in GitHub. This is the first-pass QA sweep: local services,
 browser automation, product flows, logs, analytics, webhooks, email/SMS, and
 whatever else can be checked from tools. The goal is not to replace human
 testing; it's to make the human's pass start from evidence instead of hope.
-After that, the human still reviews the PR file-by-file in GitHub, clicks into
-each changed file, and marks the draft ready if the diff looks right. Then the
-human manually tests whatever the automation couldn't confidently prove.
+After that, the human reviews the PR and tests whatever automation could not
+prove. `prepare-pr` opens a normal PR only when its readiness conditions pass;
+use a draft when requested or when blockers need a visible handoff. A draft
+status change is distinct from approval to merge.
 
-After the task is really done, run `teach-back`. That writes the learning note:
+When a learning note is requested after completion, run `teach-back`. It explains:
 what approach worked, what roads were rejected, what tradeoffs were made, where
 the messy parts were, and what lesson transfers to the next project.
 
@@ -118,7 +117,8 @@ fan out GitHub issues into persistent Pane workstreams and proactively advance
 already-authorized reversible stages through current-head review, PR, QA, and CI.
 
 ```text
-investigate -> plan/create-plan|simple-plan -> implement -> implementation review -> prepare-pr -> address review feedback -> PR test automation -> CI/re-review -> ready to merge
+investigate -> create-plan or simple-plan -> implement -> implementation review
+-> prepare-pr -> review feedback -> PR QA -> current CI and evidence -> ready to merge
 ```
 
 The orchestrator remembers stage and external-mutation grants, monitors parallel
@@ -146,55 +146,12 @@ folders provide agent-specific discovery metadata and detailed instructions.
 
 ### Model choice
 
-This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
-through the Codex harness and Claude models through the Claude Code harness.
-Codex is the engineering workhorse. Most medium implementation work doesn't
-need the biggest model. Right now, `GPT-5.6 sol medium fast` is the everyday
-implementation default: it is strong enough for most clear tickets, fast enough
-to feel like you're flying, and cheap enough that you can work in long windows
-without feeling throttled by weekly limits.
-
-This is why model opinions can sound inconsistent. A developer using GPT
-through Codex for hard engineering work may have a great time; a marketer,
-support lead, or founder asking it to shape public language may hit the wrong
-tool for the job.
-
-Don't use Codex as the writer of record for public-facing copy. If the work
-touches support docs, marketing copy, metadata, page titles, pricing language,
-or any sentence a customer will read, route it through Claude. The failure mode
-isn't usually spelling or grammar. It's audience, register, tense, and promise
-framing. Codex can preserve the facts and still miss who the page is for, what
-moment the reader is in, and how the sentence should sound. That is how
-evergreen support copy quietly turns into the wrong tense.
-
-Reach for `GPT-5.6 sol xhigh` when the implementation is harder: lots of moving
-parts, fuzzy architecture boundaries, or a mistake that would be expensive to
-unwind. That should be the exception, not the default.
-
-Reserve `GPT-5.6 max`, `GPT-5.6 ultra`, and Fable ultracode-style dynamic
-workflows for truly rare work: incredibly complex, long-running tasks and
-ambitious implementations where the extra cost is clearly buying down real
-risk.
-
-Ambiguous discussion and planning should stay in Claude when available: use
-`Claude 5 Fable` at `xhigh` for complex work, with `Claude 4.6 Opus` as a
-still-great fallback when Fable is unavailable or the extra usage cost is not
-worth it.
-
-Review is where we should be more aggressive. The reviewer isn't trying to be
-fast; it's trying to catch the thing the implementer missed. It should read the
-issue, the plan, and the diff with fresh eyes and ask: did we actually do what
-we meant? For non-trivial planning and implementation review, run `GPT-5.6 sol
-xhigh` and `Claude 5 Fable xhigh` in parallel; if Fable is unavailable or the
-cost is not worth it, use `Claude 4.6 Opus` as the Claude lane. Keep both lanes
-in the loop until neither reports bugs, factual blockers, or plan issues.
-
-For that review/audit loop, it is worth spending the expensive models
-sparingly: `GPT-5.6 max`, `GPT-5.6 ultra`, and Fable ultracode are not needed
-for most implementation, so save them for the places where sharper judgment
-changes the outcome. I would avoid
-`Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel too
-constrained for open-ended discussion and judgment calls.
+Use the model and harness selected by the user or configured in the workflow.
+Match effort and review independence to the uncertainty and consequences of the
+change. Role instructions describe evidence and completion requirements rather
+than assuming one model needs repeated supervision. Preserve explicit provider
+choices; report an unavailable requested provider instead of silently switching.
+The business and SEO workflows keep their documented writing-provider defaults.
 
 ### Business work
 
@@ -233,59 +190,28 @@ The skills are in three buckets: proactive (monitoring + strategy), foundational
 (readability + authority passes, run anytime), and execution (new content
 drafting). See `parsa/seo/` for the full README.
 
-Every copy skill runs through `seo-writing-framework`: research, draft, reader
-hat, edit, slop gate, score. The gate is `good-writing-fundamentals`, adapted
-from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
+For substantial copy, `seo-writing-framework` provides research, drafting,
+reader review, editing, and quality gates. `good-writing-fundamentals` is its
+line-editing layer, adapted from
+[petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
+An existing draft or a short reply can use the relevant editing skill without
+starting a full content-development cycle.
 
-That one is worth reaching for outside SEO too. It holds the line-level rules
-for any prose a person will read, including PR descriptions and release notes:
-active voice, concrete detail, direct verbs, and the AI patterns that survive a
-normal edit because they're grammatical and confident. Paste a draft to get it
-edited, or ask whether it reads as AI to get each pattern quoted back with a
-fix. If the piece doesn't exist yet and it's customer-facing, it points you at
-the framework first.
+### Writing skill selection
 
-### rewrite-simply
+Use `rewrite-simply` for the structure and brevity of an existing draft,
+`good-writing-fundamentals` for line editing or AI-pattern detection, and
+`seo-writing-framework` for substantial content creation that needs research
+and editorial development. Short replies and routine corrections do not need
+all three. The two `rewrite-simply` variants stay identical and apply to the
+requested draft, not every later message.
 
-`parsa/.claude/skills/rewrite-simply/` and `parsa/.codex/skills/rewrite-simply/`
-are the layer above that one. It is a standing policy, not a tool you call: once
-loaded it governs every human-facing thing written for the rest of the session,
-including chat answers, emails, PR descriptions, commit messages, and issue
-bodies. It ships to both agents because both write for people, and the two
-copies are byte-identical.
-
-`good-writing-fundamentals` fixes the line. `rewrite-simply` fixes the shape:
-what comes first, what gets cut, what earns space. Run it first, since
-restructuring after a line polish wastes the polish.
-
-```text
-rewrite-simply -> good-writing-fundamentals
-```
-
-It is assembled from three sources, carried verbatim rather than summarised so
-no agent has to fetch anything at runtime.
-
-| Section in the skill | Source | Notes |
-| --- | --- | --- |
-| Rules, Tone, Code comments and docs, Format for scanning | Attention-kind output style, from [alexgreensh/attention-span](https://github.com/alexgreensh/attention-span) | Verbatim. AGPL-3.0, `LICENSE` vendored into the skill directory |
-| Two rules inside Rules: "Cut a third after you think you are done" and "Orient before you advance" | Ours | Not from any source above. The second is the one that most changes customer writing: put the whole multi-step process in front of the reader before any detail or ask, and name the step whose timing you do not control |
-| Reading the ask, Discipline, Anti-patterns, Formatting in conversation, Writing a deliverable | doozy `shared/communication-style` and `shared/deliverable-writing` prompts | Verbatim, minus product-specific rules. Its `<current_context>` datetime reference is rendered as "as of now" so the rule stands alone |
-| Clutter and the line, Refuse to cut | Zinsser, *On Writing Well* | Our phrasing of his principles: clutter, short words, one term per concept, humanity |
-| Where this sits, The register rule, Procedure, Modes | Ours | The part neither source supplies. Step 11 is a hard gate rather than a closing suggestion: nothing ships until the verify pass has actually run against the file, because the rules a writer breaks are the ones they are surest they know. It runs after the `good-writing-fundamentals` handoff so the text verified is the text that ships, which also settles the em-dash conflict between the two skills in this one's favour |
-
-**The register rule is the reason all three fit together.** They genuinely
-disagree about formatting, because each assumes a different reader.
-Attention-kind assumes a terminal and wants arrow markers with bold carrying
-the whole answer. doozy assumes a chat and bans headers and bullet walls
-outright. Zinsser assumes prose. All three are right for their own reader, so
-the skill picks by register: terminal, conversational chat, written document,
-or a customer under stress. That last one takes the plainest formatting,
-because heavy markup in an email about someone's money or their patients reads
-as a form letter.
-
-Two rules fall out of it. Bold everything and you teach the reader that
-unbolded text is skippable, which makes it filler by definition. And never bold
-a bad outcome for the reader, because it reads as leverage.
+`rewrite-simply` retains adapted material from
+[alexgreensh/attention-span](https://github.com/alexgreensh/attention-span)
+(AGPL-3.0, LICENSE included), the doozy communication and deliverable-writing
+prompts (with product-specific rules removed), and our phrasing of Zinsser's
+clutter and clarity principles. The local workflow and cutting guidance are
+adapted; they are not a verbatim upstream copy.
 
 The skill directory is AGPL-3.0 by way of attention-span. It is an independent
 work aggregated alongside the rest of this repo, which is unaffected. doozy is
@@ -310,103 +236,42 @@ tyler/
   references/  Single-copy shared docs (output formats, criteria) both harnesses read
 ```
 
-Tyler's variant is a six-skill pipeline (`/discussion` → `/create-feature` /
-`/create-epic` / `/create-issue` → `/do` → `/postmortem`) where Claude
-orchestrates and Codex runs implementation, review, codebase research, and
-investigation — see `tyler/README.md`.
-
-The skills are meant to be edited. The workflow shape should generalize, but the
-exact contents should change as your work changes.
+`tyler/` documents its historical pipeline in [tyler/README.md](tyler/README.md).
+Its old capture commands and routing are not the current Orchestra interface.
+Edit active workflows in `parsa/`; make Orchestra changes in its canonical repo.
 
 ## Keeping skills in sync
 
-Use this repo directly in a project, or copy the skills into your user-level
-folders:
-
-- Claude Code: `~/.claude/skills/`
-- Codex: `~/.codex/skills/`
-
-> **Post-split note:** tyler's set now lives in
-> [dcouple/orchestra](https://github.com/dcouple/orchestra) (see its
-> `scripts/sync-user.sh` for the user-level install). To run both sets on one
-> machine, run that first, then `./sync-parsa-overlay.sh <orchestra-checkout>`
-> from this repo — it installs parsa's set, turning any name orchestra owns
-> into `p-<name>` so the two syncs never clobber each other, in any order.
-> `sync-merged.sh` below predates the split and only covers this repo's copy
-> of both sets.
-
-**Use `./sync-merged.sh` — it's the whole setup in one command.** It installs
-parsa's AND tyler's sets side by side (tyler's names win the few collisions;
-parsa's originals are preserved under a `p-` prefix, and his skills are
-re-wired to keep using them). It's idempotent and safe to re-run.
+For a combined current installation, use an Orchestra checkout and this repo:
 
 ```bash
-REPO="$HOME/allGitHubRepos/skills"
-git -C "$REPO" pull --ff-only
-"$REPO"/sync-merged.sh
+bash /path/to/orchestra/scripts/sync-user.sh
+bash /path/to/skills/sync-parsa-overlay.sh /path/to/orchestra
 ```
 
-To keep it fresh automatically, run it on a schedule. On macOS, a launchd
-agent that exports `origin/main` and runs the script every 30 minutes:
+The [overlay script](sync-parsa-overlay.sh) installs Parsa's Claude and Codex
+skills plus Claude agents, business skills, and SEO skills. Names owned by
+Orchestra become `p-<name>` in Parsa's installed set, and `create-plan` is
+rewritten to call Parsa's preserved plan reviewer. The equivalent Excalidraw
+skill uses Orchestra's copy where the names overlap. Personal skills remain.
+Later Orchestra and overlay syncs can run in either order without overwriting
+each other's canonical names. Restart the harness or refresh discovery to load
+newly installed skills.
 
-```bash
-# ~/bin/sync-dcouple-skills.sh
-#!/bin/sh
-set -eu
-REPO="$HOME/allGitHubRepos/skills"
-git -C "$REPO" fetch origin main
-TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
-git -C "$REPO" archive origin/main | tar -x -C "$TMP"
-bash "$TMP/sync-merged.sh"
-```
+To automate updates, export `origin/main` from both repos and run these scripts
+from the exports, passing the Orchestra export path to the overlay. Use `bash`
+and the combined flow above. A one-set copy on a timer can overwrite colliding
+names. Run installation only for the intended user account and authorized scope.
 
-Point a LaunchAgent (`StartInterval` 1800) or cron at that wrapper. Exporting
-`origin/main` means the sync never depends on what branch your checkout is on.
-Two warnings from experience: invoke the script with `bash` (it uses process
-substitution; `sh` silently skips the collision handling), and don't schedule
-the per-set rsync blocks below — a parsa-only sync running on a timer will
-silently clobber the merged arrangement every tick.
+For a Parsa-only installation, copy the desired skill folders from
+`parsa/.claude/skills/` or `parsa/.codex/skills/` into the matching harness's
+skill directory and include the agents or supporting folders they reference.
+The combined installer is preferable when both sets are needed.
 
-### One set only (legacy)
-
-If you truly want just parsa's set, the per-set shape is:
-
-```bash
-REPO="$HOME/allGitHubRepos/skills"
-git -C "$REPO" pull --ff-only
-
-# Claude Code skills
-rsync -a "$REPO/parsa/.claude/skills/" "$HOME/.claude/skills/"
-
-# Codex skills
-rsync -a "$REPO/parsa/.codex/skills/" "$HOME/.codex/skills/"
-
-# Business skills (Claude + Codex)
-for skill in "$REPO"/parsa/business/*/; do
-  [ -f "$skill/SKILL.md" ] && cp -r "$skill" "$HOME/.claude/skills/$(basename "$skill")"
-done
-
-# SEO skills (Claude)
-for skill in "$REPO"/parsa/seo/*/; do
-  [ -f "$skill/SKILL.md" ] && cp -r "$skill" "$HOME/.claude/skills/$(basename "$skill")"
-done
-```
-
-### Both sets at once (merged sync)
-
-This is the default documented above — `./sync-merged.sh` instead
-of the per-set blocks. It installs both sets; where names collide (currently
-`discussion`, the `plan-reviewer` agent, and two Codex role skills), tyler's
-version keeps the canonical name — his `/discussion` → `/create-*` → `/do`
-pipeline stays the default — and parsa's original is preserved under a `p-`
-prefix (`/p-discussion`, `p-plan-reviewer`, …). Collisions are detected
-dynamically, and parsa's `create-plan` is re-wired to spawn `p-plan-reviewer`
-so his planning loop keeps using his own reviewer. Inside this repo neither
-sync matters: the harness namespaces both sets automatically
-(`parsa:discussion`, `tyler:discussion`).
-
-Do not use `--delete` unless you want this repo to remove other local skills.
-Restart Codex after new skills sync so the active session can see them.
+`sync-merged.sh` is a **legacy installer** for this repo's Parsa and frozen
+Tyler trees. It does not install current Orchestra. Its historical behavior
+is retained for existing users; use the current combined flow above for new
+installations.
 
 ## Background
 
@@ -415,3 +280,15 @@ This grew out of the workflow described
 The original frame was spec, read, verify. In practice, we split that into
 smaller steps because each moment needs different behavior: discussion, ticket
 capture, planning, implementation, review, PR testing, and teach-back.
+
+## Workflow instruction contracts
+
+`simple-plan` handles a short local plan and execution; `create-plan` produces a
+larger handoff contract; `implement` owns integration and review; `prepare-pr`
+finishes scoped commits, checks, and the PR. An already-authorized end-to-end
+request continues across these stages. A planning-only request returns its plan.
+All workflows retain their explicit merge, publishing, and production boundaries.
+
+Long QA, diagram, and orchestration details are linked from their entrypoints
+and loaded for the current operation. `runpane-orchestrator` retains the full
+conjunctive `ready_to_merge` gate; passing an early stage is not PR readiness.

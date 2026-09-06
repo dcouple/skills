@@ -1,6 +1,6 @@
 ---
 name: idea-duel
-description: Lean dueling-wizards ideation tournament - the two model stacks independently study a project, generate and winnow ideas, blind cross-score each other's, and probe for shared blind spots; the orchestrator synthesizes a consensus matrix whose winners become draft work items. Use when the user wants the strongest next ideas for a project ("what should we build next", "run an idea duel", "most valuable improvements"). Four dispatches, discretionary quota spend - an upstream generator feeding the capture pipeline, typically offered from /discussion; never part of /do.
+description: "Generate and compare independent project ideas when the user requests an ideation tournament."
 argument-hint: "[project or area to ideate on, plus any focus or constraints]"
 ---
 

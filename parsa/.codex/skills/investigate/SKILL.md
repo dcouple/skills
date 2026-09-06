@@ -1,6 +1,6 @@
 ---
 name: investigate
-description: Investigate a bug or broken behavior through hypothesis-driven root cause analysis and report what is wrong without jumping straight to a fix. Use when something is failing or behaving unexpectedly.
+description: "Find the root cause of broken behavior when diagnosis is requested or needed before a fix."
 ---
 
 # Investigate

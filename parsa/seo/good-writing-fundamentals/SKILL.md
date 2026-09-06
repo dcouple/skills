@@ -1,19 +1,10 @@
 ---
 name: good-writing-fundamentals
-description: (foundational) The line-level rules for prose a person will read: active voice, concrete detail, direct verbs, and the AI patterns to cut. Applies to any prose before it ships.
+description: "Edit an existing draft for clear sentences and unwanted AI writing patterns, or identify those patterns in detect mode."
 allowed-tools:
   - Read
   - Edit
   - Write
-when_to_use: >
-  Use whenever prose is being written or edited, before it goes out: emails,
-  blog posts, landing pages, docs, support replies, announcements, release
-  notes, PR descriptions, README sections, or any text a person will read.
-  Also use when asked whether writing sounds AI-generated. Runs as the gate at
-  `seo-writing-framework` step 5, and standalone on any existing draft.
-  Examples: 'write this email', 'clean up this draft', 'does this sound like
-  AI', 'make this sound like a person wrote it', 'edit this before I send it'.
-  Not for code, identifiers, logs, or config.
 model: claude-opus-4-6
 argument-hint: "[draft or file path] [detect|edit]"
 ---
@@ -33,22 +24,16 @@ forbade separate evaluator agents.
 
 ## First: is there a draft yet?
 
+Use this on the requested draft. Ordinary short responses do not need a full
+writing pipeline. Load other writing skills only when their distinct work is
+needed; follow the user's requested format and the active house style.
+
 This skill works on text that exists. It is the line-level layer, not the
 process.
 
-**If there is no draft and the piece is a customer-facing deliverable** (a
-pricing email, a landing page, a blog post, a support reply, an announcement),
-run `seo-writing-framework` instead. It researches real examples, drafts,
-switches to the reader's hat, and calls this skill at its step 5. Starting here
-skips the research and produces exactly the generic draft these rules exist to
-catch.
-
-**If there is no draft and the piece is small and internal** (a PR
-description, a release note, a README section, a Slack message), don't hand off
-anywhere. Write it, then apply these rules to what you wrote.
-
-**If a draft already exists**, apply these rules directly. That's the rest of
-this file.
+If no draft exists, use `seo-writing-framework` for substantial customer-facing
+content that needs research and editorial development. For a routine short reply,
+draft directly from the supplied facts. This skill edits existing text.
 
 ## Two jobs
 

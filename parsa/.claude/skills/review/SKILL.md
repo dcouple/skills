@@ -38,17 +38,11 @@ Before reviewing any code, write down (internally):
 
 ## Step 2: Run Quality Gates
 
-Run these checks and record results:
-
-```bash
-npm run typecheck
-```
-
-```bash
-npm run lint
-```
-
-If either fails, include the specific errors in the review as **must-fix** items.
+Discover the repository's validation commands and inspect available evidence
+for the reviewed head. Run checks that resolve a concrete correctness concern
+or required gate; rerun after relevant changes. Reuse current passing results
+otherwise. Record failures and unavailable checks without assuming a particular
+package manager, application layout, or language.
 
 ## Step 3: Review the Diff
 

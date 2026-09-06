@@ -1,6 +1,6 @@
 ---
 name: html-explainer
-description: The house standard for any skill that renders an HTML page for a person to read, covering design tokens, typography, components, diagrams, and quality gates so every generated page shares one calm, graphic-first look. Use when a skill's instructions say to render its output per the html-explainer standards, or when the user asks for an HTML explainer of anything and no more specific skill applies.
+description: "Render an HTML explainer when requested or when a producing skill calls for the shared HTML presentation standard."
 argument-hint: "[what to explain, when invoked directly]"
 allowed-tools: Read, Grep, Glob, Bash, Write
 ---

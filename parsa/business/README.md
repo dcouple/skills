@@ -14,7 +14,7 @@ For the longer explanation, read: [What's the Business Equivalent of a Codebase?
 
 The business workflow should feel like the engineering workflow.
 
-For engineering, the high-attention human work happens in the initial conversation and `/discussion`. Then `/plan`, `/implement`, and PR review run with as much automation as possible.
+For engineering, the high-attention human work happens in the initial conversation and `/discussion`. Then `/create-plan`, `/implement`, and PR review run with as much automation as possible.
 
 Business uses the same shape, with one addition: the context base has to be built first, because business context is not already sitting in a repo.
 
@@ -73,7 +73,7 @@ Use this after discussion. It should do the spec work automatically:
 - if context or research-adversary is missing/stale, send the workflow back to context-building rather than producing it here
 - stop and ask for human input only if context/spec gaps block progress
 
-This is the business equivalent of `/plan`.
+This is the business equivalent of `/create-plan`.
 
 ### `business-artifact`
 
@@ -93,7 +93,9 @@ Use this only when sending, publishing, presenting, or handing off. It runs a fr
 
 ## Support stages (Claude agents · Codex skills)
 
-These run with isolated, fresh context and are invoked by the primary stages, not by the user. In Claude they are sub-agents in `.claude/agents/` — true context isolation, which is what makes the adversarial review and context-gathering honest. Codex has no separate agents primitive, so there they are skills in `.codex/skills/` (the same way Codex represents `plan-reviewer`, `researcher`, etc.).
+These run with isolated, fresh context and are invoked by the primary stages, not by the user. In Claude they are sub-agents in `.claude/agents/` — true context isolation, which is what makes the adversarial review and context-gathering honest. This repo represents the Codex support roles as skills in `.codex/skills/`,
+including `plan-reviewer` and `researcher`. The calling workflow uses the
+active harness's supported delegation tools when it needs isolated review.
 
 ### `business-context`
 

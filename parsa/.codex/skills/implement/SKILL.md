@@ -1,149 +1,72 @@
 ---
 name: implement
-description: Executes an approved plan directly in Codex with one primary implementation stream by default, bounded sidecars only when write scopes are truly disjoint, and mandatory review gates for completeness and intent fidelity. Use after a plan is approved.
+description: "Execute an authorized implementation plan through integration, relevant checks, and review."
 argument-hint: "[plan file path]"
 ---
 
 # Implement
 
-Execute the approved plan directly in this Codex session.
+Execute the authorized plan through working integration, checks, and review.
+Plan approval includes ordinary in-scope local fixes and repeated affected
+checks. Continue to the requested PR handoff if the user's task includes it.
 
-Codex is the primary implementation authority in this workflow. If you also
-have a separate Claude workflow available, treat it as an optional parallel
-second-opinion lane rather than the primary executor.
+## Resolve the work
 
-## Step 1: Load Plan and Supporting Artifacts
+Execute in this Codex session as the primary implementation owner.
 
-- If a path is provided, read that plan
-- If no path is provided, use the most recent file in `./tmp/ready-plans/`
-- If the plan includes `Source Artifacts`, read the brief / intent artifact and
-  research dossier before coding
+Read the named plan and its intent source. Without a path, use the plan clearly
+identified by the current task; ask if several ready plans are plausible.
+The brief owns why and locked decisions; the plan owns execution shape; a
+research dossier is supporting evidence. Load dossier sections only when an
+implementation question or conflict requires them.
 
-Treat sources of truth as:
-- Brief / intent artifact: why this work exists and what must not be optimized away
-- Plan: execution shape, task ordering, and file-level implementation details
-- Dossier: supporting evidence, patterns, and anchors
+## Execution boundaries
 
-If no separate brief exists, treat the plan's `Intent / Why`, `Locked
-Decisions`, `Known Mismatches / Assumptions`, and success criteria as the
-minimum intent source of truth.
+Keep one owner for integration, source edits, and fix commits. Delegate only
+bounded tasks with disjoint write scopes and a clear integration contract.
+Respect the selected executor, repository policy, and active harness permissions.
 
-## Step 2: Identify Dangerous Commands
+Local edits, dependency changes needed by the plan, and non-secret local test
+configuration are ordinary implementation work, subject to repository install
+gates. They are not automatically manual steps. Production/shared environment
+writes, destructive operations, secret changes, and additional scope require
+a matching grant. Prepare the concrete change and continue independent work
+while a blocked action awaits authorization. Never bypass a denied operation.
 
-Before implementing, scan the plan for commands that must not be run
-automatically:
-- environment variable changes
-- package installations that change manifests
-- destructive or irreversible commands
+## Implement and verify
 
-Collect them into a `Manual Steps` list and surface them before proceeding.
+Use existing repository patterns and wire the complete runtime/user-facing path.
+Update plan progress only when its completion condition is observable. Record
+necessary implementation deltas; ask before weakening a locked requirement.
 
-Schema / migration handling is done later after review. Do not handle it here.
+Discover the repo's validation commands from its instructions, manifests, and
+CI. Run checks that cover the affected behavior and required gates, fix failures
+caused by the change, and rerun affected checks. Reuse results on unchanged
+inputs. Do not require a full suite or repeated builds for a prose-only edit.
+Record pre-existing failures and unavailable checks separately from new failures.
 
-## Step 3: Choose Execution Strategy
+For schema changes, discover the repository's migration workflow and generate
+reviewable migrations before the dependent validation and final review. Include
+all generated SQL, flag destructive statements, and use disposable local/test
+fixtures only within the existing authorization. Do not apply a migration to a
+shared or production database without a matching grant. Validation that depends
+on an unapplied migration remains unverified.
 
-Default to one primary implementation stream.
+## Review and complete
 
-Only split work when all of the following are true:
-- write scopes are genuinely disjoint
-- the integration contract is already clear in the plan
-- parallelism will not hide missing last-mile wiring
-- one primary owner still handles final integration and finish-line checks
+Use `implementation-reviewer` for a complete review of the finished change.
 
-Keep these with the primary stream unless there is an unusually clean reason
-not to:
-- schema and shared types
-- routing / bootstrap / exports
-- auth / permissions / tokens
-- jobs / async orchestration / dispatch semantics
-- final frontend-to-backend wiring
+Reviewers check intent, task completeness, integration, and concrete failure
+risks; they return findings to the implementation owner. An additional review
+lane needs a repository requirement or an unresolved risk. Do not rerun clean
+reviews on unchanged artifacts. Merge findings from active lanes before asking
+product questions. Fix in-scope defects, then review the changed portion and
+rerun affected checks. Honor any parent workflow's remaining review budget;
+if it is exhausted with blockers, report them rather than reset the count.
 
-## Step 4: Implement
-
-- Read the full plan before editing code
-- Read the supporting brief before coding when available
-- Prefer existing patterns over new abstractions
-- Prefer editing existing files over creating new ones
-- Update the plan progress as work completes
-- Do not silently simplify, defer, or narrow scope
-- If you must deviate, add a short `Plan Delta` note to the plan
-- A task is not complete until the end-to-end runtime or user-facing path is
-  actually wired and still preserves the intended outcome
-
-Run these quality checks during the work when feasible:
-
-```bash
-npm run typecheck
-npm run lint
-```
-
-## Step 5: Review Gates
-
-After implementation, always run a review pass against the standards in
-`implementation-reviewer`.
-
-Minimum gate:
-- one full implementation review pass
-
-Preferred gate:
-- a fresh skeptical second-opinion pass in a separate context
-
-If you are operating alongside a separate Claude workflow, you may use that
-second lane in parallel. If not, perform an additional adversarial Codex review
-focused on:
-- missing plan tasks
-- brief-intent regressions
-- runtime wiring
-- auth / permission gaps
-- transaction boundaries
-- race conditions
-- background-job registration
-- dead query-param flows
-- whether the implementation actually reached the finish line
-
-Do not surface questions until all active review lanes are complete and their
-findings are merged.
-
-Split findings into:
-- Auto-fixable
-- Needs user input
-
-Apply straightforward fixes directly, then rerun the review gate when needed.
-
-## Step 5.5: Generate Dev Migration SQL (If Schema Changed)
-
-After review gates are complete and auto-fixable issues are resolved, check if
-`schema.ts` was modified:
-
-```bash
-git diff origin/main --name-only | grep schema.ts
-```
-
-If schema changed:
-1. Run `npm run db:diff:dev`
-2. Present the generated SQL in a transaction block
-3. Present the command to apply the dev migration
-4. If destructive SQL appears, stop and ask the user before proceeding
-
-If schema did not change, skip this step silently.
-
-## Step 6: Move Plan to Done
-
-Once all tasks pass review, brief intent is preserved, and the implementation is
-complete, move the plan from `./tmp/ready-plans/` to `./tmp/done-plans/`.
-
-Only move the plan when all tasks are confirmed complete.
-
-## Step 7: Present Results
-
-Present the final result with:
-- quality checks and their status
-- intent fidelity status
-- completeness against the plan
-- issues found
-- questions needing user input
-- manual steps remaining
-- schema changes, if any
-- final plan path if it was moved
-
-If the review found issues, offer to fix them before the user commits.
+Move the plan to `./tmp/done-plans/` only after required work and checks are
+complete. Leave blocked plans in place with their actual status. Report the
+outcome, evidence, and limitations. If PR preparation or QA is already
+requested, continue into `prepare-pr` or that stage now; do not merely offer to
+finish. Merge, release, deployment, and production changes remain separately
+authorized actions.

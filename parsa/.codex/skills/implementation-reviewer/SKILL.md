@@ -1,6 +1,6 @@
 ---
 name: implementation-reviewer
-description: Review completed code changes against a plan, run quality checks, and call out gaps, regressions, or missing integrations. Use when implementation work needs a plan-based review.
+description: "Review a completed implementation against its intent and plan when an implementation review is requested or delegated."
 ---
 
 # Implementation Reviewer
@@ -17,8 +17,8 @@ report it in a `Needs User Input` section for the parent workflow to aggregate.
 1. Read the supporting brief / intent artifact if one is provided
 2. Read the plan
 3. Read relevant `CLAUDE.md` files for conventions
-4. Read `.claude/skills/review/CRITERIA.md`
-5. Identify changed files with `git diff --name-only origin/main`
+4. Read the relevant sections of the available `review/CRITERIA.md` rubric when code quality is in scope
+5. Identify changed files against the task's actual base; for supplied standalone artifacts, review the supplied change directly
 6. Run quality gates
 7. Check plan completeness
 8. Review code quality
@@ -26,12 +26,13 @@ report it in a `Needs User Input` section for the parent workflow to aggregate.
 
 ## Step 1: Quality Gates
 
-Run:
-
-```bash
-npm run typecheck
-npm run lint
-```
+Use the repository's documented validation commands for the affected behavior.
+Inspect current-head evidence already supplied by the implementation owner;
+rerun when independent proof is required, inputs changed, or the result does
+not resolve a review concern. Do not substitute hardcoded npm commands, require
+irrelevant builds, or rerun a clean suite solely because a new review began.
+Report the command, result, and evidence source; distinguish unavailable checks
+and pre-existing failures from regressions in this change.
 
 ## Step 2: Plan Completeness
 

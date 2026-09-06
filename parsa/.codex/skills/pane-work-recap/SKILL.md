@@ -1,6 +1,6 @@
 ---
 name: pane-work-recap
-description: Summarize recent Pane workspace activity from active panes, archived panes, branches, pull requests, and agent logs. Use when the user asks what they worked on, what they finished, what shipped, what is still active, or asks for a recap over a time window such as today, yesterday, last 24 hours, this week, recently, or open-ended "what have I been working on?"
+description: "Summarize recent Pane activity over a requested time window. Read-only; does not start or advance work."
 ---
 
 # Pane Work Recap

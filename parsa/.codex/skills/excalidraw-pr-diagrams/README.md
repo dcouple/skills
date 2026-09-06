@@ -27,7 +27,7 @@ The skill includes a render pipeline that lets the agent visually validate its d
 
 **Option A: Ask your coding agent (easiest)**
 
-Just tell your agent: *"Set up the Excalidraw diagram skill renderer by following the instructions in SKILL.md."* It will run the commands for you.
+Just tell your agent: *"Set up the Excalidraw diagram skill renderer by following references/rendering.md linked from SKILL.md."* It will run the commands for you.
 
 **Option B: Manual**
 
@@ -59,8 +59,12 @@ Edit `references/color-palette.md` to match your brand. Everything else in the s
 
 ```
 excalidraw-pr-diagrams/
-  SKILL.md                          # Design methodology + workflow
+  SKILL.md                          # Entry router, outcomes, and permissions
   references/
+    publishing.md                  # External writes, hosting, and readback
+    design.md                      # Conditional design methodology
+    patterns.md                    # Layout and visual pattern reference
+    rendering.md                   # Render, inspect, and stop when clear
     color-palette.md                # Brand colors (edit this to customize)
     element-templates.md            # JSON templates for each element type
     json-schema.md                  # Excalidraw JSON format reference
@@ -68,3 +72,16 @@ excalidraw-pr-diagrams/
     render_template.html            # Browser template for rendering
     pyproject.toml                  # Python dependencies (playwright)
 ```
+
+## Loading and completion
+
+Start with [SKILL.md](SKILL.md). Read the publishing contract before an external
+write, rendering instructions before changing JSON, and design or pattern
+details when the diagram needs them. Rendering and visual inspection are
+required; stop once the result is accurate, legible, and free of layout errors.
+There is no minimum number of polish passes.
+
+Keep PR working artifacts in scratch. Commit documentation assets when the
+tracked docs need them and the task authorizes it; keep edited sources and PNGs
+in agreement. Publishing, release creation, and asset replacement retain their
+specific authorization requirements in [publishing.md](references/publishing.md).

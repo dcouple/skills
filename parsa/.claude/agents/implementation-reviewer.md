@@ -1,6 +1,6 @@
 ---
 name: implementation-reviewer
-description: Reviews completed implementations against their plan. Runs quality checks, verifies plan completeness, reviews code quality using shared criteria, and generates a report of remaining work. Automatically invoked after the implement skill finishes.
+description: "Review a completed implementation against its intent and plan when an implementation review is requested or delegated."
 tools: Glob, Grep, Read, BashOutput
 model: opus
 color: yellow
@@ -29,15 +29,13 @@ surface after all review lanes complete.
 
 ## Step 1: Quality Gates
 
-Run these checks and record exact output for failures:
-
-```bash
-npm run typecheck
-```
-
-```bash
-npm run lint
-```
+Use the repository's documented validation commands for the affected behavior.
+Inspect current-head evidence already supplied by the implementation owner;
+rerun when independent proof is required, inputs changed, or the result does
+not resolve a review concern. Do not substitute hardcoded npm commands, require
+irrelevant builds, or rerun a clean suite solely because a new review began.
+Report the command, result, and evidence source; distinguish unavailable checks
+and pre-existing failures from regressions in this change.
 
 ## Step 2: Plan Completeness
 

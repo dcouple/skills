@@ -1,6 +1,6 @@
 ---
 name: seo-authority-pass
-description: (foundational) Add E-E-A-T signals: explainer pages, glossary, author attribution, structured data, OG images, and SEO metadata.
+description: "Improve a site's SEO authority through verified attribution, structured data, and supporting content."
 allowed-tools:
   - Read
   - Edit
@@ -9,12 +9,6 @@ allowed-tools:
   - Agent
   - WebSearch
   - WebFetch
-when_to_use: >
-  Use when the user wants to improve SEO authority, add E-E-A-T signals,
-  create explainer pages, add author attribution, or optimize metadata.
-  Examples: 'add E-E-A-T', 'create explainer pages', 'add author bylines',
-  'SEO pass', 'add a glossary', 'authority pass', 'add structured data',
-  'create a what-is page'.
 model: claude-opus-4-6
 ---
 

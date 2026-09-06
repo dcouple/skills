@@ -1,6 +1,6 @@
 ---
 name: seo-briefing
-description: (proactive) Pull analytics from PostHog, GSC, and Ahrefs. Correlate data and produce an actionable SEO briefing.
+description: "Produce an SEO performance briefing from available search and analytics data."
 allowed-tools:
   - Read
   - Write
@@ -10,11 +10,6 @@ allowed-tools:
   - WebFetch
   - mcp__posthog__*
   - mcp__composio__*
-when_to_use: >
-  Use when the user wants an SEO status report, morning briefing, analytics
-  overview, or wants to understand how their site is performing. Examples:
-  'SEO briefing', 'how is the site doing', 'pull analytics', 'morning report',
-  'check indexing status', 'what keywords are we ranking for'.
 model: claude-opus-4-6
 ---
 

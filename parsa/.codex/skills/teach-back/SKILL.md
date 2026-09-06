@@ -1,6 +1,6 @@
 ---
 name: teach-back
-description: Write a plain-language teaching note after a completed task or project so the user learns from the work, and render it as a rich HTML explainer per the html-explainer standards. Use when the user asks Claude for a learning writeup, after-action explanation, personal teacher note, or breakdown of what happened and why, especially at the end of a unit of work, after PR testing/manual testing, or before merge.
+description: "Explain the reasoning and lessons from completed work when the user requests a teaching note or retrospective explainer."
 argument-hint: "[completed task, PR, issue, or work summary]"
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit
 ---

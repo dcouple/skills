@@ -1,6 +1,6 @@
 ---
 name: seo-content-drafting
-description: (execution) Create new SEO content: blog posts, landing pages, comparison pages based on the content strategy.
+description: "Draft new SEO pages from an agreed content strategy or page brief."
 allowed-tools:
   - Read
   - Edit
@@ -9,11 +9,6 @@ allowed-tools:
   - Agent
   - WebSearch
   - WebFetch
-when_to_use: >
-  Use when the user wants to create new content for SEO: blog posts, landing
-  pages, comparison pages, or category pages. Usually follows seo-content-strategy.
-  Examples: 'write the blog posts', 'create the landing pages', 'draft the
-  comparison page', 'fill the content calendar'.
 model: claude-opus-4-6
 ---
 

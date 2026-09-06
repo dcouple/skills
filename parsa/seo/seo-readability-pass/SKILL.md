@@ -1,6 +1,6 @@
 ---
 name: seo-readability-pass
-description: (foundational) Audit and rewrite website copy for voice consistency, readability, and first-timer comprehension.
+description: "Audit and improve website copy for voice, readability, and first-time reader comprehension."
 allowed-tools:
   - Read
   - Edit
@@ -9,11 +9,6 @@ allowed-tools:
   - Agent
   - WebSearch
   - WebFetch
-when_to_use: >
-  Use when the user wants to improve the readability, voice, or comprehension
-  of product website copy. Examples: 'do a readability pass', 'fix the copy',
-  'rewrite the docs to match my voice', 'the docs sound too technical',
-  'do a comprehension audit', 'humanity pass on the website'.
 model: claude-opus-4-6
 ---
 

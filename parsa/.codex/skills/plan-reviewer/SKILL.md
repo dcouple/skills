@@ -1,6 +1,6 @@
 ---
 name: plan-reviewer
-description: Review an implementation plan for repo accuracy, fact purity, intent fidelity, reconciliation quality, and completeness. Use when a plan needs a correctness and completeness pass.
+description: "Review a plan for repository accuracy, intent fidelity, integration gaps, and actionable validation."
 ---
 
 # Plan Reviewer
@@ -74,5 +74,5 @@ Order findings by severity:
 - Flag ignored material anchors, gotchas, or docs
 - Flag placeholder/template leakage
 - Flag repo-shape mismatches and approximate code patterns
-- Do not recommend adding tests unless the user explicitly wants them
-- Do not recommend compatibility layers unless requested
+- Recommend regression tests when a concrete changed behavior needs coverage; avoid tests that only mirror the implementation
+- Recommend compatibility only when an existing consumer contract requires it

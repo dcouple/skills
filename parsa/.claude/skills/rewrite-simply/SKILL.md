@@ -1,19 +1,10 @@
 ---
 name: rewrite-simply
-description: (foundational) Answer first, cut clutter, keep the human in it. The structural layer above line-level editing, and the standing default for anything a person reads.
+description: "Rewrite an existing draft for structure, brevity, and reader fit, or audit it in detect mode."
 allowed-tools:
   - Read
   - Edit
   - Write
-when_to_use: >
-  Standing policy, not only an on-demand tool. Once loaded, these rules govern
-  every human-facing thing you write for the rest of the session: chat
-  answers, emails, Slack and support replies, PR titles and descriptions,
-  commit messages, issue bodies, release notes, docs, briefs, status updates.
-  No need to invoke it again. Invoke it explicitly to rewrite an existing
-  draft or to audit one in detect mode. Examples: 'rewrite this simply',
-  'this is too long', 'get to the point', 'tighten this before I send it'.
-  Not for code, identifiers, logs, config, or machine-parsed output.
 argument-hint: "[draft or file path] [detect|edit]"
 ---
 
@@ -27,19 +18,16 @@ carries no word that does not work, and still sounds like a person wrote it.
 - **edit** (default): rewrite and show the result.
 - **detect**: name what is wrong, quote the offending text, do not rewrite.
 
-## Where this sits
+## Scope and related skills
 
-Structure, not lines. This decides what comes first, what gets cut, what earns
-space.
+Apply this to the requested draft or rewrite. It does not become a new policy
+for unrelated future messages. Use `good-writing-fundamentals` when line-level
+editing adds value; use `seo-writing-framework` for substantial content creation
+that needs research and a full editorial workflow. Do not load all three for a
+short answer, commit message, or straightforward correction.
 
-`good-writing-fundamentals` is the line-level layer: active voice, concrete
-detail, direct verbs, AI patterns. **Restructure with this one first, then run
-that one, then verify against this file last.** Restructuring after a line
-polish wastes the polish, and shipping straight out of a line polish means the
-text that ships was never checked against these rules.
-
-No draft yet and it is customer-facing? Run `seo-writing-framework` instead.
-This skill needs text that exists.
+If another writing skill is used on the same draft, these house rules govern
+conflicts, including the ban on em dashes. User instructions take precedence.
 
 ## Rules
 
@@ -54,7 +42,7 @@ This skill needs text that exists.
 - **Plain English.** The word a smart friend would use, not jargon. If a technical term is unavoidable, tag it in five words or fewer. Never assume they recall an earlier acronym.
 - **One question at a time.** If you must ask, ask one thing, options as short bullets.
 - **Re-anchor on long tasks.** Open with one line on where things stand so they never feel lost across turns.
-- **Cut a third after you think you are done.** A finished draft still carries about a third more than it needs. Do one pass whose only goal is removal: shorter words, two sentences collapsed into one, and whole passages the reader would never miss. Test each paragraph against what the reader must *know* and *do*; context you found interesting while working is the first to go. The refuse-to-cut list still holds, so the third comes out of elaboration, never substance. Failing to find a third usually means you reread as the writer, not the reader.
+- **Cut what adds no value.** Remove repetition and irrelevant elaboration while preserving facts, useful context, and the reader's next action. No percentage target.
 - **Orient before you advance.** When the reader is waiting on a multi-step process, especially one involving parties they cannot see, place the whole thing before any detail or ask: what is done, what is pending, what each part depends on, and what is genuinely unknown. Name the step whose timing you do not control, and say you do not control it. A reader who cannot locate your update inside the process reads every paragraph as unrelated news, and guesses at the rest. Distinct from re-anchoring, which is continuity inside one conversation; this is the reader's model of a process running outside it. Most costly to skip in clinical, billing, and safety contexts, where their next action depends on knowing what has and has not happened yet.
 
 ## Tone
@@ -208,27 +196,14 @@ usually do nothing.
 
 ## Procedure
 
-1. **Read the whole draft.** Do not edit while reading.
-2. **Find the real answer.** One sentence: what does this actually say? If you cannot, the draft has no point yet. Say so and stop.
-3. **Move it to line one.** Everything else reorders around it.
-4. **Set the register** from the table. That is your formatting budget.
-5. **Cut** throat-clearing, repetition, clutter, hedges, and every anti-pattern above.
-6. **Check length is doing work.** Does the longest section deserve to be?
-7. **Read it aloud as its reader**, who never saw this conversation.
-8. **Check the human survived.** Would you send this to someone you respect?
-9. **Report the cut:** before and after word count, and what you removed.
-10. **Hand off to `good-writing-fundamentals`** for the line pass, whenever that skill is being run.
-11. **YOU MUST verify against this file, not your memory of it, and YOU MUST do it last.** Reopen this file and walk the finished text against each rule and anti-pattern by name. Running the pass is the requirement; having read the rules earlier does not satisfy it. The rules you break are the ones you are surest you know, because from memory you check the spirit and miss the letter.
+Read the draft, identify its point and audience, then improve its order,
+register, and wording. In edit mode return the rewrite; in detect mode quote
+specific issues with suggested fixes. Include a change summary only when useful.
 
-    Verify the exact text that will ship. Any later edit, including the line pass at step 10, voids this step and YOU MUST run it again. The two skills genuinely disagree in places: this file bans em dashes outright, while `good-writing-fundamentals` allows one or two in a longer draft. Where they conflict on anything a person reads, this file wins, which is why it runs last rather than first.
-
-    YOU MUST scan literally for the mechanical bans, which are the cheapest to catch and the easiest to miss: em-dashes, "it's not X, it's Y", filler openers, contrast scaffolding, bold on a full sentence, bold on a bad outcome, a thesis closing, the same term swapped for a synonym.
-
-    YOU MUST then scan for the restated negative: a sentence whose only job is to name what something is *not*, or to re-argue a point already settled. Answering feedback, a code review, or a correction makes this one especially likely, because restating the negative feels like proof you understood.
-
-    YOU MUST fix what you find, and name the rule you broke rather than silently correcting it, so the miss is visible.
-
-**YOU MUST NOT send, publish, commit, or push any human-facing text until step 11 has actually run on the exact text that ships.** A draft that skipped it is unfinished however good it looks. This is the most common way the skill fails, and it fails silently, because the text always reads fine to the writer. The moment you notice you are about to ship without having reopened this file: stop, reopen it, run the pass.
+Check the finished text for accuracy, retained essentials, clarity, and house
+style, including em dashes. Fix concrete defects. Recheck affected text after
+later edits; do not reread this entire skill or restart a full audit for every
+small revision. Stop when the requested draft is ready.
 
 ## Refuse to cut
 
@@ -245,4 +220,4 @@ Shorter but less true is a failed rewrite.
 ---
 
 Licence: AGPL-3.0, see `LICENSE`. Sources and provenance are documented in the
-repo README under "rewrite-simply".
+repo README under "Writing skill selection".
