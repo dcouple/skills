@@ -1,6 +1,6 @@
 ---
 name: pane-work-prioritizer
-description: Recommend what to work on next across a Pane workspace and GitHub activity. Use when the user asks what they should work on next, what to prioritize, what is blocked, what needs review, what PRs should be merged, what issues matter, or wants a triage of active/recent repos, panes, PRs, issues, checks, reviews, and recent work.
+description: "Recommend what to work on next from Pane and GitHub activity. Read-only; does not create workstreams."
 ---
 
 # Pane Work Prioritizer

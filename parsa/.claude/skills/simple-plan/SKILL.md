@@ -1,43 +1,37 @@
 ---
 name: simple-plan
-description: Quick gut-check before implementing when the user directly asks you to do something (e.g. "add X", "fix Y", "change Z"). Investigates, proposes a lightweight plan, and implements after approval. Use this instead of /create-plan when the user wants something done, not a formal plan.
+description: "Plan and complete a straightforward authorized change, or return a short plan when only planning is requested."
 argument-hint: "[what the user wants done]"
-allowed-tools: Read, Grep, Glob, WebFetch
 ---
 
 # Simple Plan
 
-When the user directly asks me to make a change, I will first investigate and propose a plan before implementing anything. This ensures alignment before any code is written.
+Use this for a straightforward change whose scope and success criteria can be
+kept in a short plan. Inspect the affected code and its callers, then state the
+current behavior, intended result, relevant files, and validation approach.
+Expand to `create-plan` when dependencies or unresolved design choices need a
+separate implementation contract.
 
-## My Plan Will Include
+## Authorization and continuation
 
-### Current State
-- Root cause analysis explaining the current state
-- File references and code snippets where relevant
+A request to implement or fix the named work authorizes its ordinary reversible
+local steps. A standing run-continuously grant from the coordinating workflow
+also supplies plan approval within its recorded scope. Present the short plan
+as a progress update and continue; do not ask for the same approval again.
+If the user asked only for a plan or explicitly requested a review pause,
+return the plan and wait before implementing. Ask when a product decision,
+expanded scope, or ungranted external/destructive action is required.
 
-### Proposed Changes
-- Clear explanation of what needs to change
-- File references and code snippets where necessary
-- Task list of all work to be done
+## Complete the change
 
-### My Advice
-Feedback from a principal engineer perspective, providing overall architectural and implementation guidance.
+Keep one implementation owner, integrate the whole requested behavior, and
+run the repo's relevant checks. Use `implementation-reviewer` for the final
+implementation review; add an independent second lane only when required by
+repo policy or when material uncertainty warrants it. Fix actionable in-scope
+findings and rerun affected checks. Do not repeat a clean review on unchanged
+work or add tests that only restate the implementation.
 
-## Process
-
-1. Investigate the codebase first
-2. Present the plan to the user
-3. **Only when the user approves** will I proceed
-4. After approval, prefer one primary `implementer` sub-agent to execute the whole plan rather than fragmenting it by default
-5. Keep the user's stated why, constraints, and non-goals explicit during implementation rather than letting the task list silently replace them
-6. After implementation, run the Claude `implementation-reviewer` and Codex review in parallel when the plugin is available, and wait for both before declaring completion
-7. If the Codex plugin is unavailable, run the Claude `implementation-reviewer` alone before declaring completion
-
-## Notes
-
-- Instructions must be very clear with code snippets and file paths
-- If implementation proceeds, keep one primary implementation authority unless the write scopes are clearly disjoint
-- The final review must check both task completion and whether the implementation still satisfies the user's original intent
-- I will not implement anything until the user approves
-
-User Query: $ARGUMENTS
+Continue to `prepare-pr` and requested QA when included in the user's task or
+standing workflow grant. Otherwise return the completed change with check
+results and remaining limitations. Never infer merge, release, deployment,
+production mutation, or additional scope from implementation approval.

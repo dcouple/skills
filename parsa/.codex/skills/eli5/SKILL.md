@@ -1,6 +1,6 @@
 ---
 name: eli5
-description: Explain one topic to a smart person who knows nothing about it, as a single HTML page that leads with a picture and earns every word, rendered per the html-explainer standards. Use when the user types /eli5 <topic>, asks for a dead-simple explainer of how something works, or wants to start learning about the code they are sitting in without a lecture.
+description: "Create a beginner-friendly HTML explainer when the user requests /eli5 or an illustrated introduction."
 argument-hint: "<topic, question, or path to explain>"
 model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write

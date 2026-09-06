@@ -1,6 +1,6 @@
 ---
 name: dialectic
-description: Adversarial debate between the two model stacks - a Claude advocate vs a Codex opponent - to pressure-test one high-stakes decision before it locks, or to adjudicate a head-on conflict between the two reviewers. Use at zones 0–1 when a design fork resists convergence, when the user asks to "duel"/"debate" a direction, or when Codex and Claude reviews disagree on a Must Fix. Not for zone 2–3 work.
+description: "Debate a consequential design choice or conflicting review finding when an independent opposing view is needed."
 argument-hint: "[the decision or conflict to debate]"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: Post-PR refactor pass. Sizes the diff against the remote default branch, fans out refactor-simple (and refactor-deep on large changes) as fresh subagents that run blind to each other, merges their plans once with max-severity rules, shows the merged report, and hands it to refactor-apply on the user's word. Use after a PR is open, or whenever the user asks to refactor or clean up the branch.
+description: "Analyze a branch for refactoring when requested, combine independent findings, and present a plan before applying it."
 argument-hint: "[--size=small|large] [--plan-only]"
 ---
 

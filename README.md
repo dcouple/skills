@@ -59,7 +59,7 @@ Most of the time, you're only answering one question:
 
 If no, **discuss** it. If yes, **capture** it. If it's captured and clear,
 **execute**. If work exists, **review** it. If review finds a gap, **fix** it
-and **review** again.
+and rerun the affected review and checks.
 
 ### A few common software scenarios
 
@@ -92,8 +92,8 @@ create-ticket -> plan -> implement -> review -> pr-test-automation -> human PR r
 need to think about every reviewer by hand every time; the important thing is
 that review loops back to implementation until the work matches the ticket. For
 non-trivial changes, use Codex and Claude as independent readers when possible:
-one implements, the other reviews, then rerun until the ticket intent, plan,
-diff, and runtime behavior agree.
+one implements, the other reviews, then rerun affected checks after concrete
+fixes until intent and behavior agree. A clean review of unchanged work ends that pass.
 
 Once the review loop is clean, run `pr-test-automation` before asking the human
 to spend attention in GitHub. This is the first-pass QA sweep: local services,
@@ -104,7 +104,7 @@ After that, the human still reviews the PR file-by-file in GitHub, clicks into
 each changed file, and marks the draft ready if the diff looks right. Then the
 human manually tests whatever the automation couldn't confidently prove.
 
-After the task is really done, run `teach-back`. That writes the learning note:
+When a learning note is requested after completion, run `teach-back`. It explains:
 what approach worked, what roads were rejected, what tradeoffs were made, where
 the messy parts were, and what lesson transfers to the next project.
 
@@ -146,55 +146,12 @@ folders provide agent-specific discovery metadata and detailed instructions.
 
 ### Model choice
 
-This keeps model choice pretty simple. In dcouple/Pane, we use GPT models
-through the Codex harness and Claude models through the Claude Code harness.
-Codex is the engineering workhorse. Most medium implementation work doesn't
-need the biggest model. Right now, `GPT-5.6 sol medium fast` is the everyday
-implementation default: it is strong enough for most clear tickets, fast enough
-to feel like you're flying, and cheap enough that you can work in long windows
-without feeling throttled by weekly limits.
-
-This is why model opinions can sound inconsistent. A developer using GPT
-through Codex for hard engineering work may have a great time; a marketer,
-support lead, or founder asking it to shape public language may hit the wrong
-tool for the job.
-
-Don't use Codex as the writer of record for public-facing copy. If the work
-touches support docs, marketing copy, metadata, page titles, pricing language,
-or any sentence a customer will read, route it through Claude. The failure mode
-isn't usually spelling or grammar. It's audience, register, tense, and promise
-framing. Codex can preserve the facts and still miss who the page is for, what
-moment the reader is in, and how the sentence should sound. That is how
-evergreen support copy quietly turns into the wrong tense.
-
-Reach for `GPT-5.6 sol xhigh` when the implementation is harder: lots of moving
-parts, fuzzy architecture boundaries, or a mistake that would be expensive to
-unwind. That should be the exception, not the default.
-
-Reserve `GPT-5.6 max`, `GPT-5.6 ultra`, and Fable ultracode-style dynamic
-workflows for truly rare work: incredibly complex, long-running tasks and
-ambitious implementations where the extra cost is clearly buying down real
-risk.
-
-Ambiguous discussion and planning should stay in Claude when available: use
-`Claude 5 Fable` at `xhigh` for complex work, with `Claude 4.6 Opus` as a
-still-great fallback when Fable is unavailable or the extra usage cost is not
-worth it.
-
-Review is where we should be more aggressive. The reviewer isn't trying to be
-fast; it's trying to catch the thing the implementer missed. It should read the
-issue, the plan, and the diff with fresh eyes and ask: did we actually do what
-we meant? For non-trivial planning and implementation review, run `GPT-5.6 sol
-xhigh` and `Claude 5 Fable xhigh` in parallel; if Fable is unavailable or the
-cost is not worth it, use `Claude 4.6 Opus` as the Claude lane. Keep both lanes
-in the loop until neither reports bugs, factual blockers, or plan issues.
-
-For that review/audit loop, it is worth spending the expensive models
-sparingly: `GPT-5.6 max`, `GPT-5.6 ultra`, and Fable ultracode are not needed
-for most implementation, so save them for the places where sharper judgment
-changes the outcome. I would avoid
-`Claude 4.7` and `Claude 4.8` for this workflow; they tend to feel too
-constrained for open-ended discussion and judgment calls.
+Use the model and harness selected by the user or configured in the workflow.
+Match effort and review independence to the uncertainty and consequences of the
+change. Role instructions describe evidence and completion requirements rather
+than assuming one model needs repeated supervision. Preserve explicit provider
+choices; report an unavailable requested provider instead of silently switching.
+The business and SEO workflows keep their documented writing-provider defaults.
 
 ### Business work
 
@@ -245,47 +202,21 @@ edited, or ask whether it reads as AI to get each pattern quoted back with a
 fix. If the piece doesn't exist yet and it's customer-facing, it points you at
 the framework first.
 
-### rewrite-simply
+### Writing skill selection
 
-`parsa/.claude/skills/rewrite-simply/` and `parsa/.codex/skills/rewrite-simply/`
-are the layer above that one. It is a standing policy, not a tool you call: once
-loaded it governs every human-facing thing written for the rest of the session,
-including chat answers, emails, PR descriptions, commit messages, and issue
-bodies. It ships to both agents because both write for people, and the two
-copies are byte-identical.
+Use `rewrite-simply` for the structure and brevity of an existing draft,
+`good-writing-fundamentals` for line editing or AI-pattern detection, and
+`seo-writing-framework` for substantial content creation that needs research
+and editorial development. Short replies and routine corrections do not need
+all three. The two `rewrite-simply` variants stay identical and apply to the
+requested draft, not every later message.
 
-`good-writing-fundamentals` fixes the line. `rewrite-simply` fixes the shape:
-what comes first, what gets cut, what earns space. Run it first, since
-restructuring after a line polish wastes the polish.
-
-```text
-rewrite-simply -> good-writing-fundamentals
-```
-
-It is assembled from three sources, carried verbatim rather than summarised so
-no agent has to fetch anything at runtime.
-
-| Section in the skill | Source | Notes |
-| --- | --- | --- |
-| Rules, Tone, Code comments and docs, Format for scanning | Attention-kind output style, from [alexgreensh/attention-span](https://github.com/alexgreensh/attention-span) | Verbatim. AGPL-3.0, `LICENSE` vendored into the skill directory |
-| Two rules inside Rules: "Cut a third after you think you are done" and "Orient before you advance" | Ours | Not from any source above. The second is the one that most changes customer writing: put the whole multi-step process in front of the reader before any detail or ask, and name the step whose timing you do not control |
-| Reading the ask, Discipline, Anti-patterns, Formatting in conversation, Writing a deliverable | doozy `shared/communication-style` and `shared/deliverable-writing` prompts | Verbatim, minus product-specific rules. Its `<current_context>` datetime reference is rendered as "as of now" so the rule stands alone |
-| Clutter and the line, Refuse to cut | Zinsser, *On Writing Well* | Our phrasing of his principles: clutter, short words, one term per concept, humanity |
-| Where this sits, The register rule, Procedure, Modes | Ours | The part neither source supplies. Step 11 is a hard gate rather than a closing suggestion: nothing ships until the verify pass has actually run against the file, because the rules a writer breaks are the ones they are surest they know. It runs after the `good-writing-fundamentals` handoff so the text verified is the text that ships, which also settles the em-dash conflict between the two skills in this one's favour |
-
-**The register rule is the reason all three fit together.** They genuinely
-disagree about formatting, because each assumes a different reader.
-Attention-kind assumes a terminal and wants arrow markers with bold carrying
-the whole answer. doozy assumes a chat and bans headers and bullet walls
-outright. Zinsser assumes prose. All three are right for their own reader, so
-the skill picks by register: terminal, conversational chat, written document,
-or a customer under stress. That last one takes the plainest formatting,
-because heavy markup in an email about someone's money or their patients reads
-as a form letter.
-
-Two rules fall out of it. Bold everything and you teach the reader that
-unbolded text is skippable, which makes it filler by definition. And never bold
-a bad outcome for the reader, because it reads as leverage.
+`rewrite-simply` retains adapted material from
+[alexgreensh/attention-span](https://github.com/alexgreensh/attention-span)
+(AGPL-3.0, LICENSE included), the doozy communication and deliverable-writing
+prompts (with product-specific rules removed), and our phrasing of Zinsser's
+clutter and clarity principles. The local workflow and cutting guidance are
+adapted; they are not a verbatim upstream copy.
 
 The skill directory is AGPL-3.0 by way of attention-span. It is an independent
 work aggregated alongside the rest of this repo, which is unaffected. doozy is
@@ -415,3 +346,15 @@ This grew out of the workflow described
 The original frame was spec, read, verify. In practice, we split that into
 smaller steps because each moment needs different behavior: discussion, ticket
 capture, planning, implementation, review, PR testing, and teach-back.
+
+## Workflow instruction contracts
+
+`simple-plan` handles a short local plan and execution; `create-plan` produces a
+larger handoff contract; `implement` owns integration and review; `prepare-pr`
+finishes scoped commits, checks, and the PR. An already-authorized end-to-end
+request continues across these stages. A planning-only request returns its plan.
+All workflows retain their explicit merge, publishing, and production boundaries.
+
+Long QA, diagram, and orchestration details are linked from their entrypoints
+and loaded for the current operation. `runpane-orchestrator` retains the full
+conjunctive `ready_to_merge` gate; passing an early stage is not PR readiness.

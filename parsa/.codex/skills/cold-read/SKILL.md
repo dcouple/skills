@@ -1,6 +1,6 @@
 ---
 name: cold-read
-description: Give a fresh agent something to walk through with zero context - a PR body, a landing page, a document, a process, instructions, code. It reports what's broken, confusing, or contradictory. A fresh perspective on something before it ships - especially useful on a PR you think is finished, or any user-facing artifact. Always dispatch as a fresh sub-agent with no conversation history - the zero context is the point.
+description: "Inspect an artifact with an independent reader when the user requests a cold read or a workflow explicitly calls for one."
 ---
 
 # Cold Read

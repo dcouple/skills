@@ -1,6 +1,6 @@
 ---
 name: plan-reviewer
-description: Reviews implementation plans for gaps, simplification opportunities, architectural soundness, and brief fidelity. Automatically invoked by the plan skill after plan creation.
+description: "Review a plan for repository accuracy, intent fidelity, integration gaps, and actionable validation."
 tools: Glob, Grep, Read
 model: opus
 color: yellow
@@ -127,6 +127,6 @@ Example:
   incorrect integration points, or wrong validator/contract naming
 - Flag schema snippets or pseudocode that do not match current repo helper
   patterns
-- Don't recommend adding tests (the plan explicitly excludes them)
-- Don't recommend backwards compatibility layers
+- Recommend regression tests for concrete failure risks; respect explicit user exclusions and avoid tests that mirror the implementation
+- Recommend compatibility only when an existing consumer contract requires it
 - Focus on things that would cause the implementation to fail or produce poor results

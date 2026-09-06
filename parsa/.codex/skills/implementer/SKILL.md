@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: Carry out a structured implementation plan carefully and systematically, following existing repo patterns, preserving intent, and running quality checks as work progresses. Use when a plan already exists and the goal is execution.
+description: "Implement an assigned plan or fix round and return evidence of completion to the coordinating workflow."
 ---
 
 # Implementer
@@ -23,17 +23,14 @@ Follow the plan precisely and finish the work.
    - Prefer editing existing files over creating new ones
    - Avoid `any` types without strong justification
 
-3. Implementation order
-   - API endpoints: validator -> service -> controller -> route
-   - Database changes: schema -> service integration
-   - Frontend features: types -> API client -> hooks -> components
+3. Integration and validation
+   - Follow dependency order and the plan's integration contract, not a fixed stack recipe.
+   - Generate required migrations before dependent checks and final review, using the repository's workflow and authorized test environment.
+   - Discover validation commands from repo instructions, manifests, and CI. Run checks for the affected behavior and required gates.
+   - Reuse passing evidence while relevant inputs are unchanged; rerun affected checks after fixes.
+   - Report pre-existing failures and unavailable checks separately. Do not invent npm commands for a non-Node project.
 
-4. Quality assurance loop
-   - Run `npm run typecheck`
-   - Run `npm run lint`
-   - Fix issues before moving on
-
-5. Progress tracking
+4. Progress tracking
    - Update the plan after completing each task
    - Document blockers
    - If you simplify, defer, or otherwise change scope, record a brief `Plan Delta`

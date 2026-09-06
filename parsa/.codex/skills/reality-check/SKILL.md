@@ -1,6 +1,6 @@
 ---
 name: reality-check
-description: Assess where a project actually stands against what its README, plan, or pitch promises, with every claim tested against the artifact itself rather than the docs, reported in chat and as an HTML page per the html-explainer standards. Use when someone asks "where are we", "are we on track", "what's missing", "does this actually work", or before a demo, a handoff, or a decision that assumes the project is further along than it might be. With no argument, check the project in the current directory.
+description: "Assess a project against its stated promises when the user requests a readiness or progress audit."
 argument-hint: "[project path, repo, or plan to check against]"
 model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write

@@ -1,6 +1,6 @@
 ---
 name: refactor-simple
-description: Read-only code quality analysis of the branch against the remote default branch for small to medium changes - classifies the diff, derives conventions from the target repo, and writes a refactor plan to ./tmp/. Usually run by the refactor orchestrator; use directly for a quick pre-PR check on 2-10 files.
+description: "Analyze a small or medium diff for code quality when a refactor assessment is requested or delegated."
 ---
 
 # Simple Refactor

@@ -1,6 +1,6 @@
 ---
 name: investigate
-description: Investigates bugs through hypothesis-driven root cause analysis. Automatically invoked when the user reports a bug, error, broken behavior, or something not working as expected. Use when something is broken, failing, or behaving unexpectedly.
+description: "Find the root cause of broken behavior when diagnosis is requested or needed before a fix."
 argument-hint: "[bug description, error message, or unexpected behavior]"
 ---
 

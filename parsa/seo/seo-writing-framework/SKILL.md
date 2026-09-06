@@ -1,6 +1,6 @@
 ---
 name: seo-writing-framework
-description: (foundational) Research, draft, reader-hat, edit, slop-gate, score process for any customer-facing deliverable.
+description: "Develop substantial SEO or customer-facing copy with research, drafting, and editorial review when that writing workflow is needed."
 allowed-tools:
   - Read
   - Edit
@@ -9,14 +9,6 @@ allowed-tools:
   - Agent
   - WebSearch
   - WebFetch
-when_to_use: >
-  Use when producing any customer-facing deliverable: pricing emails, blog
-  posts, landing pages, docs, support replies, announcements, PR descriptions,
-  onboarding copy, or any writing where the words matter. Can be invoked
-  standalone or called by other SEO skills (readability, authority, drafting)
-  as their writing process. Examples: 'write this email', 'draft this
-  announcement', 'help me write this', 'writing framework', 'apply the
-  writing process'.
 model: claude-opus-4-6
 argument-hint: "[what to write] [audience] [register]"
 arguments:
@@ -27,9 +19,9 @@ arguments:
 
 # SEO Writing Framework
 
-The process for producing any deliverable that a real person will read.
-Works for pricing emails, blog posts, landing pages, docs, support replies,
-announcements, or anything where the words matter.
+Use this workflow for substantial SEO or customer-facing content that needs
+research and editorial development. For a short reply or routine correction,
+write or edit directly; for an existing draft, use the relevant editing skill.
 
 **Important**: Run with Claude Opus 4.6.
 

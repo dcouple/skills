@@ -1,6 +1,6 @@
 ---
 name: create-ticket
-description: Capture conversation context and explicit human intent into one or more high-level GitHub tickets. Use when the user asks Claude to create a ticket, issue, GitHub equivalent of a planning intent brief, delegation ticket, backlog item, or asks to turn the current discussion into ticket(s), especially when the work should be framed by intent, scope, acceptance criteria, inputs needed, and non-exhaustive starting points.
+description: "Capture agreed intent, scope, and acceptance criteria in GitHub issues when the user requests ticket creation."
 argument-hint: "[ticket request, conversation summary, or issue intent]"
 allowed-tools: Read, Grep, Glob, Bash
 ---

@@ -1,6 +1,6 @@
 ---
 name: refactor-deep
-description: Read-only comprehensive analysis of the branch against the remote default branch for large features - derives conventions per layer, hunts for correctness defects in the new code paths, and writes a prioritized refactor plan to ./tmp/. Usually run by the refactor orchestrator alongside refactor-simple; use directly on 10+ file changes.
+description: "Analyze a large diff for structural quality and correctness when a deep refactor assessment is requested or delegated."
 ---
 
 # Deep Refactor

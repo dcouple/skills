@@ -1,6 +1,6 @@
 ---
 name: seo-content-strategy
-description: (proactive) Turn an SEO briefing into a prioritized content plan: what to create, update, and index.
+description: "Prioritize which SEO content to create or improve using the current briefing and site goals."
 allowed-tools:
   - Read
   - Write
@@ -8,11 +8,6 @@ allowed-tools:
   - Agent
   - WebSearch
   - WebFetch
-when_to_use: >
-  Use when the user wants to decide what content to create or update based on
-  data. Usually follows seo-briefing. Examples: 'what should we write',
-  'content strategy', 'what pages need work', 'plan the next batch of content',
-  'what keywords should we target'.
 model: claude-opus-4-6
 ---
 
