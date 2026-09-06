@@ -115,7 +115,10 @@ Everything else runs automatically. The skills handle the writing, the metadata,
 
 ## Writing framework
 
-**`/seo-writing-framework`** is the process all copy skills follow for any customer-facing deliverable. It's also invokable standalone for one-off writing (emails, announcements, support replies).
+**`/seo-writing-framework`** develops substantial SEO or customer-facing copy
+that needs research and editorial development. Use it for a new article, landing
+page, or substantial announcement. Short replies and routine corrections can
+be drafted directly from the supplied facts; existing drafts use an editing skill.
 
 1. **Research** real examples of how good companies write the same type of thing
 2. **Draft** with examples as reference, not from nothing
@@ -126,11 +129,15 @@ Everything else runs automatically. The skills handle the writing, the metadata,
 
 Never draft from nothing. Never ship a first draft. The LLM is a research tool and a drafting tool. It is not the writer.
 
-**`/good-writing-fundamentals`** is the line-level layer: active voice, concrete detail, direct verbs, and the AI patterns to cut. Use it on any prose before it goes out, not just SEO copy. PR descriptions, release notes, and Slack messages count.
+**`/good-writing-fundamentals`** is the line-level layer: active voice, concrete detail, direct verbs, and the AI patterns to cut. Use it when an existing draft needs line editing or a pattern audit, including
+PR descriptions and release notes. It is not a mandatory gate for every reply.
 
 Two modes. Paste a draft and it returns an edited version plus a "What changed" note. Or ask "is this AI slop?" and it names each pattern with the quoted line and a short fix, without rewriting. Detect mode never scores the draft or claims AI wrote it: named patterns are evidence you can check, and a score isn't.
 
-It routes rather than overreaching. If the piece is a customer-facing deliverable that doesn't exist yet, it sends you to `/seo-writing-framework` first, because no line-level rule fixes a draft written from nothing. If a draft already exists, or the piece is short and internal, it just does the pass.
+It routes rather than overreaching. For substantial new customer-facing content that needs editorial development,
+it routes to `/seo-writing-framework`. For an existing draft, it edits or
+detects the requested patterns. For a routine short reply, draft from the
+supplied facts without loading the full framework.
 
 Adapted from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
 
@@ -145,7 +152,10 @@ Banned words and hard-banned patterns apply to both.
 
 ## Model choice
 
-Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or 4.8 at writing in a specific voice and producing natural, readable content. The newer models are great at code but tend to produce generic-sounding copy.
+The copy skills currently pin **Claude Opus 4.6** in their frontmatter. Treat
+that as this suite's configured writing default; user-selected providers and
+active harness constraints still apply. Change executable metadata together
+with this guide when the default changes.
 
 ## Quick reference
 
@@ -159,6 +169,5 @@ Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or
 | `/seo-readability-pass` | foundational | Audit and rewrite copy for voice and clarity |
 | `/seo-authority-pass` | foundational | Add explainer pages, glossary, author, E-E-A-T |
 | `/seo-content-drafting` | execution | Write new blog posts, landing pages, comparisons |
-| `/seo-foundations` | greenfield | Crawl site, find competitors, map search landscape |
 | `/seo-data-pull` | support | Shared data pulling (called by briefing) |
 | `/seo-data-organize` | support | Archive data, track experiments, build wiki |

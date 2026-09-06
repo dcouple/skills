@@ -21,29 +21,24 @@ And here is the skill legend:
 
 _Source: [docs/readme-skill-legend.excalidraw](docs/readme-skill-legend.excalidraw)_
 
-## The evolution — toward a software factory
+## The evolution toward a software factory
 
 ![From workflow to software factory](docs/software-factory-story.png)
 
 _Source: [docs/software-factory-story.excalidraw](docs/software-factory-story.excalidraw)_
 
-The `parsa/` workflow above is generation one: a human conducts every phase,
-and each skill hardens one step — evidence-disciplined planning, independent
-review lanes, first-pass QA, learning notes. `tyler/` ("Orchestra") is the
-evolution: the same principles compiled into an autonomous pipeline. Capture
-passes an adversarial Socratic gate, execution runs end to end on a remote
-seat, review and QA self-correct on the open PR, and the human sits at the
-edges — the gate going in, the PR coming out. The two sets now share their
-strongest parts (evidence contracts, hosted PR visuals, external
-verification). Orchestra has since graduated to its own home —
-[dcouple/orchestra](https://github.com/dcouple/orchestra) — which is now the
-canonical source for that set; the `tyler/` tree here is its frozen ancestor.
-To run both sets on one machine: orchestra's `scripts/sync-user.sh`, then
-this repo's `./sync-parsa-overlay.sh`.
+Parsa's skills are composable stages that can continue through an authorized
+implementation request. `runpane-orchestrator` also coordinates workstreams
+end to end. Orchestra packages capture, execution, review, and QA into `/do`
+and is maintained in [dcouple/orchestra](https://github.com/dcouple/orchestra).
+The `tyler/` tree here is a frozen ancestor, retained for historical reference.
 
-![Orchestra workflow map](docs/tyler-workflow-map.png)
-
-_Source: [docs/tyler-workflow-map.excalidraw](docs/tyler-workflow-map.excalidraw)_
+The story diagram contrasts earlier manual coordination with today's pipeline
+and the direction of further signal-driven intake. It does not promise that
+all shown schedules or deployments are enabled. The current Orchestra workflow
+is documented in [its WORKFLOW.md](https://github.com/dcouple/orchestra/blob/main/WORKFLOW.md).
+The [visual index](docs/README.md) separates current maps from historical
+snapshots, including `tyler-workflow-map` and `software-orchestra`.
 
 ## How we work with LLMs
 
@@ -85,10 +80,13 @@ create-ticket -> discussion -> create-ticket
 Go straight into execution.
 
 ```text
-create-ticket -> plan -> implement -> review -> pr-test-automation -> human PR review -> manual test -> teach-back
+create-ticket -> create-plan (or simple-plan) -> implement -> implementation review
+-> prepare-pr -> pr-test-automation -> human PR review and remaining manual tests
 ```
 
-`plan`, `implement`, and `review` have their own internal checks. You don't
+`create-plan`, `implement`, and their reviewers have their own internal checks.
+`simple-plan` combines a short plan with execution when that work is authorized.
+The standalone `review` skill is available in the Claude variant. You don't
 need to think about every reviewer by hand every time; the important thing is
 that review loops back to implementation until the work matches the ticket. For
 non-trivial changes, use Codex and Claude as independent readers when possible:
@@ -100,9 +98,10 @@ to spend attention in GitHub. This is the first-pass QA sweep: local services,
 browser automation, product flows, logs, analytics, webhooks, email/SMS, and
 whatever else can be checked from tools. The goal is not to replace human
 testing; it's to make the human's pass start from evidence instead of hope.
-After that, the human still reviews the PR file-by-file in GitHub, clicks into
-each changed file, and marks the draft ready if the diff looks right. Then the
-human manually tests whatever the automation couldn't confidently prove.
+After that, the human reviews the PR and tests whatever automation could not
+prove. `prepare-pr` opens a normal PR only when its readiness conditions pass;
+use a draft when requested or when blockers need a visible handoff. A draft
+status change is distinct from approval to merge.
 
 When a learning note is requested after completion, run `teach-back`. It explains:
 what approach worked, what roads were rejected, what tradeoffs were made, where
@@ -118,7 +117,8 @@ fan out GitHub issues into persistent Pane workstreams and proactively advance
 already-authorized reversible stages through current-head review, PR, QA, and CI.
 
 ```text
-investigate -> plan/create-plan|simple-plan -> implement -> implementation review -> prepare-pr -> address review feedback -> PR test automation -> CI/re-review -> ready to merge
+investigate -> create-plan or simple-plan -> implement -> implementation review
+-> prepare-pr -> review feedback -> PR QA -> current CI and evidence -> ready to merge
 ```
 
 The orchestrator remembers stage and external-mutation grants, monitors parallel
@@ -190,17 +190,12 @@ The skills are in three buckets: proactive (monitoring + strategy), foundational
 (readability + authority passes, run anytime), and execution (new content
 drafting). See `parsa/seo/` for the full README.
 
-Every copy skill runs through `seo-writing-framework`: research, draft, reader
-hat, edit, slop gate, score. The gate is `good-writing-fundamentals`, adapted
-from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
-
-That one is worth reaching for outside SEO too. It holds the line-level rules
-for any prose a person will read, including PR descriptions and release notes:
-active voice, concrete detail, direct verbs, and the AI patterns that survive a
-normal edit because they're grammatical and confident. Paste a draft to get it
-edited, or ask whether it reads as AI to get each pattern quoted back with a
-fix. If the piece doesn't exist yet and it's customer-facing, it points you at
-the framework first.
+For substantial copy, `seo-writing-framework` provides research, drafting,
+reader review, editing, and quality gates. `good-writing-fundamentals` is its
+line-editing layer, adapted from
+[petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
+An existing draft or a short reply can use the relevant editing skill without
+starting a full content-development cycle.
 
 ### Writing skill selection
 
@@ -241,103 +236,42 @@ tyler/
   references/  Single-copy shared docs (output formats, criteria) both harnesses read
 ```
 
-Tyler's variant is a six-skill pipeline (`/discussion` → `/create-feature` /
-`/create-epic` / `/create-issue` → `/do` → `/postmortem`) where Claude
-orchestrates and Codex runs implementation, review, codebase research, and
-investigation — see `tyler/README.md`.
-
-The skills are meant to be edited. The workflow shape should generalize, but the
-exact contents should change as your work changes.
+`tyler/` documents its historical pipeline in [tyler/README.md](tyler/README.md).
+Its old capture commands and routing are not the current Orchestra interface.
+Edit active workflows in `parsa/`; make Orchestra changes in its canonical repo.
 
 ## Keeping skills in sync
 
-Use this repo directly in a project, or copy the skills into your user-level
-folders:
-
-- Claude Code: `~/.claude/skills/`
-- Codex: `~/.codex/skills/`
-
-> **Post-split note:** tyler's set now lives in
-> [dcouple/orchestra](https://github.com/dcouple/orchestra) (see its
-> `scripts/sync-user.sh` for the user-level install). To run both sets on one
-> machine, run that first, then `./sync-parsa-overlay.sh <orchestra-checkout>`
-> from this repo — it installs parsa's set, turning any name orchestra owns
-> into `p-<name>` so the two syncs never clobber each other, in any order.
-> `sync-merged.sh` below predates the split and only covers this repo's copy
-> of both sets.
-
-**Use `./sync-merged.sh` — it's the whole setup in one command.** It installs
-parsa's AND tyler's sets side by side (tyler's names win the few collisions;
-parsa's originals are preserved under a `p-` prefix, and his skills are
-re-wired to keep using them). It's idempotent and safe to re-run.
+For a combined current installation, use an Orchestra checkout and this repo:
 
 ```bash
-REPO="$HOME/allGitHubRepos/skills"
-git -C "$REPO" pull --ff-only
-"$REPO"/sync-merged.sh
+bash /path/to/orchestra/scripts/sync-user.sh
+bash /path/to/skills/sync-parsa-overlay.sh /path/to/orchestra
 ```
 
-To keep it fresh automatically, run it on a schedule. On macOS, a launchd
-agent that exports `origin/main` and runs the script every 30 minutes:
+The [overlay script](sync-parsa-overlay.sh) installs Parsa's Claude and Codex
+skills plus Claude agents, business skills, and SEO skills. Names owned by
+Orchestra become `p-<name>` in Parsa's installed set, and `create-plan` is
+rewritten to call Parsa's preserved plan reviewer. The equivalent Excalidraw
+skill uses Orchestra's copy where the names overlap. Personal skills remain.
+Later Orchestra and overlay syncs can run in either order without overwriting
+each other's canonical names. Restart the harness or refresh discovery to load
+newly installed skills.
 
-```bash
-# ~/bin/sync-dcouple-skills.sh
-#!/bin/sh
-set -eu
-REPO="$HOME/allGitHubRepos/skills"
-git -C "$REPO" fetch origin main
-TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
-git -C "$REPO" archive origin/main | tar -x -C "$TMP"
-bash "$TMP/sync-merged.sh"
-```
+To automate updates, export `origin/main` from both repos and run these scripts
+from the exports, passing the Orchestra export path to the overlay. Use `bash`
+and the combined flow above. A one-set copy on a timer can overwrite colliding
+names. Run installation only for the intended user account and authorized scope.
 
-Point a LaunchAgent (`StartInterval` 1800) or cron at that wrapper. Exporting
-`origin/main` means the sync never depends on what branch your checkout is on.
-Two warnings from experience: invoke the script with `bash` (it uses process
-substitution; `sh` silently skips the collision handling), and don't schedule
-the per-set rsync blocks below — a parsa-only sync running on a timer will
-silently clobber the merged arrangement every tick.
+For a Parsa-only installation, copy the desired skill folders from
+`parsa/.claude/skills/` or `parsa/.codex/skills/` into the matching harness's
+skill directory and include the agents or supporting folders they reference.
+The combined installer is preferable when both sets are needed.
 
-### One set only (legacy)
-
-If you truly want just parsa's set, the per-set shape is:
-
-```bash
-REPO="$HOME/allGitHubRepos/skills"
-git -C "$REPO" pull --ff-only
-
-# Claude Code skills
-rsync -a "$REPO/parsa/.claude/skills/" "$HOME/.claude/skills/"
-
-# Codex skills
-rsync -a "$REPO/parsa/.codex/skills/" "$HOME/.codex/skills/"
-
-# Business skills (Claude + Codex)
-for skill in "$REPO"/parsa/business/*/; do
-  [ -f "$skill/SKILL.md" ] && cp -r "$skill" "$HOME/.claude/skills/$(basename "$skill")"
-done
-
-# SEO skills (Claude)
-for skill in "$REPO"/parsa/seo/*/; do
-  [ -f "$skill/SKILL.md" ] && cp -r "$skill" "$HOME/.claude/skills/$(basename "$skill")"
-done
-```
-
-### Both sets at once (merged sync)
-
-This is the default documented above — `./sync-merged.sh` instead
-of the per-set blocks. It installs both sets; where names collide (currently
-`discussion`, the `plan-reviewer` agent, and two Codex role skills), tyler's
-version keeps the canonical name — his `/discussion` → `/create-*` → `/do`
-pipeline stays the default — and parsa's original is preserved under a `p-`
-prefix (`/p-discussion`, `p-plan-reviewer`, …). Collisions are detected
-dynamically, and parsa's `create-plan` is re-wired to spawn `p-plan-reviewer`
-so his planning loop keeps using his own reviewer. Inside this repo neither
-sync matters: the harness namespaces both sets automatically
-(`parsa:discussion`, `tyler:discussion`).
-
-Do not use `--delete` unless you want this repo to remove other local skills.
-Restart Codex after new skills sync so the active session can see them.
+`sync-merged.sh` is a **legacy installer** for this repo's Parsa and frozen
+Tyler trees. It does not install current Orchestra. Its historical behavior
+is retained for existing users; use the current combined flow above for new
+installations.
 
 ## Background
 
