@@ -52,13 +52,14 @@ If either fails, include the specific errors in the review as **must-fix** items
 
 ## Step 3: Review the Diff
 
-Read the shared review criteria at `.claude/skills/review/CRITERIA.md`. This is the single source of truth for what to check.
+Read the shared review criteria at `.claude/skills/review/CRITERIA.md`. This is the single source of truth for what to check. Start with section 0 (Discovery) to derive the project's actual floor before applying the generic sections.
 
-For each changed file, evaluate against **all 8 sections** of the criteria. Organize findings by severity:
+For each changed file, evaluate against the criteria. Organize findings by severity:
 
 - **Sections 1-2 (Must-Fix):** Bugs, correctness, security. The PR should not merge without addressing these.
-- **Sections 3-6 (Should-Fix):** Architecture, React patterns, TypeScript, UX fit and placement. Strong recommendation to fix.
-- **Sections 7-8 (Suggestion):** Tailwind/shadcn, conventions. Nice-to-have, not blocking.
+- **Sections 3-5 (Should-Fix):** React patterns, TypeScript, UX fit and placement. Strong recommendation to fix.
+- **Section 6 (Suggestion):** Conventions. Nice-to-have, not blocking.
+- **Per-repo section:** If the project appends project-specific criteria, apply them at their stated severity.
 
 ## Step 4: Check Completeness Against Issue
 
