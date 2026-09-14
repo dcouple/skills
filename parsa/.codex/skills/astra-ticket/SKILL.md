@@ -20,6 +20,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    `$TMPDIR`, and `/tmp`; check stale context against the ticket and code.
    If Grain is connected, use `grain` to read and keep task artifacts synced in `Development Artifacts/YYYY-MM-DD-<ticket-or-branch>`, retaining local working copies as needed.
    Rename that Grain folder to `PR-<number>-<title>` once the PR exists; reuse it across devices. If Grain is unavailable, silently continue locally.
+   When Grain is connected, every development artifact or file requested by an invoked skill must also exist as a grain in that folder; this overrides local-only storage instructions and must be passed to every subagent.
 2. As Astra, read `simple-plan` and use its planning steps to investigate and
    produce a concise plan. Preserve the ticket's intent, constraints, and scope.
    Autonomously derive detailed specs: files, changes, dependencies, edge cases,
