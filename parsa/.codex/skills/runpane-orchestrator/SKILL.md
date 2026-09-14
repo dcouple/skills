@@ -234,10 +234,44 @@ this complete fallback without claiming the skill was invoked:
    pages until both unresolved-thread counts and the actionable top-level count
    are zero and no effective change request remains.
 
+## Discover and communicate with peers
+
+First run `runpane peers self --json` and `runpane peers list --json`.
+If the installed CLI/daemon lacks these commands, retain the existing terminal
+delivery and cadenced watcher. Any tool-capable agent can participate: outside
+Pane, register with `peers register --peer <stable-id> --agent-label <name> --yes`
+and pass that `--peer` thereafter. Discovery exposes capabilities, not permission.
+
+Prefer durable tasks: `peers send --to <peer> --id <stable-request-id>
+--input-file <task-file> --yes --json`. Keep the same id on an exact retry.
+A queued response proves persistence, not consumption. The recipient runs
+`peers inbox --claim --limit 1 --yes --json`, executes within its existing
+authority, and uses `peers reply --id <id> --status completed|blocked|failed
+--text <concise-result-and-evidence> --yes --json`. Batch receipt/reply commands
+into existing tool work where possible; extra model turns replay worker context.
+
+Observe with `peers wait --id <id> --follow --json` under the background monitor.
+Timeouts stay silent. After a blocked result, continue with `--after <revision>`.
+Add `--quiet-panel <panel-id>` to the canonical cadenced watcher for each panel
+with a cooperating recipient and active task wait. It suppresses inferred
+READY/IDLE while keeping blockers, held input and exits. Re-arm when the tracked
+set changes; remove quieting if consumption is unconfirmed or cooperation stops.
+
+After a lost response or restart, inspect `peers inbox --include-received`.
+Never automatically replay received tasks. An optional `peers wake --id <id>
+--yes` sends one guarded terminal inbox cue and leaves consumption unconfirmed.
+The Pi extension path returned by `peers self` enables native delivery with
+`pi -e <path>`; it still requires an explicit task reply.
+
+A task reply does not prove PR readiness. Keep current-head review, QA, CI,
+ownership and authorization gates. Neither terminal idle nor Pi `turn_end` is
+task completion. See [the protocol and recovery guide](https://github.com/dcouple/Pane/blob/main/docs/AGENT_COMMUNICATION.md).
+
 ## Dispatch And Observe RunPane
 
-Use event-driven waits, not static sleeps. Before every prompt, capture an output
-cursor/hash and timestamp. Put the exact prompt in a file, then use the current
+Use the peer protocol above when available. For terminal fallback, use event-driven
+waits, not static sleeps. Before a terminal prompt, capture an output cursor/hash
+and timestamp. Put the exact prompt in a file, then use the current
 CLI's file-input command and composer helper, for example:
 
 ```bash
