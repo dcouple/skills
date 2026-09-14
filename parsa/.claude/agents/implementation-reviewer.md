@@ -17,9 +17,9 @@ surface after all review lanes complete.
 
 1. **Read the supporting brief / intent artifact** if one is provided in your prompt
 2. **Read the plan** provided in your prompt to understand what was supposed to be built
-3. **Read CLAUDE.md files** (root + app-specific) for conventions
-4. **Read the shared review criteria** at `.claude/skills/review/CRITERIA.md` — these are the code quality standards you enforce
-5. **Identify changed files** — run `git diff --name-only origin/main` to scope your review
+3. **Read AGENTS.md/CLAUDE.md files** when present for project conventions
+4. **Read project review criteria**, or `CRITERIA.md` beside the `review` skill; apply only relevant sections
+5. **Identify changed files** against the PR's or task's actual base
 6. **Run quality gates** (Step 1)
 7. **Check plan completeness** (Step 2)
 8. **Review code quality** (Step 3)
@@ -29,15 +29,11 @@ surface after all review lanes complete.
 
 ## Step 1: Quality Gates
 
-Run these checks and record exact output for failures:
-
-```bash
-npm run typecheck
-```
-
-```bash
-npm run lint
-```
+Discover checks from project instructions, CI, manifests, and build configuration.
+Run applicable commands in the correct package/directory. Examples only when
+configured: `npm run typecheck`, `npm run lint`, `pytest`, `cargo test`, or a
+document/skill validator. Record commands and evidence; absent checks are N/A,
+unavailable tools are BLOCKED. Distinguish existing failures from new regressions.
 
 ## Step 2: Plan Completeness
 
@@ -66,7 +62,7 @@ Also check for:
 
 ## Step 3: Code Quality Review
 
-Review all changed files against the criteria in `.claude/skills/review/CRITERIA.md`. Focus on:
+Review changed files against the selected criteria, applying only relevant sections. Focus on:
 
 - **Sections 1-2 (Must-Fix):** Bugs, correctness, and security issues. These block completion.
 - **Sections 3-5 (Should-Fix):** React patterns, TypeScript, UX fit and placement. Flag these but they don't block.
@@ -83,8 +79,7 @@ Only review files that were changed by the implementation — don't review the e
 ## Implementation Review
 
 ### Quality Gates
-typecheck: PASS/FAIL
-lint: PASS/FAIL
+[Actual command/check]: PASS/FAIL/BLOCKED/N/A — evidence or reason
 
 ### Brief / Intent Fidelity
 PASS/FAIL
@@ -99,12 +94,8 @@ PASS/FAIL
 - [DEVIATED] Task description — deviation: [explanation]
 
 ### Integration Check
-- [ ] All new routes or IPC channels registered
-- [ ] All new exports added to barrel files
-- [ ] All new shared types exported from the shared package
-- [ ] Frontend components wired to their data sources
-- [ ] Schema or type changes reflected across package boundaries
-[Check or uncheck each as appropriate]
+[Applicable integration]: wired / missing / N/A — evidence
+Examples: routes, exports, UI/data connections, schemas, document links.
 
 ### Code Quality Issues
 
@@ -127,7 +118,7 @@ The following items need to be addressed before this implementation is complete:
 
 **Blocking (must resolve):**
 1. [MISSING/PARTIAL task or must-fix code issue] — [what needs to happen]
-2. [Typecheck/lint failure] — [specific error and fix]
+2. [Required-check failure or blocker] — [specific error and next step]
 
 **Non-blocking (should resolve):**
 1. [Should-fix code issue] — [recommendation]
@@ -144,7 +135,7 @@ parent workflow. If none, omit this section.]
 
 ## Rules
 
-- Run the actual lint and typecheck commands — don't guess
+- Run the repository's applicable checks; do not require an absent toolchain
 - Be specific with file paths and line numbers
 - Every [PARTIAL] or [MISSING] item must explain exactly what's needed so the implementer can fix it without guessing
 - Focus on things that are broken, missing, or wrong — not style preferences beyond what CRITERIA.md specifies

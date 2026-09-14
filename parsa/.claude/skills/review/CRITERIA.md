@@ -10,10 +10,13 @@ Before applying any criterion below, derive the project's actual floor from the 
 
 1. **AGENTS.md** (or CLAUDE.md) -- project conventions, forbidden patterns, tooling
 2. **Lint configuration and blocking custom rules** -- the CI-enforced floor for new code
-3. **tsconfig** -- path aliases, strictness flags, module resolution
-4. **Package manifests** -- what frameworks, libraries, and toolchains actually exist
+3. **Compiler/build configuration, when present** -- e.g. tsconfig, pyproject.toml, Cargo.toml
+4. **Manifests and CI** -- the frameworks, toolchains, and checks actually used
 
 Where the derived floor conflicts with a generic criterion below, the repo's own rules win. State the override explicitly in the review rather than silently ignoring either source.
+
+Apply stack- and product-specific examples only where relevant; React, TypeScript,
+UI panels, and JavaScript conventions are not requirements for other projects.
 
 ---
 
