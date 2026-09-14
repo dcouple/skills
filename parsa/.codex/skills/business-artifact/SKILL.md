@@ -1,36 +1,22 @@
 ---
 name: business-artifact
-description: Create the business artifact from an approved spec, then coordinate claim/evidence ledger creation, artifact review, anti-sycophancy review, and human gate.
+description: Draft and review a business deliverable from an approved specification.
 ---
 
-Role: This is the business equivalent of `/implement` plus implementation review. After the spec is ready, this skill should do as much as possible automatically.
+Read `.business/specs/ready/spec.md`, its review, and the context needed to
+support the deliverable. Write `.business/artifacts/draft.md` in the requested
+format and maintain `claim-evidence-ledger.md` beside it:
 
-Rules:
-- MUST read the approved spec first.
-- MUST use only grounded facts from context/spec.
-- MUST NOT invent claims, numbers, dates, pricing, commitments, or legal/compliance statements.
-- MUST maintain a claim/evidence ledger.
-- MUST optimize for the artifact type.
-- After the draft and claim ledger, you MUST run or request `business-artifact-reviewer`.
-- MUST apply required patches when review identifies concrete fixes.
-- Stop for human input only when review requires a human gate or the artifact cannot be safely completed from available context.
-
-Read:
-- `.business/specs/ready/spec.md`
-- `.business/context/*.md`
-- `.business/reviews/spec-review.md`
-
-Write:
-- `.business/artifacts/draft.md`
-- `.business/artifacts/claim-evidence-ledger.md`
-- `.business/reviews/artifact-review.md` via `business-artifact-reviewer`
-
-Output:
-- draft artifact
-- claim/evidence ledger
-- artifact-review result
-- concise next step: patch / human gate / prepare release
-
-Claim ledger format:
 | Claim | Evidence | Status | Risk | Fix |
 |---|---|---|---|---|
+
+Ground claims, figures, dates, and commitments in the sources; flag missing
+evidence rather than inventing it. Run `business-artifact-reviewer` in fresh
+context, saving its result to `.business/reviews/artifact-review.md`. Apply
+concrete fixes and resolve them before handing off; bring required human gates
+or material unknowns to the user. Return the draft, ledger, review, and next step.
+
+If Grain is connected, read/update these artifacts in the task's Grain folder
+(standalone: `Development Artifacts/YYYY-MM-DD-<task>`). Pass that folder and
+storage rule to reviewers; sync their files if they lack access. Keep needed
+local copies and privacy limits; without Grain, continue locally silently.

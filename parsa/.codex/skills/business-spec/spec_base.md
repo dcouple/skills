@@ -1,5 +1,8 @@
 # Business Deliverable Spec
 
+Use the sections that serve this deliverable; avoid empty boilerplate. In Origin,
+link the source files and their Grain copies when connected.
+
 ## One-Sentence Job
 
 ## Origin

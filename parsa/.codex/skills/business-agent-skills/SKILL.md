@@ -1,70 +1,34 @@
 ---
 name: business-agent-skills
-description: Orchestrate business work from a captured task through context, discussion, spec, artifact, review, and release — each stage in fresh context via filesystem handoff.
+description: Coordinate a business deliverable from context and discussion through specification, drafting, review, and release preparation.
 ---
 
-Rules: You MUST NOT do all the work in one context. Each stage MUST run fresh and hand the next stage a file under `.business/`.
+# Business workflow
 
-Principle: software agents need a repo. Business agents need a filesystem context base built from connected apps, MCP/tools, files, and research. If it is not in the context base, it does not exist to the agent.
+Run each stage in fresh context with a saved handoff. The user settles the
+goal and important decisions during discussion; continue through the remaining
+authorized work without asking for approval again at every stage.
 
-Human attention model:
-- Human attention concentrates in two places: the initial captured conversation/ticket, and `business-discussion`.
-- After discussion, spec -> artifact -> release should run with as much automation as possible.
-- Return to the human only at the gate, and only when review says the work is high-stakes, underspecified, or risky.
+| Stage | Handoff under `.business/` |
+|---|---|
+| `business-context` | `context/`: context, source-index, known-facts, assumptions-unknowns, constraints |
+| `business-research-adversary` | `context/research-adversary.md` |
+| `business-discussion` | `discussion/brief.md` |
+| `business-spec` + `business-spec-reviewer` | `specs/ready/spec.md`, `reviews/spec-review.md` |
+| `business-artifact` + `business-artifact-reviewer` | `artifacts/draft.md`, claim-evidence ledger, `reviews/artifact-review.md` |
+| `business-prepare-release` | `artifacts/final.md`, `reviews/release-checklist.md` |
 
-Context comes before discussion (REQUIRED):
-- `business-context` and `business-research-adversary` build the context base. They MUST run BEFORE `business-discussion`, and MUST NOT be run inside `business-spec`.
-- NEVER discuss or spec on an empty context base. A discussion with no assembled context is the agent guessing.
-- `business-research-adversary` is a context step (external stakeholder reality), NOT a spec step. It writes into `.business/context/` and feeds both discussion and spec.
+Build context before discussion or specification. External stakeholder research
+belongs to context, not the spec stage. Dispatch the support skills as fresh
+subagents with the relevant handoff paths. Keep the full sequence for high-stakes
+external work; trivial edits or exact copying can use a shorter path without
+manufacturing empty stage artifacts.
 
-What the human runs:
-- Aspiration: a conversation, then `business-discussion`, then one look at the gate. The stack runs context -> spec -> artifact -> release for you.
-- Manual / full control: `business-discussion` -> `business-spec` -> `business-artifact` -> `business-prepare-release`.
+Return unresolved product decisions, unsupported commitments, and required
+human gates to the user. Preparing the final artifact does not authorize sending
+or publishing it. Finish with the artifact, review status, and remaining decisions.
 
-Internal sequence (the order stages actually execute):
-1. business-context            -> `.business/context/*` (auto, before discussion)
-2. business-research-adversary -> `.business/context/research-adversary.md` (auto, before discussion)
-3. business-discussion         -> `.business/discussion/brief.md` (human-in-the-loop; ensures 1-2 ran first)
-4. business-spec               -> `.business/specs/ready/spec.md` (+ business-spec-reviewer)
-5. business-artifact           -> `.business/artifacts/draft.md` + ledger (+ business-artifact-reviewer)
-6. business-prepare-release    -> fresh adversarial pass + `.business/artifacts/final.md` + checklist (only when shipping)
-
-Primary skills (human-facing):
-- `business-discussion`: main human stage; ensures the context base exists, then clarifies goal/audience/decision/risk.
-- `business-spec`: business `/plan`; consumes context + brief, writes the spec, runs spec review.
-- `business-artifact`: business `/implement` + review; drafts the artifact, builds the claim/evidence ledger, runs artifact review.
-- `business-prepare-release`: business PR review + ship; runs a fresh adversarial pass, then packages the final output and release checklist. Only when sending, publishing, presenting, or handing off.
-
-Support stages (fresh-context; in Claude these are sub-agents in `.claude/agents/` for true context isolation, in Codex they are skills; invoked by the primary stages, not run by hand):
-- `business-context`            -> builds `.business/context/*`
-- `business-research-adversary` -> writes `.business/context/research-adversary.md`
-- `business-spec-reviewer`      -> writes `.business/reviews/spec-review.md`
-- `business-artifact-reviewer`  -> writes `.business/reviews/artifact-review.md`
-
-Standard artifact handoff structure:
-
-```txt
-.business/
-  context/
-    context.md
-    source-index.md
-    known-facts.md
-    assumptions-unknowns.md
-    constraints.md
-    research-adversary.md
-  discussion/
-    brief.md
-  specs/
-    ready/spec.md
-    done/spec.md
-  artifacts/
-    draft.md
-    final.md
-    claim-evidence-ledger.md
-  reviews/
-    spec-review.md
-    artifact-review.md
-    release-checklist.md
-```
-
-You MUST NOT skip context/discussion/spec/review for high-stakes external work. Use a fast path only for trivial edits or exact copy/paste work.
+If Grain is connected, read and keep these artifacts updated in one
+`Development Artifacts/YYYY-MM-DD-<task>` folder; pass its ID and this storage
+rule to every stage. Keep local working files and privacy limits. Without Grain,
+continue with `.business/` silently.
