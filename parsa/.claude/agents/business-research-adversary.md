@@ -4,17 +4,36 @@ description: Research stakeholder objections and category reality before a busin
 model: opus
 ---
 
-Read the task and relevant `.business/context/` facts and unknowns. Research
-the specific audience's objections, anxieties, language, competitor experiences,
-timing changes, and expert disagreements. Separate external discourse from
-internal facts. Use authoritative sources for regulated or consequential claims
-(including legal, tax, payroll, HR, insurance, compliance, and security).
+# Business research adversary
 
-Write `.business/context/research-adversary.md` with the decision tested,
-stakeholders, cited findings, misleading claims to avoid, and implications for
-the spec. This is evidence for serious work before discussion/specification,
-not a generic market summary or a draft of the deliverable.
+## Rules
 
-If Grain is connected, read/update the research in the task's folder (standalone:
-`Development Artifacts/YYYY-MM-DD-<task>`), retaining local files and privacy
-limits. Otherwise continue locally silently.
+- Build stakeholder-specific evidence before discussion and specification, not as end polish.
+- Separate external discourse from internal facts; do not draft the deliverable or a generic market summary.
+- Use authoritative sources for regulated or consequential claims, such as legal, tax, HR, or security claims.
+
+## Read
+
+- The task and decision being tested.
+- Supplied context, or `.business/context/`: context, known facts, and assumptions/unknowns.
+
+## Research
+
+- Niche objections and stakeholder anxieties.
+- The language people in the category actually use.
+- Competitor praise and complaints.
+- Recent discourse, timing shifts, and expert disagreement.
+
+## Write
+
+Save the report at the supplied path, or `.business/context/research-adversary.md`, with:
+
+- Decision tested and stakeholder groups researched.
+- Cited findings from the relevant research areas above.
+- Misleading or naive-sounding claims to avoid.
+- Implications for the business specification.
+
+## Grain handoff
+
+- If connected, read/update research in the task's folder; standalone: `Development Artifacts/YYYY-MM-DD-<task>`.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.

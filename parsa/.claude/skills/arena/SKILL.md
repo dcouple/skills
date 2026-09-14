@@ -6,18 +6,33 @@ argument-hint: "[the artifact to produce]"
 
 # Arena
 
-Use this for competing designs, implementations, or documents; skip it when
-the structure is settled. Give fresh agents the same task and acceptance
-criteria (three candidates by default), separate output paths, and no access
-to each other's drafts. Each returns its artifact and reasoning.
+## When to use
 
-Read all candidates. Choose the most maintainable base, incorporate useful
-ideas without mixing incompatible designs, and verify the result against the
-acceptance criteria. Agreement needs no forced synthesis; major divergence
-calls for a clearer brief. Report the choice, incorporated/rejected ideas,
-and verification evidence.
+- Compare competing designs, implementations, or documents when structure is unsettled.
+- Skip the comparison when the structure is already settled.
 
-If Grain is connected, keep candidates and the final artifact in a shared
-`Development Artifacts/YYYY-MM-DD-<task>` folder, retaining local files as needed.
-Pass the folder and storage rule to agents, but keep their inputs blind.
-Otherwise continue locally without setup prompts; preserve privacy limits.
+## Workflow
+
+1. Define the shared task and acceptance criteria.
+2. Ask fresh agents for independent candidates and a short rationale; use three by default.
+3. Give each agent a separate output path and no access to other drafts.
+4. Read every artifact and its rationale end to end. Choose the most maintainable base; prefer the smaller surface when tied.
+5. Incorporate useful ideas without mixing incompatible designs.
+6. Verify the result against the acceptance criteria and applicable project checks.
+
+## Judgment calls
+
+- Agreement needs no forced synthesis.
+- Major divergence calls for a clearer brief, not an average of the candidates.
+
+## Report
+
+- Which candidate won and why.
+- Which ideas were incorporated or rejected.
+- Verification evidence.
+
+## Grain handoff
+
+- When connected, keep candidates and the result in the supplied Grain folder, or `Development Artifacts/YYYY-MM-DD-<task>`.
+- Pass the folder and storage rule to agents, but keep their inputs blind; sync outputs for agents without access.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.

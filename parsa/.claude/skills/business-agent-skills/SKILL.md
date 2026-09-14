@@ -5,9 +5,18 @@ description: Coordinate a business deliverable from context and discussion throu
 
 # Business workflow
 
-Run each stage in fresh context with a saved handoff. The user settles the
-goal and important decisions during discussion; continue through the remaining
-authorized work without asking for approval again at every stage.
+## Rules
+
+- Run each stage in fresh context with a saved handoff.
+- Settle the goal and important decisions with the user during discussion.
+- Continue authorized work without repeating approval requests at every stage.
+- Build context before discussion or specification; stakeholder research belongs to context.
+- Use `.claude/agents/` support agents for context and review.
+- Keep the full sequence for high-stakes external work; shorten it for trivial edits or exact copying.
+
+## Stages
+
+Use supplied artifact paths when present; `.business/` is the default layout.
 
 | Stage | Handoff under `.business/` |
 |---|---|
@@ -16,19 +25,16 @@ authorized work without asking for approval again at every stage.
 | `business-discussion` | `discussion/brief.md` |
 | `business-spec` + `business-spec-reviewer` | `specs/ready/spec.md`, `reviews/spec-review.md` |
 | `business-artifact` + `business-artifact-reviewer` | `artifacts/draft.md`, claim-evidence ledger, `reviews/artifact-review.md` |
-| `business-prepare-release` | `artifacts/final.md`, `reviews/release-checklist.md` |
+| `business-prepare-release` (when preparing delivery) | `artifacts/final.md`, `reviews/release-checklist.md` |
 
-Build context before discussion or specification. External stakeholder research
-belongs to context, not the spec stage. Use the support agents in
-`.claude/agents/` for context and review; primary stages invoke them as needed.
-Keep the full sequence for high-stakes external work. Trivial edits or exact
-copying can use a shorter path without manufacturing empty stage artifacts.
+## Finish
 
-Return unresolved product decisions, unsupported commitments, and required
-human gates to the user. Preparing the final artifact does not authorize sending
-or publishing it. Finish with the artifact, review status, and remaining decisions.
+- Return the artifact, review status, and remaining decisions.
+- Surface unsupported commitments and required human gates.
+- Preparing an artifact does not authorize sending or publishing it.
 
-If Grain is connected, read and keep these artifacts updated in one
-`Development Artifacts/YYYY-MM-DD-<task>` folder; pass its ID and this storage
-rule to every stage. Keep local working files and privacy limits. Without Grain,
-continue with `.business/` silently.
+## Grain handoff
+
+- When connected, read/update all workflow artifacts in the supplied Grain folder, or `Development Artifacts/YYYY-MM-DD-<task>`; this overrides local-only storage in invoked skills.
+- Pass its ID and storage rule to every stage; sync outputs for agents without access.
+- Keep local working files and privacy limits. Without Grain, continue locally silently.

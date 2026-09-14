@@ -3,19 +3,32 @@ name: business-discussion
 description: Clarify a business deliverable's goal, audience, and decisions from gathered context before drafting.
 ---
 
-Read the relevant `.business/context/` facts, constraints, unknowns, and
-stakeholder research. If context is missing, run `business-context` first;
-include `business-research-adversary` for serious work. Discuss from evidence,
-not an empty context base.
+# Business discussion
 
-Use concrete options to settle the audience, intended reader response, format,
-stakes, constraints, and non-goals. Ask about material unknowns rather than
-reconfirming decisions. Do not draft the deliverable at this stage.
+## Read
 
-Save `.business/discussion/brief.md` with the confirmed goal, key decisions,
-remaining questions, risks, and recommended next step.
+- Read the supplied context; default: `.business/context/` facts, constraints, unknowns, and stakeholder research.
+- If context is missing, run `business-context` first; include `business-research-adversary` for serious work.
 
-If Grain is connected, read/update these artifacts in the task's shared folder
-(standalone: `Development Artifacts/YYYY-MM-DD-<task>`); pass its ID and storage
-rule to support agents. Keep local files and privacy limits. Otherwise use
-`.business/` silently.
+## Discuss
+
+- Use evidence and concrete options to settle material unknowns; do not reconfirm settled decisions.
+- Do not draft the deliverable at this stage.
+- Useful questions:
+  - Who is the primary reader, and what should change for them?
+  - What format fits that goal, and what is out of scope?
+  - What constraints, stakes, or unresolved decisions affect the work?
+
+## Write
+
+Save the brief at the supplied path, or `.business/discussion/brief.md`, with:
+
+- Confirmed goal, audience, and intended reader response.
+- Format, key decisions, constraints, and non-goals.
+- Remaining questions, risks, and recommended next step.
+
+## Grain handoff
+
+- If connected, read/update artifacts in the task's shared folder; standalone: `Development Artifacts/YYYY-MM-DD-<task>`.
+- Pass its ID and storage rule to support agents; sync their outputs if they lack access.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.

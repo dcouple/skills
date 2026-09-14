@@ -3,15 +3,27 @@ name: business-context
 description: Gather sourced business context before discussion, specification, or drafting.
 ---
 
-Use the task, relevant connected apps, user materials, and prior deliverables
-to build `.business/context/`. Keep facts separate from assumptions and name
-missing information instead of filling gaps. Do not draft a spec or deliverable.
+# Business context
 
-Save `context.md` (task and suspected goal), `source-index.md` (traceable
-sources), `known-facts.md`, `assumptions-unknowns.md`, and `constraints.md`.
-Return these paths, material gaps, and whether stakeholder research or
-discussion should happen next.
+## Rules
 
-If Grain is connected, read/update these artifacts in the coordinator's folder
-(standalone: `Development Artifacts/YYYY-MM-DD-<task>`). Retain needed local
-files and privacy limits; without Grain, continue locally silently.
+- Gather context from the task, relevant connected apps, user materials, and prior deliverables.
+- Separate facts from assumptions; name missing information instead of filling gaps.
+- Do not draft a specification or deliverable.
+
+## Write
+
+Use the supplied output location, or `.business/context/`:
+
+- `context.md`: task and suspected goal.
+- `source-index.md`: traceable sources.
+- `known-facts.md`: supported facts.
+- `assumptions-unknowns.md`: assumptions and material gaps.
+- `constraints.md`: limits that affect the work.
+
+Return the artifact paths, material gaps, and whether stakeholder research or discussion should happen next.
+
+## Grain handoff
+
+- If connected, read/update artifacts in the coordinator's folder; standalone: `Development Artifacts/YYYY-MM-DD-<task>`.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.
