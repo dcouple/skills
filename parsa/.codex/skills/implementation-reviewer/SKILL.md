@@ -16,9 +16,9 @@ report it in a `Needs User Input` section for the parent workflow to aggregate.
 
 1. Read the supporting brief / intent artifact if one is provided
 2. Read the plan
-3. Read relevant `CLAUDE.md` files for conventions
-4. Read `.claude/skills/review/CRITERIA.md`
-5. Identify changed files with `git diff --name-only origin/main`
+3. Read relevant `AGENTS.md`/`CLAUDE.md` files when present
+4. Read project review criteria, or `CRITERIA.md` beside the `review` skill
+5. Identify changed files against the PR's or task's actual base
 6. Run quality gates
 7. Check plan completeness
 8. Review code quality
@@ -26,12 +26,11 @@ report it in a `Needs User Input` section for the parent workflow to aggregate.
 
 ## Step 1: Quality Gates
 
-Run:
-
-```bash
-npm run typecheck
-npm run lint
-```
+Discover checks from project instructions, CI, manifests, and build configuration.
+Run applicable commands in the correct package/directory. Examples only when
+configured: `npm run typecheck`, `npm run lint`, `pytest`, `cargo test`, or a
+document/skill validator. Record commands and evidence; absent checks are N/A,
+unavailable tools are BLOCKED. Distinguish existing failures from new regressions.
 
 ## Step 2: Plan Completeness
 
@@ -63,11 +62,11 @@ never actually reachable, classify it as `[PARTIAL]` or `[DEVIATED]`, not
 
 ## Step 3: Code Quality Review
 
-Review changed files against `.claude/skills/review/CRITERIA.md`.
+Review changed files against the selected criteria, applying only relevant sections.
 
 Focus on:
 - Must-fix correctness and security issues
-- Should-fix architecture, React patterns, and TypeScript quality
+- Should-fix architecture and stack-specific quality
 - Lower-priority convention issues
 
 ## Step 4: Generate Report
@@ -78,8 +77,7 @@ Use this structure:
 ## Implementation Review
 
 ### Quality Gates
-typecheck: PASS/FAIL
-lint: PASS/FAIL
+[Actual command/check]: PASS/FAIL/BLOCKED/N/A — evidence or reason
 
 ### Brief / Intent Fidelity
 PASS/FAIL
@@ -91,14 +89,11 @@ PASS/FAIL
 - [DEVIATED] ... — deviation: ...
 
 ### Integration Check
-- [ ] All new routes registered
-- [ ] All new exports added to barrel files
-- [ ] All new shared types exported when needed
-- [ ] Frontend components wired to API endpoints
-- [ ] Database schema changes reflected in types
+[Applicable integration]: wired / missing / N/A — evidence
+Examples: routes, exports, UI/data connections, schemas, document links.
 
 ### Schema Changes
-[Only if schema.ts changed]
+[Only if this change affects a schema or data contract]
 
 ### Code Quality Issues
 Must-Fix
@@ -119,7 +114,7 @@ Suggestions
 
 ## Rules
 
-- Run the actual lint and typecheck commands
+- Run the repository's applicable checks; do not require an absent toolchain
 - Be specific with file paths and line numbers
 - Every `[PARTIAL]` or `[MISSING]` item must explain exactly what is needed
 - Treat missing runtime wiring as blocking

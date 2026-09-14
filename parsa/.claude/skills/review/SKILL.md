@@ -1,13 +1,13 @@
 ---
 name: review
-description: Performs a comprehensive PR code review. Reads the linked GitHub issue for context, runs quality checks, and reviews code for bugs, architecture, conventions, and frontend best practices. Posts structured findings as a PR review.
+description: Review a PR against its linked issue, repository checks, correctness, architecture, and applicable conventions. Post structured findings as a PR review.
 argument-hint: "[PR number or URL]"
 disable-model-invocation: true
 ---
 
 # PR Review Agent
 
-Review a pull request for correctness, architecture, conventions, and frontend best practices.
+Review a pull request for correctness, architecture, and the project's conventions.
 
 ## Step 1: Gather Context
 
@@ -38,21 +38,17 @@ Before reviewing any code, write down (internally):
 
 ## Step 2: Run Quality Gates
 
-Run these checks and record results:
-
-```bash
-npm run typecheck
-```
-
-```bash
-npm run lint
-```
-
-If either fails, include the specific errors in the review as **must-fix** items.
+Discover checks from AGENTS.md/CLAUDE.md, CI, manifests, and build configuration.
+Run the applicable repository commands from the correct package/directory.
+Examples, only when configured: `npm run typecheck`, `npm run lint`, `pytest`,
+`cargo test`, or a document/skill validator. Do not invent missing scripts.
+Report each command and result; mark absent checks N/A and unavailable tools
+BLOCKED. Report actual required-check failures as must-fix, distinguishing
+pre-existing failures from regressions introduced by this PR.
 
 ## Step 3: Review the Diff
 
-Read the shared review criteria at `.claude/skills/review/CRITERIA.md`. This is the single source of truth for what to check. Start with section 0 (Discovery) to derive the project's actual floor before applying the generic sections.
+Read project review criteria when present; otherwise use `CRITERIA.md` beside this skill. Start with section 0 (Discovery) and apply only criteria relevant to the project's stack and product.
 
 For each changed file, evaluate against the criteria. Organize findings by severity:
 
@@ -109,8 +105,7 @@ literal `\n`, backticks, quotes, and Markdown fences.
 **Issue context:** #[issue number] - [one-line summary]
 
 ### Quality Gates
-- Typecheck: PASS/FAIL
-- Lint: PASS/FAIL
+- [Actual command/check]: PASS/FAIL/BLOCKED/N/A — evidence or reason
 
 ### Must-Fix ([count])
 [Blocking findings with file:line evidence]
@@ -141,4 +136,4 @@ if it changed, report the review as stale and rerun it on the current head.
 - **Don't nitpick what lint catches.** If ESLint or TypeScript will catch it, don't duplicate the feedback - just report the gate failure.
 - **Acknowledge good work.** If the PR is well-structured or handles edge cases well, say so briefly.
 - **Stay in scope.** Review the diff, not the entire codebase. Don't suggest refactoring unrelated code.
-- Follow ALL conventions in CLAUDE.md
+- Follow the project's AGENTS.md/CLAUDE.md conventions when present.
