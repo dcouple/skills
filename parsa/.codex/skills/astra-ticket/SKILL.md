@@ -40,7 +40,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    Delegate QA bug fixes and pushes to Luna Max, then have Sol rerun affected
    flows before reviews. Report blocked QA honestly; never call it a pass.
    Capture QA screenshots; when Grain is connected, save and verify media/reports there instead of release assets; otherwise follow `pr-test-automation`'s durable-publication behavior.
-   Keep the PR concise: behavior, tested SHA, QA verdict, limitations and a named evidence link; when using Grain, lead it with key screenshots/videos, then longer artifacts.
+   Keep the PR self-contained using `prepare-pr`'s exposition rules, with behavior, tested SHA, QA verdict, limitations and named evidence links; when using Grain, lead with key screenshots/videos, then longer artifacts.
    Return the same verified evidence link in the final handoff; explicitly report unavailable capture or publication rather than claiming upload.
 6. Run up to three fresh Luna Max reviews sequentially; stop after a clean review. Use
    the `review` skill on the current PR. After each review, delegate actionable
@@ -53,6 +53,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    Report remaining findings; do not restart the review loops.
 9. Return the PR URL, QA/check results with tested commits, and open findings. Do not merge.
    When Grain is connected, finalize it and update/verify the PR evidence link after QA (or an explicit skip), reviews and final-head CI; open the Grain workspace as the last action before handoff.
+   When Grain is connected, refresh its visual PR companion from the final published body after fixes/QA; verify both describe the same final diff and link to each other before opening Grain.
 
 Read `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used.
 Find `review` in `~/.claude/skills/review/` or dcouple/skills's `parsa/.claude/skills/review/`.
