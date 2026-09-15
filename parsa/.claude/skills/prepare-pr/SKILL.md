@@ -1,12 +1,16 @@
 ---
 name: prepare-pr
-description: Commits changes grouped by done-plans, rebases main, runs build and quality gates, then creates or updates a PR. Replaces the commit command. Use when you're ready to open or update a pull request.
+description: Commits changes grouped by done-plans, rebases main, runs build and quality gates, then creates or updates a PR. Replaces the commit command. Use when you're ready to open or update a pull request. Also use for rewriting an existing PR description from its current diff and evidence.
 argument-hint: "[optional: PR title or description]"
 ---
 
 # Prepare PR Agent
 
 Commit, rebase, build, and open/update a pull request - all in one step.
+
+## Rewrite an existing PR
+
+For `rewrite <PR URL>` or a description-only request, read the existing title/body, current diff, source ticket/discussion and available review/QA/check evidence; use the writing contract and [reference](references/writing-guide.md) to rewrite the requested narrative and refresh its Grain companion when connected. Preserve valid closing lines, relevant human context and honest tested-SHA/QA/publication limits; the request authorizes rewriting the requested prose. This mode runs only writing, visual/evidence verification and persisted-body readback: leave code, commits, branch history, labels and draft/ready state unchanged, and do not rerun application QA solely for an editorial rewrite. Report the description update separately from the PR's current readiness. Use the full workflow below when preparing code for review.
 
 ## Step 1: Commit Changes Grouped by Done-Plans
 

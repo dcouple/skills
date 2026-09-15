@@ -1,11 +1,15 @@
 ---
 name: prepare-pr
-description: Prepare a branch for review by committing scoped changes, rebasing on main, running builds, and creating or updating a pull request. Use when the user wants the branch ready for PR review.
+description: Prepare a branch for review by committing scoped changes, rebasing on main, running builds, and creating or updating a pull request. Use when the user wants the branch ready for PR review. Also use for rewriting an existing PR description from its current diff and evidence.
 ---
 
 # Prepare PR
 
 This is a high-trust workflow. Surface any destructive or ambiguous step before proceeding.
+
+## Rewrite an existing PR
+
+For `rewrite <PR URL>` or a description-only request, read the existing title/body, current diff, source ticket/discussion and available review/QA/check evidence; use the writing contract and [reference](references/writing-guide.md) to rewrite the requested narrative and refresh its Grain companion when connected. Preserve valid closing lines, relevant human context and honest tested-SHA/QA/publication limits; the request authorizes rewriting the requested prose. This mode runs only writing, visual/evidence verification and persisted-body readback: leave code, commits, branch history, labels and draft/ready state unchanged, and do not rerun application QA solely for an editorial rewrite. Report the description update separately from the PR's current readiness. Use the full workflow below when preparing code for review.
 
 Workflow:
 1. Group current changes into logical commits, ideally by done-plan.
