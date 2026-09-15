@@ -34,7 +34,8 @@ You are the keeper of intent at delegation. Help the next person understand what
 - Show and open the draft brief for Grain delivery, or present it in the requested available destination. Help the user judge the problem, desired experience, proposed approach, boundaries, and acceptance criteria before finalizing the ticket.
 - When the user considers the brief ready, dispatch a fresh agent using [Socrates](references/socrates.md) with the current brief, discussion evidence, and repository access. Relay material questions to the user, reconcile the findings, and record the verdict and reasoning against the reviewed brief version.
 - Fold feedback into the same brief and record what changed and why. Keep unresolved choices visible; finalize once the user confirms the current brief and resolves or explicitly defers material questions.
-- Reuse a recorded gate for an unchanged premise; return material premise changes and answers to Socrates for judgment. If dispatch is unavailable, keep the gate pending and ask whether the user wants to waive it explicitly.
+- Keep Socrates' agent ID and continue that same agent with the user's answers and revised brief throughout the gate. If resumption is unavailable, give a replacement the prior questions, answers, and verdict, and disclose the restart. Reuse the recorded verdict for an unchanged premise.
+- If dispatch is unavailable, keep the gate pending and ask whether the user wants to waive it explicitly.
 - Then create or update the authorized ticket(s) from that agreed brief, retaining each item's identity and history. An explicit instruction to publish an already-agreed brief satisfies confirmation.
 
 ## Keep a living Grain brief
