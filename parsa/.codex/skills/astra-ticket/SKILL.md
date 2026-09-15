@@ -44,7 +44,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    Delegate QA bug fixes and pushes to Luna Max, then have Sol rerun affected
    flows before reviews. Report blocked QA honestly; never call it a pass.
    Capture QA screenshots; when Grain is connected, save and verify media/reports there instead of release assets; otherwise follow `pr-test-automation`'s durable-publication behavior.
-   Keep the PR self-contained using `prepare-pr`'s exposition rules, with behavior, tested SHA, QA verdict, limitations and named evidence links. Carry the QA handoff into the final brief, separating future improvements from current blockers.
+   Carry the QA handoff into the final brief, separating future improvements from current blockers.
    Return the same verified evidence link in the final handoff; explicitly report unavailable capture or publication rather than claiming upload.
 6. Run up to three fresh Luna Max reviews sequentially; stop after a clean review. Use
    the `review` skill on the current PR. After each review, delegate actionable
@@ -59,6 +59,6 @@ Input: a GitHub issue URL or `owner/repo#number`.
    After confirming an authorized or existing merge, mark the Grain task complete; move its workspace to the configured completed-work destination when supported. Preserve IDs, shares, and the shared folder; verify location/links and report move failures.
    After QA (or a skip), reviews, and final-head CI, extend the same brief from the published PR with before/after behavior and verified results. Retain intent, sources, and decisions; verify content and reciprocal links, then open Grain last.
 
-Read `create-ticket` for intent capture, the bundled Socrates role for the premise check, and `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used. Preserve required tracker publication, local paths, and evidence contracts alongside Grain.
+Preserve required tracker publication, local paths, and evidence contracts alongside Grain.
 Find `review` in `~/.claude/skills/review/` or dcouple/skills's `parsa/.claude/skills/review/`.
 Read referenced criteria; report missing skills. These workflow overrides take precedence.

@@ -1,6 +1,8 @@
 # Preserve intent at ticket handoff
 
-Read these examples while capturing intent. Keep the current request, its motivation, and the decisions that explain how it arrived here.
+- Use **Intent**, **Scope**, and **Acceptance Criteria**; add **Inputs Needed**, **Starting Points**, and **Decision History** where useful.
+- Preserve the user's language and constraints. Ground requirements in sources; distinguish facts, decisions, proposals, and open questions.
+- Capture the trigger, expected/actual behavior, and consequence, or the unmet need for a new idea. Attribute reports; label suspected causes and unmeasured impact.
 
 ## Complete source
 
