@@ -2,7 +2,6 @@
 name: eli5
 description: Teach an unfamiliar topic from first principles with a picture-first HTML explanation, saved in Grain when connected. Use for "explain from scratch," "I'm lost," "what does this mean?", "explain in plain English," beginner questions about how something works, or /eli5; no explicit skill invocation is needed. Skip simple factual lookups and respect text-only requests.
 argument-hint: "<topic, question, or path to explain>"
-model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write
 ---
 
@@ -19,15 +18,6 @@ padding they have to wade through. One page, one topic, picture first.
 - Use ELI5 when the person needs the foundations of a topic, not just a visual alongside an answer. Preserve the three floors below.
 - For a companion to an existing discussion or review, use [explain-visually](../explain-visually/SKILL.md) without turning the task into a beginner lesson.
 - Read that skill's HTML, saving, and verification guidance for this page too. ELI5 owns the teaching structure and reply format; produce one artifact, not two.
-
-## The writer
-
-The page is written by Opus 4.6; it writes better. The frontmatter pins
-it for direct invocation. When an orchestrator or a session on another
-model runs this skill, it hands the writing to an Opus 4.6 session
-(`claude -p --model claude-opus-4-6` with this skill and the grounding
-facts) rather than writing the page itself; the grounding below can be
-done by whoever is cheapest, the prose and drawings cannot.
 
 ## Ground it
 
