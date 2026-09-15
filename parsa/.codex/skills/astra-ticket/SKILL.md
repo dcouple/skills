@@ -15,12 +15,14 @@ Input: a GitHub issue URL or `owner/repo#number`.
   Never substitute another model.
 - Set model and effort explicitly on every spawn; use fresh context when
   required. Pass applicable workflow overrides, ticket, workspace, and artifacts.
+- Reuse passing checks at the same commit; after changes, rerun affected checks unless a concrete finding requires broader validation.
+- Before each review and final handoff, inspect human/bot feedback and CI; address actionable findings, report unfinished checks after five minutes, and claim ready only with actionable threads resolved and required checks passing on the final SHA.
 
 1. Read the issue/comments and relevant artifacts in repo `TMP/` or `tmp/`,
    `$TMPDIR`, and `/tmp`; check stale context against the ticket and code.
    If Grain is connected, use `grain` to read and keep task artifacts synced in `Development Artifacts/YYYY-MM-DD-<ticket-or-branch>`, retaining local working copies as needed.
    Rename that Grain folder to `PR-<number>-<title>` once the PR exists; reuse it across devices. If Grain is unavailable, silently continue locally.
-   When Grain is connected, every development artifact or file requested by an invoked skill must also exist as a grain in that folder; this overrides local-only storage instructions and must be passed to every subagent.
+   When Grain is connected, keep all development artifacts in one canonical task workspace in that folder, retain local copies, and pass its workspace ID to every subagent.
 2. As Astra, read `simple-plan` and use its planning steps to investigate and
    produce a concise plan. Preserve the ticket's intent, constraints, and scope.
    Autonomously derive detailed specs: files, changes, dependencies, edge cases,
@@ -37,7 +39,10 @@ Input: a GitHub issue URL or `owner/repo#number`.
    using `pr-test-automation`; verify model support without substitutions.
    Delegate QA bug fixes and pushes to Luna Max, then have Sol rerun affected
    flows before reviews. Report blocked QA honestly; never call it a pass.
-6. Run exactly three fresh Luna Max review subagents sequentially, each using
+   Capture QA screenshots; save and verify screenshots, recordings and full reports in that Grain workspace instead of GitHub release assets.
+   Keep the PR concise: behavior, tested SHA, QA verdict, limitations and a named Grain evidence link; lead Grain with key screenshots/videos, then longer artifacts.
+   Return the same Grain link in the final handoff; explicitly report unavailable capture or publication rather than claiming upload.
+6. Run up to three fresh Luna Max reviews sequentially; stop after a clean review. Use
    the `review` skill on the current PR. After each review, delegate actionable
    fixes, checks, and pushes to Luna Max before starting the next review.
    For all reviews, use `COMMENT` when authenticated as the PR author.
@@ -47,6 +52,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    one fresh Luna Max agent reviews the fixes covered by that rerun.
    Report remaining findings; do not restart the review loops.
 9. Return the PR URL, QA/check results with tested commits, and open findings. Do not merge.
+   Finalize Grain and update/verify the PR evidence link after QA (or an explicit skip), reviews and final-head CI; open the Grain workspace as the last action before handoff.
 
 Read `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used.
 Find `review` in `~/.claude/skills/review/` or dcouple/skills's `parsa/.claude/skills/review/`.

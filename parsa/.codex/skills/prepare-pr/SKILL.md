@@ -27,6 +27,7 @@ Workflow:
 11. Size the PR with `git diff origin/main...HEAD --numstat`, counting hand-written files and lines only (exclude lockfiles, generated and vendored files). If it exceeds 10 files or 300 lines, end the report with one line offering `refactor` — the blind simple + deep pass that merges once and stops before applying. Under that size say nothing. Offer, never run; `refactor` is Claude-run and the user's call.
 
 Rules:
+- When Grain is available, store diagrams, QA media and full reports in its canonical task workspace; keep the PR concise and link verified Grain evidence, overriding release uploads and inline-asset requirements.
 - Never use blanket staging.
 - Treat secrets and credentials as stop conditions.
 - Keep build-fix commits separate when they are distinct from the feature work.
