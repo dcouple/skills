@@ -1,95 +1,43 @@
 ---
 name: create-ticket
-description: Capture conversation context and explicit human intent into one or more high-level GitHub tickets. Use when the user asks to create a ticket, issue, GitHub equivalent of a planning intent brief, delegation ticket, backlog item, or asks to turn the current discussion into ticket(s), especially when the work should be framed by intent, scope, acceptance criteria, inputs needed, and non-exhaustive starting points.
+description: Capture work and evolving intent during discussion as one or more GitHub tickets, Grain briefs, or both. Use for ticket or issue creation, follow-ups, backlog capture, delegation, and revisions as decisions change. Preserve the what, why, outcome, scope, and acceptance criteria.
 ---
 
-# Create Ticket
+# Create ticket
 
-## Role
+You are the keeper of intent at delegation. Help the next person understand what should change, why it matters, and what success looks like.
 
-Your job is to turn this conversation into a clean delegation ticket.
+## Capture the intent
 
-The ticket should let someone else do the work without needing the whole chat.
-It should capture what we mean, why it matters, what counts as done, and what is
-still missing. Do not turn it into a detailed implementation plan unless I ask
-for that.
+- Read the conversation, existing issue, and linked briefs. Use the latest explicit user decisions to establish the current what, why, affected people, and desired outcome.
+- Preserve the user's useful language, constraints, and scope boundaries. Separate verified facts, user decisions, proposed approaches, and open questions.
+- Keep current intent at the top. When it evolves, retain a short history of what changed, the reason, and its source; mark earlier decisions as superseded.
+- Read [intent-handoff.md](references/intent-handoff.md) for examples of complete, incomplete, and evolving intent. Capture missing rationale in Inputs Needed and ask when it materially changes the work.
 
-## Workflow
+## Shape the delegation
 
-1. Identify the target repository from the local checkout, my links, or prior conversation. If the repository is ambiguous and cannot be inferred safely, ask one concise question.
-2. Extract what I actually want delegated. Prefer my latest explicit instruction over older context.
-3. Decide whether to create one ticket or many:
-   - Create one ticket when the work has one outcome, one owner, and one coherent acceptance surface.
-   - Split into multiple tickets when the conversation contains independent outcomes, different owners, materially different release timing, or distinct product/engineering surfaces.
-   - Do not split merely because several files or pages may be touched.
-4. Draft the issue title and body using the conventions below.
-5. If I already explicitly asked to create the ticket, create it. If I asked to discuss or asked whether enough information exists, show the draft or summarize the intended ticket first.
-6. Assign, label, or milestone only when I requested it or the conversation makes it unambiguous. Avoid guessing labels.
-7. After creation, return the issue URL(s) and briefly state what was captured.
+- Choose the requested handoff: one or more tickets, Grain briefs, or both. Keep a coherent outcome together; split independent outcomes, owners, or release timing, and link shared context and dependencies.
+- Resolve the repository for GitHub work and inspect related issues or briefs. Reuse the matching artifact for an authorized revision; create follow-ups for distinct work.
+- Use a readable, action-oriented title following repository conventions, such as `fix: make refund exports reconcilable`.
+- Keep **Intent**, **Scope**, and **Acceptance Criteria** in each ticket or brief. Explain the what and why, the agreed work, and observable outcomes, with concrete examples where helpful.
+- Add **Inputs Needed**, **Starting Points**, and **Decision History** when useful. Label code references as exploratory starting points and implementation ideas as proposals.
+- Ground every requirement in the available sources. Preserve source links or identifiable discussion references so later planners and reviewers can recover the reasoning.
+- Apply this skill during discussion when concrete work or changing intent needs capture. Draft within exploratory discussion; save or publish when the request or active workflow authorizes that destination. Use requested or unambiguous assignees, labels, and milestones.
 
-## Title Format
+## Keep a living Grain brief
 
-Use Conventional Commits-inspired issue titles by default:
+- When saving intent and Grain is connected, follow its installed skill to create or update the relevant briefs. Honor Grain-only, GitHub-only, combined, and draft-only requests; for ticket work, prefer a linked Grain brief alongside the issue.
+- Reuse the supplied task workspace or an existing linked brief. For new work, use a clearly named workspace in `Development Artifacts`; retain its ID as the ticket, branch, and PR become available.
+- Explain the problem and desired experience from first principles. Read [explain-visually](../explain-visually/SKILL.md) when a visual would clarify the intent; contribute to this same brief.
+- Use readable headings, bullets, and directly accessible text. Keep the current what, why, scope, acceptance criteria, open inputs, and source-backed decision history together.
+- When tickets and briefs coexist, keep each issue self-contained and cross-link the corresponding artifacts. Grain holds the richer explanation; the issue carries the current delegation contract and a concise history of material changes.
+- On an authorized revision, reconcile the latest discussion and linked artifacts before updating them. Preserve accurate human contributions and surface conflicting decisions for resolution.
+- If Grain is disconnected, keep the full brief in GitHub when ticket publication is authorized; otherwise return a copyable draft in the requested available destination. Report failed connected saves and the status of each artifact independently.
+- Match artifact access to the intended audience. Keep sensitive material in approved private destinations and create public shares when the user has authorized that audience. Pass the workspace ID and storage rule to helpers.
 
-```text
-type: short imperative summary
-```
+## Verify and return
 
-Good examples:
-
-- `docs: update public pricing references`
-- `feat: add workspace invite reminders`
-- `fix: correct onboarding redirect state`
-- `chore: audit stale billing copy`
-
-Prefer common types such as `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `ops`, or `design`. Keep the title readable as an issue title; do not force strict commit syntax when it would obscure the work.
-
-## Standard Format
-
-Use these headers by default:
-
-```md
-## Intent
-What triggered the work, why it matters, and the intended user/business/engineering outcome. Preserve relevant constraints and non-goals, and cite the originating discussion or artifacts when available.
-
-## Scope
-What should be included in the work. Keep this outcome-focused, not file-by-file.
-
-## Starting Points
-Optional non-exhaustive references, links, files, docs, examples, or search terms.
-
-This list is not exhaustive. Treat it as a starting point and investigate further before implementation.
-
-## Acceptance Criteria
-- Observable condition that must be true when complete.
-- Another condition.
-- Any explicit exclusions or edge cases.
-
-## Inputs Needed
-Any missing product decisions, copy, pricing, designs, credentials, stakeholder approvals, or other information needed before implementation.
-
-## Notes
-Context, constraints, risks, or handoff guidance for the assignee or implementation agent.
-```
-
-Keep `Intent`, `Scope`, and `Acceptance Criteria`; lightweight tickets may compress these into short prose but must retain the motivation and intended outcome. Omit other sections only when empty or misleading.
-
-## Writing Rules
-
-Read [references/intent-handoff.md](references/intent-handoff.md) when capturing intent; its complete and incomplete examples show what to preserve and what never to invent.
-
-- Ground Intent in the source discussion/artifacts: include the trigger, why it matters, desired outcome, constraints and non-goals plus available source links; flag missing rationale in Inputs Needed rather than inventing it.
-- Write tickets for delegation, not for self-documentation.
-- Preserve my language for product intent when it is clear and useful.
-- Mention code references only as examples or starting points unless the user asked for exact implementation direction.
-- Mark starting points as non-exhaustive whenever they come from a quick scan, memory, or partial conversation.
-- Make acceptance criteria observable and outcome-based.
-- Put unresolved decisions in `Inputs Needed`; do not bury blockers in prose.
-- Do not fabricate details, prices, owners, deadlines, labels, or implementation constraints.
-- Keep the title action-oriented, Conventional Commits-inspired, and specific enough to scan in an issue list.
-
-## GitHub Tooling
-
-Prefer the GitHub plugin or app tools when available. If the connector cannot access the repo, use authenticated `gh` from the local checkout. Before using `gh`, resolve the repository with `gh repo view` or `git remote -v` when needed.
-
-When creating more than one issue, create them sequentially and return a compact list of issue URLs with titles.
+- Prefer available GitHub tools, with authenticated `gh` as a fallback. Send titles and bodies as structured data or body files.
+- Before publishing, read as the assignee: can they explain what changes, why, how success is observed, and which decisions remain open?
+- Read back each saved ticket or brief; verify content, cross-links, audience, and current intent. Inspect any visual companion and state the limits of available verification.
+- Return the ticket and brief links grouped by outcome, with save status where needed. Carry these references into subsequent planning, implementation, and PR handoffs.
