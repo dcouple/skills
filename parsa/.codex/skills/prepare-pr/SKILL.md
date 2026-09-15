@@ -7,9 +7,9 @@ description: Prepare a branch for review by committing scoped changes, rebasing 
 
 This is a high-trust workflow. Surface any destructive or ambiguous step before proceeding.
 
-## Rewrite an existing PR
+## Detect and rewrite an existing PR
 
-For `rewrite <PR URL>` or a description-only request, read the existing title/body, current diff, source ticket/discussion and available review/QA/check evidence; use the writing contract and [reference](references/writing-guide.md) to rewrite the requested narrative and refresh its Grain companion when connected. Preserve valid closing lines, relevant human context and honest tested-SHA/QA/publication limits; the request authorizes rewriting the requested prose. This mode runs only writing, visual/evidence verification and persisted-body readback: leave code, commits, branch history, labels and draft/ready state unchanged, and do not rerun application QA solely for an editorial rewrite. Report the description update separately from the PR's current readiness. Use the full workflow below when preparing code for review.
+On invocation, resolve any supplied PR URL or query the current branch for an existing PR. If one exists, default to rewriting its description unless the user explicitly requests code/branch preparation; read the existing title/body, current diff, source ticket/discussion and available review/QA/check evidence; use the writing contract and [reference](references/writing-guide.md) to rewrite the requested narrative and refresh its Grain companion when connected. Preserve valid closing lines, relevant human context and honest tested-SHA/QA/publication limits; the request authorizes rewriting the requested prose. This mode runs only writing, visual/evidence verification and persisted-body readback: leave code, commits, branch history, labels and draft/ready state unchanged, and do not rerun application QA solely for an editorial rewrite. Report the description update separately from the PR's current readiness. Use the full workflow below when preparing code for review.
 
 Workflow:
 1. Group current changes into logical commits, ideally by done-plan.
