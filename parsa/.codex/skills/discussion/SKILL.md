@@ -19,7 +19,8 @@ Workflow:
    and apply it to the discussion response.
 4. Present concrete options, constraints, and tradeoffs.
 5. Ask targeted follow-up questions when needed.
-6. End with a recommended next step, usually `create-plan`, `simple-plan`, `investigate`, or implementation.
+6. End with a brief intent handoff: trigger, why it matters, desired outcome, constraints/non-goals, decisions, open questions and available source references. Distinguish user intent from proposed assumptions.
+7. Recommend the next step, usually `create-ticket`, `create-plan`, `simple-plan`, `investigate`, or implementation; keep the handoff in conversation without editing project files.
 
 Prototype before you ask:
 

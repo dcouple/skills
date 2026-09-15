@@ -50,6 +50,8 @@ react to instead of a decision to make.
 
 ## Step 3: Suggest Next Steps
 
+First recap the trigger, why it matters, desired outcome, constraints/non-goals, decisions, open questions and available source references. Distinguish user intent from proposed assumptions; keep this handoff in conversation without editing project files. Include `create-ticket` as a next step when the discussion is ready for delegation.
+
 ```
 Suggested next steps:
 - `/plan [description]` - Create an implementation plan

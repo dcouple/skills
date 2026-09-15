@@ -50,7 +50,7 @@ Use these headers by default:
 
 ```md
 ## Intent
-Short description of the business, product, or engineering goal and why this work matters.
+What triggered the work, why it matters, and the intended user/business/engineering outcome. Preserve relevant constraints and non-goals, and cite the originating discussion or artifacts when available.
 
 ## Scope
 What should be included in the work. Keep this outcome-focused, not file-by-file.
@@ -72,7 +72,7 @@ Any missing product decisions, copy, pricing, designs, credentials, stakeholder 
 Context, constraints, risks, or handoff guidance for the assignee or implementation agent.
 ```
 
-Omit a section only when it would be empty or misleading. Keep `Intent`, `Scope`, and `Acceptance Criteria` unless the user asks for a very lightweight ticket.
+Keep `Intent`, `Scope`, and `Acceptance Criteria`; lightweight tickets may compress these into short prose but must retain the motivation and intended outcome. Omit other sections only when empty or misleading.
 
 ## Writing Rules
 
