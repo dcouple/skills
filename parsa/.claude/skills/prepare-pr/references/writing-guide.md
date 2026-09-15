@@ -4,6 +4,14 @@ Read this before drafting a PR. The reader has the diff and this body, but no ch
 
 ## Build the explanation
 
+Choose the explanation and visuals that make the underlying idea easiest to understand. Build from first principles, keep useful detail, and let the subject determine the format, in both the PR and its Grain companion.
+
+Possible examples, not required formats:
+
+- For a retry change, show what happens when an attempt fails, how it recovers, and what the person sees.
+- For a permissions change, show who can see or change something, and why that boundary exists.
+- For a performance change, show where the wait comes from and how the change reduces it before introducing implementation details.
+
 1. Extract the trigger, affected person, intended outcome, constraints/non-goals and decisions from the ticket/discussion. Keep source links or stable artifact references. Separate user decisions, implementation choices and unresolved rationale.
 2. List every changed area privately and give it a place in the explanation. Group by behavior and dependency; do not narrate the order you edited files.
 3. Introduce unfamiliar entities before using them. Explain the before/after mechanism and why this approach satisfies the intended outcome. Include a concrete input/output example, an important boundary or failure path, and a diagram when it clarifies relationships. Follow the skill's visual-publication rules.
