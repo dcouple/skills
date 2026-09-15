@@ -1,6 +1,6 @@
 ---
 name: eli5
-description: Explain one topic to a smart person who knows nothing about it, as a single HTML page that leads with a picture and earns every word, rendered per the html-explainer standards. Use when the user types /eli5 <topic>, asks for a dead-simple explainer of how something works, or wants to start learning about the code they are sitting in without a lecture.
+description: Teach an unfamiliar topic from first principles with a picture-first HTML explanation, saved in Grain when connected. Use for "explain from scratch," "I'm lost," "what does this mean?", "explain in plain English," beginner questions about how something works, or /eli5; no explicit skill invocation is needed. Skip simple factual lookups and respect text-only requests.
 argument-hint: "<topic, question, or path to explain>"
 model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write
@@ -13,6 +13,12 @@ allowed-tools: Read, Grep, Glob, Bash, Write
 The reader is not five. The reader is sharp, busy, and new to exactly
 this. Respect both halves: no jargon they have not been given, and no
 padding they have to wade through. One page, one topic, picture first.
+
+## When to use it
+
+- Use ELI5 when the person needs the foundations of a topic, not just a visual alongside an answer. Preserve the three floors below.
+- For a companion to an existing discussion or review, use [explain-visually](../explain-visually/SKILL.md) without turning the task into a beginner lesson.
+- Read that skill's HTML, saving, and verification guidance for this page too. ELI5 owns the teaching structure and reply format; produce one artifact, not two.
 
 ## The writer
 
@@ -77,6 +83,7 @@ rather than forcing an object.
 
 ## Boundaries
 
+- Save the page in the existing task's Grain workspace when connected, following [explain-visually](../explain-visually/SKILL.md); pass the workspace ID and storage rule to any writer. Keep needed local files, respect audience/privacy limits, and fall back locally when disconnected. This overrides the renderer's local-only/no-publication defaults, not its visual standards.
 - Accuracy outranks simplicity: simplify by omission, never by
   distortion, and name the biggest thing you left out in floor 3.
 - The page is the deliverable; the chat reply is one line saying where
