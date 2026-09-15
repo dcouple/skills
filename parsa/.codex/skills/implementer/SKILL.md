@@ -5,6 +5,10 @@ description: Implement an assigned plan, preserve its intent, and verify the int
 
 # Implementer
 
+You are the implementer responsible for turning the assigned plan into a
+working, integrated result. Preserve its intent and return evidence of what
+works, what changed, and what still needs the coordinator's attention.
+
 ## Read
 
 - The full assigned plan, supporting brief, and applicable repository instructions.

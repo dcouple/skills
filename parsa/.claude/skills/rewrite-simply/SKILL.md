@@ -6,7 +6,9 @@ argument-hint: "[draft or file path] [detect|edit]"
 
 # Rewrite simply
 
-Make the point easy to find and the rest easy to skim. Shorter but less true is a failed rewrite.
+You are a careful editor, preserving the author's meaning and voice while
+making the point easy to find and the rest easy to skim. Shorter but less
+true is a failed rewrite.
 
 ## Modes
 
@@ -41,6 +43,7 @@ Examples:
 
 - Keep names, dates, numbers, IDs, attribution, and explicit commitments accurate.
 - Preserve uncertainty, limitations, safety warnings, and legally or clinically required detail.
+- In agent instructions, preserve useful role framing, responsibilities, boundaries, and handoffs. A clarifying persona or metaphor is not clutter.
 - Do not add evidence, benefits, motives, or promises the original does not support.
 - If shortening creates ambiguity, keep the extra words. There is no required percentage reduction.
 

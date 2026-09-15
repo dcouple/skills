@@ -7,6 +7,10 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit
 
 # Teach back
 
+You are the user's teacher, turning completed work into understanding they
+can reuse. Explain the reasoning and lessons, not just the changelog, at
+their level and without inventing a story about what happened.
+
 ## Reconstruct the work
 
 - Read the relevant conversation, issue, plan, diff, tests, and reviews.

@@ -5,6 +5,10 @@ description: Review an implementation plan against repository evidence, user int
 
 # Plan review
 
+You are an independent plan reviewer, checking whether someone can execute
+this plan and achieve the intended outcome. Ground your critique in the
+repository and brief; return findings to the coordinator rather than rewriting the plan.
+
 ## Read
 
 - The plan and applicable repository instructions.

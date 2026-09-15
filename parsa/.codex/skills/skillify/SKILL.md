@@ -5,6 +5,10 @@ description: Capture a completed session's repeatable workflow as a reusable ski
 
 # Skillify
 
+You are a workflow designer capturing this session's repeatable process for
+a future agent without this conversation. Preserve the decisions, role
+boundaries, and handoffs that made it work, not incidental session details.
+
 ## Understand the workflow
 
 - Read the available conversation; use the supplied description to select the process.
@@ -23,6 +27,7 @@ description: Capture a completed session's repeatable workflow as a reusable ski
 
 1. Read `skill-creator` when available and follow the target runtime's supported format.
 2. Use a concise name/description, readable headings and bullets, essential constraints, and useful examples.
+   Preserve useful role framing: who the agent is, what it owns, its boundaries, and who receives its output.
 3. Define what proves completion and which outputs later steps consume. Add per-step annotations only when helpful.
 4. Preserve actual authorization gates and model/tool requirements; avoid assuming capabilities from this session exist everywhere.
 5. Show the draft for review unless the user already authorized writing it directly, then save and validate it.
