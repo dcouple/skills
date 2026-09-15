@@ -76,6 +76,8 @@ Keep `Intent`, `Scope`, and `Acceptance Criteria`; lightweight tickets may compr
 
 ## Writing Rules
 
+Read [references/intent-handoff.md](references/intent-handoff.md) when capturing intent; its complete and incomplete examples show what to preserve and what never to invent.
+
 - Ground Intent in the source discussion/artifacts: include the trigger, why it matters, desired outcome, constraints and non-goals plus available source links; flag missing rationale in Inputs Needed rather than inventing it.
 - Write tickets for delegation, not for self-documentation.
 - Preserve my language for product intent when it is clear and useful.

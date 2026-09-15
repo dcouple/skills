@@ -27,6 +27,7 @@ Workflow:
 11. Size the PR with `git diff origin/main...HEAD --numstat`, counting hand-written files and lines only (exclude lockfiles, generated and vendored files). If it exceeds 10 files or 300 lines, end the report with one line offering `refactor` — the blind simple + deep pass that merges once and stops before applying. Under that size say nothing. Offer, never run; `refactor` is Claude-run and the user's call.
 
 Rules:
+- Before drafting, read [references/writing-guide.md](references/writing-guide.md) for the completed example and fidelity check; when Grain is connected, adapt its bundled visual template.
 - Write for a zero-context junior SWE: lead with the source discussion/ticket's motivation and intended outcome, then introduce core concepts and explain the diff in dependency order; flag missing rationale rather than inventing it.
 - Cover every changed area, why it changes, tradeoffs, validation and limitations; use ample concrete before/after examples and diagrams, regardless of Grain availability.
 - When Grain is connected, save and visually verify a rich version of the final PR body with section navigation, rendered diagrams and hyperlinks to code/evidence; the PR must remain understandable without opening Grain.

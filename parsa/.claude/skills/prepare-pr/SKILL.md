@@ -109,6 +109,7 @@ failed write.
 
 ### PR Writing Contract
 
+- Before drafting, read [references/writing-guide.md](references/writing-guide.md) for the completed example and fidelity check; when Grain is connected, adapt its bundled visual template.
 - Write for a zero-context junior SWE: lead with the source discussion/ticket's motivation and intended outcome, then introduce core concepts and explain the diff in dependency order; flag missing rationale rather than inventing it.
 - Cover every changed area, why it changes, tradeoffs, validation and limitations; use ample concrete before/after examples and diagrams, regardless of Grain availability.
 - When Grain is connected, save and visually verify a rich version of the final PR body with section navigation, rendered diagrams and hyperlinks to code/evidence; the PR must remain understandable without opening Grain.
