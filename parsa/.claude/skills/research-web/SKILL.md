@@ -1,6 +1,6 @@
 ---
 name: research-web
-description: Conducts extensive web research on technical topics with validated references and citations. Use when you need external documentation, library comparisons, or best practices research.
+description: Research an external technical question and save a cited synthesis with version details, tradeoffs, and open questions.
 argument-hint: "[technical topic or question]"
 model: opus
 context: fork
@@ -18,13 +18,13 @@ Conduct comprehensive web research to investigate technical topics, compare appr
 ## Step 1: Analyze and Decompose
 
 1. Break down the topic into research dimensions
-2. Identify authoritative source categories (official docs, GitHub, expert blogs, SO)
-3. Create a research plan using TaskCreate
-4. Present the plan and wait for confirmation
+2. Identify primary sources, such as official documentation, source repositories, or research papers
+3. Proceed on the supplied scope; ask only if missing information would materially change the research
 
 ## Step 2: Spawn Parallel Research Tasks
 
-Launch multiple research agents in parallel, each focused on a dimension:
+For substantial independent questions, launch research agents in parallel; handle a focused question directly. Give each agent:
+
 - Clear, specific search queries
 - Instructions to find authoritative sources and return ALL URLs
 - Focus on current/latest information
@@ -41,7 +41,10 @@ Launch multiple research agents in parallel, each focused on a dimension:
 
 Save to: `./tmp/research/YYYY-MM-DD-web-description.md`
 
+Use a supplied output location instead when present. Apply the Grain handoff below.
+
 Use this structure:
+
 - Frontmatter (date, topic, tags, status, sources_count)
 - Research Question
 - Executive Summary
@@ -63,5 +66,10 @@ Present a summary with key findings and document path. Handle follow-up requests
 - **Citations**: Every factual claim must have a source URL.
 - **Version Awareness**: Note software versions. Flag deprecated patterns.
 - **Transparency**: Be clear about confidence levels. Acknowledge gaps.
+
+## Grain handoff
+
+- If connected, read/update research in the task's Grain folder, or `Development Artifacts/YYYY-MM-DD-<task>`; pass the folder and storage rule to researchers and sync their outputs.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.
 
 Research Topic: $ARGUMENTS

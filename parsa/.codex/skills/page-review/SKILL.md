@@ -1,6 +1,6 @@
 ---
 name: page-review
-description: "Review and improve a draft or live content page. Use when the user wants cleanup for usefulness, voice, E-E-A-T, intent match, answer quality, promotional risk, self-promotion fairness, comparison/listicle integrity, proof gaps, CTA placement, or a ship/revise/do-not-ship publishing judgment."
+description: "Review a draft or live content page for reader value, intent, evidence, voice, and fair promotion; recommend whether it is ready to publish."
 ---
 
 # Page Review
@@ -43,9 +43,13 @@ Return:
 - Comparison/listicle fairness fixes, if relevant
 - Final publish checklist
 
-Prefer direct edits or replacement snippets when the user supplied text. Keep critique actionable and avoid generic SEO advice.
+For a review, return findings and replacement snippets; edit files only when asked to improve them. A publish recommendation does not authorize publishing. Verify time-sensitive claims against current sources and distinguish missing evidence from a disproved claim.
 
 ## Handoffs
 
 - Use `$page-strategy` when the page premise, target query, or structure needs to be rethought before editing.
 - Use `$site-content-audit` when the issue appears across many URLs or a whole section/template.
+
+## Saved artifacts
+
+If Grain is connected, save requested reviews, revised drafts, and supporting evidence in the shared task folder; pass its ID/storage rule to delegated work. Local working copies are fine. Otherwise use the requested destination silently. Do not upload secrets or publish externally without authorization.

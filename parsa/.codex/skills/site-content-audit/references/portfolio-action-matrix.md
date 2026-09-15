@@ -1,13 +1,13 @@
 # Portfolio Action Matrix
 
-Use this matrix to turn audit findings into actions.
+Use this matrix to propose actions, not execute them. Confirm each recommendation with page evidence and the site's goals; no product fit alone is not a reason to remove a useful page.
 
 | Condition | Action |
 |---|---|
 | Good topic, bad execution | Rewrite |
 | Good page, stale facts/screenshots/tools | Refresh |
 | Multiple pages satisfy same intent | Merge |
-| No product fit, no authority, no useful traffic | Prune |
+| No reader/business value after checking traffic, conversions, links, and obligations | Consider pruning; obtain approval |
 | Thin template variant with better parent page | Redirect or consolidate |
 | Useful page with technical/schema issue | Fix |
 | SERP changed to a different page type | Reposition |

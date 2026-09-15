@@ -1,6 +1,6 @@
 ---
 name: refactor-apply
-description: Applies a refactor plan written by refactor-simple, refactor-deep, or the refactor orchestrator's merged report - auto-fixable items first, then manual items one at a time with the user, verifying with the repo's own checks after each group. Use only after the user has reviewed the plan and said to apply it.
+description: Apply an approved refactor plan, verify each change group, and leave a scoped uncommitted diff.
 argument-hint: "<plan-path> [--auto-only]"
 ---
 
@@ -67,3 +67,8 @@ be reviewable as its own step.
 - Pre-existing debt marked "not against this PR" is not applied unless the
   user asks for it by name.
 - Secrets, credentials, and generated files are stop conditions.
+
+## Grain handoff
+
+- If connected, read/update the plan and apply report in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; record applied, skipped, and reverted items.
+- Keep source changes and needed local artifacts in place, preserve privacy limits, and continue locally silently without Grain.

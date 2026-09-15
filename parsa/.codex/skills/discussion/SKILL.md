@@ -1,33 +1,32 @@
 ---
 name: discussion
-description: Have an implementation-focused discussion about a feature, bug, or approach without making code changes. Use when the goal is to think through options before planning or coding.
+description: Discuss a feature, question, or approach using evidence and tradeoffs, without changing the project.
 ---
 
 # Discussion
 
-This skill is for conversation only.
+## Rules
 
-Rules:
-- Do not edit, create, or delete project files.
-- Read code as needed to ground the discussion in the real codebase.
-- Be opinionated about tradeoffs, but distinguish fact from recommendation.
+- Discuss the user's topic; do not implement, edit project files, or produce patches.
+- Read relevant code or sources when the answer depends on them.
+- Distinguish observed facts from recommendations and unresolved assumptions.
+- Apply `rewrite-simply` when available to keep responses easy to skim.
 
-Workflow:
-1. Clarify the topic and desired outcome.
-2. Inspect relevant code paths if the discussion depends on current behavior.
-3. Before responding to the user, reference the installed `rewrite-simply` skill
-   and apply it to the discussion response.
-4. Present concrete options, constraints, and tradeoffs.
-5. Ask targeted follow-up questions when needed.
-6. End with a brief intent handoff: trigger, why it matters, desired outcome, constraints/non-goals, decisions, open questions and available source references. Distinguish user intent from proposed assumptions.
-7. Recommend the next step, usually `create-ticket`, `create-plan`, `simple-plan`, `investigate`, or implementation; keep the handoff in conversation without editing project files.
+## Discuss
 
-Prototype before you ask:
+1. Establish the desired outcome from the request and known context.
+2. Investigate only what helps the current decision; use an explorer or researcher for independent questions when useful.
+3. Present concrete options, tradeoffs, and a recommendation.
+4. Ask about product choices and preferences that evidence cannot settle.
 
-Classify every fork question before you surface it in step 5. If the answer is
-observable by running something — behavior, timing, output, perf, layout —
-build the cheapest throwaway probe outside the project tree, run it, and
-present the result with a recommendation instead of the question. Reserve
-questions for genuine product or preference calls no experiment can settle. A
-probe usually answers faster than a human, and it hands them a result to react
-to instead of a decision to make.
+## Probe when useful
+
+- For observable questions, a small isolated probe can replace guesswork: for example, testing output shape or measuring latency.
+- Keep probes outside the project, reversible, and within existing authorization; do not contact production or install dependencies without appropriate scope.
+- If saving probe evidence and Grain is connected, use the task's shared folder, or `Development Artifacts/YYYY-MM-DD-<task>`. Keep needed local files and privacy limits; otherwise continue normally silently.
+
+## Handoff and next steps
+
+First recap the trigger, why it matters, desired outcome, constraints/non-goals, decisions, open questions and available source references. Distinguish user intent from proposed assumptions; keep this handoff in conversation without editing project files. Include `create-ticket` as a next step when the discussion is ready for delegation.
+
+End with the next useful step, such as more discussion, research, investigation, or planning. Do not imply approval to implement.

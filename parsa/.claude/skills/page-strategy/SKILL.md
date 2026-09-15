@@ -1,6 +1,6 @@
 ---
 name: page-strategy
-description: "Plan an SEO/content page before writing. Use when the user wants to discuss or define a page idea, target keyword, search intent, audience job-to-be-done, page type, structure, product role, proof/E-E-A-T requirements, CTA boundaries, differentiation, or success criteria before creating content."
+description: "Plan a content page before drafting: audience, search intent, structure, proof, product fit, and success criteria."
 ---
 
 # Page Strategy
@@ -52,3 +52,9 @@ Return a practical page brief:
 
 - Use `$page-review` after a draft exists.
 - Use `$site-content-audit` when the question involves many URLs, a sitemap, a traffic decline, a competitor teardown, or pruning/merging decisions.
+
+## Artifacts and boundaries
+
+- Use current sources for SERP, pricing, and competitor claims; label assumptions and missing proof.
+- Return the brief without drafting or publishing unless requested.
+- If Grain is connected, save the brief and research in the shared task folder and pass its ID/storage rule to delegated work. This overrides local-only destinations in references; local working copies are fine. Otherwise use the requested destination silently. Keep sensitive material private.

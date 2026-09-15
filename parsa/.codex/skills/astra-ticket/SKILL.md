@@ -7,6 +7,8 @@ description: Take a GitHub ticket through Astra planning, Luna implementation, P
 
 Input: a GitHub issue URL or `owner/repo#number`.
 
+## Model requirements
+
 - Before task work, verify the active orchestrator is GPT-6 Astra
   (`gpt-6-astra`) using authoritative runtime/session metadata.
 - Stop if different or unverified; defaults and user assertions are not proof.
@@ -17,6 +19,8 @@ Input: a GitHub issue URL or `owner/repo#number`.
   required. Pass applicable workflow overrides, ticket, workspace, and artifacts.
 - Reuse passing checks at the same commit; after changes, rerun affected checks unless a concrete finding requires broader validation.
 - Before each review and final handoff, inspect human/bot feedback and CI; address actionable findings, report unfinished checks after five minutes, and claim ready only with actionable threads resolved and required checks passing on the final SHA.
+
+## Workflow
 
 1. Read the issue/comments and relevant artifacts in repo `TMP/` or `tmp/`,
    `$TMPDIR`, and `/tmp`; check stale context against the ticket and code.
@@ -56,6 +60,8 @@ Input: a GitHub issue URL or `owner/repo#number`.
    After an authorized merge or when revisiting a merged PR, confirm GitHub reports `MERGED`; when Grain is connected, move its task folder under `Development Artifacts/Done`, preserve workspace IDs/shares, and verify the destination and PR evidence links, reporting any move failure.
    When Grain is connected, finalize its visual companion from the published PR body after QA (or an explicit skip), reviews and final-head CI; verify matching content and reciprocal evidence links, then open Grain last.
 
-Read `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used.
-Find `review` in `~/.claude/skills/review/` or dcouple/skills's `parsa/.claude/skills/review/`.
-Read referenced criteria; report missing skills. These workflow overrides take precedence.
+## Dependencies
+
+- Read `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used.
+- Resolve installed skills first; this collection also supplies `review` at `parsa/.claude/skills/review/`.
+- Read referenced criteria; report missing skills. These workflow overrides take precedence.

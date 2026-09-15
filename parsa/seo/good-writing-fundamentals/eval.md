@@ -1,79 +1,30 @@
-# Good writing fundamentals eval
+# Writing review checklist
 
-Use this after the rewrite. Answer each check with pass or fail. If any check
-fails, fix the draft before returning it.
+Use after an edit. Judge the effect on the reader, not compliance with a list of banned words.
 
-For detect requests, make sure the response names each pattern found with a
-quoted line and a short fix, without rewriting the draft.
+## Meaning and voice
 
-## Editing principles
+- Are facts, numbers, quotations, commitments, and uncertainty unchanged?
+- Would the writer recognize their voice, humor, and level of formality?
+- Were useful examples, caveats, and distinctive sentences preserved?
+- Is any new claim unsupported by the source?
 
-1. Does the edit preserve the user's point without adding claims, examples,
-   stats, quotes, or opinions?
-2. Does it preserve the writer's distinctive vocabulary, cadence, bluntness,
-   humor, uncertainty, digressions, and level of polish?
-3. Does it leave strong human sentences alone instead of rewriting them for
-   consistency or making every paragraph equally tidy?
-4. Is the amount of cutting proportional to the actual slop, with no aggressive
-   compression that strips out character and no cutting to hit a percentage?
-5. Does the draft lead with what the reader needs while keeping personal setup
-   that adds context, tension, or character?
-6. Are points front-loaded where that improves clarity without forcing every
-   unit into the same structure?
-7. Do sentences earn their place, with concrete facts, protected details, and
-   direct verbs where the draft supports them?
-8. Does every generic sentence pass the portability test, or was it cut or made
-   specific to this subject?
-9. Do facts, actions, examples, and consequences carry the emphasis, rather
-   than commentary telling the reader a point is important or surprising?
-10. Does the draft use active voice with human subjects where possible?
-11. Does the edit keep useful edge and preserve structure unless the structure
-    was hurting the piece?
-12. Are genuinely tangled sentences fixed while clear spoken cadence,
-    fragments, and changes in pace remain intact?
+## Clarity and structure
 
-## Words to cut
+- Is the point easy to find, with enough context to understand it?
+- Do headings, bullets, and blank lines make the text easy to skim?
+- Were genuinely tangled or repetitive passages improved without flattening the rhythm?
+- Does the ending add a useful conclusion or next action?
 
-1. Are banned words, filler phrases, often-empty adverbs, generic enthusiasm,
-   and inflated claims removed unless quoted as examples?
+## Evidence and restraint
 
-## Patterns to cut
+- Does each finding name a concrete reader problem rather than a style preference?
+- Are vague attributions supported, narrowed, or flagged?
+- Are rhetorical devices justified by purpose and audience?
+- Was cutting proportional, with no word-count quota or invented specificity?
 
-1. Are binary contrasts, negative listings, rhetorical setups, and
-   throat-clearing openers removed?
-2. Are faux-insight setups, colon reveals, superficial analysis, fake-strong
-   verbs, synonym cycling, dramatic fragments, and robotic rhythm fixed?
-3. Are importance puffery and weasel attribution replaced with plain facts and
-   named sources, or flagged for the user when no source exists?
-4. Is interpretive metadiscourse removed, including authorial metacommentary,
-   reader guidance, emphasis markers, and redundant glossing?
-5. Are fake-profound kicker lines deleted instead of rewritten into better
-   metaphors?
-6. Are summary-recap endings cut so the piece ends on a concrete point,
-   takeaway, or next action?
-7. Is formatting slop removed: emoji headings, decorative bold, bullets that
-   should be prose, headers over tiny sections?
-8. Are colons sentence case unless grammar, a proper noun, a title, or code
-   requires otherwise?
-9. Are em dashes used sparingly: usually none in short copy, and only 1-2 in
-   longer drafts when they clearly help?
-10. Does sentence length vary without stacking three or more fragments in a row?
+## Output
 
-## Register
-
-1. Was the register established before editing, and does the draft follow it?
-2. Explanatory copy: zero curiosity gaps and no deliberate kicker, ending on
-   the last concrete point or the next action?
-3. Persuasive copy: at most two curiosity gaps, each answered on the page, and
-   any deliberate ending concrete rather than a metaphor or aphorism?
-
-## Final read
-
-1. Does the draft avoid robotic symmetry, repeated sentence shapes, and stacked
-   punchy fragments?
-2. Would the writer recognize the edited draft as their own voice?
-3. Would the edited draft sound natural if read to a sharp colleague?
-4. Does the final output include the full edited draft and a short
-   **What changed** section?
-5. For detect requests, does the response name each pattern with a quoted line
-   and a short fix, without rewriting, scoring, or claiming AI authorship?
+- Edit mode: provide the revised text and explain material changes when useful.
+- Detect mode: quote each issue with a brief fix; do not rewrite, score, or infer AI authorship.
+- Recheck material corrections, then hand off unresolved questions. Do not loop indefinitely for stylistic perfection.

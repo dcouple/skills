@@ -30,8 +30,7 @@ from this guide and the cached skill copies under the Pane skill cache.
 
 ## Grounding In The Skill System
 
-Pane Chat should not only rank GitHub objects. It should name the next workflow
-skill that fits each recommendation:
+Name a useful next action and, when available, a matching skill. Examples from this collection:
 
 - Unknown failure, crash, or regression: `investigate`.
 - Fuzzy product idea or broad feature: `discussion`, then `create-ticket`.
@@ -71,5 +70,6 @@ Then include:
 - a short "probably not next" section for noisy backlog
 
 End with the evidence used and any gaps. Do not imply something shipped unless
-there is evidence from a merge, release, deploy, successful checks, or a clear
-agent/PR record.
+the claimed stage is directly evidenced. Passing checks do not prove a merge, and a merge does not prove deployment.
+
+If a saved recap or recommendation is requested and Grain is connected, keep it in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`. Preserve privacy and needed local copies; otherwise use the normal handoff silently.

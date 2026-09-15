@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: Post-PR refactor pass. Sizes the diff against the remote default branch, fans out refactor-simple (and refactor-deep on large changes) as fresh subagents that run blind to each other, merges their plans once with max-severity rules, shows the merged report, and hands it to refactor-apply on the user's word. Use after a PR is open, or whenever the user asks to refactor or clean up the branch.
+description: Coordinate independent refactor analyses, merge their findings, and apply an approved plan with bounded regression review.
 argument-hint: "[--size=small|large] [--plan-only]"
 ---
 
@@ -13,18 +13,14 @@ QA when QA evidence must be current-head evidence.
 
 ## Why the analyses run blind
 
-Two analyses that see each other's findings converge into one opinion. Run
-independently, `refactor-simple` and `refactor-deep` overlap on about half
-their findings, the other half is complementary, and the severe correctness
-findings tend to come from one of them alone. So each analysis runs in a
-fresh subagent with no access to the other's output, and the merge happens
-exactly once, here, after both are done. Repeated runs on the same diff
-converge on the same findings, and averaging them has demoted real Criticals;
-one run per analysis is the rule.
+- Give each analysis fresh context and no access to the other's findings.
+- Run each once, then merge once without averaging away severe findings.
 
 ## Process
 
 ### 1. Size the change
+
+Use the intended PR base when supplied; otherwise discover the remote default branch, for example:
 
 ```bash
 BASE=$(git symbolic-ref -q refs/remotes/origin/HEAD | sed 's|refs/remotes/||')
@@ -45,7 +41,7 @@ Under ~10 hand-written files and ~500 lines is **small**; above is **large**.
 Each analysis runs as a separate fresh-context subagent (the Agent tool, one
 per analysis, launched in the same message so they run concurrently). Each
 subagent invokes its skill and returns the absolute path of the plan it wrote.
-The subagent prompt names the skill and the worktree, and nothing else.
+The prompt includes the skill, worktree, base, assigned output, and applicable authority/storage rules, but no other analysis's conclusions.
 
 - **small**: `refactor-simple` only.
 - **large**: `refactor-simple` and `refactor-deep`, concurrently.
@@ -126,11 +122,6 @@ as open Criticals beside the delta, and the user decides. Then re-run the
 analyses (step 2, fresh subagents) once and show the delta: what closed,
 what remains, anything new.
 
-On the first real run, two apply commits passed every check and their own new
-tests, and the adversary found a reproduced regression in each; the repairs
-then broke adjacent cases twice, with tests that passed trivially. The
-adversary told to falsify caught all of it.
-
 ## Rules
 
 - Steps 1-4 modify no tracked files. Only step 5 edits code, and only after
@@ -144,3 +135,9 @@ adversary told to falsify caught all of it.
 - The reviewer who found a finding verifies its repair, in its own session;
   a fresh reviewer hunts what the repair introduced. Two questions, two
   readers.
+
+## Grain handoff
+
+- If connected, keep all analysis, merged-plan, apply, and review artifacts in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; this overrides local-only storage in invoked skills.
+- Pass the folder and storage rule without exposing peer findings to blind analyses; sync outputs from agents without access.
+- Keep required local files and privacy limits; without Grain, continue locally silently.

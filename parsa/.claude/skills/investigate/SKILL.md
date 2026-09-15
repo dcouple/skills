@@ -1,6 +1,6 @@
 ---
 name: investigate
-description: Investigates bugs through hypothesis-driven root cause analysis. Automatically invoked when the user reports a bug, error, broken behavior, or something not working as expected. Use when something is broken, failing, or behaving unexpectedly.
+description: Diagnose broken behavior through reproduction and hypothesis testing, then explain the cause without implementing a fix.
 argument-hint: "[bug description, error message, or unexpected behavior]"
 ---
 
@@ -13,6 +13,7 @@ Investigate this bug, find the root cause, and report back to the user.
 ## Phase 1: Understand the Bug
 
 If not provided in $ARGUMENTS, ask for:
+
 - Expected behavior
 - Observed behavior
 - Steps to reproduce
@@ -23,7 +24,7 @@ Classify the issue early - different types need different investigation strategi
 
 | Category | Investigation Strategy |
 |---|---|
-| **Type / Compilation Error** | Check recent type changes, inference chains, tsconfig, package versions |
+| **Type / Compilation Error** | Check recent type changes, compiler configuration, and dependency versions |
 | **Logic Error** | Trace data flow, check conditionals, compare with working code paths |
 | **Race Condition / Timing** | Look for shared state, async patterns, missing awaits, event ordering |
 | **State Management** | Trace state mutations, check store subscriptions, verify update propagation |
@@ -34,15 +35,17 @@ Classify the issue early - different types need different investigation strategi
 ### Verify Reproduction
 
 Before investigating:
+
 - Confirm you understand how to trigger the bug
 - Note whether it's consistent or intermittent
 - If reproduction requires a running application, flag this to the user - you may need them to reproduce and provide logs
 
 ## Phase 2: Form Hypotheses
 
-**Before reading any code**, generate 3-5 possible causes ranked by likelihood based on the bug description, error messages, and your knowledge of common failure patterns.
+Form plausible competing hypotheses from the symptoms and initial evidence. Rank them by likelihood and choose checks that distinguish them; do not invent extra theories to meet a count.
 
 Format:
+
 ```
 Hypotheses (ranked by likelihood):
 1. [Most likely cause] - because [reasoning]
@@ -80,6 +83,7 @@ Tell the user immediately with your findings, then skip to Phase 5.
 ### If the cause is NOT clear from reading code:
 
 Tell the user:
+
 - What you've investigated so far
 - Which hypotheses you've ruled out and why
 - What remains unclear
@@ -90,7 +94,7 @@ Then propose diagnostic logging to narrow it down. Explain what you want to log 
 
 Only enter this phase if Phase 3 didn't find the cause.
 
-1. Add targeted `console.log` statements prefixed with `[DEBUG-FIX]` to the suspected code paths.
+1. After approval, use the project's diagnostic facilities at the suspected boundaries; mark temporary instrumentation and avoid secrets or personal data.
 2. Ask the user to reproduce the bug and paste the relevant logs.
 3. Analyze the logs:
    - **Root cause identified** → tell the user what you found, then proceed to Phase 5.
@@ -131,7 +135,7 @@ Once the root cause is identified, present a summary:
 - `/simple-plan [description]` - Quick fix plan if it's straightforward
 ```
 
-If diagnostic logs were added in Phase 4, remove all `[DEBUG-FIX]` logs before finishing.
+If temporary diagnostics were added, remove only this session's instrumentation before finishing.
 
 ## Red Flags - Catch Yourself
 
@@ -145,3 +149,8 @@ Stop and reassess if you notice yourself doing any of these:
 - Spending excessive time without reporting intermediate findings to the user
 
 Bug to investigate: $ARGUMENTS
+
+## Grain handoff
+
+- If saving evidence or a report and Grain is connected, use the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; pass the storage rule to any support agents and sync their outputs.
+- Keep needed local files and privacy limits; without Grain, continue normally silently.

@@ -22,8 +22,7 @@ You receive the brief and BOTH idea files. Before seeing any scores of your
 own ideas:
 
 1. Score each of the opponent's top 3 from 0–1000 with a one-line verdict.
-   The number is a public commitment, not a measurement - score candidly and
-   spread the range; a flattering cluster at 750 helps no one. Concede
+   The number is a judgment, not a measurement; let evidence set the score rather than forcing a spread. Concede
    excellence where you find it; kill what deserves killing, with the reason.
 2. Blind-spot probe: name the strongest idea NEITHER list contains, given the
    brief. This is frequently the most valuable output of the entire duel -
@@ -31,3 +30,5 @@ own ideas:
 
 Both modes: read-only toward the repo - cite (`file:line`) anything checkable;
 never edit. Follow the output format file exactly.
+
+Return assigned artifacts to the coordinator for saving and Grain sync when connected; never inspect peer scores before submitting your own.

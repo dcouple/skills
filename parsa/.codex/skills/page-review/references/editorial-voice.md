@@ -30,6 +30,8 @@ Weak:
 Stronger:
 `Tool X is strongest for teams that already manage work in spreadsheets and need lightweight automation. It is weaker for cross-functional planning because permissions and dependencies are limited.`
 
+This is a wording example, not a product fact. Use it only when the evidence supports those strengths and limitations.
+
 ## Final Check
 
 If a sentence could appear unchanged on a competitor's page, make it more specific or cut it.

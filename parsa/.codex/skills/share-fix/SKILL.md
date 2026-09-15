@@ -1,138 +1,41 @@
 ---
 name: share-fix
-description: After shipping a non-trivial fix, find related GitHub issues across the ecosystem, draft or post helpful human-sounding comments linking the fix and root cause, and optionally file upstream issues. Always requires explicit user approval before posting unless the user has already clearly approved posting in the current turn.
-argument-hint: "[optional: commit SHA, PR number, or description of the fix]"
+description: Find related upstream or downstream issues for a verified fix, draft useful outreach, and post only with explicit approval.
 ---
 
-# Share Fix
+# Share a fix
 
-Use this after a real fix reveals a bug, build-system trap, protocol gotcha, or upstream package issue that other projects are likely hitting too. The goal is to help other maintainers with concrete evidence, not to promote the project.
+## Rules
 
-## Hard Rules
+- Focus on one fix per run, including a past commit or PR when requested.
+- Verify the root cause, affected versions, symptom, and workaround before drafting.
+- Public posting requires approval for the targets and content; research or drafting permission is not posting permission.
+- Add technical value, not promotion or “me too” comments. Skip weak matches and duplicate outreach.
 
-- Public comments and issues are irreversible. Draft first and ask approval unless the user has already explicitly approved posting in the current turn.
-- Do not post identical comments across repos.
-- Do not sound corporate. No "happy to help", "hope this helps", "wanted to share", or tied-bow summaries.
-- First person singular by default: `i hit this`, `i tested`, `my fix`.
-- Use the user's voice from memory and recent GitHub comments.
-- No em dashes. Use commas, periods, colons, semicolons, or hyphen-minus.
-- Do not guess. Read the fix, the emitted code or upstream source, and the target issue before commenting.
-- If Codex subagents are not explicitly authorized by the user, do the research locally instead of spawning one.
+## Research
 
-## Voice Calibration
+1. Read the fix, linked issue, relevant project/upstream source, and verification evidence.
+2. Search for matching upstream reports, downstream symptoms, and useful closed discussions; inspect each target's full context.
+3. Rank targets by match confidence and check whether the user already replied.
+4. Work directly unless the user authorizes research delegation.
 
-Before drafting comments:
+## Draft
 
-1. Read relevant memory files from `~/.claude/projects/*/memory/` and project-local memory if present. Prioritize files about comment style, banned punctuation, project positioning, and user preferences.
-2. Sample the user's existing comments in target repos when possible:
+- Use supplied voice preferences and relevant examples of the user's writing; do not scan unrelated personal memory.
+- Match the audience's register without forced slang, invented emotions, or claims of experience the user did not have.
+- State the symptom, explain the cause, show the fix or link it, and credit prior contributors.
+- Distinguish confirmed fixes, workarounds, and untested alternatives.
+- Example shape: “This appears related to [verified cause]. [Change] fixed it in [tested environment]; here's the patch and its limitations.”
+- Upstream issues can use headings for reproduction, versions/environment, root cause, impact, and proposed fixes.
 
-```bash
-gh search issues --commenter <user> --repo <owner>/<repo> --limit 10 --include-prs
-gh api repos/<owner>/<repo>/issues/<number>/comments --jq '.[] | select(.user.login == "<user>") | .body'
-```
+## Approve, post, record
 
-3. Match the user's real register. Lowercase starts, short technical notes, `fwiw`, `rn`, `w/`, and direct links are usually better than polished paragraphs.
+1. Present the ranked targets and full drafts for approval unless already explicitly approved.
+2. Submit approved content using body-file/JSON inputs or a connector; never interpolate bodies into shell source.
+3. Read back each post to verify target, author, content, and URL.
+4. Save the fix link, posted URLs, skipped targets, and follow-up in the supplied location, or `tmp/outreach/YYYY-MM-DD-topic.md`.
 
-## Understand The Fix
+## Grain handoff
 
-Read enough local context to explain the fix without hand-waving:
-
-- commit diff or PR diff
-- PR description and linked issue
-- failing output, stack trace, or repro
-- relevant source in the app
-- relevant upstream package source or generated build output
-
-Extract:
-
-- root cause
-- affected package and version
-- user-visible symptom
-- exact workaround or fix
-- tested alternatives and their ranking
-- validation commands and results
-
-If the user asks for comprehensive outreach, include the ranking. Maintainers deciding between workarounds need to know why the chosen fix is better.
-
-## Find Targets
-
-Search broadly and rank by confidence:
-
-- upstream package issues
-- downstream PRs and issues with the same stack trace or symptom
-- recent closed issues that future searchers will find
-- high-signal discussions where a concrete fix adds value
-
-Useful GitHub searches:
-
-```bash
-gh search issues '"exact error text"' --include-prs --limit 100 --json repository,number,title,state,url,body,commentsCount,updatedAt,isPullRequest
-gh search issues '"package name" "symptom"' --include-prs --limit 100 --json repository,number,title,state,url,body,commentsCount,updatedAt,isPullRequest
-gh search issues '"protocol or internal function" "tool name"' --include-prs --limit 100 --json repository,number,title,state,url,body,commentsCount,updatedAt,isPullRequest
-```
-
-Then inspect likely targets:
-
-```bash
-gh issue view <number> --repo <owner>/<repo> --comments --json title,state,url,body,comments
-gh pr view <number> --repo <owner>/<repo> --comments --json title,state,url,body,comments
-```
-
-Skip low-confidence targets. A wrong comment is worse than no comment.
-
-## Draft Or Post
-
-If approval is still needed, present:
-
-- ranked target list with confidence
-- full draft comments
-- any upstream issue draft
-- question: `approve all, approve some, edit any, or skip any?`
-
-If the user already approved posting in the current turn, post with heredocs:
-
-```bash
-gh issue comment <number> --repo <owner>/<repo> --body-file - <<'EOF'
-fwiw i hit this too...
-EOF
-```
-
-For PRs, `gh issue comment` works with the PR number.
-
-## Comment Shape
-
-Informal downstream comment:
-
-```text
-fwiw i hit this in <project> while debugging <symptom>.
-
-<one or two short paragraphs explaining the root cause and why their workaround is related>
-
-the ranking i found was <best fix>, then <second fix>, then <workaround>. <link to PR>
-```
-
-Upstream issue or maintainer-facing technical thread can be more structured, but still keep it human and concise.
-
-## Record Outreach
-
-After posting, create:
-
-```text
-tmp/outreach/YYYY-MM-DD-topic.md
-```
-
-Include:
-
-- fix PR or commit link
-- every comment URL
-- skipped targets and why
-- any follow-up needed
-
-## Anti-Patterns
-
-- no copy-pasted comments
-- no marketing language
-- no "me too" without new evidence
-- no overclaiming that your fix is universal
-- no commenting on every search result just because it matched a keyword
-- no posting before approval unless the user already clearly approved posting in the current turn
+- If connected, keep research, drafts, and the outreach record in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; pass its ID and rule to any authorized researchers and sync outputs.
+- Keep needed local files and privacy limits; without Grain, continue locally silently. Grain storage does not authorize public posting.

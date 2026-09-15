@@ -1,13 +1,13 @@
 ---
 name: simple-plan
-description: Quick gut-check before implementing when the user directly asks you to do something (e.g. "add X", "fix Y", "change Z"). Investigates, proposes a lightweight plan, and implements after approval. Use this instead of /create-plan when the user wants something done, not a formal plan.
+description: Investigate a straightforward change and propose a concise plan before approved implementation.
 argument-hint: "[what the user wants done]"
-allowed-tools: Read, Grep, Glob, WebFetch
+allowed-tools: Read, Grep, Glob, WebFetch, Agent
 ---
 
 # Simple Plan
 
-When the user directly asks me to make a change, I will first investigate and propose a plan before implementing anything. This ensures alignment before any code is written.
+Investigate the requested change before proposing implementation. Use `create-plan` for broad or risky work.
 
 ## My Plan Will Include
 
@@ -16,22 +16,25 @@ When the user directly asks me to make a change, I will first investigate and pr
 - Available source links or artifact paths; flag missing rationale and distinguish proposed assumptions from user decisions
 
 ### Current State
-- Root cause analysis explaining the current state
+
+- Current behavior or an evidenced root cause
 - File references and code snippets where relevant
 
 ### Proposed Changes
+
 - Clear explanation of what needs to change
 - File references and code snippets where necessary
 - Task list of all work to be done
 
 ### My Advice
-Feedback from a principal engineer perspective, providing overall architectural and implementation guidance.
+
+- Relevant tradeoffs or architectural advice, only where they affect the decision.
 
 ## Process
 
 1. Investigate the codebase first
 2. Present the plan to the user
-3. **Only when the user approves** will I proceed
+3. Wait for approval unless the user or invoking workflow already authorizes autonomous implementation
 4. After approval, prefer one primary `implementer` sub-agent to execute the whole plan rather than fragmenting it by default
 5. Keep the user's stated why, constraints, and non-goals explicit during implementation rather than letting the task list silently replace them
 6. After implementation, run the Claude `implementation-reviewer` and Codex review in parallel when the plugin is available, and wait for both before declaring completion
@@ -42,6 +45,11 @@ Feedback from a principal engineer perspective, providing overall architectural 
 - Instructions must be very clear with code snippets and file paths
 - If implementation proceeds, keep one primary implementation authority unless the write scopes are clearly disjoint
 - The final review must check both task completion and whether the implementation still satisfies the user's original intent
-- I will not implement anything until the user approves
+- Planning alone does not authorize implementation
+
+## Artifacts
+
+- If saving a plan and Grain is connected, use the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; pass its ID and storage rule to implementers/reviewers and sync their outputs.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.
 
 User Query: $ARGUMENTS

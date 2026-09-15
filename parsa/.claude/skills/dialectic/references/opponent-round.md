@@ -13,11 +13,13 @@ rebut, so do not invent a rebuttal.
 **Stance:** `contest | concede-in-advance | converge-on-third`
 
 ### Opening position
+
 <the design you back under the motion's stated constraints - what it is, why
-it fits the actual scale/zone, its named tradeoffs. This is your case, argued
+it fits the actual scale/stakes, its named tradeoffs. This is your case, argued
 from the motion alone.>
 
 ### Open risks either way
+
 - <risk that survives regardless of which side wins - or "none">
 
 ## Middle rounds (rebuttal, when cap > 2)
@@ -27,14 +29,17 @@ from the motion alone.>
 **Stance:** `contest | concede | converge-on-third`
 
 ### Rebuttals
+
 - **Claim:** "<the advocate's claim, quoted or tightly paraphrased>"
   **Counter:** <the attack, with evidence for anything checkable>
 
 ### Strongest alternative
+
 <the design you back - on `concede`, replace with the reasons the advocate's
 position stands.>
 
 ### Open risks either way
+
 - <risk that survives - or "none">
 
 ## Final round (rebuttal + steelman + blind spot)
@@ -47,14 +52,17 @@ depends on.
 **Stance:** `contest | concede | converge-on-third`
 
 ### Rebuttals
+
 - **Claim:** "<the advocate's claim>"
   **Counter:** <the attack, with evidence>
 
 ### Strongest alternative
+
 <the design you back - or, on `concede`/`converge-on-third`, the position you
 now support and why.>
 
 ### Open risks either way
+
 - <risk that survives - or "none">
 
 **Steelman:** <the advocate's single strongest point, stated fairly.>

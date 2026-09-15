@@ -1,6 +1,6 @@
 ---
 name: gh-address-comments
-description: Inspect and address actionable GitHub pull request review feedback with complete thread-aware state. Use when a PR has review comments, requested changes, unresolved threads, or needs proof that no actionable review thread remains.
+description: Inspect complete GitHub review-thread state, address authorized feedback, and report remaining current-head findings.
 ---
 
 # Address GitHub Review Comments
@@ -53,9 +53,10 @@ the current PR head.
 - Reject false positives with concrete code/evidence. A rejected finding still
   needs an authorized reply and thread resolution before the strict zero-thread
   gate can pass.
-- After a source change, run relevant checks and invalidate prior implementation
-  review, QA, CI, approval, thread-query, asset, and readiness evidence. Send the
-  new head through the lifecycle again.
+- After a source change, run relevant checks and reassess review, QA, CI,
+  approval, thread, asset, and readiness evidence against the new head. Revalidate
+  affected claims; do not carry stale results forward as fresh. Follow the parent
+  workflow's bounded review/QA rules instead of restarting every review loop.
 
 ## Safe GitHub Writes
 
@@ -83,3 +84,8 @@ Re-query all pages on the current head. Report:
 Do not report the review gate clean unless both thread counts and the actionable
 top-level count are zero, and no effective required change request or actionable
 finding remains on the current head.
+
+## Grain handoff
+
+- If connected, keep thread snapshots, decisions, requests, and check evidence in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; pass its ID and rule to the implementation authority.
+- Retain required local files and privacy limits; without Grain, continue locally silently. Storage does not grant GitHub mutation authority.

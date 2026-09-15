@@ -1,65 +1,30 @@
 ---
 name: commit
-description: Selectively stages and commits only the changes related to the current session, skipping unrelated modifications.
-argument-hint: "[optional: commit message or description of what to commit]"
+description: Commit the current task's changes locally while preserving unrelated work and staged changes.
 ---
 
-# Commit Agent
+# Commit
 
-Commit only the changes made in the current session to the local branch. Ignore
-all other changes. Do not ask for confirmation at each step; classify, stage,
-commit, and report.
+## Scope
 
-## Step 1: Understand What Was Done
+- Use the user's request, conversation, and relevant plan to identify this task's changes.
+- Inspect both `git diff` and `git diff --cached`; a file appearing in a plan does not make every change in it yours.
+- Leave unrelated work untouched. If ownership overlaps and cannot be separated safely, ask rather than guessing.
+- Follow project conventions for whether working notes belong in Git; do not automatically commit temporary artifacts.
 
-1. Check for plans in `./tmp/done-plans/` and `./tmp/ready-plans/`
-2. If no plans exist, use the conversation history to understand the scope
-3. If `$ARGUMENTS` is provided and is not already a `type: description` commit
-   message, use it as extra classification context
+## Commit
 
-## Step 2: Inspect All Changes
+1. Check status; stop if no changes are in scope.
+2. Stage explicit files or hunks, never `git add .` or `git add -A`.
+3. Preserve unrelated staged work without including it in this commit. Check the exact commit diff for secrets.
+4. If secrets are present, exclude them and report the blocker without exposing their values.
+5. Use a supplied commit message; otherwise follow repository conventions, for example `fix: handle an empty response`.
+6. Commit locally without repeated approval requests. Do not push.
 
-1. Run `git status`
-2. Run `git diff` and `git diff --cached`
-3. If there are no changes, stop and say so
+## Report
 
-## Step 3: Classify Changes
+- Commit SHA and subject.
+- Included changes and work left uncommitted.
+- A relevant next step, if any.
 
-Include:
-- files explicitly created or edited during this session
-- files referenced by the implemented plan
-- supporting changes clearly tied to the work
-- relevant `./tmp/done-plans/` files and related context artifacts
-
-Exclude:
-- files not touched in this session
-- pre-existing unrelated modifications
-- unrelated changes from other agents or manual edits
-- unrelated `./tmp/` files
-
-When in doubt, include the file rather than leaving it out.
-
-If zero files are clearly in scope, stop and say so.
-
-## Step 4: Stage and Verify
-
-1. Stage only specific in-scope files
-2. Never use `git add .` or `git add -A`
-3. Review the staged diff for secrets or credentials
-4. If secrets are found, unstage them and ask the user how to proceed
-
-## Step 5: Create the Commit
-
-1. If `$ARGUMENTS` already matches `type: description`, use it verbatim
-2. Otherwise derive a concise conventional commit message
-3. Keep the subject under 72 characters
-4. Add a short body when the commit covers multiple logical changes
-5. Create the local commit and do not push
-
-## Step 6: Report
-
-Report:
-- commit sha and subject
-- files included
-- files intentionally left uncommitted
-- suggest `/prepare-pr` if appropriate
+This skill needs no new report file. Read supplied Grain context when available; keep code and Git state in the repository.

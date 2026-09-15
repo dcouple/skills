@@ -1,6 +1,6 @@
 ---
 name: site-content-audit
-description: "Audit a site, sitemap, content section, competitor, or URL portfolio for SEO/content quality patterns. Use for ClickUp-style traffic-loss forensics, sitemap XML analysis, Ahrefs/Semrush/GSC export analysis, SERP replacement analysis, template-footprint risk, competitor teardown, pruning, merging, rewriting, refreshing, redirecting, or recovery sequencing."
+description: "Audit a site or URL portfolio for traffic loss, content quality, and recovery priorities using crawl, search, and page evidence."
 ---
 
 # Site Content Audit
@@ -29,6 +29,12 @@ Use public web research or official Google sources when current update timing or
 
 Run scripts only when they materially reduce manual work. For small inline data, analyze directly.
 
+- Use the project's available data sources; named vendors are examples, not dependencies.
+- Treat script outputs as leads. Fingerprint counts are rough HTML heuristics, not rendered-page or schema validation.
+- The merge helper preserves the first metric row per URL and prefixes export columns; it does not aggregate query metrics. Normalize/aggregate deliberately before triage and record source/date ranges.
+- Triage thresholds are screening defaults, not deletion decisions. Missing metrics are not zero traffic; verify reader value, conversions, links, seasonality, and retention obligations before recommending removal.
+- Keep crawls within the authorized scope and rate limits. Inspect child sitemap targets before following an index; use a new output path to avoid overwriting input data.
+
 ## Workflow
 
 1. Build or inspect the URL inventory. Use `sitemap_inventory.py` when sitemap/XML parsing is needed.
@@ -56,3 +62,8 @@ Return:
 - Follow-up data needed
 
 Avoid overclaiming causality. Mark update correlation, backlink changes, and AI cannibalization as hypotheses unless supported by query-level and SERP-level evidence.
+
+## Artifacts and authority
+
+- Recommend actions; do not delete, redirect, rewrite live pages, or publish without authorization.
+- If Grain is connected, save safe inventories, exports, samples, and reports in the shared task folder; pass its ID/storage rule to delegated work. This overrides local-only paths in references. Script working files may remain local; sync their outputs. Otherwise use the requested destination silently.

@@ -1,6 +1,6 @@
 ---
 name: linear-work-orchestrator
-description: Manage the portfolio of agent-driven work in a Linear workspace - sweep, prioritize, delegate to the daemon's planner and implementer agents, relay human answers, and report what moved and what's blocked. Use when the user asks about the daemon's work, wants issues planned or built, answers an agent's question, or wants portfolio status.
+description: Coordinate authorized Linear work through planner/implementer sessions, respecting capacity and relaying human decisions.
 argument-hint: "[status | take <ISSUE-ID …> | answer <ISSUE-ID> <text> | free text; empty = full sweep]"
 ---
 
@@ -15,8 +15,8 @@ the Linear agent daemon, which runs a fixed number of sessions at once.
 Discover the workspace from the Linear MCP: the team, the agent users
 (planner and implementer), workflow statuses, labels, session cap. Read
 the repo's `AGENTS.md` for any explicit overrides first. Read
-`.references/linear-agent-sessions.md` for how sessions work before your
-first sweep.
+the workspace's session documentation before the first delegation (for example,
+`.references/linear-agent-sessions.md` when supplied). If the session contract or capacity is unavailable, report the missing prerequisite rather than inventing it.
 
 ## Role boundary
 
@@ -40,6 +40,8 @@ session thread states (busy/waiting/idle/failed/stale), issue readiness
 for In Review issues.
 
 State is in Linear - derive it each sweep, don't cache or persist it.
+
+A status request authorizes reads only. Apply the admission and repair steps only for work and mutations the user has authorized.
 
 ## Admission - what runs next
 
@@ -91,3 +93,9 @@ Never, without an explicit grant for that specific issue:
 
 End every sweep with what moved, what's waiting on the human, what's
 blocked, what's ready for a slot, and what's failed or stale.
+
+## Artifact handoff
+
+- Keep live issue/session state in Linear; do not create a competing status cache.
+- If agents produce briefs, plans, or reports and Grain is connected, use the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<issue>`; pass its ID and storage rule on delegation and link artifacts from the issue when authorized.
+- Keep needed local copies and privacy limits; without Grain, continue with the normal handoff silently.
