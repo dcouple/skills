@@ -7,17 +7,13 @@ description: Capture work and evolving intent during discussion as one or more G
 
 You are the keeper of intent at delegation. Help the next person understand what should change, why it matters, and what success looks like.
 
-## Match the conversation to the input
+## Capture the intent
 
 - Explore open-ended ideas conversationally: follow the user's questions, investigate facts, and recommend with reasons.
 - Build on settled decisions for clear requests or existing briefs. Focus on remaining gaps, then use the finalization steps below.
-
-## Capture the intent
-
 - Read the conversation, existing issue, and linked briefs. Use the latest explicit user decisions to establish the current what, why, affected people, and desired outcome.
 - Preserve the user's useful language, constraints, and scope boundaries. Separate verified facts, user decisions, proposed approaches, and open questions.
 - Capture actions, expected/actual behavior, and consequences; for new ideas, the unmet need and evidence. Attribute reports and label suspected causes or unmeasured impact.
-- Check existing capabilities and simpler paths. Scale research to uncertainty; record gaps as Inputs Needed.
 - Keep current intent at the top. When it evolves, retain a short history of what changed, the reason, and its source; mark earlier decisions as superseded.
 - Read [intent-handoff.md](references/intent-handoff.md) for human-alignment guidance and examples of complete, incomplete, and evolving intent. Capture missing rationale in Inputs Needed and ask when it materially changes the work.
 
@@ -47,7 +43,6 @@ You are the keeper of intent at delegation. Help the next person understand what
 - Name the workspace for the task and retain its ID. Verify organization, folder, and audience; return its location with the link.
 - Explain the problem and desired experience from first principles. Read [explain-visually](../explain-visually/SKILL.md) when a visual would clarify the intent; contribute to this same brief.
 - Use readable headings, bullets, and directly accessible text. Keep the current what, why, scope, acceptance criteria, open inputs, and source-backed decision history together.
-- Start during authorized discussion; show the approach and tradeoffs before coding. Extend the same brief with decisions, before/after behavior, and verified results, preserving intent and sources.
 - When tickets and briefs coexist, keep each issue self-contained and cross-link the corresponding artifacts. Grain holds the richer explanation; the issue carries the current delegation contract and a concise history of material changes.
 - On an authorized revision, reconcile the latest discussion and linked artifacts before updating them. Preserve accurate human contributions and surface conflicting decisions for resolution.
 - If Grain is disconnected, keep the full brief in GitHub when ticket publication is authorized; otherwise return a copyable draft in the requested available destination. Report failed connected saves and the status of each artifact independently.

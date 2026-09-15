@@ -37,10 +37,7 @@ Source: “Make refund exports negative.”
 
 Fictional source D-19: “I changed one sentence, clicked Save, and saw the whole document in the request. Add patches to cut editing costs.”
 
-- **Reported:** A whole-document request after a small edit.
-- **Desired:** Lightweight edits that preserve surrounding content.
-- **Check:** Which path ran, what editing options exist, and whether request size affects the cost in question.
-- **Next:** Evidence may support guidance, investigation, or a feature. Patches remain a proposal.
+- Check the editing path, existing options, and actual cost before choosing guidance, investigation, or patches.
 
 ## One or several outcomes
 
@@ -48,14 +45,8 @@ For “capture this discussion in Grain,” save the brief there. For “give su
 
 ## Refine with the human
 
-The brief helps the user decide what is worth building. Start from the discussion's evidence and decisions.
-
-- Ask open questions: “What happened last time?”, “What would a good result enable?”, “What would make the existing approach sufficient?” Investigate facts; let the user settle product choices.
-- Show the proposed experience with a useful before/after example, journey, or mockup. Label fidelity limits; leave implementation steps to planning.
-- Explain the recommendation, alternatives, dependencies, and uncertainty; link supporting research.
-- Refine the same page. Keep decisions, rejected alternatives, reasons, and sources; use the skill's Socrates and confirmation gate before publishing.
-
-Adapted from Orchestra's discussion, HTML brief, and Socratic alignment. Orchestra retains its own configuration, schema, and publication contracts.
+- Ask: “What happened last time?”, “What would a good result enable?”, “What would make the existing approach sufficient?” Investigate facts; let the user settle product choices.
+- Show the proposed experience, alternatives, and tradeoffs with a useful example or mockup. Label uncertainty and fidelity limits; leave implementation steps to planning.
 
 ## Explain enough to delegate
 
