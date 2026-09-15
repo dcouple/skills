@@ -11,6 +11,10 @@ When the user directly asks me to make a change, I will first investigate and pr
 
 ## My Plan Will Include
 
+### Intent and Sources
+- Triggering problem, why it matters, intended outcome, constraints and non-goals from the ticket/discussion
+- Available source links or artifact paths; flag missing rationale and distinguish proposed assumptions from user decisions
+
 ### Current State
 - Root cause analysis explaining the current state
 - File references and code snippets where relevant

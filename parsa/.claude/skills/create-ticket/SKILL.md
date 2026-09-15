@@ -52,7 +52,7 @@ Use these headers by default:
 
 ```md
 ## Intent
-Short description of the business, product, or engineering goal and why this work matters.
+What triggered the work, why it matters, and the intended user/business/engineering outcome. Preserve relevant constraints and non-goals, and cite the originating discussion or artifacts when available.
 
 ## Scope
 What should be included in the work. Keep this outcome-focused, not file-by-file.
@@ -74,10 +74,13 @@ Any missing product decisions, copy, pricing, designs, credentials, stakeholder 
 Context, constraints, risks, or handoff guidance for the assignee or implementation agent.
 ```
 
-Omit a section only when it would be empty or misleading. Keep `Intent`, `Scope`, and `Acceptance Criteria` unless the user asks for a very lightweight ticket.
+Keep `Intent`, `Scope`, and `Acceptance Criteria`; lightweight tickets may compress these into short prose but must retain the motivation and intended outcome. Omit other sections only when empty or misleading.
 
 ## Writing Rules
 
+Read [references/intent-handoff.md](references/intent-handoff.md) when capturing intent; its complete and incomplete examples show what to preserve and what never to invent.
+
+- Ground Intent in the source discussion/artifacts: include the trigger, why it matters, desired outcome, constraints and non-goals plus available source links; flag missing rationale in Inputs Needed rather than inventing it.
 - Write tickets for delegation, not for self-documentation.
 - Preserve my language for product intent when it is clear and useful.
 - Mention code references only as examples or starting points unless the user asked for exact implementation direction.

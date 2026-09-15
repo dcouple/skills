@@ -11,6 +11,10 @@ plan before writing code.
 
 ## Plan Contents
 
+### Intent and Sources
+- Triggering problem, why it matters, intended outcome, constraints and non-goals from the ticket/discussion
+- Available source links or artifact paths; flag missing rationale and distinguish proposed assumptions from user decisions
+
 ### Current State
 - root cause or current behavior
 - concrete file references
