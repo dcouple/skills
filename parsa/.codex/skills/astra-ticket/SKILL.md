@@ -52,8 +52,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    one fresh Luna Max agent reviews the fixes covered by that rerun.
    Report remaining findings; do not restart the review loops.
 9. Return the PR URL, QA/check results with tested commits, and open findings. Do not merge.
-   When Grain is connected, finalize it and update/verify the PR evidence link after QA (or an explicit skip), reviews and final-head CI; open the Grain workspace as the last action before handoff.
-   When Grain is connected, refresh its visual PR companion from the final published body after fixes/QA; verify both describe the same final diff and link to each other before opening Grain.
+   When Grain is connected, finalize its visual companion from the published PR body after QA (or an explicit skip), reviews and final-head CI; verify matching content and reciprocal evidence links, then open Grain last.
 
 Read `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used.
 Find `review` in `~/.claude/skills/review/` or dcouple/skills's `parsa/.claude/skills/review/`.

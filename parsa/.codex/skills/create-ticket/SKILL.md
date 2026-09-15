@@ -76,6 +76,7 @@ Omit a section only when it would be empty or misleading. Keep `Intent`, `Scope`
 
 ## Writing Rules
 
+- Ground Intent in the source discussion/artifacts: include the trigger, why it matters, desired outcome, constraints and non-goals plus available source links; flag missing rationale in Inputs Needed rather than inventing it.
 - Write tickets for delegation, not for self-documentation.
 - Preserve my language for product intent when it is clear and useful.
 - Mention code references only as examples or starting points unless the user asked for exact implementation direction.
