@@ -1,27 +1,44 @@
 # Preserve intent at ticket handoff
 
-Read when capturing a discussion as a ticket. Keep the reason the work exists, not only the requested task. A short ticket may compress the following, but should not drop the source-grounded motivation.
+Read these examples while capturing intent. Keep the current request, its motivation, and the decisions that explain how it arrived here.
 
-## Complete source → concise ticket
+## Complete source
 
-Fictional source: “Accountants reconcile every refund manually because our CSV shows it as a positive sale. Keep all rows; show negative refunds. Export only, no invoice rewrites. Missing amounts should be blank.” A proposal to omit refunds was explicitly rejected.
+Fictional source D-17: “Accountants reconcile every refund manually because our CSV shows it as a positive sale. Keep all rows; show refunds as negative amounts. Limit this to exports; preserve saved invoices. Missing amounts should be blank.”
 
-**Intent:** Accountants should receive a complete ledger they can reconcile without correcting refund signs by hand (discussion D-17). Preserve all rows and normal sales; changing saved invoices is out of scope.
+- **Intent:** Accountants should receive a complete ledger they can reconcile directly.
+- **Scope:** Export refund amounts with the correct sign and explain the convention in export help. Preserve every row, normal sales, and saved invoices.
+- **Acceptance criteria:** A 1,250-cent refund exports as `-12.50`, including when its stored sign is already negative; a normal sale exports as `12.50`; a missing amount exports as an empty cell.
+- **Sources:** D-17. Use a link when available; an identifiable discussion reference is useful when the source has no shareable URL.
 
-**Scope:** Format refund amounts as negative in the export and explain that convention in the export help. Preserve missing amounts as empty cells.
+## Evolving intent
 
-**Acceptance criteria:** A 1,250-cent refund exports as `-12.50`, including when its stored sign is already negative; a normal 1,250-cent sale remains `12.50`; a missing amount is blank; saved invoices are unchanged.
+Fictional follow-up D-18: “The finance team imports these into a tool that expects separate sale and refund columns. Use that format instead, and keep both amounts positive. The goal is still reconciliation.”
 
-**Decisions and sources:** Omitting refunds was rejected because the ledger must remain complete. D-17 is the available discussion record; do not invent a public URL if none exists.
+- **Current what:** Export separate sale and refund columns with positive amounts.
+- **Current why/outcome:** Finance can import a complete ledger into its tool and reconcile it directly.
+- **Preserved constraints:** Retain every row, preserve saved invoices, and keep missing amounts blank.
+- **Updated acceptance criteria:** A 1,250-cent refund appears as `12.50` in the refund column; a normal sale appears in the sale column; missing amounts stay blank.
+- **Inputs Needed:** Confirm how to represent the other column. A blank cell is a proposed convention, pending confirmation.
+- **Decision history:** D-17 requested signed amounts. D-18 supersedes that format because the receiving tool expects separate columns. The reconciliation goal remains current.
+- **Handoff:** Update the existing issue and the same Grain brief, replacing superseded acceptance criteria and retaining this short history.
 
-The ticket explains a checkable outcome without prescribing an unrequested file-by-file implementation. Examples and constraints are source-backed; additional implementation proposals must be labeled as proposals.
+Apply this treatment when the motivation or intended outcome changes too: label the earlier goal as superseded, cite the new decision, and refresh scope and success criteria.
 
-## Incomplete source → explicit gap
+## Incomplete source
 
 Source: “Make refund exports negative.”
 
-**Intent:** Requested outcome: negative amounts for exported refunds. The originating problem and reason for prioritizing this change were not supplied.
+- **Known what:** Export refunds as negative amounts.
+- **Inputs Needed:** What problem prompted this, who is affected, and what would successful use look like? Clarify the unanswered decisions that affect scope.
+- **Evidence boundary:** The accountant story, saved-invoice constraint, and empty-cell rule belong to D-17. Requirements for this new request come from its own sources.
 
-**Inputs Needed:** Who is affected and what workflow prompted this request? Does it affect exports only? Clarify only the unanswered decisions that matter to scope; preserve known facts while waiting.
+## One or several outcomes
 
-Do not borrow the accountant story, invoice constraint or empty-cell rule from the example above. Missing motivation is a gap to capture, not permission to invent impact. Distinguish the user's decisions from your assumptions and preserve available discussion/artifact references so the plan and PR can recover the why.
+For “capture this discussion in Grain,” save the brief there. For “give support the copy change and engineering the export fix,” create separate delegation artifacts with their own outcomes and link the shared rationale. Choose ticket-only, Grain-only, or combined delivery from the request.
+
+## Explain enough to delegate
+
+Lead with the real-world problem and the desired result. A before/after example, simple flow, or decision timeline can help when it explains a meaningful relationship. Let the subject determine the format.
+
+Keep each artifact usable on its own. When GitHub and Grain are both used, keep the same intent, scope, acceptance criteria, and material decision changes available in both for readers with different access.
