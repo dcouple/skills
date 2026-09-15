@@ -39,9 +39,9 @@ Input: a GitHub issue URL or `owner/repo#number`.
    using `pr-test-automation`; verify model support without substitutions.
    Delegate QA bug fixes and pushes to Luna Max, then have Sol rerun affected
    flows before reviews. Report blocked QA honestly; never call it a pass.
-   Capture QA screenshots; save and verify screenshots, recordings and full reports in that Grain workspace instead of GitHub release assets.
-   Keep the PR concise: behavior, tested SHA, QA verdict, limitations and a named Grain evidence link; lead Grain with key screenshots/videos, then longer artifacts.
-   Return the same Grain link in the final handoff; explicitly report unavailable capture or publication rather than claiming upload.
+   Capture QA screenshots; when Grain is connected, save and verify media/reports there instead of release assets; otherwise follow `pr-test-automation`'s durable-publication behavior.
+   Keep the PR concise: behavior, tested SHA, QA verdict, limitations and a named evidence link; when using Grain, lead it with key screenshots/videos, then longer artifacts.
+   Return the same verified evidence link in the final handoff; explicitly report unavailable capture or publication rather than claiming upload.
 6. Run up to three fresh Luna Max reviews sequentially; stop after a clean review. Use
    the `review` skill on the current PR. After each review, delegate actionable
    fixes, checks, and pushes to Luna Max before starting the next review.
@@ -52,7 +52,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    one fresh Luna Max agent reviews the fixes covered by that rerun.
    Report remaining findings; do not restart the review loops.
 9. Return the PR URL, QA/check results with tested commits, and open findings. Do not merge.
-   Finalize Grain and update/verify the PR evidence link after QA (or an explicit skip), reviews and final-head CI; open the Grain workspace as the last action before handoff.
+   When Grain is connected, finalize it and update/verify the PR evidence link after QA (or an explicit skip), reviews and final-head CI; open the Grain workspace as the last action before handoff.
 
 Read `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used.
 Find `review` in `~/.claude/skills/review/` or dcouple/skills's `parsa/.claude/skills/review/`.
