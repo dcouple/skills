@@ -31,6 +31,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
 3. Spawn Luna Max implementers with the ticket, plan, specs, and artifacts;
    sequence dependent tasks, wait for completion, and inspect work/check results.
 4. Spawn a Luna Max agent to use `prepare-pr` and open or update the PR.
+   Pass a draft-PR override to `prepare-pr`; after QA (or an explicit skip) and internal reviews finish, mark ready, then check any triggered automated reviews and final-head CI and address actionable feedback before handoff.
 5. Before reviews, ask asynchronously whether to run end-to-end PR QA; state
    it will run after 60 seconds without a reply. Yes starts QA; no skips it.
    Use a timed, interruptible wait; do not treat a pending question as silence
