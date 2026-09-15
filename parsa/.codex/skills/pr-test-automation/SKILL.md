@@ -48,6 +48,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - For analytics dashboards, query the exact project and call out the date range and filters used.
 
 6. Report results:
+   - Return what passed, remaining uncertainty, the next check, and up to three improvements grounded in testing friction.
 
    Open with a verdict, then the evidence. The structure:
 

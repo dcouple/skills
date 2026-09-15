@@ -11,15 +11,15 @@ You are the keeper of intent at delegation. Help the next person understand what
 
 ## Match the conversation to the input
 
-- For an open-ended idea, lead with an interactive, opinionated conversation: follow the user's questions, investigate what matters, and offer recommendations with reasoning. Ask focused questions as they arise and let the brief emerge from shared understanding.
-- For a clear request, existing discussion, or agreed brief, build on what is already settled and focus on remaining gaps. Move toward finalization when the user feels the direction is clear, preserving the confirmation and Socrates steps below.
+- Explore open-ended ideas conversationally: follow the user's questions, investigate facts, and recommend with reasons.
+- Build on settled decisions for clear requests or existing briefs. Focus on remaining gaps, then use the finalization steps below.
 
 ## Capture the intent
 
 - Read the conversation, existing issue, and linked briefs. Use the latest explicit user decisions to establish the current what, why, affected people, and desired outcome.
 - Preserve the user's useful language, constraints, and scope boundaries. Separate verified facts, user decisions, proposed approaches, and open questions.
-- Capture the trigger: what someone did, what they expected, what happened, and the consequence. For a new idea, capture the unmet need and supporting evidence. Attribute reports; keep suspected causes and unmeasured impact explicit.
-- Check whether an existing capability or simpler approach already achieves the outcome. Scale investigation to the uncertainty; capture remaining gaps as Inputs Needed.
+- Capture actions, expected/actual behavior, and consequences; for new ideas, the unmet need and evidence. Attribute reports and label suspected causes or unmeasured impact.
+- Check existing capabilities and simpler paths. Scale research to uncertainty; record gaps as Inputs Needed.
 - Keep current intent at the top. When it evolves, retain a short history of what changed, the reason, and its source; mark earlier decisions as superseded.
 - Read [intent-handoff.md](references/intent-handoff.md) for human-alignment guidance and examples of complete, incomplete, and evolving intent. Capture missing rationale in Inputs Needed and ask when it materially changes the work.
 
@@ -35,22 +35,21 @@ You are the keeper of intent at delegation. Help the next person understand what
 
 ## Refine before finalizing
 
-- Reuse the discussion's decisions and evidence; ask open-ended questions about unresolved needs, tradeoffs, and scope.
-- Show and open the draft brief for Grain delivery, or present it in the requested available destination. Help the user judge the problem, desired experience, proposed approach, boundaries, and acceptance criteria before finalizing the ticket.
-- When the user considers the brief ready, dispatch a fresh agent using [Socrates](references/socrates.md) with the current brief, discussion evidence, and repository access. Relay material questions to the user, reconcile the findings, and record the verdict and reasoning against the reviewed brief version.
-- Fold feedback into the same brief and record what changed and why. Keep unresolved choices visible; finalize once the user confirms the current brief and resolves or explicitly defers material questions.
-- Keep Socrates' agent ID and continue that same agent with the user's answers and revised brief throughout the gate. If resumption is unavailable, give a replacement the prior questions, answers, and verdict, and disclose the restart. Reuse the recorded verdict for an unchanged premise.
-- If dispatch is unavailable, keep the gate pending and ask whether the user wants to waive it explicitly.
-- Then create or update the authorized ticket(s) from that agreed brief, retaining each item's identity and history. An explicit instruction to publish an already-agreed brief satisfies confirmation.
+1. Open the draft in Grain or the requested destination. Refine the problem, experience, approach, scope, and acceptance criteria with the user.
+2. When the user considers it ready, dispatch fresh [Socrates](references/socrates.md) with the brief, discussion evidence, and repository access.
+3. Relay material questions. Update the same brief with answers, decisions, and reasons; record Socrates' verdict against the reviewed version.
+4. Continue the same Socrates agent through feedback. If resumption fails, disclose the restart and pass the full review record to its replacement. Reuse a verdict while its premise and evidence hold.
+5. If dispatch is unavailable, keep the gate pending for the user's explicit waiver.
+6. Once the user confirms and resolves or explicitly defers material questions, create/update the authorized ticket(s), preserving identity and history. An explicit request to publish an agreed brief counts as confirmation.
 
 ## Keep a living Grain brief
 
 - When saving intent and Grain is connected, follow its installed skill to create or update the relevant briefs. Honor Grain-only, GitHub-only, combined, and draft-only requests; for ticket work, prefer a linked Grain brief alongside the issue.
-- Reuse the supplied task workspace or linked brief. For new work, honor explicit destinations; otherwise use `Development Artifacts/<org>/<repo>` in the intended Grain organization. Confirm any ambiguous organization or repository; use a clear task name and retain the workspace ID.
-- Verify the saved organization, folder, and intended audience; include the location beside the handoff link. Keep task identity in the workspace name within the supported folder depth.
+- Reuse the linked workspace. New work defaults to `Development Artifacts/<org>/<repo>` in the intended Grain organization; explicit destinations win. Clarify ambiguous names.
+- Name the workspace for the task and retain its ID. Verify organization, folder, and audience; return its location with the link.
 - Explain the problem and desired experience from first principles. Read [explain-visually](../explain-visually/SKILL.md) when a visual would clarify the intent; contribute to this same brief.
 - Use readable headings, bullets, and directly accessible text. Keep the current what, why, scope, acceptance criteria, open inputs, and source-backed decision history together.
-- Start the brief during authorized discussion/ticket capture, then show the proposed approach and meaningful tradeoffs before implementation. As work proceeds, update the same brief with decisions, before/after behavior, and verified results, preserving the original intent and sources.
+- Start during authorized discussion; show the approach and tradeoffs before coding. Extend the same brief with decisions, before/after behavior, and verified results, preserving intent and sources.
 - When tickets and briefs coexist, keep each issue self-contained and cross-link the corresponding artifacts. Grain holds the richer explanation; the issue carries the current delegation contract and a concise history of material changes.
 - On an authorized revision, reconcile the latest discussion and linked artifacts before updating them. Preserve accurate human contributions and surface conflicting decisions for resolution.
 - If Grain is disconnected, keep the full brief in GitHub when ticket publication is authorized; otherwise return a copyable draft in the requested available destination. Report failed connected saves and the status of each artifact independently.

@@ -47,6 +47,7 @@ Validate as much of a PR as possible with local services, browser automation, CL
    - For analytics dashboards, query the exact project and call out the date range and filters used.
 
 6. Report results:
+   - Return what passed, remaining uncertainty, the next check, and up to three improvements grounded in testing friction.
    - State what was tested, the exact test identity/marker, and the observed outcome.
    - List screenshot paths for changed UI and explain the user journey, surface area, environment, and UI state each screenshot covers.
    - When screenshots are safe to share, publish them on a repository-owned durable asset surface. For GitHub PRs, prefer an existing long-lived release such as `pr-assets`; do not use an arbitrary temporary host when a suitable repository release is available.

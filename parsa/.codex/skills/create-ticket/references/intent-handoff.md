@@ -37,11 +37,10 @@ Source: “Make refund exports negative.”
 
 Fictional source D-19: “I changed one sentence, clicked Save, and saw the whole document in the request. Add patches to cut editing costs.”
 
-- **Observed:** A whole-document request after a one-sentence edit, reported in D-19.
-- **Expected/outcome:** Small edits should feel lightweight and preserve surrounding content.
-- **To establish:** Which editing path produced the request, what existing editing options support, and whether the request affects the cost the user cares about.
-- **Possible resolution:** An existing edit-and-sync path may satisfy the outcome; a remote patch interface remains a proposal until the remaining gap is clear.
-- **Handoff:** Capture the evidence and open questions now; let the findings determine whether the next step is guidance, an investigation, or a feature.
+- **Reported:** A whole-document request after a small edit.
+- **Desired:** Lightweight edits that preserve surrounding content.
+- **Check:** Which path ran, what editing options exist, and whether request size affects the cost in question.
+- **Next:** Evidence may support guidance, investigation, or a feature. Patches remain a proposal.
 
 ## One or several outcomes
 
@@ -49,15 +48,14 @@ For “capture this discussion in Grain,” save the brief there. For “give su
 
 ## Refine with the human
 
-The brief is the page the user thinks with before committing to work. Start from the discussion's decision log and evidence; keep the problem, current outcome, approach, scope, and observable success easy to skim.
+The brief helps the user decide what is worth building. Start from the discussion's evidence and decisions.
 
-- **Ask what remains open:** “What happened the last time you tried this?”, “What would a good result let you do?”, or “What would make the existing approach sufficient?” Check observable facts yourself; ask the user about choices evidence cannot settle.
-- **Show the decision:** Use a before/after example, journey, or mockup when it helps the user judge the proposed experience. Label proposals and fidelity limits; keep detailed implementation steps for the later plan.
-- **Explain the tradeoff:** Show the recommended approach, meaningful alternatives, and the evidence behind them. Keep important dependencies and uncertainty visible; link deeper research.
-- **Refine in place:** Open the Grain brief, walk through the consequential choices, and fold feedback into that same page. Capture accepted decisions, rejected alternatives, reasons, and sources.
-- **Confirm, then publish:** Ask whether the current brief reflects the intended work. Keep material open questions visible until resolved or explicitly deferred by the user; create or update tickets from the confirmed version. Preserve existing workflow metadata and publication contracts.
+- Ask open questions: “What happened last time?”, “What would a good result enable?”, “What would make the existing approach sufficient?” Investigate facts; let the user settle product choices.
+- Show the proposed experience with a useful before/after example, journey, or mockup. Label fidelity limits; leave implementation steps to planning.
+- Explain the recommendation, alternatives, dependencies, and uncertainty; link supporting research.
+- Refine the same page. Keep decisions, rejected alternatives, reasons, and sources; use the skill's Socrates and confirmation gate before publishing.
 
-Adapted from Orchestra's discussion, HTML brief, and Socratic alignment pattern. This reference carries the human-facing principles; Orchestra's run configuration and machine schema remain owned by that workflow.
+Adapted from Orchestra's discussion, HTML brief, and Socratic alignment. Orchestra retains its own configuration, schema, and publication contracts.
 
 ## Explain enough to delegate
 

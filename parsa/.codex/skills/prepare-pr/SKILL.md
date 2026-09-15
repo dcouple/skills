@@ -36,8 +36,8 @@ Rules:
 - Cover every changed area, why it changes, tradeoffs, validation and limitations; use ample concrete before/after examples and diagrams, regardless of Grain availability.
 - When Grain is connected, save and visually verify a rich version of the final PR body with section navigation, rendered diagrams and hyperlinks to code/evidence; the PR must remain understandable without opening Grain.
 - When Grain is available, use `grain` to discover/reuse the repository-and-PR (or branch) workspace, creating one if absent; store diagrams, QA media and reports there and link verified evidence in a self-contained PR, overriding release uploads and inline-asset requirements.
-- Reuse the linked intent brief and extend it with the final PR explanation, before/after behavior, and verified results, preserving original intent and decision history. For new workspaces, honor explicit destinations; otherwise use `Development Artifacts/<org>/<repo>` in the intended Grain organization. Resolve names from context, clarify ambiguity, and keep task/PR identity in the workspace name.
-- Verify organization, folder, and intended audience, and return the location with the link. Preserve required local files and tracker/evidence contracts alongside Grain.
+- Extend the linked intent brief with the final PR explanation, before/after behavior, and verified results; retain intent and decision history.
+- New workspaces default to `Development Artifacts/<org>/<repo>`; explicit destinations win. Clarify ambiguity, name for the task/PR, verify organization/folder/audience, and return the location. Preserve local and tracker/evidence contracts.
 - Never use blanket staging.
 - Treat secrets and credentials as stop conditions.
 - Keep build-fix commits separate when they are distinct from the feature work.
