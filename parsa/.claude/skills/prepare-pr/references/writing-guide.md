@@ -75,6 +75,8 @@ If the ticket says only “make refunds negative,” write: “The requested beh
 
 ## Grain companion
 
+Link the PR description to its Grain and the Grain back to the PR; verify both links are clickable, including private/unshared Grains, and preserve access settings.
+
 When Grain is connected, use the [bundled visual starter](../assets/pr-walkthrough.html). Replace its slots with the **published final PR body**, converted to semantic HTML; preserve every explanatory section, example and limitation. Render diagrams, using self-contained SVG or locally saved rendered images, and retain descriptive text/source as a fallback. Add named code and evidence links. Put QA visuals under Validation and limitations after a plain-language takeaway; link detailed reports and optionally add a top jump link. Preserve the PR's explanation even if Grain is unavailable.
 
 The template supplies typography, responsive light/dark layout, section navigation, evidence cards and expandable diagrams. Populate `TITLE`, `INTRO`, `PR_URL`, `SOURCE_SHA`, `BODY_HTML` and `EVIDENCE_HTML`; escape text/attribute values and insert only trusted generated HTML into the two HTML slots. Do not publish unfilled slots. Keep an exact downloadable copy of the final Markdown beside the page; verify it matches the persisted PR body. Verify screenshots, navigation, diagrams and links in the saved page. A saved layout or sample screenshot does not prove the current app passed QA. Follow the Grain skill for destination, publication and audience authorization; use the existing durable-publication path when disconnected.
