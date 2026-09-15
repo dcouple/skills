@@ -17,6 +17,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
   required. Pass applicable workflow overrides, ticket, workspace, and artifacts.
 - Reuse passing checks at the same commit; after changes, rerun affected checks unless a concrete finding requires broader validation.
 - Before each review and final handoff, inspect human/bot feedback and CI; address actionable findings, report unfinished checks after five minutes, and claim ready only with actionable threads resolved and required checks passing on the final SHA.
+- For low-risk changes whose correctness is quickly verifiable with deterministic checks—such as copy, translations, docs, formatting, metadata, or simple config—mark internal Luna/Astra reviews (steps 6–8) skipped and default step 5 QA to skipped unless requested; retain applicable checks, affected-flow retests, final-head CI, and available GitHub feedback handling.
 
 1. Read the issue/comments and relevant artifacts in repo `TMP/` or `tmp/`,
    `$TMPDIR`, and `/tmp`; check stale context against the ticket and code.
