@@ -27,7 +27,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
 2. As Astra, read `simple-plan` and use its planning steps to investigate and
    produce a concise plan. Preserve the ticket's intent, constraints, and scope.
    Use `create-ticket`'s intent-capture guidance to ground the reported sequence, expected/actual behavior, consequence, and evidence gaps. Create or refresh the linked human-readable brief with the proposed approach and meaningful tradeoffs before coding; preserve required local plan/spec files.
-   Dispatch a fresh Luna Max agent with [Socrates](references/socrates.md), the ticket, draft plan, and supporting evidence. Reconcile its findings before deriving implementation specs; ask the user about unresolved necessity, outcome, or scope decisions. If an existing solution meets the agreed outcome, end with the evidence and guidance.
+   Reuse the ticket's recorded Socrates verdict when its premise and supporting evidence still hold. If absent or materially changed, dispatch a fresh Luna Max agent using [Socrates](../create-ticket/references/socrates.md) with the ticket, draft plan, and repository evidence. Resolve material findings with the user before implementation; if an existing solution meets the agreed outcome, end with the evidence and guidance.
    Autonomously derive detailed specs: files, changes, dependencies, edge cases,
    acceptance criteria, and checks. Save the plan/specs under task-specific `tmp/`.
    This workflow authorizes proceeding without `simple-plan`'s routine approval pause once premise findings are resolved.
