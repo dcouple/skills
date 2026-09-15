@@ -1,120 +1,40 @@
 ---
 name: reality-check
-description: Assess where a project actually stands against what its README, plan, or pitch promises, with every claim tested against the artifact itself rather than the docs, reported in chat and as an HTML page per the html-explainer standards. Use when someone asks "where are we", "are we on track", "what's missing", "does this actually work", or before a demo, a handoff, or a decision that assumes the project is further along than it might be. With no argument, check the project in the current directory.
-argument-hint: "[project path, repo, or plan to check against]"
-model: claude-opus-4-6
-allowed-tools: Read, Grep, Glob, Bash, Write
+description: Compare a project's documented promises with current evidence and report what works, is missing, or remains unproven.
 ---
 
-# Reality Check
+# Reality check
 
-## Task: $ARGUMENTS
+## Establish the promises
 
-With no argument, the project is the current working directory; run
-from any worktree at any time. With an argument, it is the path, repo,
-or plan named.
+- Use the supplied project/plan, or the current project when none is given.
+- Read relevant briefs, documentation, roadmaps, and PR descriptions; extract concrete, falsifiable promises.
+- Example: “Installs with one command” is testable; “modern architecture” is not.
+- Record the current branch/commit and document versions. Check what exists now, not what future work might deliver.
 
-A project's documents describe the project its authors intended. The
-project that exists is whatever survives being run, read, and poked at
-today. This skill measures the distance between the two, and it never
-takes the documents' word for anything.
+## Test and classify
 
-## The writer and the checker
+Use the cheapest honest, authorized check; inspect commands before running them and isolate test artifacts.
 
-The page and the chat report are written by Opus 4.6; it writes better.
-The frontmatter pins it for direct runs. When an orchestrator or a
-session on another model runs this skill, the checking (promise
-testing, evidence gathering) stays with the capable model and only the
-writing is handed to an Opus 4.6 session (`claude -p --model
-claude-opus-4-6` with this skill and the complete findings).
+- Works: evidence demonstrates the promised behavior.
+- Exists but unproven: implementation is present but proof is missing.
+- Partial: identify the exact missing portion.
+- Absent: no implementation found within the stated search scope.
+- Contradicted: behavior conflicts with the promise, including stale documentation.
+- Untestable here: name missing credentials, hardware, or other prerequisites; this is not a soft pass.
 
-Opus 4.6 forgets things, and that is the dispatcher's problem, not the
-reader's: hand it the findings as a complete numbered list with every
-verdict and its evidence line, and after it writes, diff the page
-against that list. Every finding present, every verdict unchanged, no
-evidence softened. A dropped or drifted finding goes back to the same
-session as a correction until the diff is clean.
+Also look for meaningful functionality or abandoned scaffolding that the documents do not mention.
 
-## Establish the promise
+## Report
 
-Collect every place the project says what it is: README, plan, brief,
-pitch, roadmap, open PR descriptions, the landing page if there is one.
-Distill them into a numbered list of concrete promises, each one
-falsifiable. "Users can install with one command" is a promise.
-"Modern, fast architecture" is not; drop vagueness rather than grading
-it.
+- Lead with a plain-language assessment, not an invented completion percentage.
+- List promises, verdicts, evidence, and gaps; put contradictions first.
+- Explain the most consequential next gaps and claims the documents should stop making.
+- Produce a chat summary and an HTML report using `html-explainer`; use a verdict map or cards where they help scanning.
+- If a separate writer is used, give it the complete findings and verify that none were dropped or softened.
 
-A promise is the document as it stands. When the ground truth moved
-after the document was written (a PR body quoting copy that later
-commits rewrote, a README describing a renamed command), that drift is
-itself a Contradicted finding: the document is asking for sign-off on
-something that no longer exists.
+## Boundaries and artifacts
 
-## Test the promise
-
-For each promise, go find out, in the artifact, not the docs:
-
-- **Works**: you ran it, read it, or traced it end to end, and it holds.
-  Name the evidence (the command and its output, the file:line, the
-  passing test).
-- **Exists but unproven**: the code or page is there, and nothing
-  demonstrates it works. Say what proof is missing.
-- **Partial**: some of the promise holds; state exactly which part does
-  not.
-- **Absent**: nothing implements it. Note whether anything even refers
-  to it.
-- **Contradicted**: the artifact does the opposite of the promise. These
-  outrank everything else in the report.
-- **Untestable here**: the promise needs something this environment does
-  not have (owned assets, credentials, hardware). Name what would test
-  it, and report whatever partial corroboration the artifact does
-  offer; untestable is a fact about the check, never a soft pass.
-
-Run the cheapest honest test first: the install one-liner in a clean
-temp directory, the quickstart verbatim, the demo path as a stranger
-would walk it. A promise you could test in two minutes and didn't is a
-finding about the check, not the project.
-
-## Find the unpromised
-
-Walk the artifact once in the other direction: what exists that no
-document mentions? Undocumented features, half-built directions,
-abandoned scaffolding. These are either wins nobody is claiming or
-weight nobody is admitting, and the report says which.
-
-## The report
-
-Open with one paragraph a stakeholder could forward: how far along this
-project actually is, in plain words, no percentages invented from
-nothing. Then:
-
-- the promise list with verdicts and evidence, contradictions first
-- the unpromised findings
-- the three gaps most worth closing next, each with why it is the one
-  blocking the story the docs tell
-- what the docs should stop claiming today, if anything
-
-Deliver it twice: in chat, and as a page in the project's `./tmp/`
-(gitignored location of the caller's choice otherwise), rendered per
-the html-explainer skill and opened in the browser. On the page:
-
-- Masthead: project name, checked-at date, and one badge summarizing
-  the stance (holds, mostly holds, diverges, contradicted).
-- Opening diagram: promises as a strip, each colored by verdict, so the
-  shape of the gap is visible before a word is read.
-- One card per promise: the promise verbatim, the verdict badge, the
-  evidence line. Contradictions first, then absences, then the rest.
-- Unpromised findings and the three gaps as panels; stop-claiming items
-  as a warn callout.
-- Raw evidence (command output, file excerpts) inside `details`.
-
-## Boundaries
-
-- Evidence over inference: every verdict cites something you ran or
-  read. If you could not test a promise, say so and say why; never
-  downgrade it to a guess.
-- Check the artifact as it is on the branch you were pointed at, not as
-  in-flight work will make it.
-- This skill reports; it does not fix. Turning gaps into work items is a
-  separate step the user asks for.
-- No em dashes.
+- Report findings without fixing code, updating docs, or creating tickets unless separately requested.
+- Use the supplied output location, or `tmp/`; if Grain is connected, also save the report and evidence in the task folder, or `Development Artifacts/YYYY-MM-DD-<task>`.
+- Pass the storage rule to helpers, keep needed local files and privacy limits, and fall back locally silently without Grain.

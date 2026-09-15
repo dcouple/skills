@@ -2,6 +2,8 @@
 
 Time to value is where the reader gets the first useful answer, not where the first CTA appears.
 
+These positions are starting points, not ranking factors or fixed limits. Adapt them to the reader's task and page format.
+
 | Page type | First value should appear by | What counts as value |
 |---|---:|---|
 | Definition | First 10% | Clear definition and when it matters |

@@ -1,6 +1,6 @@
 ---
 name: dialectic
-description: Adversarial debate between the two model stacks - a Claude advocate vs a Codex opponent - to pressure-test one high-stakes decision before it locks, or to adjudicate a head-on conflict between the two reviewers. Use at zones 0–1 when a design fork resists convergence, when the user asks to "duel"/"debate" a direction, or when Codex and Claude reviews disagree on a Must Fix. Not for zone 2–3 work.
+description: Debate one consequential design decision or conflicting review finding using independent Claude and Codex perspectives.
 argument-hint: "[the decision or conflict to debate]"
 ---
 
@@ -16,21 +16,19 @@ an opponent briefed on the actual constraints.
 
 ## When
 
-- A zone 0–1 design fork that resists convergence, before the D-decision
-  locks - offer it from a discussion or planning session.
+- A consequential or hard-to-reverse design fork that remains unsettled; offer it during discussion or planning.
 - A head-on Must-Fix conflict between the Codex and Claude review lanes -
   one round, then the Overseer rules.
 - The user invokes it directly on a motion.
 
-Never for zone 2–3 items: two max-effort stacks arguing about a contained
-change costs more than being wrong would.
+Skip the debate for routine, contained choices that evidence or a small test can settle.
 
 ## Protocol
 
 1. **Motion** - the Overseer writes `./tmp/<id>/refs/dialectic-<slug>.md`
    (standalone runs: `./tmp/dialectic/<slug>.md`): the decision in one
    sentence, the candidate positions, and the constraints that decide it -
-   the ACTUAL scale, the zone, reversibility, what the repo already does
+   the actual scale, stakes, reversibility, what the repo already does
    (with `file:line` where checkable). An honest motion is most of the value;
    a motion that omits its real constraints invites answers tuned to someone
    else's context.
@@ -79,3 +77,10 @@ change costs more than being wrong would.
   re-prompts.
 - The Overseer must not signal a preferred side in the motion or between
   rounds; judging happens once, at the end.
+
+## Runtime and artifacts
+
+- Verify the configured participants are available; report missing capabilities rather than pretending a two-model debate ran.
+- CLI examples describe arguments, not permission to interpolate a motion into shell source. Pass prompts as data using the runtime's safe input mechanism.
+- If Grain is connected, keep the motion, rounds, and verdict in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; pass the storage rule while preserving blind opening inputs.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.

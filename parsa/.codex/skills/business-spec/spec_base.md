@@ -1,5 +1,8 @@
 # Business Deliverable Spec
 
+- Use the sections that serve this deliverable; omit irrelevant boilerplate.
+- In Origin, link the source files and their Grain copies when connected.
+
 ## One-Sentence Job
 
 ## Origin
@@ -7,8 +10,9 @@
 ## Real Business Goal
 
 ## Reader Transformation
-Before:
-After:
+
+- Before:
+- After:
 
 ## Artifact Type / Format / Channel
 
@@ -17,9 +21,14 @@ After:
 ## Core Thesis
 
 ## Narrative Arc
-Problem -> stakes -> solution -> proof -> ask.
+
+Choose an arc that fits the deliverable. For example:
+
+- Proposal: problem → stakes → solution → proof → ask.
+- Decision memo: decision → options → tradeoffs → recommendation.
 
 ## Required Sections
+
 | Section | Job | Required Content | Evidence Needed |
 |---|---|---|---|
 

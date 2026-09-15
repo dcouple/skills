@@ -5,9 +5,10 @@
 # Ideas - <stack>
 
 ## #<rank>: <idea name>
-**What:** <2–4 sentences>
-**Why here:** <why it wins under the brief's actual constraints>
-**Costs / depends on:** <one line>
+
+- What: <2–4 sentences>
+- Why here: <why it wins under the brief's actual constraints>
+- Costs / depends on: <one line>
 
 (3 entries; after them:)
 **Why #1 over #2:** <one line>
@@ -24,5 +25,6 @@ Overseer may mine these>
 **Concessions:** <anything the opponent saw that you missed - or "none">
 
 ## Blind spot
-**Neither list contains:** <the idea>
-**Why it beats what's listed:** <2–3 sentences>
+
+- Neither list contains: <the idea>
+- Why it beats what's listed: <2–3 sentences>

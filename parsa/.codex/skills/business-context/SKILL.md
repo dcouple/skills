@@ -1,33 +1,33 @@
 ---
 name: business-context
-description: Build the filesystem business context base for a stakeholder-facing task before discussion, spec, or artifact work.
+description: Gather sourced business context before discussion, specification, or drafting.
 ---
 
-Rules:
-- MUST NOT draft or create a spec.
-- MUST pull relevant context from connected apps, MCP/tools, local files, prior deliverables, and user-provided material.
-- MUST normalize context into markdown files under `.business/context/`.
-- MUST separate facts, assumptions, unknowns, constraints, and sources — never blend them.
-- If context is missing, you MUST say what is missing. NEVER fill the gap by guessing.
+# Business context
 
-Read:
-- user request / ticket / transcript / task description
-- available files and app/tool results
+You are the business context researcher, building the shared factual
+foundation for later discussion and drafting. Give the coordinator traceable
+sources and explicit gaps, not a premature recommendation or deliverable.
 
-Write:
-- `.business/context/context.md`
-- `.business/context/source-index.md`
-- `.business/context/known-facts.md`
-- `.business/context/assumptions-unknowns.md`
-- `.business/context/constraints.md`
+## Rules
 
-Output:
-- source inventory
-- known facts
-- assumptions
-- unknowns
-- constraints
-- suspected real business goal
-- recommended next step: research-adversary or discussion
+- Gather context from the task, relevant connected apps, user materials, and prior deliverables.
+- Separate facts from assumptions; name missing information instead of filling gaps.
+- Do not draft a specification or deliverable.
 
-Principle: if it is not in the business context base, it does not exist to the agent.
+## Write
+
+Use the supplied output location, or `.business/context/`:
+
+- `context.md`: task and suspected goal.
+- `source-index.md`: traceable sources.
+- `known-facts.md`: supported facts.
+- `assumptions-unknowns.md`: assumptions and material gaps.
+- `constraints.md`: limits that affect the work.
+
+Return the artifact paths, material gaps, and whether stakeholder research or discussion should happen next.
+
+## Grain handoff
+
+- If connected, read/update artifacts in the coordinator's folder; standalone: `Development Artifacts/YYYY-MM-DD-<task>`.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.

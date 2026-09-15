@@ -1,164 +1,41 @@
-# SEO Agent Skills
+# SEO skills
 
-![SEO workflow overview](../../docs/seo-workflow-map.png)
+Use these individually or as a workflow. They adapt to the site's audience, publishing system, and available data; no particular analytics vendor, framework, or model is required.
 
-_Source: [docs/seo-workflow-map.excalidraw](../../docs/seo-workflow-map.excalidraw)_
+## Choose a skill
 
-## What this is
+| Need | Skill |
+|---|---|
+| Understand a new site's audience and competitors | `seo-foundations` |
+| Collect relevant search and analytics data | `seo-data-pull` |
+| Understand performance and experiment results | `seo-briefing` |
+| Decide what content work matters next | `seo-content-strategy` |
+| Draft from evidence and the reader's needs | `seo-writing-framework` |
+| Edit prose or flag concrete writing problems | `good-writing-fundamentals` |
+| Improve existing copy without losing meaning | `seo-readability-pass` |
+| Improve explanations, evidence, and attribution | `seo-authority-pass` |
+| Create approved content | `seo-content-drafting` |
+| Preserve snapshots and experiment history | `seo-data-organize` |
 
-These are AI agent skills for SEO. You give them to Claude or Codex, and they handle the work: pulling your analytics, figuring out what's working and what's not, rewriting copy that doesn't sound right, creating explainer pages, adding author credentials, and drafting new content.
+## Typical workflow
 
-Each skill is one step in the process. They're composable: you can run one by itself, or chain them together for a full SEO cycle.
+1. Establish foundations when needed.
+2. Collect evidence and write a briefing.
+3. Agree on the strategy and scope.
+4. Run the relevant writing or implementation skill.
+5. Validate changes and preserve the evidence.
 
-## How it works, simply
+Approval to plan or draft is not approval to publish, merge, deploy, or submit indexing requests. Existing explicit authority from a parent workflow can cover those steps.
 
-There are 10 skills. They start with foundations (if you're new), then break into three buckets:
+## Data and artifacts
 
-### 0. Starting from scratch (greenfield)
+- Use connected tools or supplied exports. Missing data stays unknown, not zero.
+- If Grain is connected, keep safe workflow artifacts in the shared task folder and pass its ID/storage rule downstream.
+- Otherwise use the project's normal storage; `.seo/` is a default, not a required repository layout.
+- Keep current files, dated snapshots, and one linked experiment history. Do not automatically commit/push private analytics.
 
-If you're new to SEO or onboarding a new site, start here. If you already know your competitors and search landscape, skip to step 1.
+## Writing
 
-- **`/seo-foundations`** crawls your website, figures out what you're selling and who it's for, then searches GitHub, Reddit, Product Hunt, and the web to find your competitors. It maps what content they have, identifies the obvious first pages to create (comparison pages, alternatives), and flags messaging gaps. It writes `.seo/foundations.md` so every skill after it has context.
+See [the writing overview](WRITING_FRAMEWORK.md). Preserve facts, voice, useful examples, headings, and short bullets. Review concrete reader problems rather than chasing arbitrary scores or banning punctuation.
 
-At zero-to-one, traditional SEO data (Ahrefs, keyword volumes) is less useful than discovery patterns. How do real people find new tools? That's GitHub trending, Reddit "what do you use for X" threads, and Product Hunt. This skill starts there.
-
-### 1. Know what's happening (proactive)
-
-Before you write anything, look at the data. What pages are getting traffic? What keywords are you ranking for? What's not indexed? What are competitors doing that you're not?
-
-- **`/seo-briefing`** pulls data from your analytics (PostHog, Google Analytics, etc.), your search console (Google Search Console), and your SEO tools (Ahrefs, Semrush, etc.). It produces a single report: here's what's working, here's what's not, here's what to do about it.
-
-- **`/seo-content-strategy`** reads that report and turns it into a prioritized plan. Which pages to rewrite, which explainer pages to create, which blog posts to write, in what order.
-
-You review the strategy. Once you approve it, the execution skills run.
-
-### 2. Do the work (execution + foundational)
-
-These skills don't need a briefing. You can run them anytime. But they're more useful when a strategy tells them what to focus on.
-
-- **`/seo-readability-pass`** audits your existing pages for readability. Are you using jargon nobody understands? Passive voice? Sentences that are too long? It rewrites everything to match your voice: short sentences, simple words, no tech speak unless it's explained immediately.
-
-- **`/seo-authority-pass`** adds E-E-A-T signals. That stands for Experience, Expertise, Authoritativeness, Trustworthiness. It's what Google looks for to decide if your content is credible. This skill creates explainer pages for hard concepts (like "what is a daemon?"), adds a glossary, builds an author page with real credentials, adds bylines with headshots and dates, and adds structured data so Google understands your pages better.
-
-- **`/seo-content-drafting`** creates new content: blog posts, landing pages, comparison pages. Each piece targets a specific keyword from the strategy, uses your voice, and includes all the SEO fundamentals (metadata, schema, OG images, author byline, internal links, external authority links).
-
-### 3. React when something breaks (reactive)
-
-Traffic dropped? Page lost rankings? Competitor launched something? Start with a briefing focused on the problem, then run whichever skill fixes it.
-
-### After everything: organize
-
-- **`/seo-data-organize`** runs at the end. It archives your data into dated folders so you can look back at any week and see what happened. It tracks experiments (what you changed, why, and whether it worked). Over time, your `.seo/` folder becomes a searchable history of every SEO decision you've made.
-
-## The full monthly cycle
-
-```
-0. /seo-foundations            ← first time only: understand product, find competitors
-1. /seo-briefing               ← pull all data, see what's happening
-2. /seo-content-strategy       ← decide what to do (you approve this)
-3. /seo-readability-pass       ← fix existing copy
-4. /seo-authority-pass         ← add credibility signals
-5. /seo-content-drafting       ← create new content
-6. /seo-data-organize          ← archive everything, track experiments
-```
-
-You don't have to run all of them every time. Need a quick copy fix? Just run `/seo-readability-pass`. Want to add explainer pages? Just `/seo-authority-pass`. The skills work alone or together.
-
-## What you need to connect
-
-These skills pull real data. The more sources you connect, the better they work. If a source isn't connected, the skill skips that part and tells you what you're missing.
-
-| What | Why you need it | Options |
-|------|----------------|---------|
-| **Analytics** | Know which pages get traffic | [PostHog](https://github.com/PostHog/posthog-mcp), Google Analytics, Plausible |
-| **Search console** | Know what people search for, what's indexed | Google Search Console |
-| **SEO tool** | Know your keywords, backlinks, and competitors | Ahrefs or Semrush via [Composio](https://github.com/ComposioHQ/composio) |
-
-The copy skills (readability pass, authority pass) don't need any data. They just need your website's code and a voice guide. You can run them right now without connecting anything.
-
-For finding more connectors: [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers), [Composio](https://github.com/ComposioHQ/composio), [official MCP servers](https://github.com/modelcontextprotocol/servers).
-
-## Where your data lives
-
-All SEO data lives in a `.seo/` folder inside your website repo. The skills create and maintain it automatically.
-
-```
-.seo/
-  index.md                 ← table of contents (auto-generated)
-  briefing.md              ← latest briefing
-  strategy.md              ← latest strategy
-
-  data/                    ← current data snapshots
-    manifest.md            ← what's connected, when it was pulled
-    analytics.md
-    search-console.md
-    seo-tool.md
-
-  archive/                 ← dated history (one folder per run)
-    2026/06/24/
-      briefing.md
-      strategy.md
-      data/
-
-  experiments/             ← what you changed and whether it worked
-    2026-06-24-name.md
-```
-
-## Where you spend your attention
-
-You don't need to micromanage every step. Focus on two things:
-
-1. **Read the briefing.** Understand what the data says.
-2. **Approve the strategy.** Agree on what to create or update.
-
-Everything else runs automatically. The skills handle the writing, the metadata, the structured data, the OG images, the author bylines, the internal linking, and the archiving.
-
-## Writing framework
-
-**`/seo-writing-framework`** is the process all copy skills follow for any customer-facing deliverable. It's also invokable standalone for one-off writing (emails, announcements, support replies).
-
-1. **Research** real examples of how good companies write the same type of thing
-2. **Draft** with examples as reference, not from nothing
-3. **Reader hat**: read the draft as the person receiving it, not the person writing it
-4. **Edit**: remove LLM-isms, replace with how you'd actually say it, read it out loud
-5. **Slop gate**: run `/good-writing-fundamentals` in detect mode, fix what it names, re-run until clean
-6. **Score** against the rubric and revise until it hits 90%
-
-Never draft from nothing. Never ship a first draft. The LLM is a research tool and a drafting tool. It is not the writer.
-
-**`/good-writing-fundamentals`** is the line-level layer: active voice, concrete detail, direct verbs, and the AI patterns to cut. Use it on any prose before it goes out, not just SEO copy. PR descriptions, release notes, and Slack messages count.
-
-Two modes. Paste a draft and it returns an edited version plus a "What changed" note. Or ask "is this AI slop?" and it names each pattern with the quoted line and a short fix, without rewriting. Detect mode never scores the draft or claims AI wrote it: named patterns are evidence you can check, and a score isn't.
-
-It routes rather than overreaching. If the piece is a customer-facing deliverable that doesn't exist yet, it sends you to `/seo-writing-framework` first, because no line-level rule fixes a draft written from nothing. If a draft already exists, or the piece is short and internal, it just does the pass.
-
-Adapted from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) (MIT).
-
-### Register
-
-Some craft moves work on a landing page and read as slop in a support reply. The framework picks a register before drafting:
-
-- **Persuasive** (landing pages, launch emails, headlines, comparison pages): curiosity gaps allowed, two per page maximum, each one closed on the page. A deliberate ending is allowed if it's concrete.
-- **Explanatory** (docs, support replies, changelogs, pricing emails, technical posts): no curiosity gaps, no kicker. End on the last concrete point or the next action.
-
-Banned words and hard-banned patterns apply to both.
-
-## Model choice
-
-Use **Claude Opus 4.6** for all copy work. It's significantly better than 4.7 or 4.8 at writing in a specific voice and producing natural, readable content. The newer models are great at code but tend to produce generic-sounding copy.
-
-## Quick reference
-
-| Skill | Phase | What it does |
-|-------|-------|-------------|
-| `/seo-foundations` | greenfield | Crawl site, find competitors, map search landscape |
-| `/seo-briefing` | proactive | Pull data from all sources, produce a report |
-| `/seo-content-strategy` | proactive | Turn the report into a prioritized plan |
-| `/seo-writing-framework` | foundational | Research, draft, reader-hat, edit, slop-gate, score process |
-| `/good-writing-fundamentals` | foundational | Line-level rules for any prose: edit out AI patterns, or detect them without rewriting |
-| `/seo-readability-pass` | foundational | Audit and rewrite copy for voice and clarity |
-| `/seo-authority-pass` | foundational | Add explainer pages, glossary, author, E-E-A-T |
-| `/seo-content-drafting` | execution | Write new blog posts, landing pages, comparisons |
-| `/seo-foundations` | greenfield | Crawl site, find competitors, map search landscape |
-| `/seo-data-pull` | support | Shared data pulling (called by briefing) |
-| `/seo-data-organize` | support | Archive data, track experiments, build wiki |
+`good-writing-fundamentals` is adapted from [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop); its MIT licence remains in that skill's directory.

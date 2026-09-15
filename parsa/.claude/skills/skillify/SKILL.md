@@ -1,7 +1,6 @@
 ---
 name: skillify
-description: "Capture this session's repeatable process into a reusable skill. Call at end of a process you want to automate."
-when_to_use: "Use when the user wants to capture, save, or turn a session workflow into a reusable skill. Examples: '/skillify', 'capture this as a skill', 'turn this into a skill', 'save this workflow', 'make this repeatable'"
+description: Capture a completed session's repeatable workflow as a reusable skill.
 allowed-tools:
   - Read
   - Write
@@ -13,135 +12,41 @@ allowed-tools:
 user-invocable: true
 disable-model-invocation: true
 argument-hint: "[description of the process you want to capture]"
-arguments:
-  - description
 ---
 
 # Skillify
 
-You are capturing this session's repeatable process as a reusable skill.
+You are a workflow designer capturing this session's repeatable process for
+a future agent without this conversation. Preserve the decisions, role
+boundaries, and handoffs that made it work, not incidental session details.
 
-## Your Session Context
+## Understand the workflow
 
-You have the full conversation history available to you. Analyze it directly to understand what process was performed, what tools were used, and how the user steered you.
+- Read the available conversation; use the supplied description to select the process.
+- Extract inputs, decisions, handoffs, tools, permissions, and observable completion criteria.
+- Preserve useful user corrections without turning incidental choices into universal rules.
+- Ask for missing context if history is unavailable; do not pretend to remember it.
 
-If a description was provided: The user described this process as: "$description"
+## Clarify only what is missing
 
-## Your Task
+- Propose a name, purpose, and compact workflow.
+- Confirm material unknowns: scope, save location, execution context, or approval boundaries.
+- Use the available question interface; do not require a particular UI or fixed interview rounds.
+- Default location depends on scope: repository `.claude/skills/` or personal `~/.claude/skills/`. Respect a supplied path.
 
-### Step 1: Analyze the Session
+## Write and validate
 
-Before asking any questions, analyze the conversation history to identify:
-- What repeatable process was performed
-- What the inputs/parameters were
-- The distinct steps (in order)
-- The success artifacts/criteria (e.g. not just "writing code," but "an open PR with CI fully passing") for each step
-- Where the user corrected or steered you
-- What tools and permissions were needed
-- What agents were used
-- What the goals and success artifacts were
+1. Read `skill-creator` when available and follow the target runtime's supported format.
+2. Use a concise name/description, readable headings and bullets, essential constraints, and useful examples.
+   Preserve useful role framing: who the agent is, what it owns, its boundaries, and who receives its output.
+3. Define what proves completion and which outputs later steps consume. Add per-step annotations only when helpful.
+4. Preserve actual authorization gates and model/tool requirements; avoid assuming capabilities from this session exist everywhere.
+5. Show the draft for review unless the user already authorized writing it directly, then save and validate it.
 
-### Step 2: Interview the User
+## Artifact handling
 
-You will use AskUserQuestion to understand what the user wants to automate. Important notes:
-- Use AskUserQuestion for ALL questions! Never ask questions via plain text.
-- For each round, iterate as much as needed until the user is happy.
-- The user always has a freeform "Other" option to type edits or feedback -- do NOT add your own "Needs tweaking" or "I'll provide edits" option. Just offer the substantive choices.
+- Keep the installable `SKILL.md` and dependencies in the chosen skill directory.
+- If Grain is connected, also save the draft/final skill artifact in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`.
+- For generated workflows that save artifacts, include the same conditional Grain handoff, subagent propagation, local copies, and privacy limits. Without Grain, continue normally silently.
 
-**Round 1: High level confirmation**
-- Suggest a name and description for the skill based on your analysis. Ask the user to confirm or rename.
-- Suggest high-level goal(s) and specific success criteria for the skill.
-
-**Round 2: More details**
-- Present the high-level steps you identified as a numbered list. Tell the user you will dig into the detail in the next round.
-- If you think the skill will require arguments, suggest arguments based on what you observed. Make sure you understand what someone would need to provide.
-- If it's not clear, ask if this skill should run inline (in the current conversation) or forked (as a sub-agent with its own context). Forked is better for self-contained tasks that don't need mid-process user input; inline is better when the user wants to steer mid-process.
-- Ask where the skill should be saved. Suggest a default based on context (repo-specific workflows -> repo, cross-repo personal workflows -> user). Options:
-  - **This repo** (`.claude/skills/<name>/SKILL.md`) -- for workflows specific to this project
-  - **Personal** (`~/.claude/skills/<name>/SKILL.md`) -- follows you across all repos
-
-**Round 3: Breaking down each step**
-For each major step, if it's not glaringly obvious, ask:
-- What does this step produce that later steps need? (data, artifacts, IDs)
-- What proves that this step succeeded, and that we can move on?
-- Should the user be asked to confirm before proceeding? (especially for irreversible actions like merging, sending messages, or destructive operations)
-- Are any steps independent and could run in parallel? (e.g., posting to Slack and monitoring CI at the same time)
-- How should the skill be executed? (e.g. always use a Task agent to conduct code review, or invoke an agent team for a set of concurrent steps)
-- What are the hard constraints or hard preferences? Things that must or must not happen?
-
-You may do multiple rounds of AskUserQuestion here, one round per step, especially if there are more than 3 steps or many clarification questions. Iterate as much as needed.
-
-IMPORTANT: Pay special attention to places where the user corrected you during the session, to help inform your design.
-
-**Round 4: Final questions**
-- Confirm when this skill should be invoked, and suggest/confirm trigger phrases too. (e.g. For a cherrypick workflow you could say: Use when the user wants to cherry-pick a PR to a release branch. Examples: 'cherry-pick to release', 'CP this PR', 'hotfix.')
-- You can also ask for any other gotchas or things to watch out for, if it's still unclear.
-
-Stop interviewing once you have enough information. IMPORTANT: Don't over-ask for simple processes!
-
-### Step 3: Write the SKILL.md
-
-Create the skill directory and file at the location the user chose in Round 2.
-
-Use this format:
-
-```markdown
----
-name: {{skill-name}}
-description: {{one-line description}}
-allowed-tools:
-  {{list of tool permission patterns observed during session}}
-when_to_use: {{detailed description of when Claude should automatically invoke this skill, including trigger phrases and example user messages}}
-argument-hint: "{{hint showing argument placeholders}}"
-arguments:
-  {{list of argument names}}
-context: {{inline or fork -- omit for inline}}
----
-
-# {{Skill Title}}
-Description of skill
-
-## Inputs
-- `$arg_name`: Description of this input
-
-## Goal
-Clearly stated goal for this workflow. Best if you have clearly defined artifacts or criteria for completion.
-
-## Steps
-
-### 1. Step Name
-What to do in this step. Be specific and actionable. Include commands when appropriate.
-
-**Success criteria**: ALWAYS include this! This shows that the step is done and we can move on. Can be a list.
-
-IMPORTANT: see the next section below for the per-step annotations you can optionally include for each step.
-
-...
-```
-
-**Per-step annotations**:
-- **Success criteria** is REQUIRED on every step. This helps the model understand what the user expects from their workflow, and when it should have the confidence to move on.
-- **Execution**: `Direct` (default), `Task agent` (straightforward subagents), `Teammate` (agent with true parallelism and inter-agent communication), or `[human]` (user does it). Only needs specifying if not Direct.
-- **Artifacts**: Data this step produces that later steps need (e.g., PR number, commit SHA). Only include if later steps depend on it.
-- **Human checkpoint**: When to pause and ask the user before proceeding. Include for irreversible actions (merging, sending messages), error judgment (merge conflicts), or output review.
-- **Rules**: Hard rules for the workflow. User corrections during the reference session can be especially useful here.
-
-**Step structure tips:**
-- Steps that can run concurrently use sub-numbers: 3a, 3b
-- Steps requiring the user to act get `[human]` in the title
-- Keep simple skills simple -- a 2-step skill doesn't need annotations on every step
-
-**Frontmatter rules:**
-- `allowed-tools`: Minimum permissions needed (use patterns like `Bash(gh:*)` not `Bash`)
-- `context`: Only set `context: fork` for self-contained skills that don't need mid-process user input.
-- `when_to_use` is CRITICAL -- tells the model when to auto-invoke. Start with "Use when..." and include trigger phrases. Example: "Use when the user wants to cherry-pick a PR to a release branch. Examples: 'cherry-pick to release', 'CP this PR', 'hotfix'."
-- `arguments` and `argument-hint`: Only include if the skill takes parameters. Use `$name` in the body for substitution.
-
-### Step 4: Confirm and Save
-
-Before writing the file, output the complete SKILL.md content as a yaml code block in your response so the user can review it with proper syntax highlighting. Then ask for confirmation using AskUserQuestion with a simple question like "Does this SKILL.md look good to save?" -- do NOT use the body field, keep the question concise.
-
-After writing, tell the user:
-- Where the skill was saved
-- How to invoke it: `/{{skill-name}} [arguments]`
-- That they can edit the SKILL.md directly to refine it
+Return the saved path, a supported invocation example, and any validation limitations.

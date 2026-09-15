@@ -1,149 +1,47 @@
 ---
 name: implement
-description: Executes an approved plan directly in Codex with one primary implementation stream by default, bounded sidecars only when write scopes are truly disjoint, and mandatory review gates for completeness and intent fidelity. Use after a plan is approved.
-argument-hint: "[plan file path]"
+description: Execute an approved plan with one primary implementation stream and checks for completeness and intent fidelity.
 ---
 
 # Implement
 
-Execute the approved plan directly in this Codex session.
+## Load and scope
 
-Codex is the primary implementation authority in this workflow. If you also
-have a separate Claude workflow available, treat it as an optional parallel
-second-opinion lane rather than the primary executor.
+- Read the supplied plan and its linked brief/dossier; otherwise locate the relevant approved plan in `tmp/ready-plans/`.
+- The brief governs why; the plan governs execution; the dossier supplies evidence. Surface conflicts rather than silently narrowing scope.
+- Identify actions needing separate approval, such as destructive operations or external configuration changes. Ordinary scoped implementation follows project policy.
+- Inspect migration requirements before coding; do not defer safety decisions until after execution.
 
-## Step 1: Load Plan and Supporting Artifacts
+## Implement
 
-- If a path is provided, read that plan
-- If no path is provided, use the most recent file in `./tmp/ready-plans/`
-- If the plan includes `Source Artifacts`, read the brief / intent artifact and
-  research dossier before coding
+1. Execute directly as the primary owner, using the full plan, intent, workspace, and acceptance criteria.
+2. Keep dependent work together. Sidecars are appropriate only for disjoint writes with a clear integration contract and one final integration owner.
+3. Update plan progress and record material deviations as `Plan Delta`; escalate changes that weaken intent or exceed authority.
+4. Run the project's applicable checks at meaningful checkpoints, for example its test suite, lint, typecheck, or build commands.
+5. Verify the actual runtime or user-facing path, not just the existence of new files.
 
-Treat sources of truth as:
-- Brief / intent artifact: why this work exists and what must not be optimized away
-- Plan: execution shape, task ordering, and file-level implementation details
-- Dossier: supporting evidence, patterns, and anchors
+## Review
 
-If no separate brief exists, treat the plan's `Intent / Why`, `Locked
-Decisions`, `Known Mismatches / Assumptions`, and success criteria as the
-minimum intent source of truth.
+- Run `implementation-reviewer` against the brief, plan, diff, and check evidence, preferably in fresh context.
+- Use a fresh second-opinion review when useful and available; a separate Claude workflow is optional.
+- Wait for all started lanes, merge findings, fix supported issues, and verify affected checks/review criteria again.
+- Bring unresolved decisions to the user as one combined set. Do not call blocked or failing checks a pass.
 
-## Step 2: Identify Dangerous Commands
+## Schema and operational changes
 
-Before implementing, scan the plan for commands that must not be run
-automatically:
-- environment variable changes
-- package installations that change manifests
-- destructive or irreversible commands
+- Detect changes using the project's actual schema and migration locations, not a particular filename.
+- Follow its migration-generation workflow only when configured and within authorization; inspect and report generated changes.
+- Do not apply migrations or destructive operations without the required approval. Never hide destructive statements by showing only additive SQL.
+- Keep code completion separate from pending deployment or human steps.
 
-Collect them into a `Manual Steps` list and surface them before proceeding.
+## Finish
 
-Schema / migration handling is done later after review. Do not handle it here.
+- Move an applicable local plan from `tmp/ready-plans/` to `tmp/done-plans/` only after its completion criteria and review gates pass.
+- Report task completeness, checks, intent fidelity, review findings, and remaining manual steps.
+- Do not commit, push, or open a PR unless the user or parent workflow authorizes it.
 
-## Step 3: Choose Execution Strategy
+## Grain handoff
 
-Default to one primary implementation stream.
-
-Only split work when all of the following are true:
-- write scopes are genuinely disjoint
-- the integration contract is already clear in the plan
-- parallelism will not hide missing last-mile wiring
-- one primary owner still handles final integration and finish-line checks
-
-Keep these with the primary stream unless there is an unusually clean reason
-not to:
-- schema and shared types
-- routing / bootstrap / exports
-- auth / permissions / tokens
-- jobs / async orchestration / dispatch semantics
-- final frontend-to-backend wiring
-
-## Step 4: Implement
-
-- Read the full plan before editing code
-- Read the supporting brief before coding when available
-- Prefer existing patterns over new abstractions
-- Prefer editing existing files over creating new ones
-- Update the plan progress as work completes
-- Do not silently simplify, defer, or narrow scope
-- If you must deviate, add a short `Plan Delta` note to the plan
-- A task is not complete until the end-to-end runtime or user-facing path is
-  actually wired and still preserves the intended outcome
-
-Run these quality checks during the work when feasible:
-
-```bash
-npm run typecheck
-npm run lint
-```
-
-## Step 5: Review Gates
-
-After implementation, always run a review pass against the standards in
-`implementation-reviewer`.
-
-Minimum gate:
-- one full implementation review pass
-
-Preferred gate:
-- a fresh skeptical second-opinion pass in a separate context
-
-If you are operating alongside a separate Claude workflow, you may use that
-second lane in parallel. If not, perform an additional adversarial Codex review
-focused on:
-- missing plan tasks
-- brief-intent regressions
-- runtime wiring
-- auth / permission gaps
-- transaction boundaries
-- race conditions
-- background-job registration
-- dead query-param flows
-- whether the implementation actually reached the finish line
-
-Do not surface questions until all active review lanes are complete and their
-findings are merged.
-
-Split findings into:
-- Auto-fixable
-- Needs user input
-
-Apply straightforward fixes directly, then rerun the review gate when needed.
-
-## Step 5.5: Generate Dev Migration SQL (If Schema Changed)
-
-After review gates are complete and auto-fixable issues are resolved, check if
-`schema.ts` was modified:
-
-```bash
-git diff origin/main --name-only | grep schema.ts
-```
-
-If schema changed:
-1. Run `npm run db:diff:dev`
-2. Present the generated SQL in a transaction block
-3. Present the command to apply the dev migration
-4. If destructive SQL appears, stop and ask the user before proceeding
-
-If schema did not change, skip this step silently.
-
-## Step 6: Move Plan to Done
-
-Once all tasks pass review, brief intent is preserved, and the implementation is
-complete, move the plan from `./tmp/ready-plans/` to `./tmp/done-plans/`.
-
-Only move the plan when all tasks are confirmed complete.
-
-## Step 7: Present Results
-
-Present the final result with:
-- quality checks and their status
-- intent fidelity status
-- completeness against the plan
-- issues found
-- questions needing user input
-- manual steps remaining
-- schema changes, if any
-- final plan path if it was moved
-
-If the review found issues, offer to fix them before the user commits.
+- If connected, read/update every workflow artifact in the supplied Grain folder, or `Development Artifacts/YYYY-MM-DD-<task>`; this overrides local-only storage in invoked skills.
+- Pass the folder ID and rule to all agents; sync outputs for agents without access, including plan status and review evidence.
+- Keep source code and executable files in their required project locations, plus needed local artifact copies. Preserve privacy limits; without Grain, continue locally silently.

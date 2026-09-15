@@ -1,36 +1,34 @@
 ---
 name: business-artifact
-description: Create the business artifact from an approved spec, then coordinate claim/evidence ledger creation, artifact review, anti-sycophancy review, and human gate.
+description: Draft and review a business deliverable from an approved specification.
 ---
 
-Role: This is the business equivalent of `/implement` plus implementation review. After the spec is ready, this skill should do as much as possible automatically.
+# Business artifact
 
-Rules:
-- MUST read the approved spec first.
-- MUST use only grounded facts from context/spec.
-- MUST NOT invent claims, numbers, dates, pricing, commitments, or legal/compliance statements.
-- MUST maintain a claim/evidence ledger.
-- MUST optimize for the artifact type.
-- After the draft and claim ledger, you MUST run or request `business-artifact-reviewer`.
-- MUST apply required patches when review identifies concrete fixes.
-- Stop for human input only when review requires a human gate or the artifact cannot be safely completed from available context.
+## Read
 
-Read:
-- `.business/specs/ready/spec.md`
-- `.business/context/*.md`
-- `.business/reviews/spec-review.md`
+Use supplied input/output paths when present; these are the default inputs:
 
-Write:
-- `.business/artifacts/draft.md`
-- `.business/artifacts/claim-evidence-ledger.md`
-- `.business/reviews/artifact-review.md` via `business-artifact-reviewer`
+- Approved `.business/specs/ready/spec.md` and `.business/reviews/spec-review.md`.
+- Relevant context and stakeholder research under `.business/context/`.
 
-Output:
-- draft artifact
-- claim/evidence ledger
-- artifact-review result
-- concise next step: patch / human gate / prepare release
+## Draft
 
-Claim ledger format:
+- Write `.business/artifacts/draft.md` in the requested format.
+- Ground claims, figures, dates, and commitments in sources; flag missing evidence.
+- Maintain `claim-evidence-ledger.md` beside the draft:
+
 | Claim | Evidence | Status | Risk | Fix |
 |---|---|---|---|---|
+
+## Review and finish
+
+1. Run `business-artifact-reviewer` in fresh context; save `.business/reviews/artifact-review.md`.
+2. Apply concrete fixes before handoff; bring required human gates or material unknowns to the user.
+3. Return the draft, ledger, review, and next step.
+
+## Grain handoff
+
+- If connected, read/update these artifacts in the task's Grain folder; standalone: `Development Artifacts/YYYY-MM-DD-<task>`.
+- Pass the folder and storage rule to reviewers; sync their outputs if they lack access.
+- Keep needed local copies and privacy limits; without Grain, continue locally silently.

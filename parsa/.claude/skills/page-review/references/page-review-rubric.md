@@ -1,6 +1,6 @@
 # Page Review Rubric
 
-Score each area from 1 to 5. Use low scores to drive concrete rewrite instructions.
+Use a 1–5 editorial score with evidence for each applicable area; mark unknown or inapplicable areas explicitly. Scores are judgment aids, not measured ranking signals.
 
 | Area | 5 means | 1 means |
 |---|---|---|
@@ -15,8 +15,8 @@ Score each area from 1 to 5. Use low scores to drive concrete rewrite instructio
 
 ## Recommendation Thresholds
 
-- `Ship`: no score below 4, and promotion does not distort the answer.
-- `Revise`: one or more 2-3 scores, but the page premise is sound.
+- `Ship`: the reader's job is satisfied, material claims are supported, and promotion does not distort the answer.
+- `Revise`: fixable gaps in an otherwise sound page premise.
 - `Do not ship`: intent mismatch, deceptive product fit, unsupported comparison, or the page collapses without CTAs.
 
 ## Review Questions

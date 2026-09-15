@@ -1,8 +1,11 @@
 # Element Templates
 
-Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` and `backgroundColor` values are placeholders - always pull actual colors from `color-palette.md` based on the element's semantic purpose.
+Adapt these examples to the diagram. Replace placeholder colors using the supplied style or `color-palette.md`, assign unique IDs, and update all bindings. The arrow example requires an actual `elem2` and reciprocal entries in each shape's `boundElements`.
+
+Save the completed source and renders using the parent skill's Grain/local artifact rule; these templates do not require a repository location.
 
 ## Free-Floating Text (no container)
+
 ```json
 {
   "type": "text",
@@ -37,6 +40,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```
 
 ## Line (structural, not arrow)
+
 ```json
 {
   "type": "line",
@@ -64,6 +68,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```
 
 ## Small Marker Dot
+
 ```json
 {
   "type": "ellipse",
@@ -90,6 +95,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```
 
 ## Rectangle
+
 ```json
 {
   "type": "rectangle",
@@ -116,6 +122,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```
 
 ## Text (centered in shape)
+
 ```json
 {
   "type": "text",
@@ -150,6 +157,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```
 
 ## Arrow
+
 ```json
 {
   "type": "arrow",

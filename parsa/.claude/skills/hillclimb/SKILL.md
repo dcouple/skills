@@ -1,6 +1,6 @@
 ---
 name: hillclimb
-description: Sustained improvement of one named metric toward a target - measure a baseline, then loop hypothesis, implement, re-measure, accept or revert. Use for perf, bundle size, lint count, or test time. A one-off fix is /investigate; this is the loop.
+description: Improve one measurable metric toward a target through controlled experiments, retaining only verified gains.
 argument-hint: "[metric and target, e.g. 'cold start under 400ms']"
 ---
 
@@ -30,7 +30,7 @@ first paint"), not "try memoizing something".
 - Implement it alone.
 - Re-measure with the frozen method and run the checks.
 - Accept only when the metric moves past the noise and the checks stay green.
-  Otherwise revert it in full; a tweak that might help does not ride along.
+  Otherwise undo only that experiment's changes, preserving unrelated work.
 - One commit per accepted win, named with the before and after numbers.
 
 Log every attempt, kept or reverted, so the search accumulates instead of
@@ -58,3 +58,8 @@ Don't relax the target to declare victory.
 
 The metric trajectory as a table: attempt, hypothesis, before, after,
 verdict. The accepted wins. The rejected hypotheses and what each ruled out.
+
+## Grain handoff
+
+- If connected, keep the baseline, experiment log, and report in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; update the same artifacts as the run progresses.
+- Keep runnable code and needed local evidence in place, preserve privacy limits, and continue locally silently without Grain.

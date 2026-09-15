@@ -2,6 +2,8 @@
 
 One mediocre page is a page problem. Thousands of structurally similar mediocre pages can become a section or site quality problem.
 
+Repetition alone is not a defect: shared navigation, accessibility patterns, and useful templates are normal. These are sampling prompts, not evidence of a search penalty.
+
 ## Risk Signals
 
 - Repeated intros that restate the keyword.

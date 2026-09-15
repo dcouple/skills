@@ -1,5 +1,7 @@
 # Excalidraw JSON Schema
 
+Format notes for the bundled renderer, not an exhaustive version-independent schema. Start with the element templates and validate by rendering; check current official documentation before changing renderer versions.
+
 ## Element Types
 
 | Type | Use For |
@@ -8,7 +10,7 @@
 | `ellipse` | Entry/exit points, external systems |
 | `diamond` | Decisions, conditionals |
 | `arrow` | Connections between shapes |
-| `text` | Labels inside shapes |
+| `text` | Free-floating or shape-bound labels |
 | `line` | Non-arrow connections |
 | `frame` | Grouping containers |
 
@@ -25,7 +27,7 @@ All elements share these:
 | `strokeColor` | string | Border color (hex) |
 | `backgroundColor` | string | Fill color (hex or "transparent") |
 | `fillStyle` | string | "solid", "hachure", "cross-hatch" |
-| `strokeWidth` | number | 1, 2, or 4 |
+| `strokeWidth` | number | Stroke thickness; examples use 1 or 2 |
 | `strokeStyle` | string | "solid", "dashed", "dotted" |
 | `roughness` | number | 0 (smooth), 1 (default), 2 (rough) |
 | `opacity` | number | 0-100 |
@@ -38,7 +40,7 @@ All elements share these:
 | `text` | The display text |
 | `originalText` | Same as text |
 | `fontSize` | Size in pixels (16-20 recommended) |
-| `fontFamily` | 3 for monospace (use this) |
+| `fontFamily` | Examples use 3 (monospace); select a font supported by the renderer |
 | `textAlign` | "left", "center", "right" |
 | `verticalAlign` | "top", "middle", "bottom" |
 | `containerId` | ID of parent shape |

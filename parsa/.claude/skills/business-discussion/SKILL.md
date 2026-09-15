@@ -1,33 +1,34 @@
 ---
 name: business-discussion
-description: Have a business-goal discussion using the context base without drafting the deliverable.
+description: Clarify a business deliverable's goal, audience, and decisions from gathered context before drafting.
 ---
 
-Role: Main human-in-the-loop stage. Before discussing, you MUST make sure the context base exists. NEVER discuss on empty context.
+# Business discussion
 
-Rules:
-- MUST NOT draft the artifact.
-- REQUIRED - ensure context first: if `.business/context/` is missing or empty, you MUST run or request `business-context`; for serious work you MUST also run or request `business-research-adversary`. The discussion MUST be grounded in real internal + external context, never guesses.
-- MUST read the context files before probing, then probe only high-leverage uncertainties.
-- Prefer concrete options and recommendations over broad questionnaires.
-- MUST clarify the decision, audience, stakes, constraints, and non-goals.
+## Read
 
-Read:
-- `.business/context/context.md`
-- `.business/context/research-adversary.md`
-- `.business/context/known-facts.md`
-- `.business/context/assumptions-unknowns.md`
-- `.business/context/constraints.md`
+- Read the supplied context; default: `.business/context/` facts, constraints, unknowns, and stakeholder research.
+- If context is missing, run `business-context` first; include `business-research-adversary` for serious work.
 
-Write:
-- `.business/discussion/brief.md`
+## Discuss
 
-Output:
-- confirmed goal
-- confirmed audience/stakeholders
-- intended reader transformation
-- artifact type
-- key decisions
-- unresolved questions
-- risks/watchouts
-- recommended next step
+- Use evidence and concrete options to settle material unknowns; do not reconfirm settled decisions.
+- Do not draft the deliverable at this stage.
+- Useful questions:
+  - Who is the primary reader, and what should change for them?
+  - What format fits that goal, and what is out of scope?
+  - What constraints, stakes, or unresolved decisions affect the work?
+
+## Write
+
+Save the brief at the supplied path, or `.business/discussion/brief.md`, with:
+
+- Confirmed goal, audience, and intended reader response.
+- Format, key decisions, constraints, and non-goals.
+- Remaining questions, risks, and recommended next step.
+
+## Grain handoff
+
+- If connected, read/update artifacts in the task's shared folder; standalone: `Development Artifacts/YYYY-MM-DD-<task>`.
+- Pass its ID and storage rule to support agents; sync their outputs if they lack access.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.

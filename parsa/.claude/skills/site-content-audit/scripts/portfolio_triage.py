@@ -5,9 +5,9 @@ import sys
 from pathlib import Path
 
 
-def as_float(value, default=0.0):
+def as_float(value, default=None):
     try:
-        return float(str(value or "").replace(",", "").strip())
+        return float(str(value if value is not None else "").replace(",", "").strip())
     except ValueError:
         return default
 
@@ -28,6 +28,9 @@ def classify(row):
     intent = pick(row, ["intent", "search intent"]).lower()
     backlinks = as_float(pick(row, ["backlinks", "referring domains", "ref domains"]))
     lastmod = pick(row, ["lastmod", "last updated", "updated"])
+
+    if clicks is None or impressions is None or backlinks is None:
+        return "manual-review", "missing or invalid metrics; do not treat unknown values as zero"
 
     if product_fit in {"forced", "deceptive", "none"} and clicks < 10:
         return "prune", "low traffic and weak product fit"

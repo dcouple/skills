@@ -1,6 +1,6 @@
 ---
 name: idea-duel
-description: Lean dueling-wizards ideation tournament - the two model stacks independently study a project, generate and winnow ideas, blind cross-score each other's, and probe for shared blind spots; the orchestrator synthesizes a consensus matrix whose winners become draft work items. Use when the user wants the strongest next ideas for a project ("what should we build next", "run an idea duel", "most valuable improvements"). Four dispatches, discretionary quota spend - an upstream generator feeding the capture pipeline, typically offered from /discussion; never part of /do.
+description: Generate and cross-evaluate project ideas with independent Claude and Codex participants, producing a ranked report and local draft work items.
 argument-hint: "[project or area to ideate on, plus any focus or constraints]"
 ---
 
@@ -9,9 +9,7 @@ argument-hint: "[project or area to ideate on, plus any focus or constraints]"
 Single-model brainstorming has one flaw that matters: the model that generates
 an idea also evaluates it. The duel splits those jobs across the two stacks
 and makes **convergence the quality signal** - where two differently-biased
-models agree blind, the idea is probably good; where they trash each other's,
-it's suspect. Four dispatches, ~100k tokens at the pinned efforts - about one
-review pass.
+models agree blind, investigate that agreement alongside their evidence. Agreement is a signal, not proof. The normal workflow uses four dispatches.
 
 ## Wizards (pinned)
 
@@ -48,8 +46,8 @@ review pass.
    self-rank × opponent score × verdict - and classify:
    - **consensus** (opponent score ≥ 800, or both stacks listed the same
      theme): winners;
-   - **contested** (score delta from self-rank expectation ≥ 250): resolve by
-     staging ("yes, but v1 first") or, when genuinely zone 0–1, flag for the
+   - **contested** (self-ranking and the opponent's reasoning materially disagree): resolve by
+     staging ("yes, but v1 first") or, for a consequential design fork, flag for the
      `dialectic` skill rather than settling it here;
    - **killed**: neither side defends it - drop with one line of why.
    Check the blind-spot nominations for convergence - two stacks
@@ -59,10 +57,7 @@ review pass.
    sequence (enablers first). Winners become `status: draft` work items under
    `./tmp/<idea-slug>/item.md`, each carrying its duel evidence - both
    scores, the verdict line, and what it beat - pre-seeded into the item's
-   Justification and `refs/` (link `DUEL_REPORT.md`). The Socratic gate then
-   serves as the tournament's third adversarial filter, and calibrates down
-   accordingly: an item with documented duel evidence earns a fast pass
-   unless its premise has a hole the duel never tested.
+   Justification and `refs/` (link `DUEL_REPORT.md`). Use an existing work-item format when provided. Drafts do not authorize ticket creation or implementation; pass them through the project's normal decision gate.
 
 ## Rules
 
@@ -72,3 +67,9 @@ review pass.
   synthesizes, and judges; generation belongs to the wizards.
 - Every idea in the report carries its origin, both numbers, and the verdict -
   survivors must be traceable back through the duel.
+
+## Grain handoff
+
+- If connected, save briefs, idea files, scores, reports, and drafts in the supplied task folder, or `Development Artifacts/YYYY-MM-DD-<task>`; pass its ID/storage rule without revealing peer ideas or scores early.
+- Sync outputs for participants without access, keep needed local files and privacy limits, and continue locally silently without Grain.
+- Pass CLI prompts as data, not interpolated shell source; verify requested models are available before dispatch.

@@ -1,35 +1,42 @@
 ---
 name: business-spec
-description: Create a business deliverable spec from the discussion brief and existing context base, then run spec review.
+description: Turn a business discussion brief and sourced context into a reviewed deliverable specification.
 ---
 
-Role: This is the business equivalent of `/plan`. After the human-heavy `business-discussion` stage, this skill should do as much of the remaining spec work automatically as possible.
+# Business specification
 
-Rules:
-- MUST NOT draft the artifact.
-- MUST create a spec clear enough that a fresh agent can produce the artifact without reading the whole conversation.
-- MUST ground every claim in context files.
-- MUST include research-adversary inputs explicitly.
-- MUST define acceptance criteria and reviewer panel.
-- Stop for human input only when context/spec gaps block progress or high-stakes judgment is required.
+## Rules
 
-Coordinate support skills:
-- Context and research-adversary are context steps that already ran before discussion. business-spec MUST NOT produce them.
-- If context or research-adversary is missing or stale, you MUST send the workflow back to context-building (`business-context` / `business-research-adversary`). NEVER produce them here.
-- After drafting the spec, you MUST run or request `business-spec-reviewer`.
-- If review returns revise/build-more-context, you MUST patch the spec or send the workflow back to the right support stage.
+- Make the spec usable by a fresh writer without the conversation history.
+- Ground claims in context; do not draft the deliverable.
+- Ask for human input only when missing information or high-stakes judgment blocks progress.
 
-Read:
-- `.business/context/*.md`
-- `.business/discussion/brief.md`
-- `spec_base.md`
+## Read
 
-Write:
-- `.business/specs/ready/spec.md`
-- `.business/reviews/spec-review.md` via `business-spec-reviewer`
+Use supplied paths when present; these are the defaults:
 
-Output:
-- ready spec if approved
-- or a concise blocker report with the exact missing context/human decision needed
+- `.business/discussion/brief.md`.
+- Relevant `.business/context/` evidence, including stakeholder research.
+- [spec_base.md](spec_base.md) for the specification structure.
 
-Use `spec_base.md` for the spec structure.
+Route missing or stale context to `business-context` or `business-research-adversary` before specifying.
+
+## Write
+
+Save `.business/specs/ready/spec.md` with:
+
+- Goal, audience, and intended reader response.
+- Supported claims, source links, and stakeholder objections.
+- Acceptance criteria, reviewer roles, and human gate.
+
+## Review and finish
+
+1. Run `business-spec-reviewer` in fresh context; save `.business/reviews/spec-review.md`.
+2. Apply supported fixes or return to the appropriate context/discussion stage.
+3. Return the approved spec, or the exact missing evidence or human decision.
+
+## Grain handoff
+
+- If connected, read/update artifacts in the task folder; standalone: `Development Artifacts/YYYY-MM-DD-<task>`.
+- Pass its ID and storage rule to support agents; sync their outputs if they lack access.
+- Keep needed local files and privacy limits; without Grain, continue locally silently.

@@ -1,6 +1,6 @@
 # Color Palette & Brand Style
 
-**This is the single source of truth for all colors and brand-specific styles.** To customize diagrams for your own brand, edit this file — everything else in the skill is universal.
+Use this palette when no project or user style is supplied. Keep meanings consistent within a diagram, and combine color with labels or shape so it remains understandable without color.
 
 ---
 
