@@ -21,14 +21,16 @@ Input: a GitHub issue URL or `owner/repo#number`.
 
 1. Read the issue/comments and relevant artifacts in repo `TMP/` or `tmp/`,
    `$TMPDIR`, and `/tmp`; check stale context against the ticket and code.
-   If Grain is connected, use `grain` to read and keep task artifacts synced in `Development Artifacts/YYYY-MM-DD-<ticket-or-branch>`, retaining local working copies as needed.
-   Rename that Grain folder to `PR-<number>-<title>` once the PR exists; reuse it across devices. If Grain is unavailable, silently continue locally.
+   If Grain is connected, reuse the linked workspace. New work defaults to `Development Artifacts/<org>/<repo>`; explicit destinations win. Clarify ambiguous names.
+   Verify organization, folder, and audience; return the location with the link. Rename the workspace for the PR, retaining its ID and shared folder. Without Grain, continue locally.
    When Grain is connected, keep all development artifacts in one canonical task workspace in that folder, retain local copies, and pass its workspace ID to every subagent.
 2. As Astra, read `simple-plan` and use its planning steps to investigate and
    produce a concise plan. Preserve the ticket's intent, constraints, and scope.
+   Use `create-ticket`'s intent guidance; update the linked brief with the approach and tradeoffs before coding.
+   Reuse Socrates' verdict while its premise and evidence hold. Otherwise dispatch fresh Luna Max [Socrates](../create-ticket/references/socrates.md) with the ticket, plan, and repository evidence. Resolve material findings with the user; if existing behavior meets the outcome, finish with evidence and guidance.
    Autonomously derive detailed specs: files, changes, dependencies, edge cases,
    acceptance criteria, and checks. Save the plan/specs under task-specific `tmp/`.
-   This workflow authorizes proceeding without `simple-plan`'s approval pause.
+   This workflow authorizes proceeding without `simple-plan`'s routine approval pause once premise findings are resolved.
 3. Spawn Luna Max implementers with the ticket, plan, specs, and artifacts;
    sequence dependent tasks, wait for completion, and inspect work/check results.
 4. Spawn a Luna Max agent to use `prepare-pr` and open or update the PR.
@@ -42,7 +44,7 @@ Input: a GitHub issue URL or `owner/repo#number`.
    Delegate QA bug fixes and pushes to Luna Max, then have Sol rerun affected
    flows before reviews. Report blocked QA honestly; never call it a pass.
    Capture QA screenshots; when Grain is connected, save and verify media/reports there instead of release assets; otherwise follow `pr-test-automation`'s durable-publication behavior.
-   Keep the PR self-contained using `prepare-pr`'s exposition rules, with behavior, tested SHA, QA verdict, limitations and named evidence links; when using Grain, lead with key screenshots/videos, then longer artifacts.
+   Carry the QA handoff into the final brief, separating future improvements from current blockers.
    Return the same verified evidence link in the final handoff; explicitly report unavailable capture or publication rather than claiming upload.
 6. Run up to three fresh Luna Max reviews sequentially; stop after a clean review. Use
    the `review` skill on the current PR. After each review, delegate actionable
@@ -54,9 +56,9 @@ Input: a GitHub issue URL or `owner/repo#number`.
    one fresh Luna Max agent reviews the fixes covered by that rerun.
    Report remaining findings; do not restart the review loops.
 9. Return the PR URL, QA/check results with tested commits, and open findings. Do not merge.
-   After an authorized merge or when revisiting a merged PR, confirm GitHub reports `MERGED`; when Grain is connected, move its task folder under `Development Artifacts/Done`, preserve workspace IDs/shares, and verify the destination and PR evidence links, reporting any move failure.
-   When Grain is connected, finalize its visual companion from the published PR body after QA (or an explicit skip), reviews and final-head CI; verify matching content and reciprocal evidence links, then open Grain last.
+   After confirming an authorized or existing merge, mark the Grain task complete; move its workspace to the configured completed-work destination when supported. Preserve IDs, shares, and the shared folder; verify location/links and report move failures.
+   After QA (or a skip), reviews, and final-head CI, extend the same brief from the published PR with before/after behavior and verified results. Retain intent, sources, and decisions; verify content and reciprocal links, then open Grain last.
 
-Read `prepare-pr`, `pr-test-automation` (if running QA), and `review` when used.
+Preserve required tracker publication, local paths, and evidence contracts alongside Grain.
 Find `review` in `~/.claude/skills/review/` or dcouple/skills's `parsa/.claude/skills/review/`.
 Read referenced criteria; report missing skills. These workflow overrides take precedence.

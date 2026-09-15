@@ -118,6 +118,8 @@ failed write.
 - Cover every changed area, why it changes, tradeoffs, validation and limitations; use ample concrete before/after examples and diagrams, regardless of Grain availability.
 - When Grain is connected, save and visually verify a rich version of the final PR body with section navigation, rendered diagrams and hyperlinks to code/evidence; the PR must remain understandable without opening Grain.
 - When Grain is available, use `grain` to discover/reuse the repository-and-PR (or branch) workspace, creating one if absent; store diagrams, QA media and reports there and link verified evidence in a self-contained PR, overriding release uploads and inline-asset requirements.
+- Extend the linked intent brief with the final PR explanation, before/after behavior, and verified results; retain intent and decision history.
+- New workspaces default to `Development Artifacts/<org>/<repo>`; explicit destinations win. Clarify ambiguity, name for the task/PR, verify organization/folder/audience, and return the location. Preserve local and tracker/evidence contracts.
 
 ### PR Description Template
 

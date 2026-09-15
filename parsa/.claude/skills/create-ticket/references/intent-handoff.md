@@ -1,6 +1,8 @@
 # Preserve intent at ticket handoff
 
-Read these examples while capturing intent. Keep the current request, its motivation, and the decisions that explain how it arrived here.
+- Use **Intent**, **Scope**, and **Acceptance Criteria**; add **Inputs Needed**, **Starting Points**, and **Decision History** where useful.
+- Preserve the user's language and constraints. Ground requirements in sources; distinguish facts, decisions, proposals, and open questions.
+- Capture the trigger, expected/actual behavior, and consequence, or the unmet need for a new idea. Attribute reports; label suspected causes and unmeasured impact.
 
 ## Complete source
 
@@ -33,9 +35,20 @@ Source: “Make refund exports negative.”
 - **Inputs Needed:** What problem prompted this, who is affected, and what would successful use look like? Clarify the unanswered decisions that affect scope.
 - **Evidence boundary:** The accountant story, saved-invoice constraint, and empty-cell rule belong to D-17. Requirements for this new request come from its own sources.
 
+## Observation before solution
+
+Fictional source D-19: “I changed one sentence, clicked Save, and saw the whole document in the request. Add patches to cut editing costs.”
+
+- Check the editing path, existing options, and actual cost before choosing guidance, investigation, or patches.
+
 ## One or several outcomes
 
 For “capture this discussion in Grain,” save the brief there. For “give support the copy change and engineering the export fix,” create separate delegation artifacts with their own outcomes and link the shared rationale. Choose ticket-only, Grain-only, or combined delivery from the request.
+
+## Refine with the human
+
+- Ask: “What happened last time?”, “What would a good result enable?”, “What would make the existing approach sufficient?” Investigate facts; let the user settle product choices.
+- Show the proposed experience, alternatives, and tradeoffs with a useful example or mockup. Label uncertainty and fidelity limits; leave implementation steps to planning.
 
 ## Explain enough to delegate
 
